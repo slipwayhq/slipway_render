@@ -19,16 +19,18 @@ fn main() -> anyhow::Result<()> {
     let json_files = load_json_files(path);
 
     for json_file in json_files {
-        println!("{}: {:?}", json_file.file_name, json_file.value);
+        println!("{}", json_file.file_name);
         let item_type = json_file.value["classType"].as_str().unwrap_or("Class");
 
         match item_type {
             "Class" => {
-                let class: Class = serde_json::from_value(json_file.value)?;
+                let class: Class = serde_json::from_value(json_file.value.clone())
+                    .inspect_err(|_| println!("{:?}", json_file.value))?;
                 process_class(json_file.file_name, class);
             }
             "Enum" => {
-                let enum_: Enum = serde_json::from_value(json_file.value)?;
+                let enum_: Enum = serde_json::from_value(json_file.value.clone())
+                    .inspect_err(|_| println!("{:?}", json_file.value))?;
                 process_enum(json_file.file_name, enum_);
             }
             _ => panic!("Unknown type: {}", item_type),
@@ -56,13 +58,9 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> 
     })
 }
 
-fn process_class(file_name: String, value: Class) {
-    println!("Processing class: {}", file_name);
-}
+fn process_class(file_name: String, value: Class) {}
 
-fn process_enum(file_name: String, value: Enum) {
-    println!("Processing enum: {}", file_name);
-}
+fn process_enum(file_name: String, value: Enum) {}
 
 struct LoadedJson {
     value: Value,

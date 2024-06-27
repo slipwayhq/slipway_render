@@ -39,20 +39,11 @@ pub mod error {
 #[doc = "{"]
 #[doc = "  \"description\": \"Expresses a class\","]
 #[doc = "  \"type\": \"object\","]
-#[doc = "  \"required\": ["]
-#[doc = "    \"type\""]
-#[doc = "  ],"]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"$schema\": {"]
 #[doc = "      \"description\": \"JSON schema for the JSON file\","]
 #[doc = "      \"type\": \"string\","]
 #[doc = "      \"format\": \"uri\""]
-#[doc = "    },"]
-#[doc = "    \"classType\": {"]
-#[doc = "      \"description\": \"Must be `Class`\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"Class\""]
-#[doc = "      ]"]
 #[doc = "    },"]
 #[doc = "    \"description\": {"]
 #[doc = "      \"description\": \"A description of the class\","]
@@ -61,6 +52,9 @@ pub mod error {
 #[doc = "    \"extends\": {"]
 #[doc = "      \"description\": \"Class that this class extends from\","]
 #[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"features\": {"]
+#[doc = "      \"$ref\": \"#/definitions/features\""]
 #[doc = "    },"]
 #[doc = "    \"isAbstract\": {"]
 #[doc = "      \"description\": \"Specifies whether this class is abstract\","]
@@ -77,8 +71,8 @@ pub mod error {
 #[doc = "      \"description\": \"Name of one of the properties that represents a shorthand version of this class\","]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
-#[doc = "    \"type\": {"]
-#[doc = "      \"description\": \"The name of the class\","]
+#[doc = "    \"version\": {"]
+#[doc = "      \"description\": \"The version of Adaptive Cards that this Class was introduced in\","]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    }"]
 #[doc = "  },"]
@@ -89,15 +83,14 @@ pub mod error {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Class {
-    #[doc = "Must be `Class`"]
-    #[serde(rename = "classType", default, skip_serializing_if = "Option::is_none")]
-    pub class_type: Option<ClassClassType>,
     #[doc = "A description of the class"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[doc = "Class that this class extends from"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub extends: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub features: Option<Features>,
     #[doc = "Specifies whether this class is abstract"]
     #[serde(
         rename = "isAbstract",
@@ -114,9 +107,9 @@ pub struct Class {
     #[doc = "Name of one of the properties that represents a shorthand version of this class"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub shorthand: Option<String>,
-    #[doc = "The name of the class"]
-    #[serde(rename = "type")]
-    pub type_: String,
+    #[doc = "The version of Adaptive Cards that this Class was introduced in"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
 }
 impl From<&Class> for Class {
     fn from(value: &Class) -> Self {
@@ -126,62 +119,6 @@ impl From<&Class> for Class {
 impl Class {
     pub fn builder() -> builder::Class {
         Default::default()
-    }
-}
-#[doc = "Must be `Class`"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Must be `Class`\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"Class\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum ClassClassType {
-    Class,
-}
-impl From<&ClassClassType> for ClassClassType {
-    fn from(value: &ClassClassType) -> Self {
-        value.clone()
-    }
-}
-impl ToString for ClassClassType {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Class => "Class".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for ClassClassType {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "Class" => Ok(Self::Class),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for ClassClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for ClassClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for ClassClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
     }
 }
 #[doc = "Expresses an enum"]
@@ -212,11 +149,7 @@ impl std::convert::TryFrom<String> for ClassClassType {
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
 #[doc = "    \"features\": {"]
-#[doc = "      \"description\": \"Features of the enum\","]
-#[doc = "      \"type\": \"array\","]
-#[doc = "      \"items\": {"]
-#[doc = "        \"type\": \"number\""]
-#[doc = "      }"]
+#[doc = "      \"$ref\": \"#/definitions/features\""]
 #[doc = "    },"]
 #[doc = "    \"values\": {"]
 #[doc = "      \"description\": \"The values in the enum\","]
@@ -243,9 +176,8 @@ pub struct Enum {
     #[doc = "The description of the enum"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    #[doc = "Features of the enum"]
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub features: Vec<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub features: Option<Features>,
     #[doc = "JSON schema for the JSON file"]
     #[serde(rename = "$schema", default, skip_serializing_if = "Option::is_none")]
     pub schema: Option<String>,
@@ -378,6 +310,43 @@ impl From<&EnumValue> for EnumValue {
         value.clone()
     }
 }
+#[doc = "Features of the item"]
+#[doc = r""]
+#[doc = r" <details><summary>JSON schema</summary>"]
+#[doc = r""]
+#[doc = r" ```json"]
+#[doc = "{"]
+#[doc = "  \"description\": \"Features of the item\","]
+#[doc = "  \"type\": \"array\","]
+#[doc = "  \"items\": {"]
+#[doc = "    \"type\": \"number\""]
+#[doc = "  }"]
+#[doc = "}"]
+#[doc = r" ```"]
+#[doc = r" </details>"]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Features(pub Vec<f64>);
+impl std::ops::Deref for Features {
+    type Target = Vec<f64>;
+    fn deref(&self) -> &Vec<f64> {
+        &self.0
+    }
+}
+impl From<Features> for Vec<f64> {
+    fn from(value: Features) -> Self {
+        value.0
+    }
+}
+impl From<&Features> for Features {
+    fn from(value: &Features) -> Self {
+        value.clone()
+    }
+}
+impl From<Vec<f64>> for Features {
+    fn from(value: Vec<f64>) -> Self {
+        Self(value)
+    }
+}
 #[doc = "Property"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
@@ -389,12 +358,6 @@ impl From<&EnumValue> for EnumValue {
 #[doc = "    \"type\""]
 #[doc = "  ],"]
 #[doc = "  \"properties\": {"]
-#[doc = "    \"classType\": {"]
-#[doc = "      \"description\": \"Must be `Property`\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"Property\""]
-#[doc = "      ]"]
-#[doc = "    },"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"The default value of this property\""]
 #[doc = "    },"]
@@ -402,9 +365,24 @@ impl From<&EnumValue> for EnumValue {
 #[doc = "      \"description\": \"A description of the property\","]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
+#[doc = "    \"example\": {"]
+#[doc = "      \"description\": \"An example property value\","]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
 #[doc = "    \"examples\": {"]
 #[doc = "      \"description\": \"Examples of this value\","]
 #[doc = "      \"type\": \"array\""]
+#[doc = "    },"]
+#[doc = "    \"features\": {"]
+#[doc = "      \"$ref\": \"#/definitions/features\""]
+#[doc = "    },"]
+#[doc = "    \"format\": {"]
+#[doc = "      \"description\": \"The format of the property\","]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"override\": {"]
+#[doc = "      \"description\": \"Indicates this property overrides the property with the same name in the parent class\","]
+#[doc = "      \"type\": \"boolean\""]
 #[doc = "    },"]
 #[doc = "    \"required\": {"]
 #[doc = "      \"description\": \"Specifies whether the property is required\","]
@@ -421,6 +399,10 @@ impl From<&EnumValue> for EnumValue {
 #[doc = "    \"type\": {"]
 #[doc = "      \"description\": \"The type of the property\","]
 #[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
+#[doc = "    \"version\": {"]
+#[doc = "      \"description\": \"The version of Adaptive Cards that this property was introduced in\","]
+#[doc = "      \"type\": \"string\""]
 #[doc = "    }"]
 #[doc = "  },"]
 #[doc = "  \"additionalProperties\": false"]
@@ -430,18 +412,26 @@ impl From<&EnumValue> for EnumValue {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Property {
-    #[doc = "Must be `Property`"]
-    #[serde(rename = "classType", default, skip_serializing_if = "Option::is_none")]
-    pub class_type: Option<PropertyClassType>,
     #[doc = "The default value of this property"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub default: Option<serde_json::Value>,
     #[doc = "A description of the property"]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    #[doc = "An example property value"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub example: Option<String>,
     #[doc = "Examples of this value"]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub examples: Vec<serde_json::Value>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub features: Option<Features>,
+    #[doc = "The format of the property"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub format: Option<String>,
+    #[doc = "Indicates this property overrides the property with the same name in the parent class"]
+    #[serde(rename = "override", default, skip_serializing_if = "Option::is_none")]
+    pub override_: Option<bool>,
     #[doc = "Specifies whether the property is required"]
     #[serde(default)]
     pub required: bool,
@@ -451,6 +441,9 @@ pub struct Property {
     #[doc = "The type of the property"]
     #[serde(rename = "type")]
     pub type_: String,
+    #[doc = "The version of Adaptive Cards that this property was introduced in"]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
 }
 impl From<&Property> for Property {
     fn from(value: &Property) -> Self {
@@ -462,100 +455,34 @@ impl Property {
         Default::default()
     }
 }
-#[doc = "Must be `Property`"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Must be `Property`\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"Property\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum PropertyClassType {
-    Property,
-}
-impl From<&PropertyClassType> for PropertyClassType {
-    fn from(value: &PropertyClassType) -> Self {
-        value.clone()
-    }
-}
-impl ToString for PropertyClassType {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Property => "Property".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for PropertyClassType {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "Property" => Ok(Self::Property),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for PropertyClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for PropertyClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for PropertyClassType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
 #[doc = r" Types for composing complex structures."]
 pub mod builder {
     #[derive(Clone, Debug)]
     pub struct Class {
-        class_type: Result<Option<super::ClassClassType>, String>,
         description: Result<Option<String>, String>,
         extends: Result<Option<String>, String>,
+        features: Result<Option<super::Features>, String>,
         is_abstract: Result<Option<bool>, String>,
         properties: Result<std::collections::HashMap<String, super::Property>, String>,
         schema: Result<Option<String>, String>,
         shorthand: Result<Option<String>, String>,
-        type_: Result<String, String>,
+        version: Result<Option<String>, String>,
     }
     impl Default for Class {
         fn default() -> Self {
             Self {
-                class_type: Ok(Default::default()),
                 description: Ok(Default::default()),
                 extends: Ok(Default::default()),
+                features: Ok(Default::default()),
                 is_abstract: Ok(Default::default()),
                 properties: Ok(Default::default()),
                 schema: Ok(Default::default()),
                 shorthand: Ok(Default::default()),
-                type_: Err("no value supplied for type_".to_string()),
+                version: Ok(Default::default()),
             }
         }
     }
     impl Class {
-        pub fn class_type<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::ClassClassType>>,
-            T::Error: std::fmt::Display,
-        {
-            self.class_type = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for class_type: {}", e));
-            self
-        }
         pub fn description<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Option<String>>,
@@ -574,6 +501,16 @@ pub mod builder {
             self.extends = value
                 .try_into()
                 .map_err(|e| format!("error converting supplied value for extends: {}", e));
+            self
+        }
+        pub fn features<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::Features>>,
+            T::Error: std::fmt::Display,
+        {
+            self.features = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for features: {}", e));
             self
         }
         pub fn is_abstract<T>(mut self, value: T) -> Self
@@ -616,14 +553,14 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for shorthand: {}", e));
             self
         }
-        pub fn type_<T>(mut self, value: T) -> Self
+        pub fn version<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
+            T: std::convert::TryInto<Option<String>>,
             T::Error: std::fmt::Display,
         {
-            self.type_ = value
+            self.version = value
                 .try_into()
-                .map_err(|e| format!("error converting supplied value for type_: {}", e));
+                .map_err(|e| format!("error converting supplied value for version: {}", e));
             self
         }
     }
@@ -631,28 +568,28 @@ pub mod builder {
         type Error = super::error::ConversionError;
         fn try_from(value: Class) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
-                class_type: value.class_type?,
                 description: value.description?,
                 extends: value.extends?,
+                features: value.features?,
                 is_abstract: value.is_abstract?,
                 properties: value.properties?,
                 schema: value.schema?,
                 shorthand: value.shorthand?,
-                type_: value.type_?,
+                version: value.version?,
             })
         }
     }
     impl From<super::Class> for Class {
         fn from(value: super::Class) -> Self {
             Self {
-                class_type: Ok(value.class_type),
                 description: Ok(value.description),
                 extends: Ok(value.extends),
+                features: Ok(value.features),
                 is_abstract: Ok(value.is_abstract),
                 properties: Ok(value.properties),
                 schema: Ok(value.schema),
                 shorthand: Ok(value.shorthand),
-                type_: Ok(value.type_),
+                version: Ok(value.version),
             }
         }
     }
@@ -660,7 +597,7 @@ pub mod builder {
     pub struct Enum {
         class_type: Result<Option<super::EnumClassType>, String>,
         description: Result<Option<String>, String>,
-        features: Result<Vec<f64>, String>,
+        features: Result<Option<super::Features>, String>,
         schema: Result<Option<String>, String>,
         values: Result<Vec<super::EnumValue>, String>,
         version: Result<Option<String>, String>,
@@ -700,7 +637,7 @@ pub mod builder {
         }
         pub fn features<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Vec<f64>>,
+            T: std::convert::TryInto<Option<super::Features>>,
             T::Error: std::fmt::Display,
         {
             self.features = value
@@ -766,38 +703,36 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct Property {
-        class_type: Result<Option<super::PropertyClassType>, String>,
         default: Result<Option<serde_json::Value>, String>,
         description: Result<Option<String>, String>,
+        example: Result<Option<String>, String>,
         examples: Result<Vec<serde_json::Value>, String>,
+        features: Result<Option<super::Features>, String>,
+        format: Result<Option<String>, String>,
+        override_: Result<Option<bool>, String>,
         required: Result<bool, String>,
         shorthands: Result<Vec<super::Property>, String>,
         type_: Result<String, String>,
+        version: Result<Option<String>, String>,
     }
     impl Default for Property {
         fn default() -> Self {
             Self {
-                class_type: Ok(Default::default()),
                 default: Ok(Default::default()),
                 description: Ok(Default::default()),
+                example: Ok(Default::default()),
                 examples: Ok(Default::default()),
+                features: Ok(Default::default()),
+                format: Ok(Default::default()),
+                override_: Ok(Default::default()),
                 required: Ok(Default::default()),
                 shorthands: Ok(Default::default()),
                 type_: Err("no value supplied for type_".to_string()),
+                version: Ok(Default::default()),
             }
         }
     }
     impl Property {
-        pub fn class_type<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::PropertyClassType>>,
-            T::Error: std::fmt::Display,
-        {
-            self.class_type = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for class_type: {}", e));
-            self
-        }
         pub fn default<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Option<serde_json::Value>>,
@@ -818,6 +753,16 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for description: {}", e));
             self
         }
+        pub fn example<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<String>>,
+            T::Error: std::fmt::Display,
+        {
+            self.example = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for example: {}", e));
+            self
+        }
         pub fn examples<T>(mut self, value: T) -> Self
         where
             T: std::convert::TryInto<Vec<serde_json::Value>>,
@@ -826,6 +771,36 @@ pub mod builder {
             self.examples = value
                 .try_into()
                 .map_err(|e| format!("error converting supplied value for examples: {}", e));
+            self
+        }
+        pub fn features<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<super::Features>>,
+            T::Error: std::fmt::Display,
+        {
+            self.features = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for features: {}", e));
+            self
+        }
+        pub fn format<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<String>>,
+            T::Error: std::fmt::Display,
+        {
+            self.format = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for format: {}", e));
+            self
+        }
+        pub fn override_<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<bool>>,
+            T::Error: std::fmt::Display,
+        {
+            self.override_ = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for override_: {}", e));
             self
         }
         pub fn required<T>(mut self, value: T) -> Self
@@ -858,31 +833,49 @@ pub mod builder {
                 .map_err(|e| format!("error converting supplied value for type_: {}", e));
             self
         }
+        pub fn version<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<String>>,
+            T::Error: std::fmt::Display,
+        {
+            self.version = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for version: {}", e));
+            self
+        }
     }
     impl std::convert::TryFrom<Property> for super::Property {
         type Error = super::error::ConversionError;
         fn try_from(value: Property) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
-                class_type: value.class_type?,
                 default: value.default?,
                 description: value.description?,
+                example: value.example?,
                 examples: value.examples?,
+                features: value.features?,
+                format: value.format?,
+                override_: value.override_?,
                 required: value.required?,
                 shorthands: value.shorthands?,
                 type_: value.type_?,
+                version: value.version?,
             })
         }
     }
     impl From<super::Property> for Property {
         fn from(value: super::Property) -> Self {
             Self {
-                class_type: Ok(value.class_type),
                 default: Ok(value.default),
                 description: Ok(value.description),
+                example: Ok(value.example),
                 examples: Ok(value.examples),
+                features: Ok(value.features),
+                format: Ok(value.format),
+                override_: Ok(value.override_),
                 required: Ok(value.required),
                 shorthands: Ok(value.shorthands),
                 type_: Ok(value.type_),
+                version: Ok(value.version),
             }
         }
     }

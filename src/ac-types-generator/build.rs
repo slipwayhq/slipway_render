@@ -1,7 +1,19 @@
 use std::fs;
 use std::path::Path;
+use std::process::Command;
 
 fn main() {
+    // Run the `cargo typify` command
+    let output = Command::new("cargo")
+        .arg("typify")
+        .arg("../../ac-schema/typed-schema.schema.json")
+        .output()
+        .expect("Failed to execute cargo typify");
+
+    if !output.status.success() {
+        panic!("cargo typify failed with error: {:?}", output);
+    }
+
     let src = Path::new("../../ac-schema/typed-schema.schema.rs");
     let dst = Path::new("./src/typed_schema_types.rs");
 

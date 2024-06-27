@@ -1,3 +1,5 @@
+mod adaptive_cards_types;
+
 // use image::{ImageBuffer, Rgba};
 // use serde::Deserialize;
 

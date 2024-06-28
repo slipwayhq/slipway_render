@@ -14,6 +14,8 @@ use typed_schema_types::{Class, Enum, EnumValue};
 const PRINT_RAW: bool = false;
 const MAX_ENTITIES: usize = usize::MAX;
 
+const FALLBACK_OPTION: &str = "FallbackOption";
+
 pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
     let tokens = generate_inner(in_path)?;
     let output = quote! {
@@ -38,6 +40,8 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     );
     let json_files = load_json_files(ac_schema_folder_path);
 
+    let mut generated_additional_types = Vec::new();
+
     let mut tokens = Vec::new();
     for json_file in json_files {
         println!("{}", json_file.file_name);
@@ -47,7 +51,11 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
             "Class" => {
                 let class: Class = serde_json::from_value(json_file.value.clone())
                     .inspect_err(|_| println!("{:?}", json_file.value))?;
-                tokens.push(process_class(json_file.type_name, class));
+                tokens.push(process_class(
+                    json_file.type_name,
+                    class,
+                    &mut generated_additional_types,
+                ));
             }
             "Enum" => {
                 let enum_: Enum = serde_json::from_value(json_file.value.clone())
@@ -65,6 +73,11 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     Ok(tokens)
 }
 
+struct LoadedJson {
+    value: Value,
+    file_name: String,
+    type_name: String,
+}
 fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> {
     WalkDir::new(path).into_iter().filter_map(|entry| {
         let entry = entry.ok()?;
@@ -73,7 +86,7 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> 
             let file = File::open(path).ok()?;
             let reader = BufReader::new(file);
             let file_name = path.file_name()?.to_str()?.to_string();
-            let file_name_without_extension = file_name.split('.').next()?.to_string();
+            let file_name_without_extension = path.file_stem()?.to_str()?.to_string();
             Some(LoadedJson {
                 value: serde_json::from_reader(reader).ok()?,
                 file_name,
@@ -85,7 +98,11 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> 
     })
 }
 
-fn process_class(type_name: String, input: Class) -> proc_macro2::TokenStream {
+fn process_class(
+    type_name: String,
+    input: Class,
+    generated_additional_types: &mut Vec<String>,
+) -> proc_macro2::TokenStream {
     let struct_name = format_ident!("{}", type_name);
 
     let mut additional_types = Vec::new();
@@ -100,7 +117,8 @@ fn process_class(type_name: String, input: Class) -> proc_macro2::TokenStream {
 
         let name = format_ident!("{}", name_str);
 
-        let (field_type_str, additional_type) = sanitize_type(&p.1.type_);
+        let (field_type_str, additional_type) =
+            sanitize_type(&p.1.type_, generated_additional_types);
 
         if let Some(additional_type) = additional_type {
             additional_types.push(additional_type);
@@ -165,7 +183,10 @@ fn sanitize_ident(ident: &str) -> String {
     }
 }
 
-fn sanitize_type(type_name: &str) -> (String, Option<proc_macro2::TokenStream>) {
+fn sanitize_type(
+    type_name: &str,
+    generated_additional_types: &mut Vec<String>,
+) -> (String, Option<proc_macro2::TokenStream>) {
     // let ident = ident.replace(['-', '<', '>'], "_");
 
     let type_names = type_name.split('|').collect::<Vec<_>>();
@@ -175,19 +196,35 @@ fn sanitize_type(type_name: &str) -> (String, Option<proc_macro2::TokenStream>) 
         return (sanitized, None);
     }
 
-    let sanitized = type_names
+    let type_name_str = type_names
         .iter()
-        .map(|t| sanitize_type_inner(t))
-        .collect::<Vec<_>>();
-    let variants = sanitized.iter().map(|t| {
-        let name = format_ident!("{}", t);
-        let inner_type: Type =
-            parse_str(t).unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
+        .map(|&t| sanitize_ident(t))
+        .collect::<Vec<_>>()
+        .join("_or_");
+
+    let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
+
+    if generated_additional_types.contains(&type_name_str) {
+        return (type_name_str, None);
+    }
+
+    generated_additional_types.push(type_name_str.clone());
+
+    let variants = type_names.iter().map(|&t| {
+        let name = format_ident!("{}", sanitize_ident(t));
+        let inner_type: Type = parse_str(&sanitize_type_inner(t))
+            .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
+
+        if use_box && t != FALLBACK_OPTION {
+            return quote! {
+                #name(Box<#inner_type>),
+            };
+        }
+
         quote! {
             #name(#inner_type),
         }
     });
-    let type_name_str = sanitized.join("_or_");
     let type_name = format_ident!("{}", type_name_str);
     let additional_type = quote! {
         pub enum #type_name {
@@ -210,17 +247,13 @@ fn sanitize_type_inner(type_name: &str) -> String {
     match type_name {
         "string" => "String".to_string(),
         "uri-reference" => "String".to_string(),
+        "uri" => "String".to_string(),
         "number" => "f64".to_string(),
         "boolean" => "bool".to_string(),
         "Dictionary<string>" => "std::collections::HashMap<String,String>".to_string(),
+        "object" => "serde_json::Value".to_string(),
         _ => sanitize_ident(type_name),
     }
-}
-
-struct LoadedJson {
-    value: Value,
-    file_name: String,
-    type_name: String,
 }
 
 #[cfg(test)]

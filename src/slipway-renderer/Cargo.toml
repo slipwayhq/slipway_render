@@ -5,6 +5,8 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
 
 [build-dependencies]
 ac-types-generator = { path = "../ac-types-generator" }

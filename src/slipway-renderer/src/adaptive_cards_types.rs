@@ -126,17 +126,17 @@ pub struct Item {
 }
 pub struct TokenExchangeResource {
     pub id: String,
-    pub providerId: String,
     pub uri: String,
+    pub providerId: String,
 }
 pub struct Metadata {
     pub webUrl: String,
 }
 pub struct Authentication {
-    pub text: String,
-    pub tokenExchangeResource: TokenExchangeResource,
-    pub connectionName: String,
     pub buttons: Vec<AuthCardButton>,
+    pub text: String,
+    pub connectionName: String,
+    pub tokenExchangeResource: TokenExchangeResource,
 }
 pub struct BackgroundImage {
     pub fillMode: ImageFillMode,
@@ -154,15 +154,15 @@ pub struct ToggleableItem {
     pub id: String,
 }
 pub struct AuthCardButton {
-    pub type_: String,
     pub value: String,
-    pub title: String,
     pub image: String,
+    pub type_: String,
+    pub title: String,
 }
 pub struct TableRow {
+    pub cells: Vec<TableCell>,
     pub verticalCellContentAlignment: Option<VerticalAlignment>,
     pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
-    pub cells: Vec<TableCell>,
     pub style: Option<ContainerStyle>,
 }
 pub struct ImageSet {
@@ -174,274 +174,262 @@ pub struct Fact {
     pub title: String,
     pub value: String,
 }
-pub enum String_or_f64 {
-    String(String),
-    f64(f64),
+pub enum string_or_number {
+    string(String),
+    number(f64),
 }
 pub struct TableColumnDefinition {
+    pub width: string_or_number,
     pub verticalCellContentAlignment: Option<VerticalAlignment>,
     pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
-    pub width: String_or_f64,
 }
 pub struct FactSet {
     pub facts: Vec<Fact>,
 }
-pub enum String_or_f64 {
-    String(String),
-    f64(f64),
-}
 pub enum Column_or_FallbackOption {
-    Column(Column),
+    Column(Box<Column>),
     FallbackOption(FallbackOption),
 }
 pub struct Column {
-    pub minHeight: String,
-    pub separator: bool,
-    pub style: Option<ContainerStyle>,
-    pub verticalContentAlignment: Option<VerticalContentAlignment>,
-    pub bleed: bool,
-    pub spacing: Spacing,
-    pub width: String_or_f64,
     pub rtl: Option<bool>,
+    pub separator: bool,
+    pub verticalContentAlignment: Option<VerticalContentAlignment>,
+    pub width: string_or_number,
     pub items: Vec<Element>,
-    pub fallback: Column_or_FallbackOption,
+    pub spacing: Spacing,
+    pub style: Option<ContainerStyle>,
+    pub bleed: bool,
     pub selectAction: ISelectAction,
     pub backgroundImage: BackgroundImage,
+    pub fallback: Column_or_FallbackOption,
+    pub minHeight: String,
 }
 pub struct CaptionSource {
-    pub url: String,
     pub mimeType: String,
+    pub url: String,
     pub label: String,
 }
 pub struct TextRun {
-    pub underline: bool,
     pub italic: bool,
-    pub highlight: bool,
-    pub selectAction: ISelectAction,
-    pub fontType: Option<FontType>,
-    pub color: Option<Colors>,
     pub strikethrough: bool,
     pub size: Option<FontSize>,
-    pub text: String,
-    pub weight: Option<FontWeight>,
     pub isSubtle: Option<bool>,
+    pub fontType: Option<FontType>,
+    pub color: Option<Colors>,
+    pub text: String,
+    pub underline: bool,
+    pub selectAction: ISelectAction,
+    pub weight: Option<FontWeight>,
+    pub highlight: bool,
 }
 pub struct Inline {}
 pub struct Container {
+    pub backgroundImage: BackgroundImage,
     pub items: Vec<Element>,
     pub style: Option<ContainerStyle>,
-    pub backgroundImage: BackgroundImage,
     pub verticalContentAlignment: Option<VerticalContentAlignment>,
     pub bleed: bool,
-    pub minHeight: String,
-    pub rtl: Option<bool>,
     pub selectAction: ISelectAction,
+    pub rtl: Option<bool>,
+    pub minHeight: String,
 }
 pub struct Media {
-    pub captionSources: Vec<CaptionSource>,
     pub poster: String,
-    pub altText: String,
     pub sources: Vec<MediaSource>,
+    pub captionSources: Vec<CaptionSource>,
+    pub altText: String,
 }
 pub struct TextBlock {
+    pub maxLines: f64,
+    pub size: Option<FontSize>,
+    pub text: String,
     pub color: Option<Colors>,
     pub horizontalAlignment: Option<HorizontalAlignment>,
-    pub fontType: Option<FontType>,
     pub isSubtle: Option<bool>,
-    pub style: Option<TextBlockStyle>,
-    pub text: String,
-    pub size: Option<FontSize>,
-    pub weight: Option<FontWeight>,
-    pub maxLines: f64,
+    pub fontType: Option<FontType>,
     pub wrap: bool,
+    pub style: Option<TextBlockStyle>,
+    pub weight: Option<FontWeight>,
 }
 pub struct Table {
-    pub showGridLines: bool,
     pub verticalCellContentAlignment: Option<VerticalAlignment>,
-    pub columns: Vec<TableColumnDefinition>,
-    pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
-    pub firstRowAsHeader: bool,
-    pub rows: Vec<TableRow>,
     pub gridStyle: Option<ContainerStyle>,
+    pub firstRowAsHeader: bool,
+    pub showGridLines: bool,
+    pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
+    pub columns: Vec<TableColumnDefinition>,
+    pub rows: Vec<TableRow>,
 }
 pub struct ColumnSet {
-    pub style: Option<ContainerStyle>,
-    pub bleed: bool,
     pub columns: Vec<Column>,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
     pub selectAction: ISelectAction,
+    pub bleed: bool,
+    pub horizontalAlignment: Option<HorizontalAlignment>,
+    pub style: Option<ContainerStyle>,
     pub minHeight: String,
 }
 pub struct ActionSet {
     pub actions: Vec<Action>,
 }
-pub enum String_or_BlockElementHeight {
-    String(String),
+pub enum string_or_BlockElementHeight {
+    string(String),
     BlockElementHeight(BlockElementHeight),
 }
 pub struct Image {
-    pub selectAction: ISelectAction,
-    pub height: String_or_BlockElementHeight,
     pub size: ImageSize,
     pub url: String,
-    pub width: String,
-    pub style: ImageStyle,
     pub altText: String,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
+    pub selectAction: ISelectAction,
+    pub width: String,
     pub backgroundColor: String,
+    pub height: string_or_BlockElementHeight,
+    pub horizontalAlignment: Option<HorizontalAlignment>,
+    pub style: ImageStyle,
 }
 pub enum Element_or_FallbackOption {
-    Element(Element),
+    Element(Box<Element>),
     FallbackOption(FallbackOption),
 }
 pub struct Element {
-    pub separator: bool,
     pub height: BlockElementHeight,
-    pub fallback: Element_or_FallbackOption,
     pub spacing: Spacing,
+    pub fallback: Element_or_FallbackOption,
+    pub separator: bool,
 }
 pub struct RichTextBlock {
-    pub horizontalAlignment: Option<HorizontalAlignment>,
     pub inlines: Vec<Inline>,
+    pub horizontalAlignment: Option<HorizontalAlignment>,
 }
 pub struct TableCell {
+    pub bleed: bool,
+    pub rtl: Option<bool>,
+    pub selectAction: ISelectAction,
     pub style: Option<ContainerStyle>,
     pub verticalContentAlignment: Option<VerticalContentAlignment>,
-    pub bleed: bool,
-    pub selectAction: ISelectAction,
     pub items: Vec<Element>,
-    pub backgroundImage: BackgroundImage,
     pub minHeight: String,
-    pub rtl: Option<bool>,
+    pub backgroundImage: BackgroundImage,
 }
 pub struct MediaSource {
     pub mimeType: String,
     pub url: String,
 }
-pub struct Input {
+pub struct Input_Time {
     pub max: String,
-    pub placeholder: String,
     pub min: String,
     pub value: String,
-}
-pub struct Input {
-    pub value: String,
-    pub title: String,
-}
-pub struct Input {
-    pub value: String,
-    pub choices: Vec<Input_Choice>,
     pub placeholder: String,
-    pub isMultiSelect: bool,
-    pub style: ChoiceInputStyle,
-    pub choices_data: Data_Query,
-    pub wrap: bool,
 }
-pub enum String_or_f64 {
-    String(String),
-    f64(f64),
+pub struct Input_Choice {
+    pub title: String,
+    pub value: String,
+}
+pub struct Input_ChoiceSet {
+    pub value: String,
+    pub choices_data: Data_Query,
+    pub placeholder: String,
+    pub wrap: bool,
+    pub choices: Vec<Input_Choice>,
+    pub style: ChoiceInputStyle,
+    pub isMultiSelect: bool,
 }
 pub struct Input {
-    pub labelWidth: String_or_f64,
+    pub id: String,
+    pub inputStyle: InputStyle,
+    pub label: String,
+    pub errorMessage: String,
     pub isRequired: bool,
     pub labelPosition: InputLabelPosition,
-    pub id: String,
-    pub errorMessage: String,
-    pub label: String,
-    pub inputStyle: InputStyle,
+    pub labelWidth: string_or_number,
 }
-pub struct Input {
-    pub value: String,
-    pub valueOff: String,
+pub struct Input_Toggle {
     pub title: String,
+    pub valueOff: String,
     pub valueOn: String,
     pub wrap: bool,
+    pub value: String,
 }
-pub struct Input {
+pub struct Input_Text {
     pub inlineAction: ISelectAction,
-    pub style: TextInputStyle,
-    pub maxLength: f64,
-    pub regex: String,
     pub isMultiline: bool,
-    pub value: String,
+    pub regex: String,
+    pub maxLength: f64,
     pub placeholder: String,
+    pub style: TextInputStyle,
+    pub value: String,
 }
-pub struct Input {
-    pub max: String,
+pub struct Input_Date {
+    pub placeholder: String,
     pub min: String,
-    pub placeholder: String,
     pub value: String,
+    pub max: String,
 }
-pub struct Data {
+pub struct Data_Query {
+    pub dataset: String,
     pub skip: f64,
     pub count: f64,
-    pub dataset: String,
 }
-pub struct Input {
-    pub min: f64,
+pub struct Input_Number {
     pub max: f64,
-    pub placeholder: String,
     pub value: f64,
+    pub min: f64,
+    pub placeholder: String,
 }
 pub struct TargetElement {
     pub elementId: String,
     pub isVisible: Option<bool>,
 }
 pub enum Action_or_FallbackOption {
-    Action(Action),
+    Action(Box<Action>),
     FallbackOption(FallbackOption),
 }
 pub struct Action {
-    pub iconUrl: String,
-    pub id: String,
     pub isEnabled: bool,
-    pub title: String,
-    pub tooltip: String,
-    pub style: ActionStyle,
+    pub iconUrl: String,
     pub fallback: Action_or_FallbackOption,
+    pub style: ActionStyle,
+    pub tooltip: String,
+    pub title: String,
+    pub id: String,
     pub mode: ActionMode,
 }
-pub enum String_or_object {
-    String(String),
-    object(object),
+pub enum string_or_object {
+    string(String),
+    object(serde_json::Value),
 }
-pub struct Action {
+pub struct Action_Submit {
+    pub data: string_or_object,
     pub associatedInputs: AssociatedInputs,
-    pub data: String_or_object,
 }
 pub struct ISelectAction {}
-pub struct Action {
+pub struct Action_OpenUrl {
     pub url: String,
 }
-pub enum String_or_object {
-    String(String),
-    object(object),
-}
-pub struct Action {
-    pub associatedInputs: AssociatedInputs,
-    pub data: String_or_object,
+pub struct Action_Execute {
     pub verb: String,
+    pub data: string_or_object,
+    pub associatedInputs: AssociatedInputs,
 }
-pub struct Action {
+pub struct Action_ShowCard {
     pub card: AdaptiveCard,
 }
-pub struct Action {
+pub struct Action_ToggleVisibility {
     pub targetElements: Vec<TargetElement>,
 }
 pub struct AdaptiveCard {
-    pub minHeight: String,
-    pub lang: String,
-    pub authentication: Authentication,
     pub rtl: Option<bool>,
-    pub backgroundImage: BackgroundImage,
+    pub metadata: Metadata,
+    pub selectAction: ISelectAction,
     pub version: String,
-    pub body: Vec<Element>,
+    pub verticalContentAlignment: VerticalContentAlignment,
+    pub backgroundImage: BackgroundImage,
     pub refresh: Refresh,
     pub speak: String,
-    pub selectAction: ISelectAction,
-    pub _schema: uri,
-    pub verticalContentAlignment: VerticalContentAlignment,
-    pub metadata: Metadata,
     pub actions: Vec<Action>,
+    pub lang: String,
+    pub body: Vec<Element>,
+    pub minHeight: String,
+    pub _schema: String,
     pub fallbackText: String,
+    pub authentication: Authentication,
 }

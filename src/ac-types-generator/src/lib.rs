@@ -1,3 +1,4 @@
+use convert_case::{Case, Casing};
 use quote::{format_ident, quote};
 use serde_json::Value;
 use std::fs::File;
@@ -19,7 +20,8 @@ const FALLBACK_OPTION: &str = "FallbackOption";
 pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
     let tokens = generate_inner(in_path)?;
     let output = quote! {
-         #(#tokens)*
+        #![allow(dead_code)]
+        #(#tokens)*
     };
 
     if PRINT_RAW {
@@ -90,7 +92,7 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> 
             Some(LoadedJson {
                 value: serde_json::from_reader(reader).ok()?,
                 file_name,
-                type_name: sanitize_ident(&file_name_without_extension),
+                type_name: sanitize_type_ident(&file_name_without_extension),
             })
         } else {
             None
@@ -111,8 +113,8 @@ fn process_class(
 
     for p in input.properties.iter() {
         let (is_optional, name_str, json_name_str) = match p.0.strip_suffix('?') {
-            Some(prefix) => (true, sanitize_ident(prefix), prefix),
-            None => (false, sanitize_ident(p.0), p.0.as_str()),
+            Some(prefix) => (true, sanitize_field_ident(prefix), prefix),
+            None => (false, sanitize_field_ident(p.0), p.0.as_str()),
         };
 
         let name = format_ident!("{}", name_str);
@@ -126,14 +128,24 @@ fn process_class(
 
         let field_type: Type = parse_str(&field_type_str)
             .unwrap_or_else(|_| panic!("Failed to parse type: {}", field_type_str));
-        fields.push(quote! {
-            pub #name: #field_type,
-        });
+
+        if is_optional {
+            fields.push(quote! {
+                #[serde(rename = #json_name_str)]
+                pub #name: Option<#field_type>,
+            });
+        } else {
+            fields.push(quote! {
+                #[serde(rename = #json_name_str)]
+                pub #name: #field_type,
+            });
+        }
     }
 
     let result = quote! {
         #(#additional_types)*
 
+        #[derive(serde::Deserialize)]
         pub struct #struct_name {
             #(#fields)*
         }
@@ -156,14 +168,16 @@ fn process_enum(type_name: String, input: Enum) -> proc_macro2::TokenStream {
             } => value,
         };
 
-        let name = format_ident!("{}", name_str);
+        let name = format_ident!("{}", name_str.to_case(Case::Pascal));
 
         quote! {
+            #[serde(rename = #name_str)]
             #name,
         }
     });
 
     let result = quote! {
+        #[derive(serde::Deserialize)]
         pub enum #enum_name {
             #(#variants)*
         }
@@ -174,13 +188,17 @@ fn process_enum(type_name: String, input: Enum) -> proc_macro2::TokenStream {
     result
 }
 
-fn sanitize_ident(ident: &str) -> String {
-    let result = ident.replace(['.', '$'], "_");
+fn sanitize_field_ident(ident: &str) -> String {
+    let result = ident.replace(['.', '$'], "_").to_case(Case::Snake);
 
     match result.as_str() {
         "type" => "type_".to_string(),
         _ => result,
     }
+}
+
+fn sanitize_type_ident(ident: &str) -> String {
+    ident.replace(['.', '$'], "_").to_case(Case::Pascal)
 }
 
 fn sanitize_type(
@@ -198,9 +216,9 @@ fn sanitize_type(
 
     let type_name_str = type_names
         .iter()
-        .map(|&t| sanitize_ident(t))
+        .map(|&t| sanitize_type_ident(t))
         .collect::<Vec<_>>()
-        .join("_or_");
+        .join("Or");
 
     let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
 
@@ -211,22 +229,25 @@ fn sanitize_type(
     generated_additional_types.push(type_name_str.clone());
 
     let variants = type_names.iter().map(|&t| {
-        let name = format_ident!("{}", sanitize_ident(t));
+        let name = format_ident!("{}", sanitize_type_ident(t));
         let inner_type: Type = parse_str(&sanitize_type_inner(t))
             .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
 
         if use_box && t != FALLBACK_OPTION {
             return quote! {
+                #[serde(rename = #t)]
                 #name(Box<#inner_type>),
             };
         }
 
         quote! {
+            #[serde(rename = #t)]
             #name(#inner_type),
         }
     });
     let type_name = format_ident!("{}", type_name_str);
     let additional_type = quote! {
+        #[derive(serde::Deserialize)]
         pub enum #type_name {
             #(#variants)*
         }
@@ -252,7 +273,7 @@ fn sanitize_type_inner(type_name: &str) -> String {
         "boolean" => "bool".to_string(),
         "Dictionary<string>" => "std::collections::HashMap<String,String>".to_string(),
         "object" => "serde_json::Value".to_string(),
-        _ => sanitize_ident(type_name),
+        _ => sanitize_type_ident(type_name),
     }
 }
 

@@ -1,435 +1,798 @@
+#![allow(dead_code)]
+#[derive(serde::Deserialize)]
 pub enum ImageSize {
-    auto,
-    stretch,
-    small,
-    medium,
-    large,
-}
-pub enum FontSize {
-    default,
-    small,
-    medium,
-    large,
-    extraLarge,
-}
-pub enum VerticalAlignment {
-    top,
-    center,
-    bottom,
-}
-pub enum ActionStyle {
-    default,
-    positive,
-    destructive,
-}
-pub enum VerticalContentAlignment {
-    top,
-    center,
-    bottom,
-}
-pub enum FontType {
-    default,
-    monospace,
-}
-pub enum HorizontalAlignment {
-    left,
-    center,
-    right,
-}
-pub enum FallbackOption {
-    drop,
-}
-pub enum AssociatedInputs {
+    #[serde(rename = "auto")]
     Auto,
+    #[serde(rename = "stretch")]
+    Stretch,
+    #[serde(rename = "small")]
+    Small,
+    #[serde(rename = "medium")]
+    Medium,
+    #[serde(rename = "large")]
+    Large,
+}
+#[derive(serde::Deserialize)]
+pub enum FontSize {
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "small")]
+    Small,
+    #[serde(rename = "medium")]
+    Medium,
+    #[serde(rename = "large")]
+    Large,
+    #[serde(rename = "extraLarge")]
+    ExtraLarge,
+}
+#[derive(serde::Deserialize)]
+pub enum VerticalAlignment {
+    #[serde(rename = "top")]
+    Top,
+    #[serde(rename = "center")]
+    Center,
+    #[serde(rename = "bottom")]
+    Bottom,
+}
+#[derive(serde::Deserialize)]
+pub enum ActionStyle {
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "positive")]
+    Positive,
+    #[serde(rename = "destructive")]
+    Destructive,
+}
+#[derive(serde::Deserialize)]
+pub enum VerticalContentAlignment {
+    #[serde(rename = "top")]
+    Top,
+    #[serde(rename = "center")]
+    Center,
+    #[serde(rename = "bottom")]
+    Bottom,
+}
+#[derive(serde::Deserialize)]
+pub enum FontType {
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "monospace")]
+    Monospace,
+}
+#[derive(serde::Deserialize)]
+pub enum HorizontalAlignment {
+    #[serde(rename = "left")]
+    Left,
+    #[serde(rename = "center")]
+    Center,
+    #[serde(rename = "right")]
+    Right,
+}
+#[derive(serde::Deserialize)]
+pub enum FallbackOption {
+    #[serde(rename = "drop")]
+    Drop,
+}
+#[derive(serde::Deserialize)]
+pub enum AssociatedInputs {
+    #[serde(rename = "Auto")]
+    Auto,
+    #[serde(rename = "None")]
     None,
 }
+#[derive(serde::Deserialize)]
 pub enum TextInputStyle {
-    text,
-    tel,
-    url,
-    email,
-    password,
+    #[serde(rename = "text")]
+    Text,
+    #[serde(rename = "tel")]
+    Tel,
+    #[serde(rename = "url")]
+    Url,
+    #[serde(rename = "email")]
+    Email,
+    #[serde(rename = "password")]
+    Password,
 }
+#[derive(serde::Deserialize)]
 pub enum ChoiceInputStyle {
-    compact,
-    expanded,
-    filtered,
+    #[serde(rename = "compact")]
+    Compact,
+    #[serde(rename = "expanded")]
+    Expanded,
+    #[serde(rename = "filtered")]
+    Filtered,
 }
+#[derive(serde::Deserialize)]
 pub enum ImageFillMode {
-    cover,
-    repeatHorizontally,
-    repeatVertically,
-    repeat,
+    #[serde(rename = "cover")]
+    Cover,
+    #[serde(rename = "repeatHorizontally")]
+    RepeatHorizontally,
+    #[serde(rename = "repeatVertically")]
+    RepeatVertically,
+    #[serde(rename = "repeat")]
+    Repeat,
 }
+#[derive(serde::Deserialize)]
 pub enum TextBlockStyle {
-    default,
-    heading,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "heading")]
+    Heading,
 }
+#[derive(serde::Deserialize)]
 pub enum Spacing {
-    default,
-    none,
-    small,
-    medium,
-    large,
-    extraLarge,
-    padding,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "none")]
+    None,
+    #[serde(rename = "small")]
+    Small,
+    #[serde(rename = "medium")]
+    Medium,
+    #[serde(rename = "large")]
+    Large,
+    #[serde(rename = "extraLarge")]
+    ExtraLarge,
+    #[serde(rename = "padding")]
+    Padding,
 }
+#[derive(serde::Deserialize)]
 pub enum ContainerStyle {
-    default,
-    emphasis,
-    good,
-    attention,
-    warning,
-    accent,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "emphasis")]
+    Emphasis,
+    #[serde(rename = "good")]
+    Good,
+    #[serde(rename = "attention")]
+    Attention,
+    #[serde(rename = "warning")]
+    Warning,
+    #[serde(rename = "accent")]
+    Accent,
 }
+#[derive(serde::Deserialize)]
 pub enum ImageSetStyle {
-    default,
-    stacked,
-    grid,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "stacked")]
+    Stacked,
+    #[serde(rename = "grid")]
+    Grid,
 }
+#[derive(serde::Deserialize)]
 pub enum InputStyle {
-    revealOnHover,
-    default,
+    #[serde(rename = "revealOnHover")]
+    RevealOnHover,
+    #[serde(rename = "default")]
+    Default,
 }
+#[derive(serde::Deserialize)]
 pub enum ImageStyle {
-    default,
-    person,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "person")]
+    Person,
 }
+#[derive(serde::Deserialize)]
 pub enum InputLabelPosition {
-    inline,
-    above,
+    #[serde(rename = "inline")]
+    Inline,
+    #[serde(rename = "above")]
+    Above,
 }
+#[derive(serde::Deserialize)]
 pub enum FontWeight {
-    default,
-    lighter,
-    bolder,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "lighter")]
+    Lighter,
+    #[serde(rename = "bolder")]
+    Bolder,
 }
+#[derive(serde::Deserialize)]
 pub enum ActionMode {
-    primary,
-    secondary,
+    #[serde(rename = "primary")]
+    Primary,
+    #[serde(rename = "secondary")]
+    Secondary,
 }
+#[derive(serde::Deserialize)]
 pub enum Colors {
-    default,
-    dark,
-    light,
-    accent,
-    good,
-    warning,
-    attention,
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "dark")]
+    Dark,
+    #[serde(rename = "light")]
+    Light,
+    #[serde(rename = "accent")]
+    Accent,
+    #[serde(rename = "good")]
+    Good,
+    #[serde(rename = "warning")]
+    Warning,
+    #[serde(rename = "attention")]
+    Attention,
 }
+#[derive(serde::Deserialize)]
 pub enum BlockElementHeight {
-    auto,
-    stretch,
+    #[serde(rename = "auto")]
+    Auto,
+    #[serde(rename = "stretch")]
+    Stretch,
 }
+#[derive(serde::Deserialize)]
 pub struct Item {
+    #[serde(rename = "requires")]
     pub requires: std::collections::HashMap<String, String>,
 }
+#[derive(serde::Deserialize)]
 pub struct TokenExchangeResource {
-    pub id: String,
+    #[serde(rename = "providerId")]
+    pub provider_id: String,
+    #[serde(rename = "uri")]
     pub uri: String,
-    pub providerId: String,
-}
-pub struct Metadata {
-    pub webUrl: String,
-}
-pub struct Authentication {
-    pub buttons: Vec<AuthCardButton>,
-    pub text: String,
-    pub connectionName: String,
-    pub tokenExchangeResource: TokenExchangeResource,
-}
-pub struct BackgroundImage {
-    pub fillMode: ImageFillMode,
-    pub horizontalAlignment: HorizontalAlignment,
-    pub url: String,
-    pub verticalAlignment: VerticalAlignment,
-}
-pub struct Refresh {
-    pub expires: String,
-    pub userIds: Vec<String>,
-    pub action: Action_Execute,
-}
-pub struct ToggleableItem {
-    pub isVisible: bool,
+    #[serde(rename = "id")]
     pub id: String,
 }
+#[derive(serde::Deserialize)]
+pub struct Metadata {
+    #[serde(rename = "webUrl")]
+    pub web_url: String,
+}
+#[derive(serde::Deserialize)]
+pub struct Authentication {
+    #[serde(rename = "buttons")]
+    pub buttons: Vec<AuthCardButton>,
+    #[serde(rename = "text")]
+    pub text: String,
+    #[serde(rename = "connectionName")]
+    pub connection_name: String,
+    #[serde(rename = "tokenExchangeResource")]
+    pub token_exchange_resource: TokenExchangeResource,
+}
+#[derive(serde::Deserialize)]
+pub struct BackgroundImage {
+    #[serde(rename = "url")]
+    pub url: String,
+    #[serde(rename = "fillMode")]
+    pub fill_mode: ImageFillMode,
+    #[serde(rename = "horizontalAlignment")]
+    pub horizontal_alignment: HorizontalAlignment,
+    #[serde(rename = "verticalAlignment")]
+    pub vertical_alignment: VerticalAlignment,
+}
+#[derive(serde::Deserialize)]
+pub struct Refresh {
+    #[serde(rename = "userIds")]
+    pub user_ids: Vec<String>,
+    #[serde(rename = "expires")]
+    pub expires: String,
+    #[serde(rename = "action")]
+    pub action: ActionExecute,
+}
+#[derive(serde::Deserialize)]
+pub struct ToggleableItem {
+    #[serde(rename = "id")]
+    pub id: String,
+    #[serde(rename = "isVisible")]
+    pub is_visible: bool,
+}
+#[derive(serde::Deserialize)]
 pub struct AuthCardButton {
-    pub value: String,
-    pub image: String,
+    #[serde(rename = "title")]
+    pub title: String,
+    #[serde(rename = "type")]
     pub type_: String,
-    pub title: String,
+    #[serde(rename = "value")]
+    pub value: String,
+    #[serde(rename = "image")]
+    pub image: String,
 }
+#[derive(serde::Deserialize)]
 pub struct TableRow {
-    pub cells: Vec<TableCell>,
-    pub verticalCellContentAlignment: Option<VerticalAlignment>,
-    pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "style")]
     pub style: Option<ContainerStyle>,
+    #[serde(rename = "verticalCellContentAlignment")]
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
+    #[serde(rename = "cells")]
+    pub cells: Vec<TableCell>,
+    #[serde(rename = "horizontalCellContentAlignment")]
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
 }
+#[derive(serde::Deserialize)]
 pub struct ImageSet {
+    #[serde(rename = "images")]
     pub images: Vec<Image>,
+    #[serde(rename = "imageSize")]
+    pub image_size: ImageSize,
+    #[serde(rename = "style")]
     pub style: ImageSetStyle,
-    pub imageSize: ImageSize,
 }
+#[derive(serde::Deserialize)]
 pub struct Fact {
+    #[serde(rename = "title")]
     pub title: String,
+    #[serde(rename = "value")]
     pub value: String,
 }
-pub enum string_or_number {
-    string(String),
-    number(f64),
+#[derive(serde::Deserialize)]
+pub enum StringOrNumber {
+    #[serde(rename = "string")]
+    String(String),
+    #[serde(rename = "number")]
+    Number(f64),
 }
+#[derive(serde::Deserialize)]
 pub struct TableColumnDefinition {
-    pub width: string_or_number,
-    pub verticalCellContentAlignment: Option<VerticalAlignment>,
-    pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "verticalCellContentAlignment")]
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
+    #[serde(rename = "horizontalCellContentAlignment")]
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
+    #[serde(rename = "width")]
+    pub width: StringOrNumber,
 }
+#[derive(serde::Deserialize)]
 pub struct FactSet {
+    #[serde(rename = "facts")]
     pub facts: Vec<Fact>,
 }
-pub enum Column_or_FallbackOption {
+#[derive(serde::Deserialize)]
+pub enum ColumnOrFallbackOption {
+    #[serde(rename = "Column")]
     Column(Box<Column>),
+    #[serde(rename = "FallbackOption")]
     FallbackOption(FallbackOption),
 }
+#[derive(serde::Deserialize)]
 pub struct Column {
-    pub rtl: Option<bool>,
-    pub separator: bool,
-    pub verticalContentAlignment: Option<VerticalContentAlignment>,
-    pub width: string_or_number,
-    pub items: Vec<Element>,
-    pub spacing: Spacing,
-    pub style: Option<ContainerStyle>,
+    #[serde(rename = "bleed")]
     pub bleed: bool,
-    pub selectAction: ISelectAction,
-    pub backgroundImage: BackgroundImage,
-    pub fallback: Column_or_FallbackOption,
-    pub minHeight: String,
+    #[serde(rename = "fallback")]
+    pub fallback: ColumnOrFallbackOption,
+    #[serde(rename = "verticalContentAlignment")]
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    #[serde(rename = "rtl")]
+    pub rtl: Option<bool>,
+    #[serde(rename = "backgroundImage")]
+    pub background_image: BackgroundImage,
+    #[serde(rename = "items")]
+    pub items: Vec<Element>,
+    #[serde(rename = "minHeight")]
+    pub min_height: String,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "separator")]
+    pub separator: bool,
+    #[serde(rename = "style")]
+    pub style: Option<ContainerStyle>,
+    #[serde(rename = "spacing")]
+    pub spacing: Spacing,
+    #[serde(rename = "width")]
+    pub width: StringOrNumber,
 }
+#[derive(serde::Deserialize)]
 pub struct CaptionSource {
-    pub mimeType: String,
-    pub url: String,
+    #[serde(rename = "label")]
     pub label: String,
+    #[serde(rename = "url")]
+    pub url: String,
+    #[serde(rename = "mimeType")]
+    pub mime_type: String,
 }
+#[derive(serde::Deserialize)]
 pub struct TextRun {
-    pub italic: bool,
-    pub strikethrough: bool,
-    pub size: Option<FontSize>,
-    pub isSubtle: Option<bool>,
-    pub fontType: Option<FontType>,
+    #[serde(rename = "color")]
     pub color: Option<Colors>,
+    #[serde(rename = "fontType")]
+    pub font_type: Option<FontType>,
+    #[serde(rename = "size")]
+    pub size: Option<FontSize>,
+    #[serde(rename = "text")]
     pub text: String,
+    #[serde(rename = "underline")]
     pub underline: bool,
-    pub selectAction: ISelectAction,
+    #[serde(rename = "italic")]
+    pub italic: bool,
+    #[serde(rename = "isSubtle")]
+    pub is_subtle: Option<bool>,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "weight")]
     pub weight: Option<FontWeight>,
+    #[serde(rename = "strikethrough")]
+    pub strikethrough: bool,
+    #[serde(rename = "highlight")]
     pub highlight: bool,
 }
+#[derive(serde::Deserialize)]
 pub struct Inline {}
+#[derive(serde::Deserialize)]
 pub struct Container {
-    pub backgroundImage: BackgroundImage,
-    pub items: Vec<Element>,
+    #[serde(rename = "minHeight")]
+    pub min_height: String,
+    #[serde(rename = "style")]
     pub style: Option<ContainerStyle>,
-    pub verticalContentAlignment: Option<VerticalContentAlignment>,
+    #[serde(rename = "items")]
+    pub items: Vec<Element>,
+    #[serde(rename = "rtl")]
+    pub rtl: Option<Option<bool>>,
+    #[serde(rename = "verticalContentAlignment")]
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    #[serde(rename = "bleed")]
     pub bleed: bool,
-    pub selectAction: ISelectAction,
-    pub rtl: Option<bool>,
-    pub minHeight: String,
+    #[serde(rename = "backgroundImage")]
+    pub background_image: BackgroundImage,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
 }
+#[derive(serde::Deserialize)]
 pub struct Media {
+    #[serde(rename = "poster")]
     pub poster: String,
+    #[serde(rename = "sources")]
     pub sources: Vec<MediaSource>,
-    pub captionSources: Vec<CaptionSource>,
-    pub altText: String,
+    #[serde(rename = "captionSources")]
+    pub caption_sources: Vec<CaptionSource>,
+    #[serde(rename = "altText")]
+    pub alt_text: String,
 }
+#[derive(serde::Deserialize)]
 pub struct TextBlock {
-    pub maxLines: f64,
-    pub size: Option<FontSize>,
-    pub text: String,
-    pub color: Option<Colors>,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
-    pub isSubtle: Option<bool>,
-    pub fontType: Option<FontType>,
-    pub wrap: bool,
+    #[serde(rename = "style")]
     pub style: Option<TextBlockStyle>,
+    #[serde(rename = "horizontalAlignment")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
+    #[serde(rename = "fontType")]
+    pub font_type: Option<FontType>,
+    #[serde(rename = "text")]
+    pub text: String,
+    #[serde(rename = "wrap")]
+    pub wrap: bool,
+    #[serde(rename = "isSubtle")]
+    pub is_subtle: Option<bool>,
+    #[serde(rename = "color")]
+    pub color: Option<Colors>,
+    #[serde(rename = "maxLines")]
+    pub max_lines: f64,
+    #[serde(rename = "size")]
+    pub size: Option<FontSize>,
+    #[serde(rename = "weight")]
     pub weight: Option<FontWeight>,
 }
+#[derive(serde::Deserialize)]
 pub struct Table {
-    pub verticalCellContentAlignment: Option<VerticalAlignment>,
-    pub gridStyle: Option<ContainerStyle>,
-    pub firstRowAsHeader: bool,
-    pub showGridLines: bool,
-    pub horizontalCellContentAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "verticalCellContentAlignment")]
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
+    #[serde(rename = "columns")]
     pub columns: Vec<TableColumnDefinition>,
+    #[serde(rename = "firstRowAsHeader")]
+    pub first_row_as_header: bool,
+    #[serde(rename = "horizontalCellContentAlignment")]
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
+    #[serde(rename = "showGridLines")]
+    pub show_grid_lines: bool,
+    #[serde(rename = "gridStyle")]
+    pub grid_style: Option<ContainerStyle>,
+    #[serde(rename = "rows")]
     pub rows: Vec<TableRow>,
 }
+#[derive(serde::Deserialize)]
 pub struct ColumnSet {
-    pub columns: Vec<Column>,
-    pub selectAction: ISelectAction,
-    pub bleed: bool,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "horizontalAlignment")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
+    #[serde(rename = "style")]
     pub style: Option<ContainerStyle>,
-    pub minHeight: String,
+    #[serde(rename = "minHeight")]
+    pub min_height: String,
+    #[serde(rename = "columns")]
+    pub columns: Vec<Column>,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "bleed")]
+    pub bleed: bool,
 }
+#[derive(serde::Deserialize)]
 pub struct ActionSet {
+    #[serde(rename = "actions")]
     pub actions: Vec<Action>,
 }
-pub enum string_or_BlockElementHeight {
-    string(String),
+#[derive(serde::Deserialize)]
+pub enum StringOrBlockElementHeight {
+    #[serde(rename = "string")]
+    String(String),
+    #[serde(rename = "BlockElementHeight")]
     BlockElementHeight(BlockElementHeight),
 }
+#[derive(serde::Deserialize)]
 pub struct Image {
+    #[serde(rename = "size")]
     pub size: ImageSize,
-    pub url: String,
-    pub altText: String,
-    pub selectAction: ISelectAction,
+    #[serde(rename = "height")]
+    pub height: StringOrBlockElementHeight,
+    #[serde(rename = "width")]
     pub width: String,
-    pub backgroundColor: String,
-    pub height: string_or_BlockElementHeight,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "horizontalAlignment")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
+    #[serde(rename = "url")]
+    pub url: String,
+    #[serde(rename = "style")]
     pub style: ImageStyle,
+    #[serde(rename = "altText")]
+    pub alt_text: String,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "backgroundColor")]
+    pub background_color: String,
 }
-pub enum Element_or_FallbackOption {
+#[derive(serde::Deserialize)]
+pub enum ElementOrFallbackOption {
+    #[serde(rename = "Element")]
     Element(Box<Element>),
+    #[serde(rename = "FallbackOption")]
     FallbackOption(FallbackOption),
 }
+#[derive(serde::Deserialize)]
 pub struct Element {
+    #[serde(rename = "height")]
     pub height: BlockElementHeight,
-    pub spacing: Spacing,
-    pub fallback: Element_or_FallbackOption,
+    #[serde(rename = "separator")]
     pub separator: bool,
+    #[serde(rename = "fallback")]
+    pub fallback: ElementOrFallbackOption,
+    #[serde(rename = "spacing")]
+    pub spacing: Spacing,
 }
+#[derive(serde::Deserialize)]
 pub struct RichTextBlock {
+    #[serde(rename = "inlines")]
     pub inlines: Vec<Inline>,
-    pub horizontalAlignment: Option<HorizontalAlignment>,
+    #[serde(rename = "horizontalAlignment")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
 }
+#[derive(serde::Deserialize)]
 pub struct TableCell {
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "rtl")]
+    pub rtl: Option<Option<bool>>,
+    #[serde(rename = "bleed")]
     pub bleed: bool,
-    pub rtl: Option<bool>,
-    pub selectAction: ISelectAction,
-    pub style: Option<ContainerStyle>,
-    pub verticalContentAlignment: Option<VerticalContentAlignment>,
+    #[serde(rename = "items")]
     pub items: Vec<Element>,
-    pub minHeight: String,
-    pub backgroundImage: BackgroundImage,
+    #[serde(rename = "backgroundImage")]
+    pub background_image: BackgroundImage,
+    #[serde(rename = "minHeight")]
+    pub min_height: String,
+    #[serde(rename = "style")]
+    pub style: Option<ContainerStyle>,
+    #[serde(rename = "verticalContentAlignment")]
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
 }
+#[derive(serde::Deserialize)]
 pub struct MediaSource {
-    pub mimeType: String,
+    #[serde(rename = "mimeType")]
+    pub mime_type: String,
+    #[serde(rename = "url")]
     pub url: String,
 }
-pub struct Input_Time {
+#[derive(serde::Deserialize)]
+pub struct InputTime {
+    #[serde(rename = "max")]
     pub max: String,
+    #[serde(rename = "min")]
     pub min: String,
-    pub value: String,
+    #[serde(rename = "placeholder")]
     pub placeholder: String,
+    #[serde(rename = "value")]
+    pub value: String,
 }
-pub struct Input_Choice {
+#[derive(serde::Deserialize)]
+pub struct InputChoice {
+    #[serde(rename = "title")]
     pub title: String,
+    #[serde(rename = "value")]
     pub value: String,
 }
-pub struct Input_ChoiceSet {
-    pub value: String,
-    pub choices_data: Data_Query,
-    pub placeholder: String,
+#[derive(serde::Deserialize)]
+pub struct InputChoiceSet {
+    #[serde(rename = "wrap")]
     pub wrap: bool,
-    pub choices: Vec<Input_Choice>,
+    #[serde(rename = "choices")]
+    pub choices: Vec<InputChoice>,
+    #[serde(rename = "isMultiSelect")]
+    pub is_multi_select: bool,
+    #[serde(rename = "placeholder")]
+    pub placeholder: String,
+    #[serde(rename = "choices.data")]
+    pub choices_data: DataQuery,
+    #[serde(rename = "value")]
+    pub value: String,
+    #[serde(rename = "style")]
     pub style: ChoiceInputStyle,
-    pub isMultiSelect: bool,
 }
+#[derive(serde::Deserialize)]
 pub struct Input {
-    pub id: String,
-    pub inputStyle: InputStyle,
+    #[serde(rename = "labelPosition")]
+    pub label_position: InputLabelPosition,
+    #[serde(rename = "errorMessage")]
+    pub error_message: String,
+    #[serde(rename = "label")]
     pub label: String,
-    pub errorMessage: String,
-    pub isRequired: bool,
-    pub labelPosition: InputLabelPosition,
-    pub labelWidth: string_or_number,
+    #[serde(rename = "inputStyle")]
+    pub input_style: InputStyle,
+    #[serde(rename = "isRequired")]
+    pub is_required: bool,
+    #[serde(rename = "labelWidth")]
+    pub label_width: StringOrNumber,
+    #[serde(rename = "id")]
+    pub id: String,
 }
-pub struct Input_Toggle {
+#[derive(serde::Deserialize)]
+pub struct InputToggle {
+    #[serde(rename = "valueOn")]
+    pub value_on: String,
+    #[serde(rename = "value")]
+    pub value: String,
+    #[serde(rename = "title")]
     pub title: String,
-    pub valueOff: String,
-    pub valueOn: String,
+    #[serde(rename = "valueOff")]
+    pub value_off: String,
+    #[serde(rename = "wrap")]
     pub wrap: bool,
-    pub value: String,
 }
-pub struct Input_Text {
-    pub inlineAction: ISelectAction,
-    pub isMultiline: bool,
+#[derive(serde::Deserialize)]
+pub struct InputText {
+    #[serde(rename = "inlineAction")]
+    pub inline_action: ISelectAction,
+    #[serde(rename = "regex")]
     pub regex: String,
-    pub maxLength: f64,
+    #[serde(rename = "maxLength")]
+    pub max_length: f64,
+    #[serde(rename = "isMultiline")]
+    pub is_multiline: bool,
+    #[serde(rename = "placeholder")]
     pub placeholder: String,
+    #[serde(rename = "style")]
     pub style: TextInputStyle,
+    #[serde(rename = "value")]
     pub value: String,
 }
-pub struct Input_Date {
+#[derive(serde::Deserialize)]
+pub struct InputDate {
+    #[serde(rename = "placeholder")]
     pub placeholder: String,
+    #[serde(rename = "min")]
     pub min: String,
-    pub value: String,
+    #[serde(rename = "max")]
     pub max: String,
+    #[serde(rename = "value")]
+    pub value: String,
 }
-pub struct Data_Query {
-    pub dataset: String,
+#[derive(serde::Deserialize)]
+pub struct DataQuery {
+    #[serde(rename = "skip")]
     pub skip: f64,
+    #[serde(rename = "count")]
     pub count: f64,
+    #[serde(rename = "dataset")]
+    pub dataset: String,
 }
-pub struct Input_Number {
-    pub max: f64,
+#[derive(serde::Deserialize)]
+pub struct InputNumber {
+    #[serde(rename = "value")]
     pub value: f64,
+    #[serde(rename = "max")]
+    pub max: f64,
+    #[serde(rename = "min")]
     pub min: f64,
+    #[serde(rename = "placeholder")]
     pub placeholder: String,
 }
+#[derive(serde::Deserialize)]
 pub struct TargetElement {
-    pub elementId: String,
-    pub isVisible: Option<bool>,
+    #[serde(rename = "elementId")]
+    pub element_id: String,
+    #[serde(rename = "isVisible")]
+    pub is_visible: Option<bool>,
 }
-pub enum Action_or_FallbackOption {
+#[derive(serde::Deserialize)]
+pub enum ActionOrFallbackOption {
+    #[serde(rename = "Action")]
     Action(Box<Action>),
+    #[serde(rename = "FallbackOption")]
     FallbackOption(FallbackOption),
 }
+#[derive(serde::Deserialize)]
 pub struct Action {
-    pub isEnabled: bool,
-    pub iconUrl: String,
-    pub fallback: Action_or_FallbackOption,
-    pub style: ActionStyle,
-    pub tooltip: String,
-    pub title: String,
-    pub id: String,
+    #[serde(rename = "mode")]
     pub mode: ActionMode,
+    #[serde(rename = "title")]
+    pub title: String,
+    #[serde(rename = "fallback")]
+    pub fallback: ActionOrFallbackOption,
+    #[serde(rename = "iconUrl")]
+    pub icon_url: String,
+    #[serde(rename = "id")]
+    pub id: String,
+    #[serde(rename = "tooltip")]
+    pub tooltip: String,
+    #[serde(rename = "isEnabled")]
+    pub is_enabled: bool,
+    #[serde(rename = "style")]
+    pub style: ActionStyle,
 }
-pub enum string_or_object {
-    string(String),
-    object(serde_json::Value),
+#[derive(serde::Deserialize)]
+pub enum StringOrObject {
+    #[serde(rename = "string")]
+    String(String),
+    #[serde(rename = "object")]
+    Object(serde_json::Value),
 }
-pub struct Action_Submit {
-    pub data: string_or_object,
-    pub associatedInputs: AssociatedInputs,
+#[derive(serde::Deserialize)]
+pub struct ActionSubmit {
+    #[serde(rename = "associatedInputs")]
+    pub associated_inputs: AssociatedInputs,
+    #[serde(rename = "data")]
+    pub data: StringOrObject,
 }
+#[derive(serde::Deserialize)]
 pub struct ISelectAction {}
-pub struct Action_OpenUrl {
+#[derive(serde::Deserialize)]
+pub struct ActionOpenUrl {
+    #[serde(rename = "url")]
     pub url: String,
 }
-pub struct Action_Execute {
+#[derive(serde::Deserialize)]
+pub struct ActionExecute {
+    #[serde(rename = "verb")]
     pub verb: String,
-    pub data: string_or_object,
-    pub associatedInputs: AssociatedInputs,
+    #[serde(rename = "associatedInputs")]
+    pub associated_inputs: AssociatedInputs,
+    #[serde(rename = "data")]
+    pub data: StringOrObject,
 }
-pub struct Action_ShowCard {
+#[derive(serde::Deserialize)]
+pub struct ActionShowCard {
+    #[serde(rename = "card")]
     pub card: AdaptiveCard,
 }
-pub struct Action_ToggleVisibility {
-    pub targetElements: Vec<TargetElement>,
+#[derive(serde::Deserialize)]
+pub struct ActionToggleVisibility {
+    #[serde(rename = "targetElements")]
+    pub target_elements: Vec<TargetElement>,
 }
+#[derive(serde::Deserialize)]
 pub struct AdaptiveCard {
-    pub rtl: Option<bool>,
-    pub metadata: Metadata,
-    pub selectAction: ISelectAction,
-    pub version: String,
-    pub verticalContentAlignment: VerticalContentAlignment,
-    pub backgroundImage: BackgroundImage,
-    pub refresh: Refresh,
-    pub speak: String,
-    pub actions: Vec<Action>,
-    pub lang: String,
-    pub body: Vec<Element>,
-    pub minHeight: String,
-    pub _schema: String,
-    pub fallbackText: String,
+    #[serde(rename = "authentication")]
     pub authentication: Authentication,
+    #[serde(rename = "verticalContentAlignment")]
+    pub vertical_content_alignment: VerticalContentAlignment,
+    #[serde(rename = "fallbackText")]
+    pub fallback_text: String,
+    #[serde(rename = "lang")]
+    pub lang: String,
+    #[serde(rename = "metadata")]
+    pub metadata: Metadata,
+    #[serde(rename = "speak")]
+    pub speak: String,
+    #[serde(rename = "refresh")]
+    pub refresh: Refresh,
+    #[serde(rename = "minHeight")]
+    pub min_height: String,
+    #[serde(rename = "backgroundImage")]
+    pub background_image: BackgroundImage,
+    #[serde(rename = "body")]
+    pub body: Vec<Element>,
+    #[serde(rename = "$schema")]
+    pub schema: String,
+    #[serde(rename = "rtl")]
+    pub rtl: Option<bool>,
+    #[serde(rename = "version")]
+    pub version: String,
+    #[serde(rename = "selectAction")]
+    pub select_action: ISelectAction,
+    #[serde(rename = "actions")]
+    pub actions: Vec<Action>,
 }

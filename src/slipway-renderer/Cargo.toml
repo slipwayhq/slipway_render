@@ -5,8 +5,11 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-serde = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 
 [build-dependencies]
 ac-types-generator = { path = "../ac-types-generator" }
+
+[dev-dependencies]
+walkdir = "2.5.0"

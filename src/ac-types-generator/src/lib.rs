@@ -1,14 +1,16 @@
 use convert_case::{Case, Casing};
+use core::panic;
 use quote::{format_ident, quote};
-use serde_json::Value;
+use std::collections::{HashMap, HashSet};
 use std::fs::File;
+use std::hash::Hasher;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
 use std::{env, fs};
 use syn::{parse_str, Type};
 use walkdir::WalkDir;
 
-#[allow(dead_code)]
+#[allow(dead_code, clippy::to_string_trait_impl, clippy::wrong_self_convention)]
 mod typed_schema_types;
 use typed_schema_types::{Class, Enum, EnumValue};
 
@@ -43,21 +45,34 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     let json_files = load_json_files(ac_schema_folder_path);
 
     let mut generated_additional_types = Vec::new();
+    let mut classes_by_id = HashMap::new();
+    let mut seen_ids = HashSet::new();
 
     let mut tokens = Vec::new();
     for json_file in json_files {
         println!("{}", json_file.file_name);
+
+        if seen_ids.contains(&json_file.id) {
+            panic!("Duplicate id: {}", json_file.id)
+        }
+        seen_ids.insert(json_file.id.clone());
+
         let item_type = json_file.value["classType"].as_str().unwrap_or("Class");
 
         match item_type {
             "Class" => {
                 let class: Class = serde_json::from_value(json_file.value.clone())
                     .inspect_err(|_| println!("{:?}", json_file.value))?;
-                tokens.push(process_class(
-                    json_file.type_name,
-                    class,
-                    &mut generated_additional_types,
-                ));
+
+                classes_by_id.insert(
+                    json_file.id.clone(),
+                    Loaded::<Class> {
+                        value: class,
+                        file_name: json_file.file_name.clone(),
+                        type_name: json_file.type_name.clone(),
+                        id: json_file.id.clone(),
+                    },
+                );
             }
             "Enum" => {
                 let enum_: Enum = serde_json::from_value(json_file.value.clone())
@@ -72,15 +87,131 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
         }
     }
 
+    let class_parents = get_class_parents_map(&classes_by_id);
+    let class_children = get_class_children_map(&class_parents, &classes_by_id);
+    let class_ancestors = flatten_map(&class_parents);
+    let class_descendants = flatten_map(&class_children);
+
+    for (_id, loaded_class) in classes_by_id.iter() {
+        tokens.push(process_class(
+            loaded_class,
+            class_ancestors.get(&loaded_class.id),
+            class_descendants.get(&loaded_class.id),
+            &mut generated_additional_types,
+        ));
+
+        if tokens.len() == MAX_ENTITIES {
+            break;
+        }
+    }
+
     Ok(tokens)
 }
 
-struct LoadedJson {
-    value: Value,
+fn get_class_children_map<'c>(
+    class_inherits_from: &'c HashMap<String, HashSet<&'c Loaded<Class>>>,
+    classes_by_id: &'c HashMap<String, Loaded<Class>>,
+) -> HashMap<String, HashSet<&'c Loaded<Class>>> {
+    let mut class_inheritors = HashMap::new();
+    for (id, dependencies) in class_inherits_from.iter() {
+        let parent_class = get_or_panic(classes_by_id, id);
+        for dependency in dependencies {
+            class_inheritors
+                .entry(dependency.id.clone())
+                .or_insert_with(HashSet::new)
+                .insert(parent_class);
+        }
+    }
+    class_inheritors
+}
+
+fn get_class_parents_map(
+    classes_by_id: &HashMap<String, Loaded<Class>>,
+) -> HashMap<String, HashSet<&Loaded<Class>>> {
+    let mut class_inherits_from = HashMap::new();
+    for (_id, loaded_class) in classes_by_id.iter() {
+        if let Some(extends_str) = loaded_class.value.extends.as_ref() {
+            let extends_list = extends_str
+                .split(',')
+                .map(|s| s.trim())
+                .collect::<HashSet<_>>();
+            for extends in extends_list {
+                let parent_class = get_or_panic(classes_by_id, extends);
+                class_inherits_from
+                    .entry(loaded_class.id.clone())
+                    .or_insert_with(HashSet::new)
+                    .insert(parent_class);
+            }
+        }
+    }
+    class_inherits_from
+}
+
+// TODO: Test that more distant ancestors / descendants are further down the resulting vector.
+fn flatten_map<'c>(
+    map: &HashMap<String, HashSet<&'c Loaded<Class>>>,
+) -> HashMap<String, Vec<&'c Loaded<Class>>> {
+    let mut result = HashMap::new();
+    for id in map.keys() {
+        let flattened = flatten_map_for(id, map);
+        result.insert(id.clone(), flattened);
+    }
+    result
+}
+
+fn flatten_map_for<'c>(
+    class_id: &str,
+    map: &HashMap<String, HashSet<&'c Loaded<Class>>>,
+) -> Vec<&'c Loaded<Class>> {
+    let mut result = Vec::new();
+    flatten_map_for_inner(class_id, map, &mut result);
+    result
+}
+
+fn flatten_map_for_inner<'c>(
+    class_id: &str,
+    map: &HashMap<String, HashSet<&'c Loaded<Class>>>,
+    result: &mut Vec<&'c Loaded<Class>>,
+) {
+    if let Some(parents) = map.get(class_id) {
+        for parent in parents {
+            result.push(parent);
+            flatten_map_for_inner(parent.id.as_str(), map, result);
+        }
+    }
+}
+
+fn get_or_panic<'a>(
+    classes_by_id: &'a HashMap<String, Loaded<Class>>,
+    id: &str,
+) -> &'a Loaded<Class> {
+    let parent_class = classes_by_id
+        .get(id)
+        .unwrap_or_else(|| panic!("Failed to find class {}", id));
+    parent_class
+}
+
+struct Loaded<T> {
+    value: T,
     file_name: String,
     type_name: String,
+    id: String,
 }
-fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> {
+
+impl<T> PartialEq for Loaded<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+    }
+}
+
+impl<T> Eq for Loaded<T> {}
+
+impl<T> std::hash::Hash for Loaded<T> {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.id.hash(state);
+    }
+}
+fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = Loaded<serde_json::Value>> {
     WalkDir::new(path).into_iter().filter_map(|entry| {
         let entry = entry.ok()?;
         let path = entry.path();
@@ -89,66 +220,165 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = LoadedJson> 
             let reader = BufReader::new(file);
             let file_name = path.file_name()?.to_str()?.to_string();
             let file_name_without_extension = path.file_stem()?.to_str()?.to_string();
-            Some(LoadedJson {
+            Some(Loaded::<serde_json::Value> {
                 value: serde_json::from_reader(reader).ok()?,
                 file_name,
                 type_name: sanitize_type_ident(&file_name_without_extension),
+                id: file_name_without_extension,
             })
         } else {
             None
         }
     })
 }
+fn common_prefix(strings: &[String]) -> String {
+    if strings.len() <= 1 {
+        return String::new();
+    }
+
+    let mut prefix = strings[0].clone();
+    for s in strings.iter().skip(1) {
+        while !s.starts_with(&prefix) {
+            if prefix.is_empty() {
+                return String::new();
+            }
+            prefix.pop();
+        }
+    }
+
+    prefix
+}
 
 fn process_class(
-    type_name: String,
-    input: Class,
+    class: &Loaded<Class>,
+    ancestors: Option<&Vec<&Loaded<Class>>>,
+    descendants: Option<&Vec<&Loaded<Class>>>,
     generated_additional_types: &mut Vec<String>,
 ) -> proc_macro2::TokenStream {
-    let struct_name = format_ident!("{}", type_name);
+    let item_name = format_ident!("{}", class.type_name);
 
     let mut additional_types = Vec::new();
 
-    let mut fields = Vec::new();
+    let is_abstract = class.value.is_abstract.unwrap_or(false);
 
-    for p in input.properties.iter() {
-        let (is_optional, name_str, json_name_str) = match p.0.strip_suffix('?') {
-            Some(prefix) => (true, sanitize_field_ident(prefix), prefix),
-            None => (false, sanitize_field_ident(p.0), p.0.as_str()),
+    let item_tokens = if is_abstract {
+        let Some(descendants) = descendants else {
+            panic!("Abstract class has no descendants: {}", class.id);
         };
 
-        let name = format_ident!("{}", name_str);
+        let variant_names: Vec<String> = descendants.iter().map(|&d| d.type_name.clone()).collect();
+        // Check if there is a common prefix for all variant_names:
+        let common_prefix = common_prefix(&variant_names);
 
-        let (field_type_str, additional_type) =
-            sanitize_type(&p.1.type_, generated_additional_types);
+        println!("Common prefix: {}", common_prefix);
 
-        if let Some(additional_type) = additional_type {
-            additional_types.push(additional_type);
+        let variants = descendants.iter().map(|&d| {
+            let name = format_ident!("{}", d.type_name);
+            let short_name_str = d
+                .type_name
+                .strip_prefix(&common_prefix)
+                .unwrap_or(&d.type_name);
+            let short_name = format_ident!("{}", short_name_str);
+            let id = &d.id;
+
+            quote! {
+                #[serde(rename = #id)]
+                #short_name(Box<#name>),
+            }
+        });
+
+        quote! {
+            #[derive(serde::Deserialize)]
+            #[serde(tag = "type")]
+            pub enum #item_name {
+                #(#variants)*
+            }
+        }
+    } else {
+        if descendants.is_some() {
+            panic!("Non-abstract class has descendants: {}", class.id);
         }
 
-        let field_type: Type = parse_str(&field_type_str)
-            .unwrap_or_else(|_| panic!("Failed to parse type: {}", field_type_str));
+        let mut fields = Vec::new();
 
-        if is_optional {
+        // Order is important here. More distant ancestors are after closer ones.
+        let all_property_sources: Vec<&Loaded<Class>> = match ancestors {
+            Some(ancestors) => std::iter::once(&class).chain(ancestors).copied().collect(),
+            None => std::iter::once(class).collect(),
+        };
+
+        let mut seen_properties = HashSet::new();
+        let all_properties = all_property_sources
+            .iter()
+            .flat_map(|c| &c.value.properties)
+            .filter(|p| seen_properties.insert(p.0.clone()))
+            .collect::<Vec<_>>();
+
+        for p in all_properties.iter() {
+            let (is_optional, name_str, json_name_str) = match p.0.strip_suffix('?') {
+                Some(prefix) => (true, sanitize_field_ident(prefix), prefix),
+                None => (false, sanitize_field_ident(p.0), p.0.as_str()),
+            };
+
+            let is_optional = is_optional || !p.1.required;
+
+            let name = format_ident!("{}", name_str);
+
+            let sanitized_field_type = sanitize_type(&p.1.type_, generated_additional_types);
+
+            if let Some(additional_type) = sanitized_field_type.additional_type {
+                additional_types.push(additional_type);
+            }
+
+            let field_type_str = sanitized_field_type.type_name;
+            let field_type: Type = parse_str(&field_type_str)
+                .unwrap_or_else(|_| panic!("Failed to parse type: {}", field_type_str));
+
+            let additional_attributes =
+                if let Some(type_deserializer_name) = sanitized_field_type.type_deserializer_name {
+                    quote! {
+                        #[serde(deserialize_with = #type_deserializer_name)]
+                    }
+                } else {
+                    quote! {}
+                };
+
+            if is_optional {
+                fields.push(quote! {
+                    #[serde(rename = #json_name_str)]
+                    #additional_attributes
+                    pub #name: Option<#field_type>,
+                });
+            } else {
+                fields.push(quote! {
+                    #[serde(rename = #json_name_str)]
+                    #additional_attributes
+                    pub #name: #field_type,
+                });
+            }
+        }
+
+        // Sometimes the JSON unnecessarily includes a "type" property, so add one to every struct.
+        if !seen_properties.contains("type") {
             fields.push(quote! {
-                #[serde(rename = #json_name_str)]
-                pub #name: Option<#field_type>,
-            });
-        } else {
-            fields.push(quote! {
-                #[serde(rename = #json_name_str)]
-                pub #name: #field_type,
+                #[serde(rename = "type")]
+                pub type_: Option<String>,
             });
         }
-    }
+
+        quote! {
+            #[derive(serde::Deserialize)]
+            #[serde(deny_unknown_fields)]
+            pub struct #item_name {
+                #(#fields)*
+            }
+        }
+    };
 
     let result = quote! {
         #(#additional_types)*
 
-        #[derive(serde::Deserialize)]
-        pub struct #struct_name {
-            #(#fields)*
-        }
+        #item_tokens
     };
 
     println!("{}", result);
@@ -201,29 +431,53 @@ fn sanitize_type_ident(ident: &str) -> String {
     ident.replace(['.', '$'], "_").to_case(Case::Pascal)
 }
 
+struct SanitizeTypeResult {
+    type_name: String,
+    additional_type: Option<proc_macro2::TokenStream>,
+    type_deserializer_name: Option<String>,
+}
+
 fn sanitize_type(
     type_name: &str,
     generated_additional_types: &mut Vec<String>,
-) -> (String, Option<proc_macro2::TokenStream>) {
+) -> SanitizeTypeResult {
     // let ident = ident.replace(['-', '<', '>'], "_");
 
     let type_names = type_name.split('|').collect::<Vec<_>>();
 
     if type_names.len() == 1 {
         let sanitized = sanitize_type_inner(type_names[0]);
-        return (sanitized, None);
+        return SanitizeTypeResult {
+            type_name: sanitized,
+            additional_type: None,
+            type_deserializer_name: None,
+        };
     }
 
-    let type_name_str = type_names
+    let type_name_vec = type_names
         .iter()
         .map(|&t| sanitize_type_ident(t))
-        .collect::<Vec<_>>()
-        .join("Or");
+        .collect::<Vec<_>>();
+
+    let type_name_str = type_name_vec.join("Or");
+
+    let type_deserializer_name_str = format!(
+        "deserialize_{}",
+        type_name_vec
+            .iter()
+            .map(|n| n.to_case(Case::Snake))
+            .collect::<Vec<_>>()
+            .join("_or_")
+    );
 
     let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
 
     if generated_additional_types.contains(&type_name_str) {
-        return (type_name_str, None);
+        return SanitizeTypeResult {
+            type_name: type_name_str,
+            additional_type: None,
+            type_deserializer_name: Some(type_deserializer_name_str),
+        };
     }
 
     generated_additional_types.push(type_name_str.clone());
@@ -245,6 +499,7 @@ fn sanitize_type(
             #name(#inner_type),
         }
     });
+
     let type_name = format_ident!("{}", type_name_str);
     let additional_type = quote! {
         #[derive(serde::Deserialize)]
@@ -253,7 +508,11 @@ fn sanitize_type(
         }
     };
 
-    (type_name_str, Some(additional_type))
+    SanitizeTypeResult {
+        type_name: type_name_str,
+        additional_type: Some(additional_type),
+        type_deserializer_name: Some(type_deserializer_name_str),
+    }
 }
 
 fn sanitize_type_inner(type_name: &str) -> String {
@@ -288,3 +547,8 @@ mod tests {
         assert!(!tokens.is_empty());
     }
 }
+
+// StringOrEnum
+// StringOrNumber
+// StringOrValue
+// TypeOrEnum

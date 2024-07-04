@@ -324,7 +324,8 @@ fn process_class(
 
             let name = format_ident!("{}", name_str);
 
-            let sanitized_field_type = sanitize_type(&p.1.type_, generated_additional_types);
+            let sanitized_field_type =
+                sanitize_type(&p.1.type_, generated_additional_types, is_optional);
 
             if let Some(additional_type) = sanitized_field_type.additional_type {
                 additional_types.push(additional_type);
@@ -440,6 +441,7 @@ struct SanitizeTypeResult {
 fn sanitize_type(
     type_name: &str,
     generated_additional_types: &mut Vec<String>,
+    is_optional: bool,
 ) -> SanitizeTypeResult {
     // let ident = ident.replace(['-', '<', '>'], "_");
 
@@ -462,13 +464,17 @@ fn sanitize_type(
     let type_name_str = type_name_vec.join("Or");
 
     let type_deserializer_name_str = format!(
-        "deserialize_{}",
+        "deserialize_{}{}",
         type_name_vec
             .iter()
             .map(|n| n.to_case(Case::Snake))
             .collect::<Vec<_>>()
-            .join("_or_")
+            .join("_or_"),
+        if is_optional { "_optional" } else { "" }
     );
+
+    let type_deserializer_name = format_ident!("{}", type_deserializer_name_str);
+    let type_name = format_ident!("{}", type_name_str);
 
     let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
 
@@ -482,30 +488,55 @@ fn sanitize_type(
 
     generated_additional_types.push(type_name_str.clone());
 
-    let variants = type_names.iter().map(|&t| {
-        let name = format_ident!("{}", sanitize_type_ident(t));
-        let inner_type: Type = parse_str(&sanitize_type_inner(t))
-            .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
+    let (variants, from_impls): (Vec<_>, Vec<_>) = type_names
+        .iter()
+        .map(|&t| {
+            let name = format_ident!("{}", sanitize_type_ident(t));
+            let inner_type: Type = parse_str(&sanitize_type_inner(t))
+                .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
 
-        if use_box && t != FALLBACK_OPTION {
-            return quote! {
-                #[serde(rename = #t)]
-                #name(Box<#inner_type>),
-            };
-        }
+            if use_box && t != FALLBACK_OPTION {
+                return (
+                    quote! {
+                        #[serde(rename = #t)]
+                        #name(Box<#inner_type>),
+                    },
+                    quote! {
+                        impl From<#inner_type> for #type_name {
+                            fn from(value: #inner_type) -> Self {
+                                #type_name::#name(Box::new(value))
+                            }
+                        }
+                    },
+                );
+            }
 
-        quote! {
-            #[serde(rename = #t)]
-            #name(#inner_type),
-        }
-    });
+            (
+                quote! {
+                    #[serde(rename = #t)]
+                    #name(#inner_type),
+                },
+                quote! {
+                    impl From<#inner_type> for #type_name {
+                        fn from(value: #inner_type) -> Self {
+                            #type_name::#name(value)
+                        }
+                    }
+                },
+            )
+        })
+        .unzip();
 
-    let type_name = format_ident!("{}", type_name_str);
     let additional_type = quote! {
+
+        use super::utils::#type_deserializer_name;
+
         #[derive(serde::Deserialize)]
         pub enum #type_name {
             #(#variants)*
         }
+
+        #(#from_impls)*
     };
 
     SanitizeTypeResult {
@@ -547,8 +578,3 @@ mod tests {
         assert!(!tokens.is_empty());
     }
 }
-
-// StringOrEnum
-// StringOrNumber
-// StringOrValue
-// TypeOrEnum

@@ -1,14 +1,14 @@
 use super::generated::{
-    Action, ActionOrFallbackOption, BlockElementHeight, Column, ColumnOrFallbackOption, Element,
-    ElementOrFallbackOption, FallbackOption, StringOrBlockElementHeight, StringOrNumber,
-    StringOrObject,
+    Action, ActionOrFallbackOption, BackgroundImage, BackgroundImageOrString, BlockElementHeight,
+    Column, ColumnOrFallbackOption, Element, ElementOrFallbackOption, FallbackOption,
+    StringOrBlockElementHeight, StringOrNumber, StringOrObject,
 };
 use serde::{
     de::{self, IntoDeserializer, Visitor},
     Deserialize, Deserializer,
 };
 use serde_json::Value;
-use std::fmt;
+use std::{fmt, marker::PhantomData};
 // StringOrEnum
 // StringOrNumber
 // StringOrValue
@@ -72,6 +72,14 @@ string_or_not_string!(
     ActionOrFallbackOption
 );
 
+string_or_not_string!(
+    deserialize_background_image_or_string_optional,
+    "a background image or a string or null",
+    String,
+    BackgroundImage,
+    BackgroundImageOrString
+);
+
 fn deserialize_string_or_other_optional<'de, 'expecting, TString, TStruct, TResult, D>(
     deserializer: D,
     expecting: &'expecting str,
@@ -128,6 +136,18 @@ where
         {
             Ok(None)
         }
+
+        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
+        where
+            D: Deserializer<'de>,
+        {
+            let value =
+                deserializer.deserialize_any(StringOrStructVisitor::<TString, TStruct, TEnum> {
+                    expecting: self.expecting,
+                    marker: PhantomData::<(TString, TStruct, TEnum)> {},
+                })?;
+            Ok(value)
+        }
     }
 
     deserializer.deserialize_any(StringOrStructVisitor::<TString, TStruct, TResult> {
@@ -136,6 +156,19 @@ where
     })
 }
 
+// pub(super) fn deserialize_string_or_number_optional<'de, D>(
+//     deserializer: D,
+// ) -> Result<Option<StringOrNumber>, D::Error>
+// where
+//     D: Deserializer<'de>,
+// {
+//     Ok(Some(match Value::deserialize(deserializer)? {
+//         Value::String(s) => StringOrNumber::String(s),
+//         Value::Number(n) if n.is_f64() => StringOrNumber::Number(n.as_f64().unwrap()),
+//         Value::Null => return Ok(None),
+//         _ => return Err(de::Error::custom("Invalid type for labelWidth")),
+//     }))
+// }
 pub(super) fn deserialize_string_or_number_optional<'de, D>(
     deserializer: D,
 ) -> Result<Option<StringOrNumber>, D::Error>
@@ -156,13 +189,6 @@ where
             E: de::Error,
         {
             Ok(Some(StringOrNumber::String(value.to_owned())))
-        }
-
-        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
-        where
-            E: de::Error,
-        {
-            Ok(Some(StringOrNumber::String(value)))
         }
 
         fn visit_f64<E>(self, value: f64) -> Result<Self::Value, E>
@@ -199,6 +225,14 @@ where
         {
             Ok(None)
         }
+
+        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
+        where
+            D: Deserializer<'de>,
+        {
+            let value = deserializer.deserialize_any(StringOrNumberVisitor)?;
+            Ok(value)
+        }
     }
 
     deserializer.deserialize_option(StringOrNumberVisitor)
@@ -212,22 +246,26 @@ where
 {
     deserialize_string_or_enum_optional::<BlockElementHeight, StringOrBlockElementHeight, D>(
         deserializer,
+        "a string, a BlockElementHeight, or null",
     )
 }
 
-fn deserialize_string_or_enum_optional<'de, TEnum, TResult, D>(
+fn deserialize_string_or_enum_optional<'de, 'expecting, TEnum, TResult, D>(
     deserializer: D,
+    expecting: &'expecting str,
 ) -> Result<Option<TResult>, D::Error>
 where
     TEnum: Deserialize<'de> + Into<TResult>,
     TResult: From<String>,
     D: Deserializer<'de>,
 {
-    struct StringOrEnumVisitor<TEnum, TResult> {
+    struct StringOrEnumVisitor<'expecting, TEnum, TResult> {
+        expecting: &'expecting str,
         marker: std::marker::PhantomData<(TEnum, TResult)>,
     }
 
-    impl<'de, TEnum, TResult> Visitor<'de> for StringOrEnumVisitor<TEnum, TResult>
+    impl<'de, 'expecting, TEnum, TResult> Visitor<'de>
+        for StringOrEnumVisitor<'expecting, TEnum, TResult>
     where
         TEnum: Deserialize<'de> + Into<TResult>,
         TResult: From<String>,
@@ -235,7 +273,7 @@ where
         type Value = Option<TResult>;
 
         fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-            formatter.write_str("a string, an enum, or null")
+            formatter.write_str(self.expecting)
         }
 
         fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
@@ -271,9 +309,21 @@ where
         {
             Ok(None)
         }
+
+        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
+        where
+            D: Deserializer<'de>,
+        {
+            let value = deserializer.deserialize_any(StringOrEnumVisitor::<TEnum, TResult> {
+                expecting: self.expecting,
+                marker: PhantomData::<(TEnum, TResult)> {},
+            })?;
+            Ok(value)
+        }
     }
 
     deserializer.deserialize_option(StringOrEnumVisitor::<TEnum, TResult> {
+        expecting,
         marker: std::marker::PhantomData,
     })
 }

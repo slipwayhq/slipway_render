@@ -97,6 +97,8 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
             loaded_class,
             class_ancestors.get(&loaded_class.id),
             class_descendants.get(&loaded_class.id),
+            &class_descendants,
+            &classes_by_id,
             &mut generated_additional_types,
         ));
 
@@ -253,6 +255,8 @@ fn process_class(
     class: &Loaded<Class>,
     ancestors: Option<&Vec<&Loaded<Class>>>,
     descendants: Option<&Vec<&Loaded<Class>>>,
+    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
+    classes_by_id: &HashMap<String, Loaded<Class>>,
     generated_additional_types: &mut Vec<String>,
 ) -> proc_macro2::TokenStream {
     let item_name = format_ident!("{}", class.type_name);
@@ -321,11 +325,22 @@ fn process_class(
             };
 
             let is_optional = is_optional || !p.1.required;
+            let has_shorthand = !p.1.shorthands.is_empty();
 
             let name = format_ident!("{}", name_str);
 
-            let sanitized_field_type =
-                sanitize_type(&p.1.type_, generated_additional_types, is_optional);
+            if name_str == "target_elements" {
+                println!("{:?}", p.1.type_);
+            }
+
+            let sanitized_field_type = sanitize_type(
+                &p.1.type_,
+                generated_additional_types,
+                is_optional,
+                has_shorthand,
+                all_descendants,
+                classes_by_id,
+            );
 
             if let Some(additional_type) = sanitized_field_type.additional_type {
                 additional_types.push(additional_type);
@@ -337,8 +352,14 @@ fn process_class(
 
             let additional_attributes =
                 if let Some(type_deserializer_name) = sanitized_field_type.type_deserializer_name {
-                    quote! {
-                        #[serde(deserialize_with = #type_deserializer_name)]
+                    if is_optional {
+                        quote! {
+                            #[serde(default, deserialize_with = #type_deserializer_name)]
+                        }
+                    } else {
+                        quote! {
+                            #[serde(deserialize_with = #type_deserializer_name)]
+                        }
                     }
                 } else {
                     quote! {}
@@ -399,10 +420,17 @@ fn process_enum(type_name: String, input: Enum) -> proc_macro2::TokenStream {
             } => value,
         };
 
+        let name_pascal_case_str = name_str.to_case(Case::Pascal);
+        let alias = if &name_pascal_case_str == name_str {
+            name_str.to_case(Case::Camel)
+        } else {
+            name_pascal_case_str
+        };
+
         let name = format_ident!("{}", name_str.to_case(Case::Pascal));
 
         quote! {
-            #[serde(rename = #name_str)]
+            #[serde(rename = #name_str, alias = #alias)]
             #name,
         }
     });
@@ -438,14 +466,49 @@ struct SanitizeTypeResult {
     type_deserializer_name: Option<String>,
 }
 
+fn get_type_has_shorthand(
+    type_names: &[&str],
+    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
+    classes_by_id: &HashMap<String, Loaded<Class>>,
+) -> bool {
+    for &t in type_names.iter() {
+        if let Some(loaded_class) = classes_by_id.get(t) {
+            if loaded_class.value.shorthand.is_some() {
+                return true;
+            }
+        }
+
+        if let Some(descendants) = all_descendants.get(t) {
+            if descendants.iter().any(|d| d.value.shorthand.is_some()) {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 fn sanitize_type(
     type_name: &str,
     generated_additional_types: &mut Vec<String>,
     is_optional: bool,
+    property_has_shorthand: bool,
+    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
+    classes_by_id: &HashMap<String, Loaded<Class>>,
 ) -> SanitizeTypeResult {
-    // let ident = ident.replace(['-', '<', '>'], "_");
+    let (type_name, type_name_suffix) = type_without_modifiers(type_name);
+    let type_names = {
+        let mut type_names = type_name.split('|').collect::<Vec<_>>();
 
-    let type_names = type_name.split('|').collect::<Vec<_>>();
+        // If the property has a shorthand defined, or any of the types or the descendants of those types
+        // have a shorthand defined, add String as a fallback.
+        let type_has_shorthand =
+            get_type_has_shorthand(&type_names, all_descendants, classes_by_id);
+
+        if property_has_shorthand || type_has_shorthand {
+            type_names.push("String");
+        }
+        type_names
+    };
 
     if type_names.len() == 1 {
         let sanitized = sanitize_type_inner(type_names[0]);
@@ -540,10 +603,23 @@ fn sanitize_type(
     };
 
     SanitizeTypeResult {
-        type_name: type_name_str,
+        type_name: sanitize_type_inner(&format!("{}{}", type_name_str, type_name_suffix)),
         additional_type: Some(additional_type),
         type_deserializer_name: Some(type_deserializer_name_str),
     }
+}
+
+fn type_without_modifiers(type_name: &str) -> (&str, &str) {
+    if type_name.strip_suffix("[]?").is_some() {
+        return (type_name.strip_suffix("[]?").unwrap(), "[]?");
+    }
+    if type_name.strip_suffix('?').is_some() {
+        return (type_name.strip_suffix('?').unwrap(), "?");
+    }
+    if type_name.strip_suffix("[]").is_some() {
+        return (type_name.strip_suffix("[]").unwrap(), "[]");
+    }
+    (type_name, "")
 }
 
 fn sanitize_type_inner(type_name: &str) -> String {

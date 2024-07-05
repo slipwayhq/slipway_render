@@ -13,3 +13,4 @@ ac-types-generator = { path = "../ac-types-generator" }
 
 [dev-dependencies]
 walkdir = "2.5.0"
+jsonschema = "0.18.0"

@@ -6,7 +6,7 @@ fn main() {
     // Run the `cargo typify` command
     let output = Command::new("cargo")
         .arg("typify")
-        .arg("../../ac-schema/typed-schema.schema.json")
+        .arg("../../adaptive-cards-data/schema/typed-schema.schema.json")
         .output()
         .expect("Failed to execute cargo typify");
 
@@ -14,7 +14,7 @@ fn main() {
         panic!("cargo typify failed with error: {:?}", output);
     }
 
-    let src = Path::new("../../ac-schema/typed-schema.schema.rs");
+    let src = Path::new("../../adaptive-cards-data/schema/typed-schema.schema.rs");
     let dst = Path::new("./src/typed_schema_types.rs");
 
     if let Err(e) = fs::copy(src, dst) {

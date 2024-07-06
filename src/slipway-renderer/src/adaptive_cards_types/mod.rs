@@ -21,7 +21,8 @@ mod tests {
     #[test]
     fn it_should_parse_samples() {
         // Read the JSON Schema file
-        let mut schema_file = File::open("../../ac-schema/adaptive-card.schema.json").unwrap();
+        let mut schema_file =
+            File::open("../../adaptive-cards-data/schema/adaptive-card.schema.json").unwrap();
         let mut schema_data = String::new();
         schema_file.read_to_string(&mut schema_data).unwrap();
         let schema: Value = serde_json::from_str(&schema_data).unwrap();
@@ -63,7 +64,7 @@ mod tests {
         //     "Tests/Carousel.ToggleVisibility.json",        // ADDED
         // ];
 
-        let sample_dir_root = PathBuf::from("../../ac-samples");
+        let sample_dir_root = PathBuf::from("../../adaptive-cards-data/samples");
         let ignore_folders = vec!["HostConfig", "Templates", "v1.6"];
 
         let mut fail_count = 0;

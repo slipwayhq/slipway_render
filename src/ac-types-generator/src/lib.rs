@@ -658,7 +658,7 @@ mod tests {
 
     #[test]
     fn it_should_generate_tokens() {
-        let tokens = generate_inner(PathBuf::from("../../ac-schema/typed-schema-1.6")).unwrap();
+        let tokens = generate_inner(PathBuf::from("../../adaptive-cards-data/schema/typed-schema-1.6")).unwrap();
 
         assert!(!tokens.is_empty());
     }

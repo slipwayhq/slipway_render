@@ -1,3 +1,10 @@
+# Adaptive Cards Samples
+
+This folder comes from here:
+
+https://github.com/microsoft/AdaptiveCards/tree/main/samples
+
+
 # Adaptive Cards Typed Schema
 
 > `typed-schema.schema.json`
@@ -57,6 +64,9 @@ add
             }
 ```
 
+# Some fixes have been applied locally
+
+https://github.com/microsoft/AdaptiveCards/discussions/8943
 
 
 # Adaptive Cards Rust Types

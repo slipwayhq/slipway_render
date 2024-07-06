@@ -164,7 +164,8 @@ fn flatten_map<'c>(
 ) -> HashMap<String, Vec<&'c Loaded<Class>>> {
     let mut result = HashMap::new();
     for id in map.keys() {
-        let flattened = flatten_map_for(id, map);
+        let mut flattened = flatten_map_for(id, map);
+        flattened.sort_by_key(|d| d.file_name.clone());
         result.insert(id.clone(), flattened);
     }
     result
@@ -321,11 +322,13 @@ fn process_class(
         };
 
         let mut seen_properties = HashSet::new();
-        let all_properties = all_property_sources
+        let mut all_properties = all_property_sources
             .iter()
             .flat_map(|c| &c.value.properties)
             .filter(|p| seen_properties.insert(p.0.clone()))
             .collect::<Vec<_>>();
+
+        all_properties.sort_by_key(|p| p.0.clone());
 
         for p in all_properties.iter() {
             let (is_optional, name_str, json_name_str) = match p.0.strip_suffix('?') {

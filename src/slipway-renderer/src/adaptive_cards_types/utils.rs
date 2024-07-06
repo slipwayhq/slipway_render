@@ -225,16 +225,9 @@ where
         {
             self.visit_str(&value)
         }
-
-        fn visit_some<D>(self, deserializer: D) -> Result<Self::Value, D::Error>
-        where
-            D: Deserializer<'de>,
-        {
-            self.visit_str(&String::deserialize(deserializer)?)
-        }
     }
 
-    deserializer.deserialize_option(StringOrEnumVisitor::<TEnum, TResult> {
+    deserializer.deserialize_any(StringOrEnumVisitor::<TEnum, TResult> {
         expecting,
         marker: std::marker::PhantomData,
     })

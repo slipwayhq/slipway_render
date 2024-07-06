@@ -633,7 +633,9 @@ fn type_without_modifiers(type_name: &str) -> (&str, &str) {
 
 fn sanitize_type_inner(type_name: &str) -> String {
     if let Some(prefix) = type_name.strip_suffix('?') {
-        return format!("Option<{}>", sanitize_type_inner(prefix));
+        // We don't wrap in an Option, because we do that when writing the property
+        // both based on the suffix and whether the property has a required field.
+        return sanitize_type_inner(prefix);
     }
 
     if let Some(prefix) = type_name.strip_suffix("[]") {

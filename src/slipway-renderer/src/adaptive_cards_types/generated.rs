@@ -488,7 +488,7 @@ pub struct AdaptiveCard {
     #[serde(rename = "refresh")]
     pub refresh: Option<Refresh>,
     #[serde(rename = "rtl")]
-    pub rtl: Option<Option<bool>>,
+    pub rtl: Option<bool>,
     #[serde(rename = "selectAction")]
     pub select_action: Option<ISelectAction>,
     #[serde(rename = "speak")]
@@ -600,7 +600,7 @@ pub struct Column {
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "rtl")]
-    pub rtl: Option<Option<bool>>,
+    pub rtl: Option<bool>,
     #[serde(rename = "selectAction")]
     pub select_action: Option<ISelectAction>,
     #[serde(rename = "separator")]
@@ -608,9 +608,9 @@ pub struct Column {
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "style")]
-    pub style: Option<Option<ContainerStyle>>,
+    pub style: Option<ContainerStyle>,
     #[serde(rename = "verticalContentAlignment")]
-    pub vertical_content_alignment: Option<Option<VerticalContentAlignment>>,
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "width")]
     pub width: Option<StringOrNumber>,
     #[serde(rename = "type")]
@@ -628,7 +628,7 @@ pub struct ColumnSet {
     #[serde(rename = "height")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "horizontalAlignment")]
-    pub horizontal_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
     #[serde(rename = "isVisible")]
@@ -644,7 +644,7 @@ pub struct ColumnSet {
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "style")]
-    pub style: Option<Option<ContainerStyle>>,
+    pub style: Option<ContainerStyle>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -670,7 +670,7 @@ pub struct Container {
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "rtl")]
-    pub rtl: Option<Option<bool>>,
+    pub rtl: Option<bool>,
     #[serde(rename = "selectAction")]
     pub select_action: Option<ISelectAction>,
     #[serde(rename = "separator")]
@@ -678,9 +678,9 @@ pub struct Container {
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "style")]
-    pub style: Option<Option<ContainerStyle>>,
+    pub style: Option<ContainerStyle>,
     #[serde(rename = "verticalContentAlignment")]
-    pub vertical_content_alignment: Option<Option<VerticalContentAlignment>>,
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -804,7 +804,7 @@ pub struct Image {
     #[serde(rename = "height")]
     pub height: Option<StringOrBlockElementHeight>,
     #[serde(rename = "horizontalAlignment")]
-    pub horizontal_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
     #[serde(rename = "isVisible")]
@@ -1276,7 +1276,7 @@ pub struct RichTextBlock {
     #[serde(rename = "height")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "horizontalAlignment")]
-    pub horizontal_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
     #[serde(rename = "inlines")]
@@ -1302,11 +1302,11 @@ pub struct Table {
     #[serde(rename = "firstRowAsHeader")]
     pub first_row_as_header: Option<bool>,
     #[serde(rename = "gridStyle")]
-    pub grid_style: Option<Option<ContainerStyle>>,
+    pub grid_style: Option<ContainerStyle>,
     #[serde(rename = "height")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "horizontalCellContentAlignment")]
-    pub horizontal_cell_content_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
     #[serde(rename = "isVisible")]
@@ -1322,7 +1322,7 @@ pub struct Table {
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "verticalCellContentAlignment")]
-    pub vertical_cell_content_alignment: Option<Option<VerticalAlignment>>,
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -1338,13 +1338,13 @@ pub struct TableCell {
     #[serde(rename = "minHeight")]
     pub min_height: Option<String>,
     #[serde(rename = "rtl")]
-    pub rtl: Option<Option<bool>>,
+    pub rtl: Option<bool>,
     #[serde(rename = "selectAction")]
     pub select_action: Option<ISelectAction>,
     #[serde(rename = "style")]
-    pub style: Option<Option<ContainerStyle>>,
+    pub style: Option<ContainerStyle>,
     #[serde(rename = "verticalContentAlignment")]
-    pub vertical_content_alignment: Option<Option<VerticalContentAlignment>>,
+    pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -1352,9 +1352,9 @@ pub struct TableCell {
 #[serde(deny_unknown_fields)]
 pub struct TableColumnDefinition {
     #[serde(rename = "horizontalCellContentAlignment")]
-    pub horizontal_cell_content_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "verticalCellContentAlignment")]
-    pub vertical_cell_content_alignment: Option<Option<VerticalAlignment>>,
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "width")]
     pub width: Option<StringOrNumber>,
     #[serde(rename = "type")]
@@ -1366,11 +1366,11 @@ pub struct TableRow {
     #[serde(rename = "cells")]
     pub cells: Option<Vec<TableCell>>,
     #[serde(rename = "horizontalCellContentAlignment")]
-    pub horizontal_cell_content_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "style")]
-    pub style: Option<Option<ContainerStyle>>,
+    pub style: Option<ContainerStyle>,
     #[serde(rename = "verticalCellContentAlignment")]
-    pub vertical_cell_content_alignment: Option<Option<VerticalAlignment>>,
+    pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -1380,7 +1380,7 @@ pub struct TargetElement {
     #[serde(rename = "elementId")]
     pub element_id: String,
     #[serde(rename = "isVisible")]
-    pub is_visible: Option<Option<bool>>,
+    pub is_visible: Option<bool>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
@@ -1388,19 +1388,19 @@ pub struct TargetElement {
 #[serde(deny_unknown_fields)]
 pub struct TextBlock {
     #[serde(rename = "color")]
-    pub color: Option<Option<Colors>>,
+    pub color: Option<Colors>,
     #[serde(rename = "fallback")]
     pub fallback: Option<ElementOrFallbackOption>,
     #[serde(rename = "fontType")]
-    pub font_type: Option<Option<FontType>>,
+    pub font_type: Option<FontType>,
     #[serde(rename = "height")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "horizontalAlignment")]
-    pub horizontal_alignment: Option<Option<HorizontalAlignment>>,
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
     #[serde(rename = "isSubtle")]
-    pub is_subtle: Option<Option<bool>>,
+    pub is_subtle: Option<bool>,
     #[serde(rename = "isVisible")]
     pub is_visible: Option<bool>,
     #[serde(rename = "maxLines")]
@@ -1410,15 +1410,15 @@ pub struct TextBlock {
     #[serde(rename = "separator")]
     pub separator: Option<bool>,
     #[serde(rename = "size")]
-    pub size: Option<Option<FontSize>>,
+    pub size: Option<FontSize>,
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "style")]
-    pub style: Option<Option<TextBlockStyle>>,
+    pub style: Option<TextBlockStyle>,
     #[serde(rename = "text")]
     pub text: String,
     #[serde(rename = "weight")]
-    pub weight: Option<Option<FontWeight>>,
+    pub weight: Option<FontWeight>,
     #[serde(rename = "wrap")]
     pub wrap: Option<bool>,
     #[serde(rename = "type")]
@@ -1428,19 +1428,19 @@ pub struct TextBlock {
 #[serde(deny_unknown_fields)]
 pub struct TextRun {
     #[serde(rename = "color")]
-    pub color: Option<Option<Colors>>,
+    pub color: Option<Colors>,
     #[serde(rename = "fontType")]
-    pub font_type: Option<Option<FontType>>,
+    pub font_type: Option<FontType>,
     #[serde(rename = "highlight")]
     pub highlight: Option<bool>,
     #[serde(rename = "isSubtle")]
-    pub is_subtle: Option<Option<bool>>,
+    pub is_subtle: Option<bool>,
     #[serde(rename = "italic")]
     pub italic: Option<bool>,
     #[serde(rename = "selectAction")]
     pub select_action: Option<ISelectAction>,
     #[serde(rename = "size")]
-    pub size: Option<Option<FontSize>>,
+    pub size: Option<FontSize>,
     #[serde(rename = "strikethrough")]
     pub strikethrough: Option<bool>,
     #[serde(rename = "text")]
@@ -1448,7 +1448,7 @@ pub struct TextRun {
     #[serde(rename = "underline")]
     pub underline: Option<bool>,
     #[serde(rename = "weight")]
-    pub weight: Option<Option<FontWeight>>,
+    pub weight: Option<FontWeight>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }

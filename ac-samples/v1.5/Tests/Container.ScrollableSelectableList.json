@@ -565,8 +565,6 @@
       "spacing": "extraLarge"
     }
   ],
-  "type": "AdaptiveCard",
-  "version": "1.0",
   "actions": [
     {
       "type": "Action.Submit",

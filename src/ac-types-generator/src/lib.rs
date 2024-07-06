@@ -42,7 +42,13 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
         "Loading JSON files in {:?} relative to {:?}",
         ac_schema_folder_path, current_dir
     );
-    let json_files = load_json_files(ac_schema_folder_path);
+    let json_files = {
+        let mut json_files = load_json_files(ac_schema_folder_path).collect::<Vec<_>>();
+
+        // Make sure we don't keep changing the order in the generated code.
+        json_files.sort_by_key(|f| f.file_name.clone());
+        json_files
+    };
 
     let mut generated_additional_types = Vec::new();
     let mut classes_by_id = HashMap::new();
@@ -92,7 +98,10 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     let class_ancestors = flatten_map(&class_parents);
     let class_descendants = flatten_map(&class_children);
 
-    for (_id, loaded_class) in classes_by_id.iter() {
+    let mut classes_ordered = classes_by_id.values().collect::<Vec<_>>();
+    classes_ordered.sort_by_key(|c| c.file_name.clone());
+
+    for loaded_class in classes_ordered.iter() {
         tokens.push(process_class(
             loaded_class,
             class_ancestors.get(&loaded_class.id),
@@ -490,14 +499,14 @@ fn get_type_has_shorthand(
 fn sanitize_type(
     type_name: &str,
     generated_additional_types: &mut Vec<String>,
-    is_optional: bool,
+    _is_optional: bool,
     property_has_shorthand: bool,
     all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
     classes_by_id: &HashMap<String, Loaded<Class>>,
 ) -> SanitizeTypeResult {
-    let (type_name, type_name_suffix) = type_without_modifiers(type_name);
+    let (type_name_without_suffix, type_name_suffix) = type_without_modifiers(type_name);
     let type_names = {
-        let mut type_names = type_name.split('|').collect::<Vec<_>>();
+        let mut type_names = type_name_without_suffix.split('|').collect::<Vec<_>>();
 
         // If the property has a shorthand defined, or any of the types or the descendants of those types
         // have a shorthand defined, add String as a fallback.
@@ -511,7 +520,7 @@ fn sanitize_type(
     };
 
     if type_names.len() == 1 {
-        let sanitized = sanitize_type_inner(type_names[0]);
+        let sanitized = sanitize_type_inner(type_name);
         return SanitizeTypeResult {
             type_name: sanitized,
             additional_type: None,
@@ -526,17 +535,17 @@ fn sanitize_type(
 
     let type_name_str = type_name_vec.join("Or");
 
-    let type_deserializer_name_str = format!(
-        "deserialize_{}{}",
-        type_name_vec
-            .iter()
-            .map(|n| n.to_case(Case::Snake))
-            .collect::<Vec<_>>()
-            .join("_or_"),
-        if is_optional { "_optional" } else { "" }
-    );
+    // let type_deserializer_name_str = format!(
+    //     "deserialize_{}{}",
+    //     type_name_vec
+    //         .iter()
+    //         .map(|n| n.to_case(Case::Snake))
+    //         .collect::<Vec<_>>()
+    //         .join("_or_"),
+    //     if is_optional { "_optional" } else { "" }
+    // );
 
-    let type_deserializer_name = format_ident!("{}", type_deserializer_name_str);
+    // let type_deserializer_name = format_ident!("{}", type_deserializer_name_str);
     let type_name = format_ident!("{}", type_name_str);
 
     let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
@@ -545,7 +554,7 @@ fn sanitize_type(
         return SanitizeTypeResult {
             type_name: type_name_str,
             additional_type: None,
-            type_deserializer_name: Some(type_deserializer_name_str),
+            type_deserializer_name: None, // Some(type_deserializer_name_str),
         };
     }
 
@@ -561,7 +570,6 @@ fn sanitize_type(
             if use_box && t != FALLBACK_OPTION {
                 return (
                     quote! {
-                        #[serde(rename = #t)]
                         #name(Box<#inner_type>),
                     },
                     quote! {
@@ -576,7 +584,6 @@ fn sanitize_type(
 
             (
                 quote! {
-                    #[serde(rename = #t)]
                     #name(#inner_type),
                 },
                 quote! {
@@ -592,9 +599,8 @@ fn sanitize_type(
 
     let additional_type = quote! {
 
-        use super::utils::#type_deserializer_name;
+        // use super::utils::#type_deserializer_name;
 
-        #[derive(serde::Deserialize)]
         pub enum #type_name {
             #(#variants)*
         }
@@ -605,7 +611,7 @@ fn sanitize_type(
     SanitizeTypeResult {
         type_name: sanitize_type_inner(&format!("{}{}", type_name_str, type_name_suffix)),
         additional_type: Some(additional_type),
-        type_deserializer_name: Some(type_deserializer_name_str),
+        type_deserializer_name: None, // Some(type_deserializer_name_str),
     }
 }
 

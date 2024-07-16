@@ -11,8 +11,8 @@ use crate::{
 
 pub(super) fn process_class(
     class: &Loaded<Class>,
-    ancestors: Option<&Vec<&Loaded<Class>>>,
-    descendants: Option<&Vec<&Loaded<Class>>>,
+    ancestors: &[&Loaded<Class>],
+    descendants: &[&Loaded<Class>],
     all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
     classes_by_id: &HashMap<String, Loaded<Class>>,
     generated_additional_types: &mut Vec<String>,
@@ -24,11 +24,11 @@ pub(super) fn process_class(
     let is_abstract = class.value.is_abstract.unwrap_or(false);
 
     let item_tokens = if is_abstract {
-        let Some(descendants) = descendants else {
+        if descendants.is_empty() {
             panic!("Abstract class has no descendants: {}", class.id);
         };
 
-        let mut descendants = descendants.clone();
+        let mut descendants = descendants.iter().collect::<Vec<_>>();
         descendants.sort_by_key(|d| &d.file_name);
 
         let variant_names: Vec<String> = descendants.iter().map(|&d| d.type_name.clone()).collect();
@@ -61,17 +61,15 @@ pub(super) fn process_class(
             }
         }
     } else {
-        if descendants.is_some() {
+        if !descendants.is_empty() {
             panic!("Non-abstract class has descendants: {}", class.id);
         }
 
         let mut fields = Vec::new();
 
         // Order is important here. More distant ancestors are after closer ones.
-        let all_property_sources: Vec<&Loaded<Class>> = match ancestors {
-            Some(ancestors) => std::iter::once(&class).chain(ancestors).copied().collect(),
-            None => std::iter::once(class).collect(),
-        };
+        let all_property_sources: Vec<&Loaded<Class>> =
+            std::iter::once(&class).chain(ancestors).copied().collect();
 
         let mut seen_properties = HashSet::new();
         let mut all_properties = all_property_sources

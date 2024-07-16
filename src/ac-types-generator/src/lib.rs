@@ -1,14 +1,15 @@
 use core::panic;
 use load::Loaded;
 use quote::quote;
+use relationships::get_relationships;
 use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 use std::{env, fs};
 
-mod flatten_map;
 mod load;
 mod process_class;
 mod process_enum;
+mod relationships;
 mod sanitize;
 
 #[allow(dead_code, clippy::to_string_trait_impl, clippy::wrong_self_convention)]
@@ -87,10 +88,7 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
         }
     }
 
-    let class_parents = get_class_parents_map(&classes_by_id);
-    let class_children = get_class_children_map(&class_parents, &classes_by_id);
-    let class_ancestors = flatten_map::flatten_class_map(&class_parents);
-    let class_descendants = flatten_map::flatten_class_map(&class_children);
+    let relationships = get_relationships(&classes_by_id);
 
     let mut classes_ordered = classes_by_id.values().collect::<Vec<_>>();
     classes_ordered.sort_by_key(|c| c.file_name.clone());
@@ -98,64 +96,21 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     for loaded_class in classes_ordered.iter() {
         tokens.push(process_class::process_class(
             loaded_class,
-            class_ancestors.get(&loaded_class.id),
-            class_descendants.get(&loaded_class.id),
-            &class_descendants,
+            relationships
+                .ancestors
+                .get(&loaded_class.id)
+                .unwrap_or_else(|| panic!("No ancestors for {}", loaded_class.id)),
+            relationships
+                .descendants
+                .get(&loaded_class.id)
+                .unwrap_or_else(|| panic!("No descendants for {}", loaded_class.id)),
+            &relationships.descendants,
             &classes_by_id,
             &mut generated_additional_types,
         ));
     }
 
     Ok(tokens)
-}
-
-fn get_class_children_map<'c>(
-    class_parents: &'c HashMap<String, HashSet<&'c Loaded<Class>>>,
-    classes_by_id: &'c HashMap<String, Loaded<Class>>,
-) -> HashMap<String, HashSet<&'c Loaded<Class>>> {
-    let mut class_inheritors = HashMap::new();
-    for (id, dependencies) in class_parents.iter() {
-        let parent_class = get_or_panic(classes_by_id, id);
-        for dependency in dependencies {
-            class_inheritors
-                .entry(dependency.id.clone())
-                .or_insert_with(HashSet::new)
-                .insert(parent_class);
-        }
-    }
-    class_inheritors
-}
-
-fn get_class_parents_map(
-    classes_by_id: &HashMap<String, Loaded<Class>>,
-) -> HashMap<String, HashSet<&Loaded<Class>>> {
-    let mut class_inherits_from = HashMap::new();
-    for (_id, loaded_class) in classes_by_id.iter() {
-        if let Some(extends_str) = loaded_class.value.extends.as_ref() {
-            let extends_list = extends_str
-                .split(',')
-                .map(|s| s.trim())
-                .collect::<HashSet<_>>();
-            for extends in extends_list {
-                let parent_class = get_or_panic(classes_by_id, extends);
-                class_inherits_from
-                    .entry(loaded_class.id.clone())
-                    .or_insert_with(HashSet::new)
-                    .insert(parent_class);
-            }
-        }
-    }
-    class_inherits_from
-}
-
-fn get_or_panic<'a>(
-    classes_by_id: &'a HashMap<String, Loaded<Class>>,
-    id: &str,
-) -> &'a Loaded<Class> {
-    let parent_class = classes_by_id
-        .get(id)
-        .unwrap_or_else(|| panic!("Failed to find class {}", id));
-    parent_class
 }
 
 #[cfg(test)]

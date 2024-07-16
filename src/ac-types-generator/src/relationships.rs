@@ -5,20 +5,20 @@ use itertools::Itertools;
 use crate::{load::Loaded, typed_schema_types::Class};
 
 pub(super) struct Relationships<'c> {
+    pub classes: &'c HashMap<String, Loaded<Class>>,
     pub ancestors: HashMap<String, Vec<&'c Loaded<Class>>>,
     pub descendants: HashMap<String, Vec<&'c Loaded<Class>>>,
 }
 
-pub(super) fn get_relationships(
-    classes_by_id: &HashMap<String, Loaded<Class>>,
-) -> Relationships<'_> {
-    let parents = get_class_parents_map(classes_by_id);
-    let children = get_class_children_map(&parents, classes_by_id);
+pub(super) fn get_relationships(classes: &HashMap<String, Loaded<Class>>) -> Relationships<'_> {
+    let parents = get_class_parents_map(classes);
+    let children = get_class_children_map(&parents, classes);
 
     let ancestors = flatten_class_map(&parents);
     let descendants = flatten_class_map(&children);
 
     Relationships {
+        classes,
         ancestors,
         descendants,
     }

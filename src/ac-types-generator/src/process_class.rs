@@ -1,22 +1,30 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
 use quote::{format_ident, quote};
 use syn::{parse_str, Type};
 
 use crate::{
+    common_prefix::common_prefix,
     load::Loaded,
+    relationships::Relationships,
     sanitize::{sanitize_field_ident, sanitize_type},
     typed_schema_types::Class,
 };
 
 pub(super) fn process_class(
     class: &Loaded<Class>,
-    ancestors: &[&Loaded<Class>],
-    descendants: &[&Loaded<Class>],
-    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
-    classes_by_id: &HashMap<String, Loaded<Class>>,
+    relationships: &Relationships,
     generated_additional_types: &mut Vec<String>,
 ) -> proc_macro2::TokenStream {
+    let ancestors = relationships
+        .ancestors
+        .get(&class.id)
+        .unwrap_or_else(|| panic!("No ancestors for {}", class.id));
+    let descendants = relationships
+        .descendants
+        .get(&class.id)
+        .unwrap_or_else(|| panic!("No descendants for {}", class.id));
+
     let item_name = format_ident!("{}", class.type_name);
 
     let mut additional_types = Vec::new();
@@ -98,10 +106,8 @@ pub(super) fn process_class(
             let sanitized_field_type = sanitize_type(
                 &p.1.type_,
                 generated_additional_types,
-                is_optional,
                 has_shorthand,
-                all_descendants,
-                classes_by_id,
+                relationships,
             );
 
             if let Some(additional_type) = sanitized_field_type.additional_type {
@@ -112,31 +118,14 @@ pub(super) fn process_class(
             let field_type: Type = parse_str(&field_type_str)
                 .unwrap_or_else(|_| panic!("Failed to parse type: {}", field_type_str));
 
-            let additional_attributes =
-                if let Some(type_deserializer_name) = sanitized_field_type.type_deserializer_name {
-                    if is_optional {
-                        quote! {
-                            #[serde(default, deserialize_with = #type_deserializer_name)]
-                        }
-                    } else {
-                        quote! {
-                            #[serde(deserialize_with = #type_deserializer_name)]
-                        }
-                    }
-                } else {
-                    quote! {}
-                };
-
             if is_optional {
                 fields.push(quote! {
                     #[serde(rename = #json_name_str)]
-                    #additional_attributes
                     pub #name: Option<#field_type>,
                 });
             } else {
                 fields.push(quote! {
                     #[serde(rename = #json_name_str)]
-                    #additional_attributes
                     pub #name: #field_type,
                 });
             }
@@ -168,22 +157,4 @@ pub(super) fn process_class(
     println!("{}", result);
 
     result
-}
-
-fn common_prefix(strings: &[String]) -> String {
-    if strings.len() <= 1 {
-        return String::new();
-    }
-
-    let mut prefix = strings[0].clone();
-    for s in strings.iter().skip(1) {
-        while !s.starts_with(&prefix) {
-            if prefix.is_empty() {
-                return String::new();
-            }
-            prefix.pop();
-        }
-    }
-
-    prefix
 }

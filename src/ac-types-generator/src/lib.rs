@@ -1,4 +1,5 @@
 use core::panic;
+use itertools::Itertools;
 use load::Loaded;
 use quote::quote;
 use relationships::get_relationships;
@@ -6,6 +7,7 @@ use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 use std::{env, fs};
 
+mod common_prefix;
 mod load;
 mod process_class;
 mod process_enum;
@@ -36,24 +38,55 @@ pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
 }
 
 fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_macro2::TokenStream>> {
+    let loaded_types = load_types(ac_schema_folder_path)?;
+
+    let mut tokens = Vec::new();
+
+    for loaded_enum in loaded_types
+        .enums
+        .values()
+        .sorted_by_key(|e| e.file_name.clone())
+    {
+        tokens.push(process_enum::process_enum(loaded_enum));
+    }
+
+    let relationships = get_relationships(&loaded_types.classes);
+
+    let mut generated_additional_types = Vec::new();
+
+    for loaded_class in loaded_types
+        .classes
+        .values()
+        .sorted_by_key(|c| c.file_name.clone())
+    {
+        tokens.push(process_class::process_class(
+            loaded_class,
+            &relationships,
+            &mut generated_additional_types,
+        ));
+    }
+
+    Ok(tokens)
+}
+
+struct LoadedTypes {
+    classes: HashMap<String, Loaded<Class>>,
+    enums: HashMap<String, Loaded<Enum>>,
+}
+
+fn load_types(ac_schema_folder_path: PathBuf) -> anyhow::Result<LoadedTypes> {
     let current_dir = env::current_dir()?;
     println!(
         "Loading JSON files in {:?} relative to {:?}",
         ac_schema_folder_path, current_dir
     );
-    let json_files = {
-        let mut json_files = load::load_json_files(ac_schema_folder_path).collect::<Vec<_>>();
 
-        // Make sure we don't keep changing the order in the generated code.
-        json_files.sort_by_key(|f| f.file_name.clone());
-        json_files
-    };
+    let json_files = load::load_json_files(ac_schema_folder_path);
 
-    let mut generated_additional_types = Vec::new();
     let mut classes_by_id = HashMap::new();
-    let mut seen_ids = HashSet::new();
+    let mut enums_by_id = HashMap::new();
 
-    let mut tokens = Vec::new();
+    let mut seen_ids = HashSet::new();
     for json_file in json_files {
         println!("{}", json_file.file_name);
 
@@ -66,51 +99,42 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
 
         match item_type {
             "Class" => {
-                let class: Class = serde_json::from_value(json_file.value.clone())
-                    .inspect_err(|_| println!("{:?}", json_file.value))?;
-
-                classes_by_id.insert(
-                    json_file.id.clone(),
-                    Loaded::<Class> {
-                        value: class,
-                        file_name: json_file.file_name.clone(),
-                        type_name: json_file.type_name.clone(),
-                        id: json_file.id.clone(),
-                    },
-                );
+                add_to_map(&mut classes_by_id, &json_file)?;
             }
             "Enum" => {
-                let enum_: Enum = serde_json::from_value(json_file.value.clone())
-                    .inspect_err(|_| println!("{:?}", json_file.value))?;
-                tokens.push(process_enum::process_enum(json_file.type_name, enum_));
+                add_to_map(&mut enums_by_id, &json_file)?;
             }
             _ => panic!("Unknown type: {}", item_type),
         }
     }
 
-    let relationships = get_relationships(&classes_by_id);
+    Ok(LoadedTypes {
+        classes: classes_by_id,
+        enums: enums_by_id,
+    })
+}
 
-    let mut classes_ordered = classes_by_id.values().collect::<Vec<_>>();
-    classes_ordered.sort_by_key(|c| c.file_name.clone());
+fn add_to_map<T>(
+    map: &mut HashMap<String, Loaded<T>>,
+    json_file: &Loaded<serde_json::Value>,
+) -> anyhow::Result<()>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let class: T = serde_json::from_value(json_file.value.clone())
+        .inspect_err(|_| println!("{:?}", json_file.value))?;
 
-    for loaded_class in classes_ordered.iter() {
-        tokens.push(process_class::process_class(
-            loaded_class,
-            relationships
-                .ancestors
-                .get(&loaded_class.id)
-                .unwrap_or_else(|| panic!("No ancestors for {}", loaded_class.id)),
-            relationships
-                .descendants
-                .get(&loaded_class.id)
-                .unwrap_or_else(|| panic!("No descendants for {}", loaded_class.id)),
-            &relationships.descendants,
-            &classes_by_id,
-            &mut generated_additional_types,
-        ));
-    }
+    map.insert(
+        json_file.id.clone(),
+        Loaded::<T> {
+            value: class,
+            file_name: json_file.file_name.clone(),
+            type_name: json_file.type_name.clone(),
+            id: json_file.id.clone(),
+        },
+    );
 
-    Ok(tokens)
+    Ok(())
 }
 
 #[cfg(test)]

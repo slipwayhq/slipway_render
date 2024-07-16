@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-
 use convert_case::{Case, Casing};
 use quote::{format_ident, quote};
 use syn::{parse_str, Type};
 
-use crate::{load::Loaded, typed_schema_types::Class};
+use crate::relationships::Relationships;
 
 const FALLBACK_OPTION: &str = "FallbackOption";
 
@@ -24,46 +22,24 @@ pub(super) fn sanitize_type_ident(ident: &str) -> String {
 pub(super) struct SanitizeTypeResult {
     pub type_name: String,
     pub additional_type: Option<proc_macro2::TokenStream>,
-    pub type_deserializer_name: Option<String>,
-}
-
-fn get_type_has_shorthand(
-    type_names: &[&str],
-    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
-    classes_by_id: &HashMap<String, Loaded<Class>>,
-) -> bool {
-    for &t in type_names.iter() {
-        if let Some(loaded_class) = classes_by_id.get(t) {
-            if loaded_class.value.shorthand.is_some() {
-                return true;
-            }
-        }
-
-        if let Some(descendants) = all_descendants.get(t) {
-            if descendants.iter().any(|d| d.value.shorthand.is_some()) {
-                return true;
-            }
-        }
-    }
-    false
 }
 
 pub(super) fn sanitize_type(
     type_name: &str,
     generated_additional_types: &mut Vec<String>,
-    _is_optional: bool,
     property_has_shorthand: bool,
-    all_descendants: &HashMap<String, Vec<&Loaded<Class>>>,
-    classes_by_id: &HashMap<String, Loaded<Class>>,
+    relationships: &Relationships,
 ) -> SanitizeTypeResult {
+    // The type may end with a suffix like [] or ?, so extract it.
     let (type_name_without_suffix, type_name_suffix) = type_without_modifiers(type_name);
+
+    // If the type is a pipe-separated list of types, we'll need to generate an enum.
     let type_names = {
         let mut type_names = type_name_without_suffix.split('|').collect::<Vec<_>>();
 
-        // If the property has a shorthand defined, or any of the types or the descendants of those types
-        // have a shorthand defined, add String as a fallback.
-        let type_has_shorthand =
-            get_type_has_shorthand(&type_names, all_descendants, classes_by_id);
+        // If the property has a shorthand defined, or any its descendants
+        // has a shorthand defined, add String as a fallback.
+        let type_has_shorthand = get_type_has_shorthand(&type_names, relationships);
 
         if property_has_shorthand || type_has_shorthand {
             type_names.push("String");
@@ -71,46 +47,48 @@ pub(super) fn sanitize_type(
         type_names
     };
 
+    // Only one type, so just return the sanitized version of it.
     if type_names.len() == 1 {
         let sanitized = sanitize_type_inner(type_name);
         return SanitizeTypeResult {
             type_name: sanitized,
             additional_type: None,
-            type_deserializer_name: None,
         };
     }
 
-    let type_name_vec = type_names
+    // Multiple types, so generate a selector enum.
+    let enum_name_str = type_names
         .iter()
         .map(|&t| sanitize_type_ident(t))
-        .collect::<Vec<_>>();
+        .collect::<Vec<_>>()
+        .join("Or");
 
-    let type_name_str = type_name_vec.join("Or");
-
-    // let type_deserializer_name_str = format!(
-    //     "deserialize_{}{}",
-    //     type_name_vec
-    //         .iter()
-    //         .map(|n| n.to_case(Case::Snake))
-    //         .collect::<Vec<_>>()
-    //         .join("_or_"),
-    //     if is_optional { "_optional" } else { "" }
-    // );
-
-    // let type_deserializer_name = format_ident!("{}", type_deserializer_name_str);
-    let type_name = format_ident!("{}", type_name_str);
-
-    let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
-
-    if generated_additional_types.contains(&type_name_str) {
+    if generated_additional_types.contains(&enum_name_str) {
         return SanitizeTypeResult {
-            type_name: type_name_str,
+            type_name: enum_name_str,
             additional_type: None,
-            type_deserializer_name: None, // Some(type_deserializer_name_str),
         };
     }
+    generated_additional_types.push(enum_name_str.clone());
 
-    generated_additional_types.push(type_name_str.clone());
+    let additional_type = generate_enum_type_selector(&enum_name_str, type_names);
+
+    // If the type originally had a suffix, add it back on to the enum type.
+    SanitizeTypeResult {
+        type_name: sanitize_type_inner(&format!("{}{}", enum_name_str, type_name_suffix)),
+        additional_type: Some(additional_type),
+    }
+}
+
+fn generate_enum_type_selector(
+    enum_name_str: &String,
+    type_names: Vec<&str>,
+) -> proc_macro2::TokenStream {
+    let type_name = format_ident!("{}", enum_name_str);
+
+    // If any of the types are a fallback option, then one of the other types is likely the same type
+    // as the parent struct and so we'll need to box it.
+    let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
 
     let (variants, from_impls): (Vec<_>, Vec<_>) = type_names
         .iter()
@@ -120,6 +98,7 @@ pub(super) fn sanitize_type(
                 .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
 
             if use_box && t != FALLBACK_OPTION {
+                // This is likely the same type as the parent struct so we need to box it.
                 return (
                     quote! {
                         #name(Box<#inner_type>),
@@ -134,6 +113,7 @@ pub(super) fn sanitize_type(
                 );
             }
 
+            // No need to box.
             (
                 quote! {
                     #name(#inner_type),
@@ -150,47 +130,60 @@ pub(super) fn sanitize_type(
         .unzip();
 
     let additional_type = quote! {
-
-        // use super::utils::#type_deserializer_name;
-
         pub enum #type_name {
             #(#variants)*
         }
 
         #(#from_impls)*
     };
+    additional_type
+}
 
-    SanitizeTypeResult {
-        type_name: sanitize_type_inner(&format!("{}{}", type_name_str, type_name_suffix)),
-        additional_type: Some(additional_type),
-        type_deserializer_name: None, // Some(type_deserializer_name_str),
+fn get_type_has_shorthand(type_names: &[&str], relationships: &Relationships) -> bool {
+    for &t in type_names.iter() {
+        // If the class has a shorthand defined, return true.
+        if let Some(loaded_class) = relationships.classes.get(t) {
+            if loaded_class.value.shorthand.is_some() {
+                return true;
+            }
+        }
+
+        // If any of the class's descendants have a shorthand defined, return true.
+        if let Some(descendants) = relationships.descendants.get(t) {
+            if descendants.iter().any(|d| d.value.shorthand.is_some()) {
+                return true;
+            }
+        }
     }
+    false
 }
 
 fn type_without_modifiers(type_name: &str) -> (&str, &str) {
-    if type_name.strip_suffix("[]?").is_some() {
-        return (type_name.strip_suffix("[]?").unwrap(), "[]?");
+    const SUFFIXES: [&str; 3] = ["[]?", "?", "[]"];
+
+    for suffix in SUFFIXES.iter() {
+        if let Some(stripped) = type_name.strip_suffix(suffix) {
+            return (stripped, suffix);
+        }
     }
-    if type_name.strip_suffix('?').is_some() {
-        return (type_name.strip_suffix('?').unwrap(), "?");
-    }
-    if type_name.strip_suffix("[]").is_some() {
-        return (type_name.strip_suffix("[]").unwrap(), "[]");
-    }
+
     (type_name, "")
 }
 
 fn sanitize_type_inner(type_name: &str) -> String {
+    // If we have a question mark suffix, the type is optional.
     if let Some(prefix) = type_name.strip_suffix('?') {
-        // We don't wrap in an Option, because we do that when writing the property
-        // both based on the suffix and whether the property has a required field.
+        // We don't wrap in an Option here because we do that later when writing the property
+        // based on both the suffix and whether the property has a required field.
         return sanitize_type_inner(prefix);
     }
 
+    // If we have an array suffix, the type should be Vec.
     if let Some(prefix) = type_name.strip_suffix("[]") {
         return format!("Vec<{}>", sanitize_type_inner(prefix));
     }
 
+    // Map other Typescript types to Rust types.
     match type_name {
         "string" => "String".to_string(),
         "uri-reference" => "String".to_string(),

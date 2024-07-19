@@ -1,5 +1,5 @@
 #[allow(clippy::enum_variant_names)]
-mod generated;
+pub(super) mod generated;
 mod utils;
 
 #[cfg(test)]

@@ -253,8 +253,11 @@ impl From<FallbackOption> for ActionOrFallbackOption {
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ActionExecute {
-    #[serde(rename = "associatedInputs")]
-    pub associated_inputs: Option<AssociatedInputs>,
+    #[serde(
+        rename = "associatedInputs",
+        default = "ActionExecute::default_value_for_associated_inputs"
+    )]
+    pub associated_inputs: AssociatedInputs,
     #[serde(rename = "data")]
     pub data: Option<StringOrObject>,
     #[serde(rename = "fallback")]
@@ -263,10 +266,13 @@ pub struct ActionExecute {
     pub icon_url: Option<String>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isEnabled")]
-    pub is_enabled: Option<bool>,
-    #[serde(rename = "mode")]
-    pub mode: Option<ActionMode>,
+    #[serde(
+        rename = "isEnabled",
+        default = "ActionExecute::default_value_for_is_enabled"
+    )]
+    pub is_enabled: bool,
+    #[serde(rename = "mode", default = "ActionExecute::default_value_for_mode")]
+    pub mode: ActionMode,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "style")]
@@ -280,6 +286,21 @@ pub struct ActionExecute {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl ActionExecute {
+    fn default_value_for_associated_inputs() -> AssociatedInputs {
+        AssociatedInputs::Auto
+    }
+}
+impl ActionExecute {
+    fn default_value_for_is_enabled() -> bool {
+        true
+    }
+}
+impl ActionExecute {
+    fn default_value_for_mode() -> ActionMode {
+        ActionMode::Primary
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ActionOpenUrl {
@@ -289,10 +310,13 @@ pub struct ActionOpenUrl {
     pub icon_url: Option<String>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isEnabled")]
-    pub is_enabled: Option<bool>,
-    #[serde(rename = "mode")]
-    pub mode: Option<ActionMode>,
+    #[serde(
+        rename = "isEnabled",
+        default = "ActionOpenUrl::default_value_for_is_enabled"
+    )]
+    pub is_enabled: bool,
+    #[serde(rename = "mode", default = "ActionOpenUrl::default_value_for_mode")]
+    pub mode: ActionMode,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "style")]
@@ -306,6 +330,16 @@ pub struct ActionOpenUrl {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl ActionOpenUrl {
+    fn default_value_for_is_enabled() -> bool {
+        true
+    }
+}
+impl ActionOpenUrl {
+    fn default_value_for_mode() -> ActionMode {
+        ActionMode::Primary
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ActionShowCard {
@@ -317,10 +351,13 @@ pub struct ActionShowCard {
     pub icon_url: Option<String>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isEnabled")]
-    pub is_enabled: Option<bool>,
-    #[serde(rename = "mode")]
-    pub mode: Option<ActionMode>,
+    #[serde(
+        rename = "isEnabled",
+        default = "ActionShowCard::default_value_for_is_enabled"
+    )]
+    pub is_enabled: bool,
+    #[serde(rename = "mode", default = "ActionShowCard::default_value_for_mode")]
+    pub mode: ActionMode,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "style")]
@@ -332,11 +369,24 @@ pub struct ActionShowCard {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl ActionShowCard {
+    fn default_value_for_is_enabled() -> bool {
+        true
+    }
+}
+impl ActionShowCard {
+    fn default_value_for_mode() -> ActionMode {
+        ActionMode::Primary
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ActionSubmit {
-    #[serde(rename = "associatedInputs")]
-    pub associated_inputs: Option<AssociatedInputs>,
+    #[serde(
+        rename = "associatedInputs",
+        default = "ActionSubmit::default_value_for_associated_inputs"
+    )]
+    pub associated_inputs: AssociatedInputs,
     #[serde(rename = "data")]
     pub data: Option<StringOrObject>,
     #[serde(rename = "fallback")]
@@ -345,10 +395,13 @@ pub struct ActionSubmit {
     pub icon_url: Option<String>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isEnabled")]
-    pub is_enabled: Option<bool>,
-    #[serde(rename = "mode")]
-    pub mode: Option<ActionMode>,
+    #[serde(
+        rename = "isEnabled",
+        default = "ActionSubmit::default_value_for_is_enabled"
+    )]
+    pub is_enabled: bool,
+    #[serde(rename = "mode", default = "ActionSubmit::default_value_for_mode")]
+    pub mode: ActionMode,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "style")]
@@ -359,6 +412,21 @@ pub struct ActionSubmit {
     pub tooltip: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl ActionSubmit {
+    fn default_value_for_associated_inputs() -> AssociatedInputs {
+        AssociatedInputs::Auto
+    }
+}
+impl ActionSubmit {
+    fn default_value_for_is_enabled() -> bool {
+        true
+    }
+}
+impl ActionSubmit {
+    fn default_value_for_mode() -> ActionMode {
+        ActionMode::Primary
+    }
 }
 pub enum TargetElementOrString {
     TargetElement(TargetElement),
@@ -383,10 +451,13 @@ pub struct ActionToggleVisibility {
     pub icon_url: Option<String>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isEnabled")]
-    pub is_enabled: Option<bool>,
-    #[serde(rename = "mode")]
-    pub mode: Option<ActionMode>,
+    #[serde(
+        rename = "isEnabled",
+        default = "ActionToggleVisibility::default_value_for_is_enabled"
+    )]
+    pub is_enabled: bool,
+    #[serde(rename = "mode", default = "ActionToggleVisibility::default_value_for_mode")]
+    pub mode: ActionMode,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "style")]
@@ -399,6 +470,16 @@ pub struct ActionToggleVisibility {
     pub tooltip: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl ActionToggleVisibility {
+    fn default_value_for_is_enabled() -> bool {
+        true
+    }
+}
+impl ActionToggleVisibility {
+    fn default_value_for_mode() -> ActionMode {
+        ActionMode::Primary
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
@@ -439,8 +520,8 @@ pub struct ActionSet {
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "ActionSet::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "separator")]
@@ -449,6 +530,11 @@ pub struct ActionSet {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl ActionSet {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
 }
 pub enum BackgroundImageOrString {
     BackgroundImage(BackgroundImage),
@@ -591,8 +677,8 @@ pub struct Column {
     pub fallback: Option<ColumnOrFallbackOption>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "Column::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "items")]
     pub items: Option<Vec<Element>>,
     #[serde(rename = "minHeight")]
@@ -616,6 +702,11 @@ pub struct Column {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl Column {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet {
@@ -631,8 +722,8 @@ pub struct ColumnSet {
     pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "ColumnSet::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "minHeight")]
     pub min_height: Option<String>,
     #[serde(rename = "requires")]
@@ -648,6 +739,11 @@ pub struct ColumnSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl ColumnSet {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Container {
@@ -661,8 +757,8 @@ pub struct Container {
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "Container::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "items")]
     pub items: Vec<Element>,
     #[serde(rename = "minHeight")]
@@ -683,6 +779,11 @@ pub struct Container {
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl Container {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -755,8 +856,8 @@ pub struct FactSet {
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "FactSet::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "separator")]
@@ -765,6 +866,11 @@ pub struct FactSet {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl FactSet {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
@@ -801,14 +907,14 @@ pub struct Image {
     pub background_color: Option<String>,
     #[serde(rename = "fallback")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
-    pub height: Option<StringOrBlockElementHeight>,
+    #[serde(rename = "height", default = "Image::default_value_for_height")]
+    pub height: StringOrBlockElementHeight,
     #[serde(rename = "horizontalAlignment")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "Image::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "selectAction")]
@@ -828,6 +934,16 @@ pub struct Image {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl Image {
+    fn default_value_for_height() -> StringOrBlockElementHeight {
+        StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto)
+    }
+}
+impl Image {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ImageSet {
@@ -837,12 +953,12 @@ pub struct ImageSet {
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "imageSize")]
-    pub image_size: Option<ImageSize>,
+    #[serde(rename = "imageSize", default = "ImageSet::default_value_for_image_size")]
+    pub image_size: ImageSize,
     #[serde(rename = "images")]
     pub images: Vec<Image>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "ImageSet::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "separator")]
@@ -853,6 +969,16 @@ pub struct ImageSet {
     pub style: Option<ImageSetStyle>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl ImageSet {
+    fn default_value_for_image_size() -> ImageSize {
+        ImageSize::Medium
+    }
+}
+impl ImageSet {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
@@ -887,12 +1013,18 @@ pub struct InputChoiceSet {
     pub id: String,
     #[serde(rename = "inputStyle")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isMultiSelect")]
-    pub is_multi_select: Option<bool>,
+    #[serde(
+        rename = "isMultiSelect",
+        default = "InputChoiceSet::default_value_for_is_multi_select"
+    )]
+    pub is_multi_select: bool,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(
+        rename = "isVisible",
+        default = "InputChoiceSet::default_value_for_is_visible"
+    )]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -916,6 +1048,16 @@ pub struct InputChoiceSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl InputChoiceSet {
+    fn default_value_for_is_multi_select() -> bool {
+        false
+    }
+}
+impl InputChoiceSet {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputDate {
@@ -931,8 +1073,8 @@ pub struct InputDate {
     pub input_style: Option<InputStyle>,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "InputDate::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -956,6 +1098,11 @@ pub struct InputDate {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl InputDate {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputNumber {
@@ -971,8 +1118,8 @@ pub struct InputNumber {
     pub input_style: Option<InputStyle>,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "InputNumber::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -996,6 +1143,11 @@ pub struct InputNumber {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl InputNumber {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputText {
@@ -1011,12 +1163,15 @@ pub struct InputText {
     pub inline_action: Option<ISelectAction>,
     #[serde(rename = "inputStyle")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isMultiline")]
-    pub is_multiline: Option<bool>,
+    #[serde(
+        rename = "isMultiline",
+        default = "InputText::default_value_for_is_multiline"
+    )]
+    pub is_multiline: bool,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "InputText::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -1042,6 +1197,16 @@ pub struct InputText {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl InputText {
+    fn default_value_for_is_multiline() -> bool {
+        false
+    }
+}
+impl InputText {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputTime {
@@ -1057,8 +1222,8 @@ pub struct InputTime {
     pub input_style: Option<InputStyle>,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "InputTime::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -1082,6 +1247,11 @@ pub struct InputTime {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl InputTime {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputToggle {
@@ -1097,8 +1267,8 @@ pub struct InputToggle {
     pub input_style: Option<InputStyle>,
     #[serde(rename = "isRequired")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "InputToggle::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "label")]
     pub label: Option<String>,
     #[serde(rename = "labelPosition")]
@@ -1113,16 +1283,36 @@ pub struct InputToggle {
     pub spacing: Option<Spacing>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "value")]
-    pub value: Option<String>,
-    #[serde(rename = "valueOff")]
-    pub value_off: Option<String>,
-    #[serde(rename = "valueOn")]
-    pub value_on: Option<String>,
+    #[serde(rename = "value", default = "InputToggle::default_value_for_value")]
+    pub value: String,
+    #[serde(rename = "valueOff", default = "InputToggle::default_value_for_value_off")]
+    pub value_off: String,
+    #[serde(rename = "valueOn", default = "InputToggle::default_value_for_value_on")]
+    pub value_on: String,
     #[serde(rename = "wrap")]
     pub wrap: Option<bool>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl InputToggle {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
+impl InputToggle {
+    fn default_value_for_value() -> String {
+        String::from("false")
+    }
+}
+impl InputToggle {
+    fn default_value_for_value_off() -> String {
+        String::from("false")
+    }
+}
+impl InputToggle {
+    fn default_value_for_value_on() -> String {
+        String::from("true")
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
@@ -1209,8 +1399,8 @@ pub struct Media {
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "Media::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "poster")]
     pub poster: Option<String>,
     #[serde(rename = "requires")]
@@ -1223,6 +1413,11 @@ pub struct Media {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl Media {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -1281,8 +1476,11 @@ pub struct RichTextBlock {
     pub id: Option<String>,
     #[serde(rename = "inlines")]
     pub inlines: Vec<InlineOrString>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(
+        rename = "isVisible",
+        default = "RichTextBlock::default_value_for_is_visible"
+    )]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "separator")]
@@ -1292,6 +1490,11 @@ pub struct RichTextBlock {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+impl RichTextBlock {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Table {
@@ -1299,32 +1502,58 @@ pub struct Table {
     pub columns: Option<Vec<TableColumnDefinition>>,
     #[serde(rename = "fallback")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "firstRowAsHeader")]
-    pub first_row_as_header: Option<bool>,
-    #[serde(rename = "gridStyle")]
-    pub grid_style: Option<ContainerStyle>,
+    #[serde(
+        rename = "firstRowAsHeader",
+        default = "Table::default_value_for_first_row_as_header"
+    )]
+    pub first_row_as_header: bool,
+    #[serde(rename = "gridStyle", default = "Table::default_value_for_grid_style")]
+    pub grid_style: ContainerStyle,
     #[serde(rename = "height")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "horizontalCellContentAlignment")]
     pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isVisible", default = "Table::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "requires")]
     pub requires: Option<std::collections::HashMap<String, String>>,
     #[serde(rename = "rows")]
     pub rows: Option<Vec<TableRow>>,
     #[serde(rename = "separator")]
     pub separator: Option<bool>,
-    #[serde(rename = "showGridLines")]
-    pub show_grid_lines: Option<bool>,
+    #[serde(
+        rename = "showGridLines",
+        default = "Table::default_value_for_show_grid_lines"
+    )]
+    pub show_grid_lines: bool,
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "verticalCellContentAlignment")]
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl Table {
+    fn default_value_for_first_row_as_header() -> bool {
+        true
+    }
+}
+impl Table {
+    fn default_value_for_grid_style() -> ContainerStyle {
+        ContainerStyle::Default
+    }
+}
+impl Table {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
+impl Table {
+    fn default_value_for_show_grid_lines() -> bool {
+        true
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -1355,10 +1584,18 @@ pub struct TableColumnDefinition {
     pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "verticalCellContentAlignment")]
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
-    #[serde(rename = "width")]
-    pub width: Option<StringOrNumber>,
+    #[serde(
+        rename = "width",
+        default = "TableColumnDefinition::default_value_for_width"
+    )]
+    pub width: StringOrNumber,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl TableColumnDefinition {
+    fn default_value_for_width() -> StringOrNumber {
+        StringOrNumber::Number(1f64)
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -1399,10 +1636,10 @@ pub struct TextBlock {
     pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id")]
     pub id: Option<String>,
-    #[serde(rename = "isSubtle")]
-    pub is_subtle: Option<bool>,
-    #[serde(rename = "isVisible")]
-    pub is_visible: Option<bool>,
+    #[serde(rename = "isSubtle", default = "TextBlock::default_value_for_is_subtle")]
+    pub is_subtle: bool,
+    #[serde(rename = "isVisible", default = "TextBlock::default_value_for_is_visible")]
+    pub is_visible: bool,
     #[serde(rename = "maxLines")]
     pub max_lines: Option<f64>,
     #[serde(rename = "requires")]
@@ -1413,16 +1650,36 @@ pub struct TextBlock {
     pub size: Option<FontSize>,
     #[serde(rename = "spacing")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
-    pub style: Option<TextBlockStyle>,
+    #[serde(rename = "style", default = "TextBlock::default_value_for_style")]
+    pub style: TextBlockStyle,
     #[serde(rename = "text")]
     pub text: String,
     #[serde(rename = "weight")]
     pub weight: Option<FontWeight>,
-    #[serde(rename = "wrap")]
-    pub wrap: Option<bool>,
+    #[serde(rename = "wrap", default = "TextBlock::default_value_for_wrap")]
+    pub wrap: bool,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl TextBlock {
+    fn default_value_for_is_subtle() -> bool {
+        false
+    }
+}
+impl TextBlock {
+    fn default_value_for_is_visible() -> bool {
+        true
+    }
+}
+impl TextBlock {
+    fn default_value_for_style() -> TextBlockStyle {
+        TextBlockStyle::Default
+    }
+}
+impl TextBlock {
+    fn default_value_for_wrap() -> bool {
+        false
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -1433,8 +1690,8 @@ pub struct TextRun {
     pub font_type: Option<FontType>,
     #[serde(rename = "highlight")]
     pub highlight: Option<bool>,
-    #[serde(rename = "isSubtle")]
-    pub is_subtle: Option<bool>,
+    #[serde(rename = "isSubtle", default = "TextRun::default_value_for_is_subtle")]
+    pub is_subtle: bool,
     #[serde(rename = "italic")]
     pub italic: Option<bool>,
     #[serde(rename = "selectAction")]
@@ -1451,6 +1708,11 @@ pub struct TextRun {
     pub weight: Option<FontWeight>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+}
+impl TextRun {
+    fn default_value_for_is_subtle() -> bool {
+        false
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]

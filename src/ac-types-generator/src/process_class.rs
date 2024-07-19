@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+use convert_case::{Case, Casing};
 use quote::{format_ident, quote};
 use syn::{parse_str, Type};
 
@@ -25,13 +26,14 @@ pub(super) fn process_class(
         .get(&class.id)
         .unwrap_or_else(|| panic!("No descendants for {}", class.id));
 
-    let item_name = format_ident!("{}", class.type_name);
+    let struct_name = format_ident!("{}", class.type_name);
 
-    let mut additional_types = Vec::new();
+    let mut pre_struct_tokens = Vec::new();
+    let mut post_struct_tokens = Vec::new();
 
     let is_abstract = class.value.is_abstract.unwrap_or(false);
 
-    let item_tokens = if is_abstract {
+    let struct_tokens = if is_abstract {
         if descendants.is_empty() {
             panic!("Abstract class has no descendants: {}", class.id);
         };
@@ -64,7 +66,7 @@ pub(super) fn process_class(
         quote! {
             #[derive(serde::Deserialize)]
             #[serde(tag = "type")]
-            pub enum #item_name {
+            pub enum #struct_name {
                 #(#variants)*
             }
         }
@@ -94,7 +96,9 @@ pub(super) fn process_class(
                 None => (false, sanitize_field_ident(p.0), p.0.as_str()),
             };
 
-            let is_optional = is_optional || !p.1.required;
+            let default_value = p.1.default.clone();
+            let has_default_value = default_value.is_some();
+            let is_optional = (is_optional || !p.1.required) && !has_default_value;
             let has_shorthand = !p.1.shorthands.is_empty();
 
             let name = format_ident!("{}", name_str);
@@ -111,7 +115,7 @@ pub(super) fn process_class(
             );
 
             if let Some(additional_type) = sanitized_field_type.additional_type {
-                additional_types.push(additional_type);
+                pre_struct_tokens.push(additional_type);
             }
 
             let field_type_str = sanitized_field_type.type_name;
@@ -122,6 +126,28 @@ pub(super) fn process_class(
                 fields.push(quote! {
                     #[serde(rename = #json_name_str)]
                     pub #name: Option<#field_type>,
+                });
+            } else if let Some(default_value) = default_value {
+                let default_value_function = format!("default_value_for_{}", name);
+                let default_value_function_qualified =
+                    format!("{}::{}", struct_name, default_value_function);
+                let default_value_function_ident = format_ident!("{}", default_value_function);
+                let default_value_impl =
+                    get_default_value_impl(field_type_str, default_value, &field_type);
+
+                let default_value_function_tokens = quote! {
+                    impl #struct_name {
+                        fn #default_value_function_ident() -> #field_type {
+                            #default_value_impl
+                        }
+                    }
+                };
+
+                post_struct_tokens.push(default_value_function_tokens);
+
+                fields.push(quote! {
+                    #[serde(rename = #json_name_str, default = #default_value_function_qualified)]
+                    pub #name: #field_type,
                 });
             } else {
                 fields.push(quote! {
@@ -142,19 +168,94 @@ pub(super) fn process_class(
         quote! {
             #[derive(serde::Deserialize)]
             #[serde(deny_unknown_fields)]
-            pub struct #item_name {
+            pub struct #struct_name {
                 #(#fields)*
             }
         }
     };
 
     let result = quote! {
-        #(#additional_types)*
-
-        #item_tokens
+        #(#pre_struct_tokens)*
+        #struct_tokens
+        #(#post_struct_tokens)*
     };
 
     println!("{}", result);
 
     result
+}
+
+fn get_default_value_impl(
+    field_type_str: String,
+    default_value: serde_json::Value,
+    field_type: &Type,
+) -> proc_macro2::TokenStream {
+    match field_type_str.as_str() {
+        "String" => {
+            let default_value = default_value
+                .as_str()
+                .unwrap_or_else(|| panic!("Expected string default value: {:?}", default_value));
+            quote! { String::from(#default_value) }
+        }
+        "bool" => {
+            let default_value = default_value.as_bool().unwrap_or_else(|| {
+                panic!(
+                    "Expected {field_type_str} default value: {:?}",
+                    default_value
+                )
+            });
+            quote! { #default_value }
+        }
+        "u32" | "u64" => {
+            let default_value = default_value.as_u64().unwrap_or_else(|| {
+                panic!(
+                    "Expected {field_type_str} default value: {:?}",
+                    default_value
+                )
+            });
+            quote! { #default_value }
+        }
+        "f32" | "f64" => {
+            let default_value = default_value.as_f64().unwrap_or_else(|| {
+                panic!(
+                    "Expected {field_type_str} default value: {:?}",
+                    default_value
+                )
+            });
+            quote! { #default_value }
+        }
+        "StringOrNumber" => {
+            if let Some(default_value) = default_value.as_f64() {
+                quote! { StringOrNumber::Number(#default_value) }
+            } else {
+                let default_value = default_value.as_str().unwrap_or_else(|| {
+                    panic!(
+                        "Expected {field_type_str} default value: {:?}",
+                        default_value
+                    )
+                });
+                quote! { StringOrNumber::String(String::from(#default_value)) }
+            }
+        }
+        "StringOrBlockElementHeight" => {
+            let default_value = default_value.as_str().unwrap_or_else(|| {
+                panic!(
+                    "Expected {field_type_str} default value: {:?}",
+                    default_value
+                )
+            });
+            let default_value_ident = format_ident!("{}", default_value.to_case(Case::Pascal));
+            quote! { StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::#default_value_ident) }
+        }
+        _ => {
+            let default_value = default_value.as_str().unwrap_or_else(|| {
+                panic!(
+                    "Expected {field_type_str} default value: {:?}",
+                    default_value
+                )
+            });
+            let default_value_ident = format_ident!("{}", default_value.to_case(Case::Pascal));
+            quote! { #field_type::#default_value_ident }
+        }
+    }
 }

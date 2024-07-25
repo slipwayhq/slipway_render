@@ -5,8 +5,10 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+image.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+thiserror = "1.0.63"
 
 [build-dependencies]
 ac-types-generator = { path = "../ac-types-generator" }

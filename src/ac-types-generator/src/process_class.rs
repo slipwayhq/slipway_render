@@ -1,8 +1,9 @@
 use std::collections::HashSet;
 
 use convert_case::{Case, Casing};
+use proc_macro2::TokenStream;
 use quote::{format_ident, quote};
-use syn::{parse_str, Type};
+use syn::{parse_str, Ident, Type};
 
 use crate::{
     common_prefix::common_prefix,
@@ -11,6 +12,8 @@ use crate::{
     sanitize::{sanitize_field_ident, sanitize_type},
     typed_schema_types::Class,
 };
+
+const LAYOUTABLE_TYPES: [&str; 2] = ["Element", "ActiveCard"];
 
 pub(super) fn process_class(
     class: &Loaded<Class>,
@@ -33,6 +36,11 @@ pub(super) fn process_class(
 
     let is_abstract = class.value.is_abstract.unwrap_or(false);
 
+    let is_layoutable = LAYOUTABLE_TYPES.contains(&class.type_name.as_str())
+        || ancestors
+            .iter()
+            .any(|a| LAYOUTABLE_TYPES.contains(&a.type_name.as_str()));
+
     let struct_tokens = if is_abstract {
         if descendants.is_empty() {
             panic!("Abstract class has no descendants: {}", class.id);
@@ -48,20 +56,60 @@ pub(super) fn process_class(
 
         println!("Common prefix: {}", common_prefix);
 
-        let variants = descendants.iter().map(|&d| {
-            let name = format_ident!("{}", d.type_name);
-            let short_name_str = d
-                .type_name
-                .strip_prefix(&common_prefix)
-                .unwrap_or(&d.type_name);
-            let short_name = format_ident!("{}", short_name_str);
-            let id = &d.id;
+        struct VariantInfo {
+            ident: Ident,
+            is_abstract: bool,
+        }
 
-            quote! {
-                #[serde(rename = #id)]
-                #short_name(Box<#name>),
-            }
-        });
+        let (variants, variant_infos): (Vec<TokenStream>, Vec<VariantInfo>) = descendants
+            .iter()
+            .map(|&d| {
+                let name = format_ident!("{}", d.type_name);
+                let short_name_str = d
+                    .type_name
+                    .strip_prefix(&common_prefix)
+                    .unwrap_or(&d.type_name);
+                let short_name = format_ident!("{}", short_name_str);
+                let id = &d.id;
+
+                (
+                    quote! {
+                        #[serde(rename = #id)]
+                        #short_name(Box<#name>),
+                    },
+                    VariantInfo {
+                        ident: short_name,
+                        is_abstract: d.value.is_abstract.unwrap_or(false),
+                    },
+                )
+            })
+            .unzip();
+
+        if is_layoutable {
+            let match_tokens = variant_infos.iter().map(|v| {
+                let variant_ident = &v.ident;
+
+                if v.is_abstract {
+                    quote! {
+                        #struct_name::#variant_ident(inner) => inner.as_layoutable(),
+                    }
+                } else {
+                    quote! {
+                        #struct_name::#variant_ident(inner) => inner,
+                    }
+                }
+            });
+
+            post_struct_tokens.push(quote! {
+                impl #struct_name {
+                    pub fn as_layoutable(&self) -> &dyn crate::Layoutable {
+                        match self {
+                            #(#match_tokens)*
+                        }
+                    }
+                }
+            });
+        }
 
         quote! {
             #[derive(serde::Deserialize)]
@@ -162,6 +210,21 @@ pub(super) fn process_class(
             fields.push(quote! {
                 #[serde(rename = "type")]
                 pub type_: Option<String>,
+            });
+        }
+
+        if is_layoutable {
+            fields.push(quote! {
+                #[serde(skip)]
+                pub layout_data: core::cell::RefCell<crate::LayoutData>,
+            });
+
+            post_struct_tokens.push(quote! {
+                impl crate::Layoutable for #struct_name {
+                    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+                        &self.layout_data
+                    }
+                }
             });
         }
 

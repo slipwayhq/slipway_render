@@ -530,10 +530,17 @@ pub struct ActionSet {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl ActionSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for ActionSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 pub enum BackgroundImageOrString {
@@ -738,10 +745,17 @@ pub struct ColumnSet {
     pub style: Option<ContainerStyle>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl ColumnSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for ColumnSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -779,10 +793,17 @@ pub struct Container {
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl Container {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for Container {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -835,6 +856,29 @@ pub enum Element {
     #[serde(rename = "TextBlock")]
     TextBlock(Box<TextBlock>),
 }
+impl Element {
+    pub fn as_layoutable(&self) -> &dyn crate::Layoutable {
+        match self {
+            Element::ActionSet(inner) => inner,
+            Element::ColumnSet(inner) => inner,
+            Element::Container(inner) => inner,
+            Element::FactSet(inner) => inner,
+            Element::Image(inner) => inner,
+            Element::ImageSet(inner) => inner,
+            Element::InputChoiceSet(inner) => inner,
+            Element::InputDate(inner) => inner,
+            Element::InputNumber(inner) => inner,
+            Element::InputText(inner) => inner,
+            Element::InputTime(inner) => inner,
+            Element::InputToggle(inner) => inner,
+            Element::Input(inner) => inner.as_layoutable(),
+            Element::Media(inner) => inner,
+            Element::RichTextBlock(inner) => inner,
+            Element::Table(inner) => inner,
+            Element::TextBlock(inner) => inner,
+        }
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Fact {
@@ -866,10 +910,17 @@ pub struct FactSet {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl FactSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for FactSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -933,6 +984,8 @@ pub struct Image {
     pub width: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl Image {
     fn default_value_for_height() -> StringOrBlockElementHeight {
@@ -942,6 +995,11 @@ impl Image {
 impl Image {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for Image {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -969,6 +1027,8 @@ pub struct ImageSet {
     pub style: Option<ImageSetStyle>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl ImageSet {
     fn default_value_for_image_size() -> ImageSize {
@@ -978,6 +1038,11 @@ impl ImageSet {
 impl ImageSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for ImageSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1047,6 +1112,8 @@ pub struct InputChoiceSet {
     pub wrap: Option<bool>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputChoiceSet {
     fn default_value_for_is_multi_select() -> bool {
@@ -1056,6 +1123,11 @@ impl InputChoiceSet {
 impl InputChoiceSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for InputChoiceSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1097,10 +1169,17 @@ pub struct InputDate {
     pub value: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputDate {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for InputDate {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1142,10 +1221,17 @@ pub struct InputNumber {
     pub value: Option<f64>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputNumber {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for InputNumber {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1196,6 +1282,8 @@ pub struct InputText {
     pub value: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputText {
     fn default_value_for_is_multiline() -> bool {
@@ -1205,6 +1293,11 @@ impl InputText {
 impl InputText {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for InputText {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1246,10 +1339,17 @@ pub struct InputTime {
     pub value: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputTime {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for InputTime {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1293,6 +1393,8 @@ pub struct InputToggle {
     pub wrap: Option<bool>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl InputToggle {
     fn default_value_for_is_visible() -> bool {
@@ -1314,6 +1416,11 @@ impl InputToggle {
         String::from("true")
     }
 }
+impl crate::Layoutable for InputToggle {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
+    }
+}
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
 pub enum Input {
@@ -1329,6 +1436,18 @@ pub enum Input {
     Time(Box<InputTime>),
     #[serde(rename = "Input.Toggle")]
     Toggle(Box<InputToggle>),
+}
+impl Input {
+    pub fn as_layoutable(&self) -> &dyn crate::Layoutable {
+        match self {
+            Input::ChoiceSet(inner) => inner,
+            Input::Date(inner) => inner,
+            Input::Number(inner) => inner,
+            Input::Text(inner) => inner,
+            Input::Time(inner) => inner,
+            Input::Toggle(inner) => inner,
+        }
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
@@ -1413,10 +1532,17 @@ pub struct Media {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl Media {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for Media {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1489,10 +1615,17 @@ pub struct RichTextBlock {
     pub spacing: Option<Spacing>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl RichTextBlock {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+}
+impl crate::Layoutable for RichTextBlock {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1534,6 +1667,8 @@ pub struct Table {
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl Table {
     fn default_value_for_first_row_as_header() -> bool {
@@ -1553,6 +1688,11 @@ impl Table {
 impl Table {
     fn default_value_for_show_grid_lines() -> bool {
         true
+    }
+}
+impl crate::Layoutable for Table {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]
@@ -1660,6 +1800,8 @@ pub struct TextBlock {
     pub wrap: bool,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::LayoutData>,
 }
 impl TextBlock {
     fn default_value_for_is_subtle() -> bool {
@@ -1679,6 +1821,11 @@ impl TextBlock {
 impl TextBlock {
     fn default_value_for_wrap() -> bool {
         false
+    }
+}
+impl crate::Layoutable for TextBlock {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+        &self.layout_data
     }
 }
 #[derive(serde::Deserialize)]

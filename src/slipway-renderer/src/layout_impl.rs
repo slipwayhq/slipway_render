@@ -1,58 +1,47 @@
 use image::{ImageBuffer, Rgba};
 
-use crate::{layoutable::Layoutable, AdaptiveCard, Element, Rect, Size};
+use crate::{
+    errors::RenderError,
+    layoutable::{LayoutPath, Layoutable},
+    AdaptiveCard, Element, Rect, Size,
+};
 
-// impl Layoutable for AdaptiveCard {
-//     fn measure(&self, available_size: Size) -> Size {
-//         let mut desired_size = Size::new(0.0, 0.0);
+impl Layoutable for AdaptiveCard {
+    fn measure_override(
+        &self,
+        path: &LayoutPath,
+        available_size: Size,
+    ) -> Result<Size, RenderError> {
+        let mut size = Size::new(0.0, 0.0);
+        if let Some(body) = &self.body {
+            for element in body.iter() {
+                let desired_size = element.as_layoutable().measure(path, available_size)?;
+                size.width = size.width.max(desired_size.width);
+                size.height += desired_size.height;
+            }
+        }
+        Ok(size)
+    }
 
-//         for element in &self.body {
-//             let element_size = element.measure(available_size);
-//             desired_size.width = desired_size.width.max(element_size.width);
-//             desired_size.height += element_size.height;
-//         }
+    fn arrange_override(&self, path: &LayoutPath, final_rect: Rect) -> Result<Rect, RenderError> {
+        let mut y = final_rect.y;
+        if let Some(body) = &self.body {
+            for element in body.iter() {
+                let desired_size = element
+                    .as_layoutable()
+                    .layout_data()
+                    .borrow()
+                    .measure_result
+                    .as_ref()
+                    .expect("Element should have been measured before arranging")
+                    .desired_size;
 
-//         desired_size
-//     }
-
-//     fn arrange(&self, final_rect: Rect) -> Rect {
-//         let mut y = final_rect.y;
-
-//         for element in &self.body {
-//             let element_size = element.layout_data().borrow().actual_rect.unwrap();
-//             let element_rect = Rect::new(final_rect.x, y, final_rect.width, element_size.height);
-//             element.arrange(element_rect);
-//             y += element_size.height;
-//         }
-
-//         Rect::new(final_rect.x, final_rect.y, final_rect.width, y - final_rect.y)
-//     }
-
-//     fn draw(&self, rect: Rect, image: &mut ImageBuffer<Rgba<u8>, Vec<u8>>) {
-//         for element in &self.body {
-//             let element_rect = element.layout_data().borrow().actual_rect.unwrap();
-//             element.draw(element_rect, image);
-//         }
-//     }
-
-//     fn layout_data(&self) -> RefCell<LayoutData> {
-//         self.layout_data.clone()
-//     }
-// }
-
-// impl Element {
-//     fn as_layoutable(&self) -> &dyn Layoutable {
-//         match self {
-//             Element::TextBlock(e) => e,
-//             Element::Image(e) => e,
-//             Element::Container(e) => e,
-//             Element::ColumnSet(e) => e,
-//             Element::Column(e) => e,
-//             Element::FactSet(e) => e,
-//             Element::ImageSet(e) => e,
-//             Element::ActionSet(e) => e,
-//             Element::RichTextBlock(e) => e,
-//             Element::Custom(e) => e,
-//         }
-//     }
-// }
+                let element_rect =
+                    Rect::new(final_rect.x, y, final_rect.width, desired_size.height);
+                let actual_rect = element.as_layoutable().arrange(path, element_rect)?;
+                y += desired_size.height;
+            }
+        }
+        Ok(final_rect)
+    }
+}

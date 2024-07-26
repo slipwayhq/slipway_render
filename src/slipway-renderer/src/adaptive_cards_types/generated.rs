@@ -531,18 +531,19 @@ pub struct ActionSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl ActionSet {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for ActionSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for ActionSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for ActionSet {}
 pub enum BackgroundImageOrString {
     BackgroundImage(BackgroundImage),
     String(String),
@@ -592,6 +593,13 @@ pub struct AdaptiveCard {
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
+    #[serde(skip)]
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
+}
+impl crate::layoutable::HasLayoutData for AdaptiveCard {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
+        &self.layout_data
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -746,18 +754,19 @@ pub struct ColumnSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl ColumnSet {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for ColumnSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for ColumnSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for ColumnSet {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Container {
@@ -794,18 +803,19 @@ pub struct Container {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl Container {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for Container {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for Container {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for Container {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DataQuery {
@@ -857,7 +867,7 @@ pub enum Element {
     TextBlock(Box<TextBlock>),
 }
 impl Element {
-    pub fn as_layoutable(&self) -> &dyn crate::Layoutable {
+    pub fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -911,18 +921,19 @@ pub struct FactSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl FactSet {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for FactSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for FactSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for FactSet {}
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
 pub enum ISelectAction {
@@ -985,7 +996,7 @@ pub struct Image {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl Image {
     fn default_value_for_height() -> StringOrBlockElementHeight {
@@ -997,11 +1008,12 @@ impl Image {
         true
     }
 }
-impl crate::Layoutable for Image {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for Image {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for Image {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ImageSet {
@@ -1028,7 +1040,7 @@ pub struct ImageSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl ImageSet {
     fn default_value_for_image_size() -> ImageSize {
@@ -1040,11 +1052,12 @@ impl ImageSet {
         true
     }
 }
-impl crate::Layoutable for ImageSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for ImageSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for ImageSet {}
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
 pub enum Inline {
@@ -1113,7 +1126,7 @@ pub struct InputChoiceSet {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputChoiceSet {
     fn default_value_for_is_multi_select() -> bool {
@@ -1125,11 +1138,12 @@ impl InputChoiceSet {
         true
     }
 }
-impl crate::Layoutable for InputChoiceSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputChoiceSet {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputChoiceSet {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputDate {
@@ -1170,18 +1184,19 @@ pub struct InputDate {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputDate {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for InputDate {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputDate {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputDate {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputNumber {
@@ -1222,18 +1237,19 @@ pub struct InputNumber {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputNumber {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for InputNumber {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputNumber {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputNumber {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputText {
@@ -1283,7 +1299,7 @@ pub struct InputText {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputText {
     fn default_value_for_is_multiline() -> bool {
@@ -1295,11 +1311,12 @@ impl InputText {
         true
     }
 }
-impl crate::Layoutable for InputText {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputText {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputText {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputTime {
@@ -1340,18 +1357,19 @@ pub struct InputTime {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputTime {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for InputTime {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputTime {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputTime {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct InputToggle {
@@ -1394,7 +1412,7 @@ pub struct InputToggle {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl InputToggle {
     fn default_value_for_is_visible() -> bool {
@@ -1416,11 +1434,12 @@ impl InputToggle {
         String::from("true")
     }
 }
-impl crate::Layoutable for InputToggle {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for InputToggle {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for InputToggle {}
 #[derive(serde::Deserialize)]
 #[serde(tag = "type")]
 pub enum Input {
@@ -1438,7 +1457,7 @@ pub enum Input {
     Toggle(Box<InputToggle>),
 }
 impl Input {
-    pub fn as_layoutable(&self) -> &dyn crate::Layoutable {
+    pub fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -1533,18 +1552,19 @@ pub struct Media {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl Media {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for Media {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for Media {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for Media {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct MediaSource {
@@ -1616,18 +1636,19 @@ pub struct RichTextBlock {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl RichTextBlock {
     fn default_value_for_is_visible() -> bool {
         true
     }
 }
-impl crate::Layoutable for RichTextBlock {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for RichTextBlock {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for RichTextBlock {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Table {
@@ -1668,7 +1689,7 @@ pub struct Table {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl Table {
     fn default_value_for_first_row_as_header() -> bool {
@@ -1690,11 +1711,12 @@ impl Table {
         true
     }
 }
-impl crate::Layoutable for Table {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for Table {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for Table {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct TableCell {
@@ -1801,7 +1823,7 @@ pub struct TextBlock {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     #[serde(skip)]
-    pub layout_data: core::cell::RefCell<crate::LayoutData>,
+    pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
 }
 impl TextBlock {
     fn default_value_for_is_subtle() -> bool {
@@ -1823,11 +1845,12 @@ impl TextBlock {
         false
     }
 }
-impl crate::Layoutable for TextBlock {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::LayoutData> {
+impl crate::layoutable::HasLayoutData for TextBlock {
+    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
         &self.layout_data
     }
 }
+impl crate::layoutable::Layoutable for TextBlock {}
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct TextRun {

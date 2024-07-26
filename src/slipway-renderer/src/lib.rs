@@ -3,15 +3,6 @@ mod errors;
 mod layout_impl;
 mod layoutable;
 
-use std::path::Display;
-
-use image::{ImageBuffer, Rgba};
-use layoutable::LayoutData;
-use layoutable::Layoutable;
-use thiserror::Error;
-
-use serde::Deserialize;
-
 use adaptive_cards_types::generated::*;
 
 #[derive(PartialEq, Copy, Clone, Default, Debug)]

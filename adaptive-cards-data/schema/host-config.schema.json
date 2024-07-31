@@ -170,7 +170,7 @@
 				"value": {
 					"$ref": "#/definitions/FactSetTextConfig",
 					"default": {
-						"weight": "default",
+						"weight": "normal",
 						"size": "default",
 						"color": "default",
 						"fontType": "default",
@@ -410,9 +410,9 @@
 					"default": "default",
 					"description": "Font weight that should be used for this type of label",
 					"enum": [
-						"Lighter",
-						"Default",
-						"Bolder"
+						"lighter",
+						"default",
+						"bolder"
 					]
 				}
 			}
@@ -501,8 +501,12 @@
 					"default": "inline"
 				},
 				"style": {
-					"$ref": "#/definitions/ContainerStyleConfig",
-					"default": "emphasis"
+					"type": "string",
+					"default": "emphasis",
+					"enum": [
+						"default",
+						"emphasis"
+					]
 				},
 				"inlineTopMargin": {
 					"type": "integer",

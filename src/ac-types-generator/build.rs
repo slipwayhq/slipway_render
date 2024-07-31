@@ -28,9 +28,9 @@ fn copy_adaptive_card_typed_schema_types() {
     let src = Path::new("../../adaptive-cards-data/schema/typed-schema.schema.rs");
     let dst = Path::new("./src/typed_schema_types.rs");
 
-    if let Err(e) = fs::copy(src, dst) {
+    if let Err(e) = fs::rename(src, dst) {
         panic!(
-            "Failed to copy {} to {}: {}",
+            "Failed to move {} to {}: {}",
             src.display(),
             dst.display(),
             e

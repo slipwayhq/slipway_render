@@ -85,5 +85,5 @@ These define the Adaptive Cards schema in Typed Schema format.
 
 These come from here:
 
-https://github.com/microsoft/AdaptiveCards/tree/main/schemas/src
+https://github.com/microsoft/AdaptiveCards/tree/main/schemas
 

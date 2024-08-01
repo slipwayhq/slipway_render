@@ -1,14 +1,17 @@
 mod adaptive_cards_types;
 mod errors;
+mod host_config;
 mod layout_impl;
 mod layoutable;
 
 use adaptive_cards_types::generated::*;
 
+type SlipwayImage = image::RgbaImage;
+
 #[derive(PartialEq, Copy, Clone, Default, Debug)]
 struct Size {
-    width: f32,
-    height: f32,
+    width: u32,
+    height: u32,
 }
 
 impl std::fmt::Display for Size {
@@ -22,21 +25,23 @@ impl std::fmt::Display for Size {
 }
 
 impl Size {
-    fn new(width: f32, height: f32) -> Self {
+    fn new(width: u32, height: u32) -> Self {
         Self { width, height }
     }
 
-    fn is_invalid(&self) -> bool {
-        self.width.is_nan() || self.height.is_nan()
+    fn constrain(&self, max_size: Size) -> Size {
+        let width = self.width.min(max_size.width);
+        let height = self.height.min(max_size.height);
+        Size::new(width, height)
     }
 }
 
 #[derive(PartialEq, Copy, Clone, Default, Debug)]
 struct Rect {
-    x: f32,
-    y: f32,
-    width: f32,
-    height: f32,
+    x: u32,
+    y: u32,
+    width: u32,
+    height: u32,
 }
 
 impl std::fmt::Display for Rect {
@@ -50,7 +55,7 @@ impl std::fmt::Display for Rect {
 }
 
 impl Rect {
-    fn new(x: f32, y: f32, width: f32, height: f32) -> Self {
+    fn new(x: u32, y: u32, width: u32, height: u32) -> Self {
         Self {
             x,
             y,
@@ -59,8 +64,27 @@ impl Rect {
         }
     }
 
-    fn is_invalid(&self) -> bool {
-        self.x.is_nan() || self.y.is_nan() || self.width.is_nan() || self.height.is_nan()
+    fn constrain(&self, outer_rect: Rect) -> Rect {
+        let x = if self.x < outer_rect.x {
+            outer_rect.x
+        } else if self.x > outer_rect.x + outer_rect.width {
+            outer_rect.x + outer_rect.width
+        } else {
+            self.x
+        };
+
+        let y = if self.y < outer_rect.y {
+            outer_rect.y
+        } else if self.y > outer_rect.y + outer_rect.height {
+            outer_rect.y + outer_rect.height
+        } else {
+            self.y
+        };
+
+        let width = self.width.min(outer_rect.x + outer_rect.width - x);
+        let height = self.height.min(outer_rect.y + outer_rect.height - y);
+
+        Rect::new(x, y, width, height)
     }
 }
 

@@ -1,4 +1,5 @@
 mod adaptive_cards_types;
+mod element;
 mod errors;
 mod host_config;
 mod layout_impl;

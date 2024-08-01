@@ -14,6 +14,8 @@ use crate::{
     typed_schema_types::Class,
 };
 
+const ADAPTIVE_CARD_TYPE: &str = "AdaptiveCard";
+const IMAGE_TYPE: &str = "Image";
 const LAYOUTABLE_TYPES: [&str; 2] = ["Element", "AdaptiveCard"];
 const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 17] = [
     "ActionSet",
@@ -59,11 +61,17 @@ pub(super) fn process_class(
 
     let is_abstract = class.value.is_abstract.unwrap_or(false);
 
-    // Does this type need to support measure / arrange / draw?
+    // Does this type need to support measure / arrange / draw.
     let is_layoutable = LAYOUTABLE_TYPES.contains(&class.type_name.as_str())
         || ancestors
             .iter()
             .any(|a| LAYOUTABLE_TYPES.contains(&a.type_name.as_str()));
+
+    let is_adaptive_card = ADAPTIVE_CARD_TYPE == class.type_name
+        || ancestors.iter().any(|a| ADAPTIVE_CARD_TYPE == a.type_name);
+
+    let is_image =
+        IMAGE_TYPE == class.type_name || ancestors.iter().any(|a| IMAGE_TYPE == a.type_name);
 
     // If we're an abstract type, we will generate an enum instead of a struct.
     let struct_tokens = if is_abstract {
@@ -119,38 +127,52 @@ pub(super) fn process_class(
 
         // If this type needs to support layout...
         if is_layoutable {
-            // ... we need to generate a method to get the layoutable trait for the inner variant type.
-            let match_tokens = variant_infos.iter().map(|v| {
-                let variant_ident = &v.ident;
+            let mut generate_methods = Vec::new();
+            generate_methods.push((
+                format_ident!("as_layoutable"),
+                quote! { &dyn crate::layoutable::Layoutable },
+            ));
+            if !is_adaptive_card {
+                generate_methods.push((
+                    format_ident!("as_element"),
+                    quote! { &dyn crate::element::LayoutableElement },
+                ));
+            }
 
-                if v.is_abstract {
-                    // If the inner variant is abstract it is an enum, so call as_layoutable.
-                    quote! {
-                        #struct_name::#variant_ident(inner) => inner.as_layoutable(),
-                    }
-                } else {
-                    // Otherwise it will be a boxed struct, so we can just return it.
-                    quote! {
-                        #struct_name::#variant_ident(inner) => inner,
-                    }
-                }
-            });
+            for (as_name, as_type) in generate_methods {
+                // ... we need to generate a method to get the trait for the inner variant type.
+                let match_tokens = variant_infos.iter().map(|v| {
+                    let variant_ident = &v.ident;
 
-            // Generate the as_layoutable method.
-            post_struct_tokens.push(quote! {
-                impl #struct_name {
-                    pub fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
-                        match self {
-                            #(#match_tokens)*
+                    if v.is_abstract {
+                        // If the inner variant is abstract it is an enum, so call as_layoutable.
+                        quote! {
+                            #struct_name::#variant_ident(inner) => inner.#as_name(),
+                        }
+                    } else {
+                        // Otherwise it will be a boxed struct, so we can just return it.
+                        quote! {
+                            #struct_name::#variant_ident(inner) => inner,
                         }
                     }
-                }
-            });
+                });
+
+                // Generate the as_layoutable method.
+                post_struct_tokens.push(quote! {
+                    impl #struct_name {
+                        pub fn #as_name(&self) -> #as_type {
+                            match self {
+                                #(#match_tokens)*
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // Generate the enum.
         quote! {
-            #[derive(serde::Deserialize)]
+            #[derive(serde::Deserialize, Clone)]
             #[serde(tag = "type")]
             pub enum #struct_name {
                 #(#variants)*
@@ -291,11 +313,45 @@ pub(super) fn process_class(
                     }
                 });
             }
+
+            // If we're layoutable and not an adaptive card, implement the
+            // LayoutableElement trait for this type.
+            if !is_adaptive_card {
+                // If we're an image, we need to handle the height field differently
+                // as it is overridden and a different type to other elements.
+                let height_impl = if is_image {
+                    quote! { self.height.clone() }
+                } else {
+                    quote! {
+                        self.height
+                            .map(StringOrBlockElementHeight::BlockElementHeight)
+                            .unwrap_or(StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto))
+                    }
+                };
+
+                post_struct_tokens.push(quote! {
+                    impl crate::element::LayoutableElement for #struct_name {
+                        fn get_height(&self) -> StringOrBlockElementHeight {
+                            #height_impl
+                        }
+                        fn get_separator(&self) -> bool {
+                            self.separator.unwrap_or(false)
+                        }
+                        fn get_spacing(&self) -> Spacing {
+                            self.spacing.unwrap_or(Spacing::Default)
+                        }
+                        fn get_is_visible(&self) -> bool {
+                            self.is_visible
+                        }
+                    }
+
+                })
+            }
         }
 
         // Generate the struct.
         quote! {
-            #[derive(serde::Deserialize)]
+            #[derive(serde::Deserialize, Clone)]
             #[serde(deny_unknown_fields)]
             pub struct #struct_name {
                 #(#fields)*

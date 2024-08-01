@@ -1,12 +1,12 @@
 #![allow(dead_code)]
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ActionMode {
     #[serde(rename = "primary", alias = "Primary")]
     Primary,
     #[serde(rename = "secondary", alias = "Secondary")]
     Secondary,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ActionStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -15,21 +15,21 @@ pub enum ActionStyle {
     #[serde(rename = "destructive", alias = "Destructive")]
     Destructive,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum AssociatedInputs {
     #[serde(rename = "Auto", alias = "auto")]
     Auto,
     #[serde(rename = "None", alias = "none")]
     None,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum BlockElementHeight {
     #[serde(rename = "auto", alias = "Auto")]
     Auto,
     #[serde(rename = "stretch", alias = "Stretch")]
     Stretch,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ChoiceInputStyle {
     #[serde(rename = "compact", alias = "Compact")]
     Compact,
@@ -38,7 +38,7 @@ pub enum ChoiceInputStyle {
     #[serde(rename = "filtered", alias = "Filtered")]
     Filtered,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum Colors {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -55,7 +55,7 @@ pub enum Colors {
     #[serde(rename = "attention", alias = "Attention")]
     Attention,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ContainerStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -70,12 +70,12 @@ pub enum ContainerStyle {
     #[serde(rename = "accent", alias = "Accent")]
     Accent,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum FallbackOption {
     #[serde(rename = "drop", alias = "Drop")]
     Drop,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum FontSize {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -88,14 +88,14 @@ pub enum FontSize {
     #[serde(rename = "extraLarge", alias = "ExtraLarge")]
     ExtraLarge,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum FontType {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "monospace", alias = "Monospace")]
     Monospace,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum FontWeight {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -104,7 +104,7 @@ pub enum FontWeight {
     #[serde(rename = "bolder", alias = "Bolder")]
     Bolder,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum HorizontalAlignment {
     #[serde(rename = "left", alias = "Left")]
     Left,
@@ -113,7 +113,7 @@ pub enum HorizontalAlignment {
     #[serde(rename = "right", alias = "Right")]
     Right,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ImageFillMode {
     #[serde(rename = "cover", alias = "Cover")]
     Cover,
@@ -124,7 +124,7 @@ pub enum ImageFillMode {
     #[serde(rename = "repeat", alias = "Repeat")]
     Repeat,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ImageSetStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -133,7 +133,7 @@ pub enum ImageSetStyle {
     #[serde(rename = "grid", alias = "Grid")]
     Grid,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ImageSize {
     #[serde(rename = "auto", alias = "Auto")]
     Auto,
@@ -146,28 +146,28 @@ pub enum ImageSize {
     #[serde(rename = "large", alias = "Large")]
     Large,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum ImageStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "person", alias = "Person")]
     Person,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum InputLabelPosition {
     #[serde(rename = "inline", alias = "Inline")]
     Inline,
     #[serde(rename = "above", alias = "Above")]
     Above,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum InputStyle {
     #[serde(rename = "revealOnHover", alias = "RevealOnHover")]
     RevealOnHover,
     #[serde(rename = "default", alias = "Default")]
     Default,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum Spacing {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -184,14 +184,14 @@ pub enum Spacing {
     #[serde(rename = "padding", alias = "Padding")]
     Padding,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum TextBlockStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "heading", alias = "Heading")]
     Heading,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum TextInputStyle {
     #[serde(rename = "text", alias = "Text")]
     Text,
@@ -204,7 +204,7 @@ pub enum TextInputStyle {
     #[serde(rename = "password", alias = "Password")]
     Password,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum VerticalAlignment {
     #[serde(rename = "top", alias = "Top")]
     Top,
@@ -213,7 +213,7 @@ pub enum VerticalAlignment {
     #[serde(rename = "bottom", alias = "Bottom")]
     Bottom,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Copy, Clone)]
 pub enum VerticalContentAlignment {
     #[serde(rename = "top", alias = "Top")]
     Top,
@@ -222,6 +222,7 @@ pub enum VerticalContentAlignment {
     #[serde(rename = "bottom", alias = "Bottom")]
     Bottom,
 }
+#[derive(Clone)]
 pub enum StringOrObject {
     String(String),
     Object(serde_json::Value),
@@ -236,6 +237,7 @@ impl From<serde_json::Value> for StringOrObject {
         StringOrObject::Object(value)
     }
 }
+#[derive(Clone)]
 pub enum ActionOrFallbackOption {
     Action(Box<Action>),
     FallbackOption(FallbackOption),
@@ -250,7 +252,7 @@ impl From<FallbackOption> for ActionOrFallbackOption {
         ActionOrFallbackOption::FallbackOption(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionExecute {
     #[serde(
@@ -301,7 +303,7 @@ impl ActionExecute {
         ActionMode::Primary
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionOpenUrl {
     #[serde(rename = "fallback")]
@@ -340,7 +342,7 @@ impl ActionOpenUrl {
         ActionMode::Primary
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionShowCard {
     #[serde(rename = "card")]
@@ -379,7 +381,7 @@ impl ActionShowCard {
         ActionMode::Primary
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionSubmit {
     #[serde(
@@ -428,6 +430,7 @@ impl ActionSubmit {
         ActionMode::Primary
     }
 }
+#[derive(Clone)]
 pub enum TargetElementOrString {
     TargetElement(TargetElement),
     String(String),
@@ -442,7 +445,7 @@ impl From<String> for TargetElementOrString {
         TargetElementOrString::String(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionToggleVisibility {
     #[serde(rename = "fallback")]
@@ -481,7 +484,7 @@ impl ActionToggleVisibility {
         ActionMode::Primary
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum Action {
     #[serde(rename = "Action.Execute")]
@@ -495,6 +498,7 @@ pub enum Action {
     #[serde(rename = "Action.ToggleVisibility")]
     ToggleVisibility(Box<ActionToggleVisibility>),
 }
+#[derive(Clone)]
 pub enum ElementOrFallbackOption {
     Element(Box<Element>),
     FallbackOption(FallbackOption),
@@ -509,7 +513,7 @@ impl From<FallbackOption> for ElementOrFallbackOption {
         ElementOrFallbackOption::FallbackOption(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionSet {
     #[serde(rename = "actions")]
@@ -544,6 +548,25 @@ impl crate::layoutable::HasLayoutData for ActionSet {
     }
 }
 impl crate::layoutable::Layoutable for ActionSet {}
+impl crate::element::LayoutableElement for ActionSet {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(Clone)]
 pub enum BackgroundImageOrString {
     BackgroundImage(BackgroundImage),
     String(String),
@@ -558,7 +581,7 @@ impl From<String> for BackgroundImageOrString {
         BackgroundImageOrString::String(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AdaptiveCard {
     #[serde(rename = "$schema")]
@@ -601,7 +624,7 @@ impl crate::layoutable::HasLayoutData for AdaptiveCard {
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AuthCardButton {
     #[serde(rename = "image")]
@@ -613,7 +636,7 @@ pub struct AuthCardButton {
     #[serde(rename = "value")]
     pub value: String,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Authentication {
     #[serde(rename = "buttons")]
@@ -627,7 +650,7 @@ pub struct Authentication {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct BackgroundImage {
     #[serde(rename = "fillMode")]
@@ -641,7 +664,7 @@ pub struct BackgroundImage {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct CaptionSource {
     #[serde(rename = "label")]
@@ -653,6 +676,7 @@ pub struct CaptionSource {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+#[derive(Clone)]
 pub enum ColumnOrFallbackOption {
     Column(Box<Column>),
     FallbackOption(FallbackOption),
@@ -667,6 +691,7 @@ impl From<FallbackOption> for ColumnOrFallbackOption {
         ColumnOrFallbackOption::FallbackOption(value)
     }
 }
+#[derive(Clone)]
 pub enum StringOrNumber {
     String(String),
     Number(f64),
@@ -681,7 +706,7 @@ impl From<f64> for StringOrNumber {
         StringOrNumber::Number(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Column {
     #[serde(rename = "backgroundImage")]
@@ -722,7 +747,7 @@ impl Column {
         true
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet {
     #[serde(rename = "bleed")]
@@ -767,7 +792,25 @@ impl crate::layoutable::HasLayoutData for ColumnSet {
     }
 }
 impl crate::layoutable::Layoutable for ColumnSet {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for ColumnSet {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Container {
     #[serde(rename = "backgroundImage")]
@@ -816,7 +859,25 @@ impl crate::layoutable::HasLayoutData for Container {
     }
 }
 impl crate::layoutable::Layoutable for Container {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for Container {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DataQuery {
     #[serde(rename = "count")]
@@ -828,7 +889,7 @@ pub struct DataQuery {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum Element {
     #[serde(rename = "ActionSet")]
@@ -889,7 +950,30 @@ impl Element {
         }
     }
 }
-#[derive(serde::Deserialize)]
+impl Element {
+    pub fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+        match self {
+            Element::ActionSet(inner) => inner,
+            Element::ColumnSet(inner) => inner,
+            Element::Container(inner) => inner,
+            Element::FactSet(inner) => inner,
+            Element::Image(inner) => inner,
+            Element::ImageSet(inner) => inner,
+            Element::InputChoiceSet(inner) => inner,
+            Element::InputDate(inner) => inner,
+            Element::InputNumber(inner) => inner,
+            Element::InputText(inner) => inner,
+            Element::InputTime(inner) => inner,
+            Element::InputToggle(inner) => inner,
+            Element::Input(inner) => inner.as_element(),
+            Element::Media(inner) => inner,
+            Element::RichTextBlock(inner) => inner,
+            Element::Table(inner) => inner,
+            Element::TextBlock(inner) => inner,
+        }
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Fact {
     #[serde(rename = "title")]
@@ -899,7 +983,7 @@ pub struct Fact {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct FactSet {
     #[serde(rename = "facts")]
@@ -934,7 +1018,25 @@ impl crate::layoutable::HasLayoutData for FactSet {
     }
 }
 impl crate::layoutable::Layoutable for FactSet {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for FactSet {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum ISelectAction {
     #[serde(rename = "Action.Execute")]
@@ -946,6 +1048,7 @@ pub enum ISelectAction {
     #[serde(rename = "Action.ToggleVisibility")]
     ToggleVisibility(Box<ActionToggleVisibility>),
 }
+#[derive(Clone)]
 pub enum StringOrBlockElementHeight {
     String(String),
     BlockElementHeight(BlockElementHeight),
@@ -960,7 +1063,7 @@ impl From<BlockElementHeight> for StringOrBlockElementHeight {
         StringOrBlockElementHeight::BlockElementHeight(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Image {
     #[serde(rename = "altText")]
@@ -1014,7 +1117,21 @@ impl crate::layoutable::HasLayoutData for Image {
     }
 }
 impl crate::layoutable::Layoutable for Image {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for Image {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height.clone()
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ImageSet {
     #[serde(rename = "fallback")]
@@ -1058,13 +1175,31 @@ impl crate::layoutable::HasLayoutData for ImageSet {
     }
 }
 impl crate::layoutable::Layoutable for ImageSet {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for ImageSet {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum Inline {
     #[serde(rename = "TextRun")]
     TextRun(Box<TextRun>),
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputChoice {
     #[serde(rename = "title")]
@@ -1074,7 +1209,7 @@ pub struct InputChoice {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputChoiceSet {
     #[serde(rename = "choices")]
@@ -1144,7 +1279,25 @@ impl crate::layoutable::HasLayoutData for InputChoiceSet {
     }
 }
 impl crate::layoutable::Layoutable for InputChoiceSet {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputChoiceSet {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputDate {
     #[serde(rename = "errorMessage")]
@@ -1197,7 +1350,25 @@ impl crate::layoutable::HasLayoutData for InputDate {
     }
 }
 impl crate::layoutable::Layoutable for InputDate {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputDate {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputNumber {
     #[serde(rename = "errorMessage")]
@@ -1250,7 +1421,25 @@ impl crate::layoutable::HasLayoutData for InputNumber {
     }
 }
 impl crate::layoutable::Layoutable for InputNumber {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputNumber {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputText {
     #[serde(rename = "errorMessage")]
@@ -1317,7 +1506,25 @@ impl crate::layoutable::HasLayoutData for InputText {
     }
 }
 impl crate::layoutable::Layoutable for InputText {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputText {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputTime {
     #[serde(rename = "errorMessage")]
@@ -1370,7 +1577,25 @@ impl crate::layoutable::HasLayoutData for InputTime {
     }
 }
 impl crate::layoutable::Layoutable for InputTime {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputTime {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputToggle {
     #[serde(rename = "errorMessage")]
@@ -1440,7 +1665,25 @@ impl crate::layoutable::HasLayoutData for InputToggle {
     }
 }
 impl crate::layoutable::Layoutable for InputToggle {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for InputToggle {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum Input {
     #[serde(rename = "Input.ChoiceSet")]
@@ -1468,7 +1711,19 @@ impl Input {
         }
     }
 }
-#[derive(serde::Deserialize)]
+impl Input {
+    pub fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+        match self {
+            Input::ChoiceSet(inner) => inner,
+            Input::Date(inner) => inner,
+            Input::Number(inner) => inner,
+            Input::Text(inner) => inner,
+            Input::Time(inner) => inner,
+            Input::Toggle(inner) => inner,
+        }
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum Item {
     #[serde(rename = "Action.Execute")]
@@ -1524,7 +1779,7 @@ pub enum Item {
     #[serde(rename = "ToggleableItem")]
     ToggleableItem(Box<ToggleableItem>),
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Media {
     #[serde(rename = "altText")]
@@ -1565,7 +1820,25 @@ impl crate::layoutable::HasLayoutData for Media {
     }
 }
 impl crate::layoutable::Layoutable for Media {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for Media {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct MediaSource {
     #[serde(rename = "mimeType")]
@@ -1575,7 +1848,7 @@ pub struct MediaSource {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Metadata {
     #[serde(rename = "webUrl")]
@@ -1583,7 +1856,7 @@ pub struct Metadata {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Refresh {
     #[serde(rename = "action")]
@@ -1595,6 +1868,7 @@ pub struct Refresh {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
+#[derive(Clone)]
 pub enum InlineOrString {
     Inline(Inline),
     String(String),
@@ -1609,7 +1883,7 @@ impl From<String> for InlineOrString {
         InlineOrString::String(value)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct RichTextBlock {
     #[serde(rename = "fallback")]
@@ -1649,7 +1923,25 @@ impl crate::layoutable::HasLayoutData for RichTextBlock {
     }
 }
 impl crate::layoutable::Layoutable for RichTextBlock {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for RichTextBlock {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Table {
     #[serde(rename = "columns")]
@@ -1717,7 +2009,25 @@ impl crate::layoutable::HasLayoutData for Table {
     }
 }
 impl crate::layoutable::Layoutable for Table {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for Table {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableCell {
     #[serde(rename = "backgroundImage")]
@@ -1739,7 +2049,7 @@ pub struct TableCell {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableColumnDefinition {
     #[serde(rename = "horizontalCellContentAlignment")]
@@ -1759,7 +2069,7 @@ impl TableColumnDefinition {
         StringOrNumber::Number(1f64)
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableRow {
     #[serde(rename = "cells")]
@@ -1773,7 +2083,7 @@ pub struct TableRow {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TargetElement {
     #[serde(rename = "elementId")]
@@ -1783,7 +2093,7 @@ pub struct TargetElement {
     #[serde(rename = "type")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextBlock {
     #[serde(rename = "color")]
@@ -1851,7 +2161,25 @@ impl crate::layoutable::HasLayoutData for TextBlock {
     }
 }
 impl crate::layoutable::Layoutable for TextBlock {}
-#[derive(serde::Deserialize)]
+impl crate::element::LayoutableElement for TextBlock {
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height
+            .map(StringOrBlockElementHeight::BlockElementHeight)
+            .unwrap_or(
+                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
+            )
+    }
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextRun {
     #[serde(rename = "color")]
@@ -1884,7 +2212,7 @@ impl TextRun {
         false
     }
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(tag = "type")]
 pub enum ToggleableItem {
     #[serde(rename = "ActionSet")]
@@ -1926,7 +2254,7 @@ pub enum ToggleableItem {
     #[serde(rename = "TextBlock")]
     TextBlock(Box<TextBlock>),
 }
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TokenExchangeResource {
     #[serde(rename = "id")]

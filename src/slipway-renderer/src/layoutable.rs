@@ -201,7 +201,7 @@ pub(super) trait HasLayoutData {
     fn layout_data(&self) -> &RefCell<LayoutData>;
 }
 
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub(super) struct LayoutData {
     pub measure_result: Option<MeasureResult>,
     pub arrange_result: Option<ArrangeResult>,

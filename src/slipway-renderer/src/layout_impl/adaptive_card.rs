@@ -17,13 +17,11 @@ impl Layoutable for AdaptiveCard {
         available_size: Size,
     ) -> Result<Size, RenderError> {
         let body_context = context.for_child_str("body");
-        let spacing = context.host_config.spacing.default();
 
         let mut size = Size::new(0, 0);
-        let mut has_child = false;
         if let Some(body) = &self.body {
             for (i, element) in body.iter().enumerate() {
-                has_child = true;
+                let spacing = context.host_config.spacing.from(element.as_element());
                 let element_context = body_context.for_child(i.to_string());
                 let desired_size = element
                     .as_layoutable()
@@ -31,11 +29,6 @@ impl Layoutable for AdaptiveCard {
                 size.width = size.width.max(desired_size.width);
                 size.height += desired_size.height + spacing;
             }
-        }
-
-        // Remove the spacing after the final child.
-        if has_child {
-            size.height -= spacing;
         }
 
         Ok(size)
@@ -47,7 +40,6 @@ impl Layoutable for AdaptiveCard {
         final_rect: Rect,
     ) -> Result<Rect, RenderError> {
         let body_context = context.for_child_str("body");
-        let spacing = context.host_config.spacing.default();
 
         let mut child_rect = final_rect;
         let mut previous_child_height = 0;
@@ -55,6 +47,8 @@ impl Layoutable for AdaptiveCard {
         if let Some(body) = &self.body {
             for (i, element) in body.iter().enumerate() {
                 let element_context = body_context.for_child(i.to_string());
+
+                let spacing = context.host_config.spacing.from(element.as_element());
 
                 let desired_size = element
                     .as_layoutable()

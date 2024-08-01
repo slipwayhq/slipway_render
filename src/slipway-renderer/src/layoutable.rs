@@ -77,9 +77,10 @@ pub(super) trait Layoutable: HasLayoutData {
             };
         }
 
-        // We pass in a Rect rather than a Size, unline in the Avalonia reference, because
-        // we only have horizonal / vertical alignment information in the implementing
-        // struct, not in the Layoutable trait.
+        // We pass in a Rect rather than a Size, unlike in the Avalonia reference, because
+        // we only have horizontal / vertical alignment information in the implementing
+        // struct, not in the Layoutable trait. Therefore the result of `arrange_override`
+        // needs to include x and y coordinates not just width and height.
         let final_rect_at_origin = Rect::new(0, 0, final_rect.width, final_rect.height);
         let actual_rect_at_origin = self.arrange_override(context, final_rect_at_origin)?;
         let actual_rect = actual_rect_at_origin.constrain(final_rect);

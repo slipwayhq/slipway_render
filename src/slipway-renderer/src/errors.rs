@@ -1,5 +1,6 @@
 use std::rc::Rc;
 
+use image::ImageError;
 use thiserror::Error;
 
 use crate::layoutable::LayoutPath;
@@ -7,20 +8,20 @@ use crate::layoutable::LayoutPath;
 #[derive(Error, Debug)]
 pub enum RenderError {
     #[error("Measure failed for {path}:\n{message}")]
-    MeasureError {
+    Other {
         path: Rc<LayoutPath>,
         message: String,
     },
 
-    #[error("Arrange failed for {path}:\n{message}")]
-    ArrangeError {
-        path: Rc<LayoutPath>,
-        message: String,
-    },
+    #[error("Measure result not found for {path}")]
+    MeasureResultNotFound { path: Rc<LayoutPath> },
 
-    #[error("Draw failed for {path}:\n{message}")]
-    DrawError {
+    #[error("Arrange result not found for {path}")]
+    ArrangeResultNotFound { path: Rc<LayoutPath> },
+
+    #[error("Image operation failed for {path}:\n{inner}")]
+    ImageError {
         path: Rc<LayoutPath>,
-        message: String,
+        inner: ImageError,
     },
 }

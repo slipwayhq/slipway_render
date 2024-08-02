@@ -1,14 +1,14 @@
 use std::{cell::RefCell, rc::Rc};
 
-use image::{GenericImage, ImageBuffer, Rgba, SubImage};
+use image::{GenericImage, GenericImageView, ImageBuffer, Rgba, SubImage};
 use std::fmt;
 
-use crate::{errors::RenderError, host_config::HostConfig, Rect, Size, SlipwayImage};
+use crate::{errors::RenderError, host_config::HostConfig, rect::Rect, size::Size, SlipwayImage};
 
 fn render(
     host_config: &HostConfig,
     target: &dyn Layoutable,
-    image: &mut ImageBuffer<Rgba<u8>, Vec<u8>>,
+    image: &mut SlipwayImage,
 ) -> Result<(), RenderError> {
     let context = LayoutContext {
         host_config,
@@ -24,8 +24,7 @@ fn render(
         Rect::new(0, 0, available_size.width, available_size.height),
     )?;
 
-    let mut sub_image = image.sub_image(0, 0, available_size.width, available_size.height);
-    target.draw(&context, &mut sub_image)?;
+    target.draw(&context, image)?;
     Ok(())
 }
 
@@ -44,9 +43,9 @@ pub(super) trait Layoutable: HasLayoutData {
             }
         }
 
-        let desired_size = self
-            .measure_override(context, available_size)?
-            .constrain(available_size);
+        // We don't constrain the desired size to the available size here, because we want
+        // to allow elements with minHeight to be able to express that they want more space.
+        let desired_size = self.measure_override(context, available_size)?;
 
         let mut data_mut = layout_data.borrow_mut();
         data_mut.measure_result = Some(MeasureResult {
@@ -64,9 +63,8 @@ pub(super) trait Layoutable: HasLayoutData {
             let data = layout_data.borrow();
 
             let Some(_measure_result) = &data.measure_result else {
-                return Err(RenderError::ArrangeError {
+                return Err(RenderError::MeasureResultNotFound {
                     path: context.path.clone(),
-                    message: "measure result not set.".to_string(),
                 });
             };
 
@@ -83,7 +81,7 @@ pub(super) trait Layoutable: HasLayoutData {
         // needs to include x and y coordinates not just width and height.
         let final_rect_at_origin = Rect::new(0, 0, final_rect.width, final_rect.height);
         let actual_rect_at_origin = self.arrange_override(context, final_rect_at_origin)?;
-        let actual_rect = actual_rect_at_origin.constrain(final_rect);
+        let actual_rect = actual_rect_at_origin.move_inside(final_rect);
 
         let mut data_mut = layout_data.borrow_mut();
         data_mut.arrange_result = Some(ArrangeResult {
@@ -94,22 +92,26 @@ pub(super) trait Layoutable: HasLayoutData {
         Ok(actual_rect)
     }
 
-    fn draw(
+    fn draw<'image>(
         &self,
         context: &LayoutContext,
-        image: &mut SubImage<&mut SlipwayImage>,
+        image: &'image mut SlipwayImage,
     ) -> Result<(), RenderError> {
         let layout_data = self.layout_data();
         let data = layout_data.borrow();
 
-        if data.arrange_result.is_none() {
-            return Err(RenderError::ArrangeError {
+        let Some(arrange_result) = &data.arrange_result else {
+            return Err(RenderError::ArrangeResultNotFound {
                 path: context.path.clone(),
-                message: "arrange result not set.".to_string(),
             });
         };
 
-        self.draw_override(context, image)?;
+        let image_rect = Rect::new(0, 0, image.width(), image.height());
+        let actual_rect = arrange_result.actual_rect;
+
+        if let Some(_) = image_rect.overlap(actual_rect) {
+            self.draw_override(context, image)?;
+        }
 
         Ok(())
     }
@@ -142,7 +144,7 @@ pub(super) trait Layoutable: HasLayoutData {
     fn draw_override(
         &self,
         context: &LayoutContext,
-        _image: &mut SubImage<&mut SlipwayImage>,
+        _image: &mut SlipwayImage,
     ) -> Result<(), RenderError> {
         unimplemented!("draw_override not implemented for {}", context.path.clone());
     }
@@ -158,11 +160,7 @@ impl<T: Layoutable> Layoutable for Box<T> {
         self.as_ref().arrange(context, final_rect)
     }
 
-    fn draw(
-        &self,
-        context: &LayoutContext,
-        image: &mut SubImage<&mut SlipwayImage>,
-    ) -> Result<(), RenderError> {
+    fn draw(&self, context: &LayoutContext, image: &mut SlipwayImage) -> Result<(), RenderError> {
         self.as_ref().draw(context, image)
     }
 
@@ -185,7 +183,7 @@ impl<T: Layoutable> Layoutable for Box<T> {
     fn draw_override(
         &self,
         context: &LayoutContext,
-        image: &mut SubImage<&mut SlipwayImage>,
+        image: &mut SlipwayImage,
     ) -> Result<(), RenderError> {
         self.as_ref().draw_override(context, image)
     }
@@ -199,6 +197,22 @@ impl<T: HasLayoutData> HasLayoutData for Box<T> {
 
 pub(super) trait HasLayoutData {
     fn layout_data(&self) -> &RefCell<LayoutData>;
+    fn desired_size(&self) -> Size {
+        self.layout_data()
+            .borrow()
+            .measure_result
+            .as_ref()
+            .expect("Element should have been measured")
+            .desired_size
+    }
+    fn actual_rect(&self) -> Rect {
+        self.layout_data()
+            .borrow()
+            .arrange_result
+            .as_ref()
+            .expect("Element should have been arranged")
+            .actual_rect
+    }
 }
 
 #[derive(Default, Debug, Clone)]

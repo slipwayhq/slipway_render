@@ -2,11 +2,19 @@ use image::{GenericImage, ImageBuffer, Rgba, SubImage};
 
 use crate::{
     errors::RenderError,
-    layoutable::{LayoutContext, Layoutable},
-    AdaptiveCard, Element, Rect, Size, SlipwayImage,
+    layoutable::{HasLayoutData, LayoutContext, Layoutable},
+    masked_image::MaskedImage,
+    rect::Rect,
+    size::Size,
+    AdaptiveCard, BlockElementHeight, Element, SlipwayImage, StringOrBlockElementHeight,
 };
 
 use super::ValidSpacing;
+
+struct IndexedElement<'a> {
+    index: usize,
+    element: &'a Element,
+}
 
 impl Layoutable for AdaptiveCard {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -19,15 +27,83 @@ impl Layoutable for AdaptiveCard {
         let body_context = context.for_child_str("body");
 
         let mut size = Size::new(0, 0);
+
         if let Some(body) = &self.body {
-            for (i, element) in body.iter().enumerate() {
+            let mut remaining_height = available_size.height;
+            let indexed_elements = body
+                .iter()
+                .enumerate()
+                .map(|(index, element)| IndexedElement { index, element })
+                .collect::<Vec<_>>();
+
+            let (stretched_children, non_stretched_children): (Vec<_>, Vec<_>) = indexed_elements
+                .iter()
+                .filter(|e| e.element.as_element().get_is_visible())
+                .partition(|e| {
+                    matches!(
+                        e.element.as_element().get_height(),
+                        StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Stretch)
+                    )
+                });
+
+            for IndexedElement { index, element } in non_stretched_children.iter() {
                 let spacing = context.host_config.spacing.from(element.as_element());
-                let element_context = body_context.for_child(i.to_string());
-                let desired_size = element
-                    .as_layoutable()
-                    .measure(&element_context, available_size)?;
+                let element_context = body_context.for_child(index.to_string());
+                let desired_size = element.as_layoutable().measure(
+                    &element_context,
+                    Size {
+                        width: available_size.width,
+                        height: remaining_height.saturating_sub(spacing),
+                    },
+                )?;
+
+                let height_with_spacing = desired_size.height + spacing;
+
                 size.width = size.width.max(desired_size.width);
-                size.height += desired_size.height + spacing;
+                size.height += height_with_spacing;
+                remaining_height = remaining_height.saturating_sub(height_with_spacing);
+            }
+
+            let mut remaining_stretched_children = stretched_children;
+
+            // We will keep measuring the stretched elements until they fit within the available height.
+            while !remaining_stretched_children.is_empty() {
+                let stretched_children_count = remaining_stretched_children.len();
+                let stretched_children_height = remaining_height / stretched_children_count as u32;
+
+                let mut new_remaining_stretched_children = Vec::new();
+
+                for item in remaining_stretched_children.into_iter() {
+                    let IndexedElement { index, element } = item;
+                    let spacing = context.host_config.spacing.from(element.as_element());
+                    let element_context = body_context.for_child(index.to_string());
+                    let desired_size = element.as_layoutable().measure(
+                        &element_context,
+                        Size {
+                            width: available_size.width,
+                            height: stretched_children_height.saturating_sub(spacing),
+                        },
+                    )?;
+
+                    let height_with_spacing = desired_size.height + spacing;
+
+                    // If the desired height is greater than the available stretched height,
+                    // then we need to re-measure the other stretched elements with the remaining height.
+                    if height_with_spacing > stretched_children_height {
+                        size.width = size.width.max(desired_size.width);
+                        size.height += height_with_spacing;
+                        remaining_height = remaining_height.saturating_sub(height_with_spacing);
+                    } else {
+                        new_remaining_stretched_children.push(item);
+                    }
+                }
+
+                // All elements were within available stretched height, so we can break.
+                if stretched_children_count == new_remaining_stretched_children.len() {
+                    break;
+                }
+
+                remaining_stretched_children = new_remaining_stretched_children;
             }
         }
 
@@ -45,23 +121,20 @@ impl Layoutable for AdaptiveCard {
         let mut previous_child_height = 0;
 
         if let Some(body) = &self.body {
-            for (i, element) in body.iter().enumerate() {
+            for (i, element) in body
+                .iter()
+                .enumerate() // Enumerate before filtering, so the index is correct.
+                .filter(|(_, e)| e.as_element().get_is_visible())
+            {
                 let element_context = body_context.for_child(i.to_string());
 
                 let spacing = context.host_config.spacing.from(element.as_element());
 
-                let desired_size = element
-                    .as_layoutable()
-                    .layout_data()
-                    .borrow()
-                    .measure_result
-                    .as_ref()
-                    .expect("Element should have been measured before arranging")
-                    .desired_size;
+                let desired_size = element.as_layoutable().desired_size();
 
                 child_rect.y += previous_child_height;
                 child_rect.height = desired_size.height;
-                child_rect.width = final_rect.width.max(desired_size.width);
+                child_rect.width = final_rect.width.min(desired_size.width);
 
                 previous_child_height = desired_size.height + spacing;
 
@@ -73,38 +146,66 @@ impl Layoutable for AdaptiveCard {
         Ok(final_rect)
     }
 
-    fn draw_override(
+    fn draw_override<'image>(
         &self,
         context: &LayoutContext,
-        image: &mut SubImage<&mut SlipwayImage>,
+        image: &'image mut SlipwayImage,
     ) -> Result<(), RenderError> {
         let body_context = context.for_child_str("body");
 
+        let actual_rect = self.actual_rect();
+
         if let Some(body) = &self.body {
-            for (i, element) in body.iter().enumerate() {
+            for (i, element) in body
+                .iter()
+                .enumerate() // Enumerate before filtering, so the index is correct.
+                .filter(|(_, e)| e.as_element().get_is_visible())
+            {
                 let element_context = body_context.for_child(i.to_string());
+                let element_rect = element.as_layoutable().actual_rect();
 
-                let element_rect = element
-                    .as_layoutable()
-                    .layout_data()
-                    .borrow()
-                    .arrange_result
-                    .as_ref()
-                    .expect("Element should have been arranged before drawing")
-                    .actual_rect;
+                let maybe_overlap = actual_rect.overlap(element_rect);
 
-                let mut sub_image = image.sub_image(
-                    element_rect.x,
-                    element_rect.y,
-                    element_rect.width,
-                    element_rect.height,
-                );
+                let Some(overlap) = maybe_overlap else {
+                    continue;
+                };
+
+                let mut child_image = MaskedImage::<'image>::new(image, overlap);
 
                 element
                     .as_layoutable()
-                    .draw(&element_context, &mut sub_image)?;
+                    .draw(&element_context, &mut child_image)?;
             }
         }
         Ok(())
     }
 }
+
+// Test:
+// {
+//     "type": "AdaptiveCard",
+//     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+//     "version": "1.5",
+//     "minHeight": "800px",
+//     "body": [
+//         {
+//             "type": "Container"
+//         },
+//         {
+//             "type": "Container",
+//             "height": "stretch"
+//         },
+//         {
+//             "type": "Container",
+//             "height": "stretch"
+//         },
+//         {
+//             "type": "Container",
+//             "minHeight": "300px",
+//             "height": "stretch"
+//         },
+//         {
+//             "type": "Container"
+//         }
+//     ]
+// }

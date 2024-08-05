@@ -1,14 +1,17 @@
 use std::{cell::RefCell, rc::Rc};
 
-use image::{GenericImage, GenericImageView, ImageBuffer, Rgba, SubImage};
 use std::fmt;
 
-use crate::{errors::RenderError, host_config::HostConfig, rect::Rect, size::Size, SlipwayImage};
+use crate::masked_image::MaskedImage;
+use crate::{
+    errors::RenderError, host_config::HostConfig, masked_image::SlipwayCanvas, rect::Rect,
+    size::Size,
+};
 
 fn render(
     host_config: &HostConfig,
     target: &dyn Layoutable,
-    image: &mut SlipwayImage,
+    image: Rc<RefCell<MaskedImage>>,
 ) -> Result<(), RenderError> {
     let context = LayoutContext {
         host_config,
@@ -17,7 +20,8 @@ fn render(
             previous: None,
         }),
     };
-    let available_size = Size::new(image.width(), image.height());
+    let (width, height) = image.dimensions();
+    let available_size = Size::new(width, height);
     target.measure(&context, available_size)?;
     target.arrange(
         &context,
@@ -95,7 +99,7 @@ pub(super) trait Layoutable: HasLayoutData {
     fn draw<'image>(
         &self,
         context: &LayoutContext,
-        image: &'image mut SlipwayImage,
+        image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         let layout_data = self.layout_data();
         let data = layout_data.borrow();
@@ -106,7 +110,8 @@ pub(super) trait Layoutable: HasLayoutData {
             });
         };
 
-        let image_rect = Rect::new(0, 0, image.width(), image.height());
+        let (width, height) = image.dimensions();
+        let image_rect = Rect::new(0, 0, width, height);
         let actual_rect = arrange_result.actual_rect;
 
         if let Some(_) = image_rect.overlap(actual_rect) {
@@ -141,10 +146,10 @@ pub(super) trait Layoutable: HasLayoutData {
     }
 
     /// Returns the image bytes.
-    fn draw_override(
+    fn draw_override<'image>(
         &self,
         context: &LayoutContext,
-        _image: &mut SlipwayImage,
+        _image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         unimplemented!("draw_override not implemented for {}", context.path.clone());
     }
@@ -160,7 +165,11 @@ impl<T: Layoutable> Layoutable for Box<T> {
         self.as_ref().arrange(context, final_rect)
     }
 
-    fn draw(&self, context: &LayoutContext, image: &mut SlipwayImage) -> Result<(), RenderError> {
+    fn draw(
+        &self,
+        context: &LayoutContext,
+        image: Rc<RefCell<MaskedImage>>,
+    ) -> Result<(), RenderError> {
         self.as_ref().draw(context, image)
     }
 
@@ -183,7 +192,7 @@ impl<T: Layoutable> Layoutable for Box<T> {
     fn draw_override(
         &self,
         context: &LayoutContext,
-        image: &mut SlipwayImage,
+        image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         self.as_ref().draw_override(context, image)
     }

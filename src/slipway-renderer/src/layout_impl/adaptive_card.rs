@@ -1,3 +1,5 @@
+use std::{cell::RefCell, rc::Rc};
+
 use image::{GenericImage, ImageBuffer, Rgba, SubImage};
 
 use crate::{
@@ -6,7 +8,7 @@ use crate::{
     masked_image::MaskedImage,
     rect::Rect,
     size::Size,
-    AdaptiveCard, BlockElementHeight, Element, SlipwayImage, StringOrBlockElementHeight,
+    AdaptiveCard, BlockElementHeight, Element, StringOrBlockElementHeight,
 };
 
 use super::ValidSpacing;
@@ -146,10 +148,10 @@ impl Layoutable for AdaptiveCard {
         Ok(final_rect)
     }
 
-    fn draw_override<'image>(
+    fn draw_override(
         &self,
         context: &LayoutContext,
-        image: &'image mut SlipwayImage,
+        image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         let body_context = context.for_child_str("body");
 
@@ -170,11 +172,11 @@ impl Layoutable for AdaptiveCard {
                     continue;
                 };
 
-                let mut child_image = MaskedImage::<'image>::new(image, overlap);
+                let child_image = MaskedImage::from_mask(image.clone(), overlap);
 
                 element
                     .as_layoutable()
-                    .draw(&element_context, &mut child_image)?;
+                    .draw(&element_context, child_image)?;
             }
         }
         Ok(())

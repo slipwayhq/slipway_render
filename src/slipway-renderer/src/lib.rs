@@ -9,10 +9,6 @@ mod rect;
 mod size;
 
 use adaptive_cards_types::generated::*;
-use imageproc::drawing::Canvas;
-
-type SlipwayImage = dyn Canvas<Pixel = image::Rgba<u8>>;
-// type SlipwayImage<'a> = MaskedImage<'a>;
 
 // #[cfg(test)]
 // mod tests {

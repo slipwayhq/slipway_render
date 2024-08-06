@@ -1,3 +1,6 @@
+// Allow unused code
+#![allow(dead_code)]
+
 mod adaptive_cards_types;
 mod element;
 mod errors;

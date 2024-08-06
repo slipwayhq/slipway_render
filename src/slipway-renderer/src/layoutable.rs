@@ -75,7 +75,7 @@ pub(super) trait Layoutable: HasLayoutData {
         Ok(actual_rect)
     }
 
-    fn draw<'image>(
+    fn draw(
         &self,
         context: &LayoutContext,
         image: Rc<RefCell<MaskedImage>>,
@@ -93,7 +93,7 @@ pub(super) trait Layoutable: HasLayoutData {
         let image_rect = Rect::at(0, 0).of_size(width, height);
         let actual_rect = arrange_result.actual_rect;
 
-        if let Some(_) = image_rect.intersect(actual_rect) {
+        if image_rect.intersect(actual_rect).is_some() {
             self.draw_override(context, image)?;
         }
 
@@ -125,7 +125,7 @@ pub(super) trait Layoutable: HasLayoutData {
     }
 
     /// Returns the image bytes.
-    fn draw_override<'image>(
+    fn draw_override(
         &self,
         context: &LayoutContext,
         _image: Rc<RefCell<MaskedImage>>,
@@ -243,7 +243,7 @@ impl<'hc> LayoutContext<'hc> {
 }
 
 #[derive(Clone, Debug)]
-pub(super) struct LayoutPath {
+pub struct LayoutPath {
     pub current: String,
     pub previous: Option<Rc<LayoutPath>>,
 }

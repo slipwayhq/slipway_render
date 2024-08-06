@@ -1,6 +1,5 @@
 use std::{cell::RefCell, rc::Rc};
 
-use image::{GenericImage, ImageBuffer, Rgba, SubImage};
 use imageproc::rect::Rect;
 
 use crate::{

@@ -4,6 +4,8 @@ mod adaptive_card;
 
 trait ValidSpacing {
     fn from(&self, element: &dyn LayoutableElement) -> u32;
+
+    #[allow(clippy::wrong_self_convention)]
     fn from_spacing(&self, spacing: Spacing) -> u32;
 }
 

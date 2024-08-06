@@ -1,12 +1,12 @@
 use std::{cell::RefCell, rc::Rc};
 
 use image::{GenericImage, ImageBuffer, Rgba, SubImage};
+use imageproc::rect::Rect;
 
 use crate::{
     errors::RenderError,
     layoutable::{HasLayoutData, LayoutContext, Layoutable},
     masked_image::MaskedImage,
-    rect::Rect,
     size::Size,
     AdaptiveCard, BlockElementHeight, Element, StringOrBlockElementHeight,
 };
@@ -31,7 +31,7 @@ impl Layoutable for AdaptiveCard {
         let mut size = Size::new(0, 0);
 
         if let Some(body) = &self.body {
-            let mut remaining_height = available_size.height;
+            let mut remaining_height = available_size.height();
             let indexed_elements = body
                 .iter()
                 .enumerate()
@@ -53,16 +53,18 @@ impl Layoutable for AdaptiveCard {
                 let element_context = body_context.for_child(index.to_string());
                 let desired_size = element.as_layoutable().measure(
                     &element_context,
-                    Size {
-                        width: available_size.width,
-                        height: remaining_height.saturating_sub(spacing),
-                    },
+                    Size::new(
+                        available_size.width(),
+                        remaining_height.saturating_sub(spacing),
+                    ),
                 )?;
 
-                let height_with_spacing = desired_size.height + spacing;
+                let height_with_spacing = desired_size.height() + spacing;
 
-                size.width = size.width.max(desired_size.width);
-                size.height += height_with_spacing;
+                size = Size::new(
+                    size.width().max(desired_size.width()),
+                    size.height() + height_with_spacing,
+                );
                 remaining_height = remaining_height.saturating_sub(height_with_spacing);
             }
 
@@ -81,19 +83,21 @@ impl Layoutable for AdaptiveCard {
                     let element_context = body_context.for_child(index.to_string());
                     let desired_size = element.as_layoutable().measure(
                         &element_context,
-                        Size {
-                            width: available_size.width,
-                            height: stretched_children_height.saturating_sub(spacing),
-                        },
+                        Size::new(
+                            available_size.width(),
+                            stretched_children_height.saturating_sub(spacing),
+                        ),
                     )?;
 
-                    let height_with_spacing = desired_size.height + spacing;
+                    let height_with_spacing = desired_size.height() + spacing;
 
                     // If the desired height is greater than the available stretched height,
                     // then we need to re-measure the other stretched elements with the remaining height.
                     if height_with_spacing > stretched_children_height {
-                        size.width = size.width.max(desired_size.width);
-                        size.height += height_with_spacing;
+                        size = Size::new(
+                            size.width().max(desired_size.width()),
+                            size.height() + height_with_spacing,
+                        );
                         remaining_height = remaining_height.saturating_sub(height_with_spacing);
                     } else {
                         new_remaining_stretched_children.push(item);
@@ -120,7 +124,7 @@ impl Layoutable for AdaptiveCard {
         let body_context = context.for_child_str("body");
 
         let mut child_rect = final_rect;
-        let mut previous_child_height = 0;
+        let mut previous_child_height: u32 = 0;
 
         if let Some(body) = &self.body {
             for (i, element) in body
@@ -134,11 +138,17 @@ impl Layoutable for AdaptiveCard {
 
                 let desired_size = element.as_layoutable().desired_size();
 
-                child_rect.y += previous_child_height;
-                child_rect.height = desired_size.height;
-                child_rect.width = final_rect.width.min(desired_size.width);
+                child_rect = Rect::at(
+                    child_rect.left(),
+                    child_rect.top()
+                        + i32::try_from(previous_child_height).expect("height was too large"),
+                )
+                .of_size(
+                    final_rect.width().min(desired_size.width()),
+                    desired_size.height(),
+                );
 
-                previous_child_height = desired_size.height + spacing;
+                previous_child_height = desired_size.height() + spacing;
 
                 element
                     .as_layoutable()
@@ -166,13 +176,14 @@ impl Layoutable for AdaptiveCard {
                 let element_context = body_context.for_child(i.to_string());
                 let element_rect = element.as_layoutable().actual_rect();
 
-                let maybe_overlap = actual_rect.overlap(element_rect);
+                let maybe_intersection = actual_rect.intersect(element_rect);
 
-                let Some(overlap) = maybe_overlap else {
+                let Some(intersection) = maybe_intersection else {
+                    // If there is no overlap, we can skip drawing the element.
                     continue;
                 };
 
-                let child_image = MaskedImage::from_mask(image.clone(), overlap);
+                let child_image = MaskedImage::from_mask(image.clone(), intersection);
 
                 element
                     .as_layoutable()

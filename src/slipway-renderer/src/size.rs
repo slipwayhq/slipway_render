@@ -1,7 +1,7 @@
 #[derive(PartialEq, Copy, Clone, Default, Debug)]
 pub(super) struct Size {
-    pub width: u32,
-    pub height: u32,
+    width: u32,
+    height: u32,
 }
 
 impl std::fmt::Display for Size {
@@ -23,5 +23,41 @@ impl Size {
         let width = self.width.min(max_size.width);
         let height = self.height.min(max_size.height);
         Size::new(width, height)
+    }
+
+    pub fn width(&self) -> u32 {
+        self.width
+    }
+
+    pub fn height(&self) -> u32 {
+        self.height
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn constrain_should_limit_size() {
+        assert_eq!(
+            Size::new(100, 200).constrain(Size::new(50, 100)),
+            Size::new(50, 100)
+        );
+
+        assert_eq!(
+            Size::new(100, 200).constrain(Size::new(200, 100)),
+            Size::new(100, 100)
+        );
+
+        assert_eq!(
+            Size::new(100, 200).constrain(Size::new(50, 300)),
+            Size::new(50, 200)
+        );
+
+        assert_eq!(
+            Size::new(100, 200).constrain(Size::new(200, 300)),
+            Size::new(100, 200)
+        );
     }
 }

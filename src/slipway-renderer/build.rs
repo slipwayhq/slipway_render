@@ -38,7 +38,7 @@ fn generate_host_config_types() {
 fn copy_host_config_types() {
     // Copy the generated typed schema types to the src directory
     let src = Path::new("../../adaptive-cards-data/schema/host-config.schema.rs");
-    let dst = Path::new("./src/host_config.rs");
+    let dst = Path::new("./src/host_config/generated.rs");
 
     if let Err(e) = fs::rename(src, dst) {
         panic!(

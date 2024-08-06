@@ -2,35 +2,14 @@ use std::{cell::RefCell, rc::Rc};
 
 use std::fmt;
 
+use imageproc::rect::Rect;
+
 use crate::masked_image::MaskedImage;
+use crate::rect::MoveableFromOrigin;
 use crate::{
-    errors::RenderError, host_config::HostConfig, masked_image::SlipwayCanvas, rect::Rect,
+    errors::RenderError, host_config::generated::HostConfig, masked_image::SlipwayCanvas,
     size::Size,
 };
-
-fn render(
-    host_config: &HostConfig,
-    target: &dyn Layoutable,
-    image: Rc<RefCell<MaskedImage>>,
-) -> Result<(), RenderError> {
-    let context = LayoutContext {
-        host_config,
-        path: Rc::new(LayoutPath {
-            current: "root".to_string(),
-            previous: None,
-        }),
-    };
-    let (width, height) = image.dimensions();
-    let available_size = Size::new(width, height);
-    target.measure(&context, available_size)?;
-    target.arrange(
-        &context,
-        Rect::new(0, 0, available_size.width, available_size.height),
-    )?;
-
-    target.draw(&context, image)?;
-    Ok(())
-}
 
 pub(super) trait Layoutable: HasLayoutData {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Base/Layout/Layoutable.cs#L356
@@ -83,9 +62,9 @@ pub(super) trait Layoutable: HasLayoutData {
         // we only have horizontal / vertical alignment information in the implementing
         // struct, not in the Layoutable trait. Therefore the result of `arrange_override`
         // needs to include x and y coordinates not just width and height.
-        let final_rect_at_origin = Rect::new(0, 0, final_rect.width, final_rect.height);
+        let final_rect_at_origin = Rect::at(0, 0).of_size(final_rect.width(), final_rect.height());
         let actual_rect_at_origin = self.arrange_override(context, final_rect_at_origin)?;
-        let actual_rect = actual_rect_at_origin.move_inside(final_rect);
+        let actual_rect = actual_rect_at_origin.move_from_origin_into(final_rect);
 
         let mut data_mut = layout_data.borrow_mut();
         data_mut.arrange_result = Some(ArrangeResult {
@@ -111,10 +90,10 @@ pub(super) trait Layoutable: HasLayoutData {
         };
 
         let (width, height) = image.dimensions();
-        let image_rect = Rect::new(0, 0, width, height);
+        let image_rect = Rect::at(0, 0).of_size(width, height);
         let actual_rect = arrange_result.actual_rect;
 
-        if let Some(_) = image_rect.overlap(actual_rect) {
+        if let Some(_) = image_rect.intersect(actual_rect) {
             self.draw_override(context, image)?;
         }
 
@@ -265,8 +244,8 @@ impl<'hc> LayoutContext<'hc> {
 
 #[derive(Clone, Debug)]
 pub(super) struct LayoutPath {
-    current: String,
-    previous: Option<Rc<LayoutPath>>,
+    pub current: String,
+    pub previous: Option<Rc<LayoutPath>>,
 }
 
 impl fmt::Display for LayoutPath {

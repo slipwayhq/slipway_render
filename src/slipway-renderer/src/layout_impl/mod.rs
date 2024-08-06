@@ -1,4 +1,4 @@
-use crate::{element::LayoutableElement, host_config::SpacingsConfig, Spacing};
+use crate::{element::LayoutableElement, host_config::generated::SpacingsConfig, Spacing};
 
 mod adaptive_card;
 

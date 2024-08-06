@@ -6,8 +6,8 @@ mod layout_impl;
 mod layoutable;
 mod masked_image;
 mod rect;
+pub mod render;
 mod size;
-
 use adaptive_cards_types::generated::*;
 
 // #[cfg(test)]

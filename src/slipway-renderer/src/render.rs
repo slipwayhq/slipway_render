@@ -7,7 +7,7 @@ use crate::{
     errors::RenderError,
     host_config::generated::HostConfig,
     layoutable::{LayoutContext, LayoutPath, Layoutable},
-    masked_image::MaskedImage,
+    masked_image::{Ejectable, MaskedImage},
     size::Size,
     AdaptiveCard,
 };
@@ -17,7 +17,7 @@ pub fn render(
     target: &str,
     width: u32,
     height: u32,
-) -> Result<(), RenderError> {
+) -> Result<RgbaImage, RenderError> {
     let size = Size::new(width, height);
     let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
     let context = LayoutContext {
@@ -35,6 +35,9 @@ pub fn render(
     )?;
 
     let masked_image = MaskedImage::from_image(image);
-    target.draw(&context, masked_image)?;
-    Ok(())
+    target.draw(&context, masked_image.clone())?;
+
+    let image = masked_image.eject()?;
+
+    Ok(image)
 }

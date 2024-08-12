@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use crate::rect::SlipwayRegion;
+use crate::{errors::RenderError, rect::SlipwayRegion, utils::extract_from_rc_refcell};
 use image::{Rgba, RgbaImage};
 use imageproc::{drawing::Canvas, rect::Rect};
 
@@ -28,6 +28,17 @@ impl MaskedImage {
             mask,
         }))
     }
+
+    pub fn eject(self) -> Result<RgbaImage, RenderError> {
+        match self.image {
+            MaskOrImage::Mask(mask) => extract_from_rc_refcell(mask)
+                .ok_or(RenderError::ImageReferenceCountNotOne)?
+                .eject(),
+            MaskOrImage::Image(image) => {
+                extract_from_rc_refcell(image).ok_or(RenderError::ImageReferenceCountNotOne)
+            }
+        }
+    }
 }
 
 trait Maskable {
@@ -36,10 +47,19 @@ trait Maskable {
 
 impl Maskable for Rc<RefCell<MaskedImage>> {
     fn mask(self, mask: Rect) -> Rc<RefCell<MaskedImage>> {
-        Rc::new(RefCell::new(MaskedImage {
-            image: MaskOrImage::Mask(self.clone()),
-            mask,
-        }))
+        MaskedImage::from_mask(self, mask)
+    }
+}
+
+pub(super) trait Ejectable<T> {
+    fn eject(self) -> Result<T, RenderError>;
+}
+
+impl Ejectable<RgbaImage> for Rc<RefCell<MaskedImage>> {
+    fn eject(self) -> Result<RgbaImage, RenderError> {
+        extract_from_rc_refcell(self)
+            .ok_or(RenderError::ImageReferenceCountNotOne)?
+            .eject()
     }
 }
 
@@ -103,15 +123,13 @@ mod tests {
     use std::cell::RefCell;
     use std::rc::Rc;
 
-    // Helper function to create a new RgbaImage
     fn create_image(width: u32, height: u32, color: Rgba<u8>) -> Rc<RefCell<RgbaImage>> {
         let image = ImageBuffer::from_fn(width, height, |_, _| color);
         Rc::new(RefCell::new(image))
     }
 
-    // Test creating MaskedImage from an RgbaImage
     #[test]
-    fn test_create_from_image() {
+    fn create_from_image() {
         let width = 10;
         let height = 10;
         let image = create_image(width, height, Rgba([255, 255, 255, 255]));
@@ -130,9 +148,8 @@ mod tests {
         assert_eq!(m.mask.height(), 5);
     }
 
-    // Test creating MaskedImage from another MaskedImage
     #[test]
-    fn test_create_from_mask() {
+    fn create_from_mask() {
         let base_image = create_image(10, 10, Rgba([255, 0, 0, 255]));
         let base_mask = Rect::at(0, 0).of_size(10, 10);
         let base_masked_image = MaskedImage::from_image(base_image).mask(base_mask);
@@ -151,9 +168,8 @@ mod tests {
         assert_eq!(m.mask.height(), 5);
     }
 
-    // Test drawing pixels inside and outside the mask
     #[test]
-    fn test_draw_pixel() {
+    fn draw_pixel() {
         let image = create_image(10, 10, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
         let masked_image = MaskedImage::from_image(image.clone()).mask(mask);
@@ -171,9 +187,8 @@ mod tests {
         assert_eq!(image.borrow().get_pixel(1, 1), &Rgba([255, 255, 255, 255]));
     }
 
-    // Test getting pixel values
     #[test]
-    fn test_get_pixel() {
+    fn get_pixel() {
         let image = create_image(10, 10, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
         let masked_image = MaskedImage::from_image(image.clone()).mask(mask);
@@ -188,9 +203,8 @@ mod tests {
         assert_eq!(masked_image.borrow().get_pixel(1, 1), Rgba([0, 0, 0, 0]));
     }
 
-    // Test dimensions
     #[test]
-    fn test_dimensions() {
+    fn dimensions() {
         let image = create_image(8, 6, Rgba([0, 0, 255, 255]));
         let mask = Rect::at(1, 1).of_size(3, 3);
         let masked_image = MaskedImage::from_image(image.clone()).mask(mask);

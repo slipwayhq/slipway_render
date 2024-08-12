@@ -12,6 +12,7 @@ mod rect;
 pub mod render;
 mod size;
 use adaptive_cards_types::generated::*;
+mod utils;
 
 // #[cfg(test)]
 // mod tests {

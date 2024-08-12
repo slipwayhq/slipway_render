@@ -193,6 +193,62 @@ impl Layoutable for AdaptiveCard {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    type HostConfigBuilder = crate::host_config::generated::builder::HostConfig;
+    use crate::{host_config::generated::HostConfig, render::render};
+
+    #[test]
+    fn mixed_container_heights() {
+        let json_data = r#"
+        {
+            "type": "AdaptiveCard",
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "version": "1.5",
+            "minHeight": "800px",
+            "body": [
+                {
+                    "type": "Container",
+                    "items": []
+                },
+                {
+                    "type": "Container",
+                    "height": "stretch",
+                    "style": "attention",
+                    "items": []
+                },
+                {
+                    "type": "Container",
+                    "height": "stretch",
+                    "items": []
+                },
+                {
+                    "type": "Container",
+                    "minHeight": "300px",
+                    "height": "stretch",
+                    "style": "attention",
+                    "items": []
+                },
+                {
+                    "type": "Container",
+                    "items": []
+                }
+            ]
+        }"#;
+
+        let image = render(
+            &HostConfig::try_from(HostConfigBuilder::default()).unwrap(),
+            json_data,
+            500,
+            800,
+        )
+        .unwrap();
+
+        // Save image to file output.png
+        image.save("output.png").unwrap();
+    }
+}
+
 // Test:
 // {
 //     "type": "AdaptiveCard",

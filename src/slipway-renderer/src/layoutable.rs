@@ -227,6 +227,16 @@ pub(super) struct LayoutContext<'hc> {
 }
 
 impl<'hc> LayoutContext<'hc> {
+    pub fn new(host_config: &'hc HostConfig) -> Self {
+        LayoutContext {
+            host_config,
+            path: Rc::new(LayoutPath {
+                current: "root".to_string(),
+                previous: None,
+            }),
+        }
+    }
+
     pub fn for_child_str(&self, child_name: &str) -> Self {
         self.for_child(child_name.to_string())
     }
@@ -252,7 +262,7 @@ impl fmt::Display for LayoutPath {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.current)?;
         if let Some(previous) = self.previous.as_ref() {
-            write!(f, ".{}", previous)?;
+            write!(f, " <- {}", previous)?;
         }
         Ok(())
     }

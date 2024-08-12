@@ -19,6 +19,9 @@ pub enum RenderError {
     #[error("Arrange result not found for {path}")]
     ArrangeResultNotFound { path: Rc<LayoutPath> },
 
+    #[error("The image reference count was not 1 after all rendering completed")]
+    ImageReferenceCountNotOne,
+
     #[error("Image operation failed for {path}:\n{inner}")]
     ImageError {
         path: Rc<LayoutPath>,

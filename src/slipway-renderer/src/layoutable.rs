@@ -3,177 +3,122 @@ use std::{cell::RefCell, rc::Rc};
 use std::fmt;
 
 use imageproc::rect::Rect;
+use taffy::{Layout, NodeId, TaffyTree};
 
+use crate::errors::TaffyErrorToRenderError;
 use crate::masked_image::MaskedImage;
-use crate::rect::MoveableFromOrigin;
 use crate::{
     errors::RenderError, host_config::generated::HostConfig, masked_image::SlipwayCanvas,
     size::Size,
 };
 
 pub(super) trait Layoutable: HasLayoutData {
-    // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Base/Layout/Layoutable.cs#L356
-
-    fn measure(&self, context: &LayoutContext, available_size: Size) -> Result<Size, RenderError> {
+    fn layout(
+        &self,
+        context: &LayoutContext,
+        tree: &mut TaffyTree<()>,
+    ) -> Result<NodeId, RenderError> {
         let layout_data = self.layout_data();
 
-        {
-            let data = layout_data.borrow();
-            if let Some(measure_result) = &data.measure_result {
-                if measure_result.previous_measure.eq(&available_size) {
-                    return Ok(measure_result.desired_size);
-                }
-            }
-        }
-
-        // We don't constrain the desired size to the available size here, because we want
-        // to allow elements with minHeight to be able to express that they want more space.
-        let desired_size = self.measure_override(context, available_size)?;
+        let node_id = self.layout_override(context, tree)?;
 
         let mut data_mut = layout_data.borrow_mut();
-        data_mut.measure_result = Some(MeasureResult {
-            desired_size,
-            previous_measure: available_size,
-        });
+        data_mut.node_id = Some(node_id);
 
-        Ok(desired_size)
+        Ok(node_id)
     }
 
-    fn arrange(&self, context: &LayoutContext, final_rect: Rect) -> Result<Rect, RenderError> {
-        let layout_data = self.layout_data();
-
-        {
-            let data = layout_data.borrow();
-
-            let Some(_measure_result) = &data.measure_result else {
-                return Err(RenderError::MeasureResultNotFound {
-                    path: context.path.clone(),
-                });
-            };
-
-            if let Some(arrange_result) = &data.arrange_result {
-                if arrange_result.previous_arrange.eq(&final_rect) {
-                    return Ok(arrange_result.actual_rect);
-                }
-            };
-        }
-
-        // We pass in a Rect rather than a Size, unlike in the Avalonia reference, because
-        // we only have horizontal / vertical alignment information in the implementing
-        // struct, not in the Layoutable trait. Therefore the result of `arrange_override`
-        // needs to include x and y coordinates not just width and height.
-        let final_rect_at_origin = Rect::at(0, 0).of_size(final_rect.width(), final_rect.height());
-        let actual_rect_at_origin = self.arrange_override(context, final_rect_at_origin)?;
-        let actual_rect = actual_rect_at_origin.move_from_origin_into(final_rect);
-
-        let mut data_mut = layout_data.borrow_mut();
-        data_mut.arrange_result = Some(ArrangeResult {
-            actual_rect,
-            previous_arrange: final_rect,
-        });
-
-        Ok(actual_rect)
+    fn layout_override(
+        &self,
+        context: &LayoutContext,
+        _tree: &mut TaffyTree<()>,
+    ) -> Result<NodeId, RenderError> {
+        unimplemented!("layout not implemented for {}", context.path.clone());
     }
 
     fn draw(
         &self,
         context: &LayoutContext,
+        tree: &TaffyTree<()>,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         let layout_data = self.layout_data();
         let data = layout_data.borrow();
 
-        let Some(arrange_result) = &data.arrange_result else {
-            return Err(RenderError::ArrangeResultNotFound {
-                path: context.path.clone(),
-            });
-        };
+        let node_id = data.node_id.ok_or(RenderError::NodeIdNotFound {
+            path: context.path.clone(),
+        })?;
+
+        let node_layout = tree.layout(node_id).err_context(context)?;
 
         let (width, height) = image.dimensions();
         let image_rect = Rect::at(0, 0).of_size(width, height);
-        let actual_rect = arrange_result.actual_rect;
+        let actual_rect = node_layout.actual_rect();
 
         if image_rect.intersect(actual_rect).is_some() {
-            self.draw_override(context, image)?;
+            self.draw_override(context, tree, node_id, image)?;
         }
 
         Ok(())
     }
 
-    /// Returns the desired size of the element.
-    fn measure_override(
-        &self,
-        context: &LayoutContext,
-        _available_size: Size,
-    ) -> Result<Size, RenderError> {
-        unimplemented!(
-            "measure_override not implemented for {}",
-            context.path.clone()
-        );
-    }
-
-    /// Returns the actual rect used.
-    fn arrange_override(
-        &self,
-        context: &LayoutContext,
-        _final_size: Rect,
-    ) -> Result<Rect, RenderError> {
-        unimplemented!(
-            "arrange_override not implemented for {}",
-            context.path.clone()
-        );
-    }
-
-    /// Returns the image bytes.
     fn draw_override(
         &self,
         context: &LayoutContext,
+        _tree: &TaffyTree<()>,
+        _node_id: NodeId,
         _image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         unimplemented!("draw_override not implemented for {}", context.path.clone());
     }
 }
 
+pub(super) trait TaffyLayoutUtils {
+    fn actual_rect(&self) -> Rect;
+}
+
+impl TaffyLayoutUtils for Layout {
+    fn actual_rect(&self) -> Rect {
+        Rect::at(self.location.x as i32, self.location.y as i32)
+            .of_size(self.size.width as u32, self.size.height as u32)
+    }
+}
+
 // Implement Layoutable for Box<T> where T: Layoutable
 impl<T: Layoutable> Layoutable for Box<T> {
-    fn measure(&self, context: &LayoutContext, available_size: Size) -> Result<Size, RenderError> {
-        self.as_ref().measure(context, available_size)
+    fn layout(
+        &self,
+        context: &LayoutContext,
+        tree: &mut TaffyTree<()>,
+    ) -> Result<NodeId, RenderError> {
+        self.as_ref().layout(context, tree)
     }
 
-    fn arrange(&self, context: &LayoutContext, final_rect: Rect) -> Result<Rect, RenderError> {
-        self.as_ref().arrange(context, final_rect)
+    fn layout_override(
+        &self,
+        context: &LayoutContext,
+        tree: &mut TaffyTree<()>,
+    ) -> Result<NodeId, RenderError> {
+        self.as_ref().layout_override(context, tree)
     }
 
     fn draw(
         &self,
         context: &LayoutContext,
+        tree: &TaffyTree<()>,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        self.as_ref().draw(context, image)
-    }
-
-    fn measure_override(
-        &self,
-        context: &LayoutContext,
-        available_size: Size,
-    ) -> Result<Size, RenderError> {
-        self.as_ref().measure_override(context, available_size)
-    }
-
-    fn arrange_override(
-        &self,
-        context: &LayoutContext,
-        final_rect: Rect,
-    ) -> Result<Rect, RenderError> {
-        self.as_ref().arrange_override(context, final_rect)
+        self.as_ref().draw(context, tree, image)
     }
 
     fn draw_override(
         &self,
         context: &LayoutContext,
+        tree: &TaffyTree<()>,
+        node_id: NodeId,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        self.as_ref().draw_override(context, image)
+        self.as_ref().draw_override(context, tree, node_id, image)
     }
 }
 
@@ -185,28 +130,17 @@ impl<T: HasLayoutData> HasLayoutData for Box<T> {
 
 pub(super) trait HasLayoutData {
     fn layout_data(&self) -> &RefCell<LayoutData>;
-    fn desired_size(&self) -> Size {
+    fn node_id(&self) -> NodeId {
         self.layout_data()
             .borrow()
-            .measure_result
-            .as_ref()
-            .expect("Element should have been measured")
-            .desired_size
-    }
-    fn actual_rect(&self) -> Rect {
-        self.layout_data()
-            .borrow()
-            .arrange_result
-            .as_ref()
-            .expect("Element should have been arranged")
-            .actual_rect
+            .node_id
+            .expect("Element should have a node_id")
     }
 }
 
 #[derive(Default, Debug, Clone)]
 pub(super) struct LayoutData {
-    pub measure_result: Option<MeasureResult>,
-    pub arrange_result: Option<ArrangeResult>,
+    pub node_id: Option<NodeId>,
 }
 
 #[derive(Clone, Debug)]

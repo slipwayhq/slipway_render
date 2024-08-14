@@ -9,6 +9,7 @@ image.workspace = true
 imageproc = "0.25.0"
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+taffy = "0.5.2"
 thiserror = "1.0.63"
 
 [build-dependencies]

@@ -1,13 +1,14 @@
 use std::{cell::RefCell, rc::Rc};
 
-use imageproc::rect::Rect;
+use taffy::{
+    prelude::FromLength, FlexDirection, LengthPercentageAuto, NodeId, Rect, Style, TaffyTree,
+};
 
 use crate::{
-    errors::RenderError,
-    layoutable::{HasLayoutData, LayoutContext, Layoutable},
+    errors::{RenderError, TaffyErrorToRenderError},
+    layoutable::{LayoutContext, Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
-    size::Size,
-    AdaptiveCard, BlockElementHeight, Element, StringOrBlockElementHeight,
+    AdaptiveCard, Element,
 };
 
 use super::ValidSpacing;
@@ -19,152 +20,64 @@ struct IndexedElement<'a> {
 
 impl Layoutable for AdaptiveCard {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
+    // Reference: https://github.com/microsoft/AdaptiveCards/blob/728044c67510871445d23533fb9830ac57fbbf99/source/nodejs/adaptivecards/src/card-elements.ts#L7820-L7888
 
-    fn measure_override(
+    fn layout_override(
         &self,
         context: &LayoutContext,
-        available_size: Size,
-    ) -> Result<Size, RenderError> {
+        tree: &mut TaffyTree<()>,
+    ) -> Result<NodeId, RenderError> {
         let body_context = context.for_child_str("body");
 
-        let mut size = Size::new(0, 0);
+        let mut element_node_ids = Vec::new();
 
         if let Some(body) = &self.body {
-            let mut remaining_height = available_size.height();
-            let indexed_elements = body
-                .iter()
-                .enumerate()
-                .map(|(index, element)| IndexedElement { index, element })
-                .collect::<Vec<_>>();
-
-            let (stretched_children, non_stretched_children): (Vec<_>, Vec<_>) = indexed_elements
-                .iter()
-                .filter(|e| e.element.as_element().get_is_visible())
-                .partition(|e| {
-                    matches!(
-                        e.element.as_element().get_height(),
-                        StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Stretch)
-                    )
-                });
-
-            for IndexedElement { index, element } in non_stretched_children.iter() {
-                let spacing = context.host_config.spacing.from(element.as_element());
+            for (index, element) in body.iter().enumerate() {
                 let element_context = body_context.for_child(index.to_string());
-                let desired_size = element.as_layoutable().measure(
-                    &element_context,
-                    Size::new(
-                        available_size.width(),
-                        remaining_height.saturating_sub(spacing),
-                    ),
-                )?;
-
-                let height_with_spacing = desired_size.height() + spacing;
-
-                size = Size::new(
-                    size.width().max(desired_size.width()),
-                    size.height() + height_with_spacing,
-                );
-                remaining_height = remaining_height.saturating_sub(height_with_spacing);
-            }
-
-            let mut remaining_stretched_children = stretched_children;
-
-            // We will keep measuring the stretched elements until they fit within the available height.
-            while !remaining_stretched_children.is_empty() {
-                let stretched_children_count = remaining_stretched_children.len();
-                let stretched_children_height = remaining_height / stretched_children_count as u32;
-
-                let mut new_remaining_stretched_children = Vec::new();
-
-                for item in remaining_stretched_children.into_iter() {
-                    let IndexedElement { index, element } = item;
-                    let spacing = context.host_config.spacing.from(element.as_element());
-                    let element_context = body_context.for_child(index.to_string());
-                    let desired_size = element.as_layoutable().measure(
-                        &element_context,
-                        Size::new(
-                            available_size.width(),
-                            stretched_children_height.saturating_sub(spacing),
-                        ),
-                    )?;
-
-                    let height_with_spacing = desired_size.height() + spacing;
-
-                    // If the desired height is greater than the available stretched height,
-                    // then we need to re-measure the other stretched elements with the remaining height.
-                    if height_with_spacing > stretched_children_height {
-                        size = Size::new(
-                            size.width().max(desired_size.width()),
-                            size.height() + height_with_spacing,
-                        );
-                        remaining_height = remaining_height.saturating_sub(height_with_spacing);
-                    } else {
-                        new_remaining_stretched_children.push(item);
-                    }
-                }
-
-                // All elements were within available stretched height, so we can break.
-                if stretched_children_count == new_remaining_stretched_children.len() {
-                    break;
-                }
-
-                remaining_stretched_children = new_remaining_stretched_children;
-            }
-        }
-
-        Ok(size)
-    }
-
-    fn arrange_override(
-        &self,
-        context: &LayoutContext,
-        final_rect: Rect,
-    ) -> Result<Rect, RenderError> {
-        let body_context = context.for_child_str("body");
-
-        let mut child_rect = final_rect;
-        let mut previous_child_height: u32 = 0;
-
-        if let Some(body) = &self.body {
-            for (i, element) in body
-                .iter()
-                .enumerate() // Enumerate before filtering, so the index is correct.
-                .filter(|(_, e)| e.as_element().get_is_visible())
-            {
-                let element_context = body_context.for_child(i.to_string());
+                let inner_node_id = element.as_layoutable().layout(&element_context, tree)?;
 
                 let spacing = context.host_config.spacing.from(element.as_element());
 
-                let desired_size = element.as_layoutable().desired_size();
+                let element_node_id = tree
+                    .new_with_children(
+                        Style {
+                            margin: Rect {
+                                top: LengthPercentageAuto::from_length(spacing as f32),
+                                ..Rect::zero()
+                            },
+                            ..Default::default()
+                        },
+                        &[inner_node_id],
+                    )
+                    .err_context(context)?;
 
-                child_rect = Rect::at(
-                    child_rect.left(),
-                    child_rect.top()
-                        + i32::try_from(previous_child_height).expect("height was too large"),
-                )
-                .of_size(
-                    final_rect.width().min(desired_size.width()),
-                    desired_size.height(),
-                );
-
-                previous_child_height = desired_size.height() + spacing;
-
-                element
-                    .as_layoutable()
-                    .arrange(&element_context, child_rect)?;
+                element_node_ids.push(element_node_id);
             }
         }
-        Ok(final_rect)
+
+        tree.new_with_children(
+            Style {
+                flex_direction: FlexDirection::Column,
+                ..Default::default()
+            },
+            &element_node_ids,
+        )
+        .err_context(context)
     }
 
     fn draw_override(
         &self,
         context: &LayoutContext,
+        tree: &TaffyTree<()>,
+        node_id: NodeId,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         let body_context = context.for_child_str("body");
 
-        let actual_rect = self.actual_rect();
+        let node_layout = tree.layout(node_id).err_context(context)?;
+        let actual_rect = node_layout.actual_rect();
+
+        let children_node_ids = tree.children(node_id).err_context(context)?;
 
         if let Some(body) = &self.body {
             for (i, element) in body
@@ -172,8 +85,12 @@ impl Layoutable for AdaptiveCard {
                 .enumerate() // Enumerate before filtering, so the index is correct.
                 .filter(|(_, e)| e.as_element().get_is_visible())
             {
+                let element_layout = tree
+                    .layout(children_node_ids[i])
+                    .err_context(&body_context)?;
+
                 let element_context = body_context.for_child(i.to_string());
-                let element_rect = element.as_layoutable().actual_rect();
+                let element_rect = element_layout.actual_rect();
 
                 let maybe_intersection = actual_rect.intersect(element_rect);
 
@@ -186,7 +103,7 @@ impl Layoutable for AdaptiveCard {
 
                 element
                     .as_layoutable()
-                    .draw(&element_context, child_image)?;
+                    .draw(&element_context, tree, child_image)?;
             }
         }
         Ok(())

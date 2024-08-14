@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
 use image::RgbaImage;
-use imageproc::rect::Rect;
+use taffy::TaffyTree;
 
 use crate::{
     errors::RenderError,
@@ -27,15 +27,13 @@ pub fn render(
             previous: None,
         }),
     };
-    let image = Rc::new(RefCell::new(RgbaImage::new(size.width(), size.height())));
-    target.measure(&context, size)?;
-    target.arrange(
-        &context,
-        Rect::at(0, 0).of_size(size.width(), size.height()),
-    )?;
 
+    let mut tree: TaffyTree<()> = TaffyTree::new();
+    target.layout(&context, &mut tree)?;
+
+    let image = Rc::new(RefCell::new(RgbaImage::new(size.width(), size.height())));
     let masked_image = MaskedImage::from_image(image);
-    target.draw(&context, masked_image.clone())?;
+    target.draw(&context, &tree, masked_image.clone())?;
 
     let image = masked_image.eject()?;
 

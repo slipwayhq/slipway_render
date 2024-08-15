@@ -858,7 +858,6 @@ impl crate::layoutable::HasLayoutData for Container {
         &self.layout_data
     }
 }
-impl crate::layoutable::Layoutable for Container {}
 impl crate::element::LayoutableElement for Container {
     fn get_height(&self) -> StringOrBlockElementHeight {
         self.height
@@ -2160,7 +2159,6 @@ impl crate::layoutable::HasLayoutData for TextBlock {
         &self.layout_data
     }
 }
-impl crate::layoutable::Layoutable for TextBlock {}
 impl crate::element::LayoutableElement for TextBlock {
     fn get_height(&self) -> StringOrBlockElementHeight {
         self.height

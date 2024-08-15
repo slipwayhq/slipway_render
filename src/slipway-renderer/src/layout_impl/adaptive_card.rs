@@ -1,22 +1,20 @@
 use std::{cell::RefCell, rc::Rc};
 
-use taffy::{
-    prelude::FromLength, FlexDirection, LengthPercentageAuto, NodeId, Rect, Style, TaffyTree,
-};
+use image::Rgba;
+use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
+use taffy::{Dimension, NodeId, Size, Style, TaffyTree};
 
 use crate::{
-    errors::{RenderError, TaffyErrorToRenderError},
-    layoutable::{LayoutContext, Layoutable, TaffyLayoutUtils},
-    masked_image::MaskedImage,
-    AdaptiveCard, Element,
+    errors::RenderError,
+    layoutable::{LayoutContext, Layoutable},
+    masked_image::{MaskedImage, SlipwayCanvas},
+    AdaptiveCard,
 };
 
-use super::ValidSpacing;
-
-struct IndexedElement<'a> {
-    index: usize,
-    element: &'a Element,
-}
+use super::{
+    container::{container_draw_override, container_layout_override},
+    NodeContext,
+};
 
 impl Layoutable for AdaptiveCard {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -25,95 +23,66 @@ impl Layoutable for AdaptiveCard {
     fn layout_override(
         &self,
         context: &LayoutContext,
-        tree: &mut TaffyTree<()>,
+        baseline_style: taffy::Style,
+        tree: &mut TaffyTree<NodeContext>,
     ) -> Result<NodeId, RenderError> {
-        let body_context = context.for_child_str("body");
-
-        let mut element_node_ids = Vec::new();
-
-        if let Some(body) = &self.body {
-            for (index, element) in body.iter().enumerate() {
-                let element_context = body_context.for_child(index.to_string());
-                let inner_node_id = element.as_layoutable().layout(&element_context, tree)?;
-
-                let spacing = context.host_config.spacing.from(element.as_element());
-
-                let element_node_id = tree
-                    .new_with_children(
-                        Style {
-                            margin: Rect {
-                                top: LengthPercentageAuto::from_length(spacing as f32),
-                                ..Rect::zero()
-                            },
-                            ..Default::default()
-                        },
-                        &[inner_node_id],
-                    )
-                    .err_context(context)?;
-
-                element_node_ids.push(element_node_id);
-            }
-        }
-
-        tree.new_with_children(
-            Style {
-                flex_direction: FlexDirection::Column,
-                ..Default::default()
+        let baseline_style = Style {
+            size: Size {
+                width: Dimension::Percent(1.),
+                height: Dimension::Percent(1.),
             },
-            &element_node_ids,
+            ..baseline_style
+        };
+
+        let child_elements_context = context.for_child_str("body");
+        let child_elements = self.body.as_deref().unwrap_or(&[]);
+
+        container_layout_override(
+            context,
+            baseline_style,
+            tree,
+            child_elements_context,
+            child_elements,
         )
-        .err_context(context)
     }
 
     fn draw_override(
         &self,
         context: &LayoutContext,
-        tree: &TaffyTree<()>,
+        tree: &TaffyTree<NodeContext>,
         node_id: NodeId,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        let body_context = context.for_child_str("body");
-
-        let node_layout = tree.layout(node_id).err_context(context)?;
-        let actual_rect = node_layout.actual_rect();
-
-        let children_node_ids = tree.children(node_id).err_context(context)?;
-
-        if let Some(body) = &self.body {
-            for (i, element) in body
-                .iter()
-                .enumerate() // Enumerate before filtering, so the index is correct.
-                .filter(|(_, e)| e.as_element().get_is_visible())
-            {
-                let element_layout = tree
-                    .layout(children_node_ids[i])
-                    .err_context(&body_context)?;
-
-                let element_context = body_context.for_child(i.to_string());
-                let element_rect = element_layout.actual_rect();
-
-                let maybe_intersection = actual_rect.intersect(element_rect);
-
-                let Some(intersection) = maybe_intersection else {
-                    // If there is no overlap, we can skip drawing the element.
-                    continue;
-                };
-
-                let child_image = MaskedImage::from_mask(image.clone(), intersection);
-
-                element
-                    .as_layoutable()
-                    .draw(&element_context, tree, child_image)?;
-            }
+        // Fill the background with white.
+        {
+            let (width, height) = image.dimensions();
+            let mut image_mut = image.borrow_mut();
+            draw_filled_rect_mut(
+                &mut *image_mut,
+                Rect::at(0, 0).of_size(width, height),
+                Rgba([255, 255, 255, 255]),
+            );
         }
-        Ok(())
+
+        let child_elements_context = context.for_child_str("body");
+        let child_elements = self.body.as_deref().unwrap_or(&[]);
+
+        container_draw_override(
+            context,
+            tree,
+            node_id,
+            image,
+            child_elements_context,
+            child_elements,
+        )
     }
 }
 
 #[cfg(test)]
 mod tests {
     type HostConfigBuilder = crate::host_config::generated::builder::HostConfig;
-    use crate::{host_config::generated::HostConfig, render::render};
+    type SpacingsConfigBuilder = crate::host_config::generated::builder::SpacingsConfig;
+    use crate::{host_config::generated::HostConfig, layoutable::DebugMode, render::render};
 
     #[test]
     fn mixed_container_heights() {
@@ -126,29 +95,57 @@ mod tests {
             "body": [
                 {
                     "type": "Container",
-                    "items": []
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "1"
+                        }
+                    ]
                 },
                 {
                     "type": "Container",
+                    "style": "accent",
                     "height": "stretch",
-                    "style": "attention",
-                    "items": []
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "2"
+                        }
+                    ]
                 },
                 {
                     "type": "Container",
+                    "style": "accent",
                     "height": "stretch",
-                    "items": []
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "3"
+                        }
+                    ]
                 },
                 {
                     "type": "Container",
+                    "style": "accent",
                     "minHeight": "300px",
                     "height": "stretch",
-                    "style": "attention",
-                    "items": []
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "4"
+                        }
+                    ]
                 },
                 {
                     "type": "Container",
-                    "items": []
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "5"
+                        }
+                    ]
                 }
             ]
         }"#;
@@ -158,39 +155,13 @@ mod tests {
             json_data,
             500,
             800,
+            DebugMode::TransparentMasks,
         )
         .unwrap();
 
         // Save image to file output.png
         image.save("output.png").unwrap();
+
+        todo!("Test the output image");
     }
 }
-
-// Test:
-// {
-//     "type": "AdaptiveCard",
-//     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-//     "version": "1.5",
-//     "minHeight": "800px",
-//     "body": [
-//         {
-//             "type": "Container"
-//         },
-//         {
-//             "type": "Container",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container",
-//             "minHeight": "300px",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container"
-//         }
-//     ]
-// }

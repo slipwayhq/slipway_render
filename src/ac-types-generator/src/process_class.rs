@@ -17,10 +17,9 @@ use crate::{
 const ADAPTIVE_CARD_TYPE: &str = "AdaptiveCard";
 const IMAGE_TYPE: &str = "Image";
 const LAYOUTABLE_TYPES: [&str; 2] = ["Element", "AdaptiveCard"];
-const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 17] = [
+const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 15] = [
     "ActionSet",
     "ColumnSet",
-    "Container",
     "FactSet",
     "Image",
     "ImageSet",
@@ -34,7 +33,6 @@ const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 17] = [
     "Media",
     "RichTextBlock",
     "Table",
-    "TextBlock",
 ];
 
 pub(super) fn process_class(

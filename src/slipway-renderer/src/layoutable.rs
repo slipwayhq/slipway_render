@@ -153,10 +153,40 @@ pub(super) struct LayoutData {
     pub node_id: Option<NodeId>,
 }
 
-#[derive(Copy, Clone, Debug)]
-pub(super) enum DebugMode {
-    None,
-    TransparentMasks,
+#[derive(Default, Copy, Clone, Debug)]
+pub(super) struct DebugMode {
+    pub transparent_masks: bool,
+    pub outlines: bool,
+}
+
+impl DebugMode {
+    pub fn none() -> Self {
+        DebugMode {
+            transparent_masks: false,
+            outlines: false,
+        }
+    }
+
+    pub fn with_transparent_masks() -> Self {
+        DebugMode {
+            transparent_masks: true,
+            outlines: false,
+        }
+    }
+
+    pub fn with_outlines() -> Self {
+        DebugMode {
+            transparent_masks: false,
+            outlines: true,
+        }
+    }
+
+    pub fn full() -> Self {
+        DebugMode {
+            transparent_masks: true,
+            outlines: true,
+        }
+    }
 }
 
 pub(super) struct LayoutContext<'hc> {

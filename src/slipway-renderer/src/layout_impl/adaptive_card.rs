@@ -82,7 +82,7 @@ impl Layoutable for AdaptiveCard {
 mod tests {
     type HostConfigBuilder = crate::host_config::generated::builder::HostConfig;
     type SpacingsConfigBuilder = crate::host_config::generated::builder::SpacingsConfig;
-    use crate::{host_config::generated::HostConfig, layoutable::DebugMode, render::render};
+    use crate::{default_host_config, layoutable::DebugMode, render::render};
 
     #[test]
     fn mixed_container_heights() {
@@ -151,11 +151,11 @@ mod tests {
         }"#;
 
         let image = render(
-            &HostConfig::try_from(HostConfigBuilder::default()).unwrap(),
+            &default_host_config(),
             json_data,
             500,
             800,
-            DebugMode::TransparentMasks,
+            DebugMode::full(),
         )
         .unwrap();
 

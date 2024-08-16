@@ -6,7 +6,7 @@ use crate::{
     rect::SlipwayRegion,
     utils::extract_from_rc_refcell,
 };
-use image::{Rgba, RgbaImage};
+use image::{Pixel, Rgba, RgbaImage};
 use imageproc::{drawing::Canvas, rect::Rect};
 
 enum MaskOrImage {
@@ -96,7 +96,7 @@ impl Canvas for MaskedImage {
     fn draw_pixel(&mut self, x: u32, y: u32, pixel: Self::Pixel) {
         let final_pixel = if self.mask.contains(x, y) {
             Some(pixel)
-        } else if matches!(self.debug_mode(), DebugMode::TransparentMasks) {
+        } else if self.debug_mode().transparent_masks {
             Some(Rgba([200, 200, 200, 255]))
         } else {
             None
@@ -107,7 +107,7 @@ impl Canvas for MaskedImage {
                 match &mut self.image {
                     MaskOrImage::Mask(mask) => mask.borrow_mut().draw_pixel(x, y, final_pixel),
                     MaskOrImage::Image { image, .. } => {
-                        image.borrow_mut().put_pixel(x, y, final_pixel)
+                        image.borrow_mut().blend_pixel(x, y, final_pixel)
                     }
                 }
             }
@@ -131,6 +131,17 @@ impl Canvas for MaskedImage {
             MaskOrImage::Mask(mask) => mask.borrow().dimensions(),
             MaskOrImage::Image { image, .. } => image.borrow().dimensions(),
         }
+    }
+}
+
+trait BlendingPutPixel {
+    fn blend_pixel(&mut self, x: u32, y: u32, pixel: Rgba<u8>);
+}
+
+impl BlendingPutPixel for RgbaImage {
+    fn blend_pixel(&mut self, x: u32, y: u32, pixel: Rgba<u8>) {
+        let current_pixel = self.get_pixel_mut(x, y);
+        current_pixel.blend(&pixel);
     }
 }
 
@@ -173,7 +184,7 @@ mod tests {
         let image = create_image(width, height, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
 
-        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::None).mask(mask);
+        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::none()).mask(mask);
 
         // Check initial dimensions
         assert_eq!(masked_image.borrow().dimensions(), (width, height));
@@ -191,7 +202,7 @@ mod tests {
         let base_image = create_image(10, 10, Rgba([255, 0, 0, 255]));
         let base_mask = Rect::at(0, 0).of_size(10, 10);
         let base_masked_image =
-            MaskedImage::from_image(base_image, DebugMode::None).mask(base_mask);
+            MaskedImage::from_image(base_image, DebugMode::none()).mask(base_mask);
 
         let mask = Rect::at(2, 2).of_size(5, 5);
         let masked_image = MaskedImage::from_mask(base_masked_image.clone(), mask);
@@ -211,7 +222,7 @@ mod tests {
     fn draw_pixel() {
         let image = create_image(10, 10, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
-        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::None).mask(mask);
+        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::none()).mask(mask);
 
         // Draw a pixel inside the mask
         masked_image
@@ -231,7 +242,7 @@ mod tests {
         let image = create_image(10, 10, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
         let masked_image =
-            MaskedImage::from_image(image.clone(), DebugMode::TransparentMasks).mask(mask);
+            MaskedImage::from_image(image.clone(), DebugMode::with_transparent_masks()).mask(mask);
 
         // Draw a pixel inside the mask
         masked_image
@@ -251,7 +262,7 @@ mod tests {
     fn get_pixel() {
         let image = create_image(10, 10, Rgba([255, 255, 255, 255]));
         let mask = Rect::at(2, 2).of_size(5, 5);
-        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::None).mask(mask);
+        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::none()).mask(mask);
 
         // Get a pixel inside the mask
         assert_eq!(
@@ -270,7 +281,7 @@ mod tests {
     fn dimensions() {
         let image = create_image(8, 6, Rgba([0, 0, 255, 255]));
         let mask = Rect::at(1, 1).of_size(3, 3);
-        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::None).mask(mask);
+        let masked_image = MaskedImage::from_image(image.clone(), DebugMode::none()).mask(mask);
 
         assert_eq!(masked_image.borrow().dimensions(), (8, 6));
     }

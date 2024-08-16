@@ -1,6 +1,5 @@
 use std::{cell::RefCell, rc::Rc};
 
-use image::Rgba;
 use imageproc::drawing::draw_hollow_rect_mut;
 use taffy::{
     prelude::FromLength, Dimension, Display, FlexDirection, JustifyContent, LengthPercentageAuto,
@@ -9,12 +8,12 @@ use taffy::{
 
 use crate::{
     errors::{RenderError, TaffyErrorToRenderError},
-    layoutable::{DebugMode, LayoutContext, Layoutable, TaffyLayoutUtils},
+    layoutable::{LayoutContext, Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
     BlockElementHeight, Container, Element, StringOrBlockElementHeight,
 };
 
-use super::{parse_dimension, NodeContext, ValidSpacing};
+use super::{next_color, parse_dimension, NodeContext, ValidSpacing};
 
 impl Layoutable for Container {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -144,8 +143,8 @@ pub(super) fn container_draw_override(
     let node_layout = tree.layout(node_id).err_context(context)?;
     let actual_rect = node_layout.actual_rect(context);
 
-    {
-        let color = Rgba([255, 0, 0, 255]);
+    if context.debug_mode.outlines {
+        let color = next_color();
         let mut image_mut = image.borrow_mut();
 
         draw_hollow_rect_mut(&mut *image_mut, actual_rect, color);
@@ -170,10 +169,13 @@ pub(super) fn container_draw_override(
 
         let maybe_intersection = match maybe_intersection {
             Some(intersection) => Some(intersection),
-            None => match context.debug_mode {
-                DebugMode::None => None,
-                DebugMode::TransparentMasks => Some(imageproc::rect::Rect::at(0, 0).of_size(1, 1)),
-            },
+            None => {
+                if context.debug_mode.transparent_masks {
+                    Some(imageproc::rect::Rect::at(0, 0).of_size(1, 1))
+                } else {
+                    None
+                }
+            }
         };
 
         let Some(intersection) = maybe_intersection else {
@@ -181,8 +183,8 @@ pub(super) fn container_draw_override(
             continue;
         };
 
-        {
-            let color = Rgba([0, 255, 0, 255]);
+        if context.debug_mode.outlines {
+            let color = next_color();
             let mut image_mut = image.borrow_mut();
 
             draw_hollow_rect_mut(&mut *image_mut, element_rect, color);

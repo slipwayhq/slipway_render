@@ -46,7 +46,7 @@ impl Layoutable for TextBlock {
         draw_filled_rect_mut(
             &mut *image_mut,
             node_layout.actual_rect(context),
-            Rgba([0, 0, 255, 255]),
+            Rgba([0, 0, 255, 128]),
         );
 
         Ok(())

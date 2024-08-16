@@ -1,3 +1,5 @@
+#[cfg(test)]
+pub(super) mod default_host_config;
 #[allow(
     clippy::to_string_trait_impl,
     clippy::derivable_impls,

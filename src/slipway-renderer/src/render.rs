@@ -22,7 +22,7 @@ pub(super) fn render(
     let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
     let context = LayoutContext {
         host_config,
-        debug_mode: DebugMode::TransparentMasks,
+        debug_mode,
         path: Rc::new(LayoutPath {
             current: "root".to_string(),
             previous: None,

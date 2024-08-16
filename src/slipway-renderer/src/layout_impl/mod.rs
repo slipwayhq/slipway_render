@@ -1,5 +1,6 @@
 use std::num::ParseFloatError;
 
+use image::Rgba;
 use taffy::{Dimension, Size};
 
 use crate::{
@@ -86,4 +87,37 @@ pub(super) fn measure_function(
             height: 10.,
         },
     }
+}
+
+/// Return the next random color from COLORS using a global counter.
+pub fn next_color() -> Rgba<u8> {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    const COLORS: [[u8; 4]; 20] = [
+        [255, 179, 186, 255],
+        [255, 223, 186, 255],
+        [255, 255, 186, 255],
+        [186, 255, 201, 255],
+        [186, 225, 255, 255],
+        [219, 185, 255, 255],
+        [255, 202, 212, 255],
+        [201, 255, 255, 255],
+        [255, 203, 186, 255],
+        [204, 255, 204, 255],
+        [255, 204, 229, 255],
+        [204, 229, 255, 255],
+        [186, 255, 255, 255],
+        [255, 223, 223, 255],
+        [229, 255, 204, 255],
+        [255, 204, 204, 255],
+        [255, 255, 204, 255],
+        [204, 229, 255, 255],
+        [255, 230, 204, 255],
+        [204, 255, 230, 255],
+    ];
+
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+
+    let index = COUNTER.fetch_add(1, Ordering::Relaxed) % COLORS.len();
+    Rgba(COLORS[index])
 }

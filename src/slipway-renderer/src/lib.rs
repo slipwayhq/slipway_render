@@ -13,6 +13,9 @@ pub mod render;
 use adaptive_cards_types::generated::*;
 mod utils;
 
+#[cfg(test)]
+pub(crate) use host_config::default_host_config::default_host_config;
+
 // #[cfg(test)]
 // mod tests {
 //     use super::*;

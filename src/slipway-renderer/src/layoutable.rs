@@ -48,7 +48,7 @@ pub(super) trait Layoutable: HasLayoutData {
 
         let refcell_layout_data = self.layout_data();
 
-        let actual_rect = {
+        let absolute_rect = {
             let layout_data = refcell_layout_data.borrow();
             let taffy_data =
                 layout_data
@@ -62,15 +62,15 @@ pub(super) trait Layoutable: HasLayoutData {
 
             let (width, height) = image.dimensions();
             let image_rect = Rect::at(0, 0).of_size(width, height);
-            let actual_rect = node_layout.absolute_rect(context);
+            let absolute_rect = node_layout.absolute_rect(context);
 
-            if image_rect.intersect(actual_rect).is_some() {
+            if image_rect.intersect(absolute_rect).is_some() {
                 self.draw_override(context, tree, taffy_data, image)?;
             }
-            actual_rect
+            absolute_rect
         };
 
-        refcell_layout_data.borrow_mut().absolute_rect = Some(actual_rect.into());
+        refcell_layout_data.borrow_mut().rect = Some(absolute_rect.into());
 
         Ok(())
     }
@@ -172,14 +172,14 @@ pub(super) trait HasLayoutData {
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Default, Debug, Clone)]
-pub(super) struct ElementLayoutData {
+pub struct ElementLayoutData {
     #[serde(skip)]
     pub taffy_data: Option<ElementTaffyData>,
-    pub absolute_rect: Option<FinalRect>,
+    pub rect: Option<FinalRect>,
 }
 
 #[derive(Debug, Clone)]
-pub(super) struct ElementTaffyData {
+pub struct ElementTaffyData {
     pub node_id: NodeId,
     pub child_element_node_ids: Vec<NodeId>,
 }
@@ -194,7 +194,7 @@ impl From<NodeId> for ElementTaffyData {
 }
 
 #[derive(Default, Copy, Clone, Debug)]
-pub(super) struct DebugMode {
+pub struct DebugMode {
     pub transparent_masks: bool,
     pub outlines: bool,
 }

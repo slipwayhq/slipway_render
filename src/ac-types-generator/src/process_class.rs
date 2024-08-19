@@ -49,7 +49,8 @@ pub(super) fn process_class(
         .get(&class.id)
         .unwrap_or_else(|| panic!("No descendants for {}", class.id));
 
-    let struct_name = format_ident!("{}", class.type_name);
+    let struct_name_str = &class.type_name;
+    let struct_name = format_ident!("{}", struct_name_str);
 
     // Additional code to be generated before the struct.
     let mut pre_struct_tokens = Vec::new();
@@ -158,7 +159,7 @@ pub(super) fn process_class(
                 // Generate the as_layoutable method.
                 post_struct_tokens.push(quote! {
                     impl #struct_name {
-                        pub fn #as_name(&self) -> #as_type {
+                        pub(crate) fn #as_name(&self) -> #as_type {
                             match self {
                                 #(#match_tokens)*
                             }
@@ -241,7 +242,7 @@ pub(super) fn process_class(
             if is_optional {
                 // If the field is optional, generate an Option<> field.
                 fields.push(quote! {
-                    #[serde(rename = #json_name_str)]
+                    #[serde(rename = #json_name_str, skip_serializing_if = "Option::is_none")]
                     pub #name: Option<#field_type>,
                 });
             } else if let Some(default_value) = default_value {
@@ -250,13 +251,22 @@ pub(super) fn process_class(
                 let default_value_function_qualified =
                     format!("{}::{}", struct_name, default_value_function);
                 let default_value_function_ident = format_ident!("{}", default_value_function);
-                let default_value_impl =
+                let is_default_value_function_str = format!("is_{}", default_value_function);
+                let is_default_value_function_fully_qualified_str =
+                    format!("{}::{}", struct_name_str, is_default_value_function_str);
+                let is_default_value_function_ident =
+                    format_ident!("{}", is_default_value_function_str);
+                let (default_value_impl, is_default_value_impl) =
                     get_default_value_impl(field_type_str, default_value, &field_type);
 
                 let default_value_function_tokens = quote! {
                     impl #struct_name {
                         fn #default_value_function_ident() -> #field_type {
                             #default_value_impl
+                        }
+
+                        fn #is_default_value_function_ident(value: &#field_type) -> bool {
+                            #is_default_value_impl
                         }
                     }
                 };
@@ -265,7 +275,7 @@ pub(super) fn process_class(
 
                 // And generate the field specifying the generated function to use to get the default value.
                 fields.push(quote! {
-                    #[serde(rename = #json_name_str, default = #default_value_function_qualified)]
+                    #[serde(rename = #json_name_str, default = #default_value_function_qualified, skip_serializing_if = #is_default_value_function_fully_qualified_str)]
                     pub #name: #field_type,
                 });
             } else {
@@ -280,7 +290,7 @@ pub(super) fn process_class(
         // Sometimes the JSON unnecessarily includes a "type" field, so add one to every struct.
         if !seen_fields.contains("type") {
             fields.push(quote! {
-                #[serde(rename = "type")]
+                #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
                 pub type_: Option<String>,
             });
         }
@@ -289,7 +299,7 @@ pub(super) fn process_class(
         if is_layoutable {
             // Generate a layout_data field to store the layout metadata.
             fields.push(quote! {
-                #[serde(skip_deserializing)]
+                #[serde(rename = ".layout", skip_deserializing)]
                 pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
             });
 
@@ -375,13 +385,16 @@ fn get_default_value_impl(
     field_type_str: String,
     default_value: serde_json::Value,
     field_type: &Type,
-) -> proc_macro2::TokenStream {
+) -> (proc_macro2::TokenStream, proc_macro2::TokenStream) {
     match field_type_str.as_str() {
         "String" => {
             let default_value = default_value
                 .as_str()
                 .unwrap_or_else(|| panic!("Expected string default value: {:?}", default_value));
-            quote! { String::from(#default_value) }
+            (
+                quote! { String::from(#default_value) },
+                quote! { *value == #default_value },
+            )
         }
         "bool" => {
             let default_value = default_value.as_bool().unwrap_or_else(|| {
@@ -390,7 +403,10 @@ fn get_default_value_impl(
                     default_value
                 )
             });
-            quote! { #default_value }
+            (
+                quote! { #default_value },
+                quote! { *value == #default_value },
+            )
         }
         "u32" | "u64" => {
             let default_value = default_value.as_u64().unwrap_or_else(|| {
@@ -399,7 +415,10 @@ fn get_default_value_impl(
                     default_value
                 )
             });
-            quote! { #default_value }
+            (
+                quote! { #default_value },
+                quote! { *value == #default_value },
+            )
         }
         "f32" | "f64" => {
             let default_value = default_value.as_f64().unwrap_or_else(|| {
@@ -408,11 +427,17 @@ fn get_default_value_impl(
                     default_value
                 )
             });
-            quote! { #default_value }
+            (
+                quote! { #default_value },
+                quote! { *value == #default_value },
+            )
         }
         "StringOrNumber" => {
             if let Some(default_value) = default_value.as_f64() {
-                quote! { StringOrNumber::Number(#default_value) }
+                (
+                    quote! { StringOrNumber::Number(#default_value) },
+                    quote! { matches!(*value, StringOrNumber::Number(#default_value)) },
+                )
             } else {
                 let default_value = default_value.as_str().unwrap_or_else(|| {
                     panic!(
@@ -420,7 +445,10 @@ fn get_default_value_impl(
                         default_value
                     )
                 });
-                quote! { StringOrNumber::String(String::from(#default_value)) }
+                (
+                    quote! { StringOrNumber::String(String::from(#default_value)) },
+                    quote! { matches!(*value, StringOrNumber::String(String::from(#default_value))) },
+                )
             }
         }
         "StringOrBlockElementHeight" => {
@@ -431,7 +459,10 @@ fn get_default_value_impl(
                 )
             });
             let default_value_ident = format_ident!("{}", default_value.to_case(Case::Pascal));
-            quote! { StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::#default_value_ident) }
+            (
+                quote! { StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::#default_value_ident) },
+                quote! { matches!(*value, StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::#default_value_ident)) },
+            )
         }
         _ => {
             let default_value = default_value.as_str().unwrap_or_else(|| {
@@ -441,7 +472,10 @@ fn get_default_value_impl(
                 )
             });
             let default_value_ident = format_ident!("{}", default_value.to_case(Case::Pascal));
-            quote! { #field_type::#default_value_ident }
+            (
+                quote! { #field_type::#default_value_ident },
+                quote! { matches!(*value, #field_type::#default_value_ident) },
+            )
         }
     }
 }

@@ -147,13 +147,13 @@ pub(super) fn container_draw_override(
     child_elements: &[Element],
 ) -> Result<(), RenderError> {
     let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
-    let actual_rect = node_layout.absolute_rect(context);
+    let absolute_rect = node_layout.absolute_rect(context);
 
     if context.debug_mode.outlines {
         let color = next_color();
         let mut image_mut = image.borrow_mut();
 
-        draw_hollow_rect_mut(&mut *image_mut, actual_rect, color);
+        draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
     }
 
     // let child_node_ids = tree.children(taffy_data.node_id).err_context(context)?;
@@ -172,7 +172,7 @@ pub(super) fn container_draw_override(
             child_elements_context.for_child_origin(i.to_string(), element_layout.location);
         let element_rect = element_layout.absolute_rect(&element_context);
 
-        let maybe_intersection = actual_rect.intersect(element_rect);
+        let maybe_intersection = absolute_rect.intersect(element_rect);
 
         let maybe_intersection = match maybe_intersection {
             Some(intersection) => Some(intersection),

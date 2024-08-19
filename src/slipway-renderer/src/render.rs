@@ -12,13 +12,13 @@ use crate::{
     AdaptiveCard,
 };
 
-pub(super) fn render(
+pub fn render(
     host_config: &HostConfig,
     target: &str,
     width: u32,
     height: u32,
     debug_mode: DebugMode,
-) -> Result<RgbaImage, RenderError> {
+) -> Result<(RgbaImage, AdaptiveCard), RenderError> {
     let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
     let context = LayoutContext {
         host_config,
@@ -55,5 +55,5 @@ pub(super) fn render(
 
     let image = masked_image.eject()?;
 
-    Ok(image)
+    Ok((image, target))
 }

@@ -257,128 +257,165 @@ impl From<FallbackOption> for ActionOrFallbackOption {
 pub struct ActionExecute {
     #[serde(
         rename = "associatedInputs",
-        default = "ActionExecute::default_value_for_associated_inputs"
+        default = "ActionExecute::default_value_for_associated_inputs",
+        skip_serializing_if = "ActionExecute::is_default_value_for_associated_inputs"
     )]
     pub associated_inputs: AssociatedInputs,
-    #[serde(rename = "data")]
+    #[serde(rename = "data", skip_serializing_if = "Option::is_none")]
     pub data: Option<StringOrObject>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ActionOrFallbackOption>,
-    #[serde(rename = "iconUrl")]
+    #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
     pub icon_url: Option<String>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
         rename = "isEnabled",
-        default = "ActionExecute::default_value_for_is_enabled"
+        default = "ActionExecute::default_value_for_is_enabled",
+        skip_serializing_if = "ActionExecute::is_default_value_for_is_enabled"
     )]
     pub is_enabled: bool,
-    #[serde(rename = "mode", default = "ActionExecute::default_value_for_mode")]
+    #[serde(
+        rename = "mode",
+        default = "ActionExecute::default_value_for_mode",
+        skip_serializing_if = "ActionExecute::is_default_value_for_mode"
+    )]
     pub mode: ActionMode,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ActionStyle>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[serde(rename = "tooltip")]
+    #[serde(rename = "tooltip", skip_serializing_if = "Option::is_none")]
     pub tooltip: Option<String>,
-    #[serde(rename = "verb")]
+    #[serde(rename = "verb", skip_serializing_if = "Option::is_none")]
     pub verb: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl ActionExecute {
     fn default_value_for_associated_inputs() -> AssociatedInputs {
         AssociatedInputs::Auto
     }
+    fn is_default_value_for_associated_inputs(value: &AssociatedInputs) -> bool {
+        matches!(* value, AssociatedInputs::Auto)
+    }
 }
 impl ActionExecute {
     fn default_value_for_is_enabled() -> bool {
         true
     }
+    fn is_default_value_for_is_enabled(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl ActionExecute {
     fn default_value_for_mode() -> ActionMode {
         ActionMode::Primary
+    }
+    fn is_default_value_for_mode(value: &ActionMode) -> bool {
+        matches!(* value, ActionMode::Primary)
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionOpenUrl {
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ActionOrFallbackOption>,
-    #[serde(rename = "iconUrl")]
+    #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
     pub icon_url: Option<String>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
         rename = "isEnabled",
-        default = "ActionOpenUrl::default_value_for_is_enabled"
+        default = "ActionOpenUrl::default_value_for_is_enabled",
+        skip_serializing_if = "ActionOpenUrl::is_default_value_for_is_enabled"
     )]
     pub is_enabled: bool,
-    #[serde(rename = "mode", default = "ActionOpenUrl::default_value_for_mode")]
+    #[serde(
+        rename = "mode",
+        default = "ActionOpenUrl::default_value_for_mode",
+        skip_serializing_if = "ActionOpenUrl::is_default_value_for_mode"
+    )]
     pub mode: ActionMode,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ActionStyle>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[serde(rename = "tooltip")]
+    #[serde(rename = "tooltip", skip_serializing_if = "Option::is_none")]
     pub tooltip: Option<String>,
     #[serde(rename = "url")]
     pub url: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl ActionOpenUrl {
     fn default_value_for_is_enabled() -> bool {
         true
     }
+    fn is_default_value_for_is_enabled(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl ActionOpenUrl {
     fn default_value_for_mode() -> ActionMode {
         ActionMode::Primary
+    }
+    fn is_default_value_for_mode(value: &ActionMode) -> bool {
+        matches!(* value, ActionMode::Primary)
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionShowCard {
-    #[serde(rename = "card")]
+    #[serde(rename = "card", skip_serializing_if = "Option::is_none")]
     pub card: Option<AdaptiveCard>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ActionOrFallbackOption>,
-    #[serde(rename = "iconUrl")]
+    #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
     pub icon_url: Option<String>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
         rename = "isEnabled",
-        default = "ActionShowCard::default_value_for_is_enabled"
+        default = "ActionShowCard::default_value_for_is_enabled",
+        skip_serializing_if = "ActionShowCard::is_default_value_for_is_enabled"
     )]
     pub is_enabled: bool,
-    #[serde(rename = "mode", default = "ActionShowCard::default_value_for_mode")]
+    #[serde(
+        rename = "mode",
+        default = "ActionShowCard::default_value_for_mode",
+        skip_serializing_if = "ActionShowCard::is_default_value_for_mode"
+    )]
     pub mode: ActionMode,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ActionStyle>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[serde(rename = "tooltip")]
+    #[serde(rename = "tooltip", skip_serializing_if = "Option::is_none")]
     pub tooltip: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl ActionShowCard {
     fn default_value_for_is_enabled() -> bool {
         true
     }
+    fn is_default_value_for_is_enabled(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl ActionShowCard {
     fn default_value_for_mode() -> ActionMode {
         ActionMode::Primary
+    }
+    fn is_default_value_for_mode(value: &ActionMode) -> bool {
+        matches!(* value, ActionMode::Primary)
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -386,48 +423,63 @@ impl ActionShowCard {
 pub struct ActionSubmit {
     #[serde(
         rename = "associatedInputs",
-        default = "ActionSubmit::default_value_for_associated_inputs"
+        default = "ActionSubmit::default_value_for_associated_inputs",
+        skip_serializing_if = "ActionSubmit::is_default_value_for_associated_inputs"
     )]
     pub associated_inputs: AssociatedInputs,
-    #[serde(rename = "data")]
+    #[serde(rename = "data", skip_serializing_if = "Option::is_none")]
     pub data: Option<StringOrObject>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ActionOrFallbackOption>,
-    #[serde(rename = "iconUrl")]
+    #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
     pub icon_url: Option<String>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
         rename = "isEnabled",
-        default = "ActionSubmit::default_value_for_is_enabled"
+        default = "ActionSubmit::default_value_for_is_enabled",
+        skip_serializing_if = "ActionSubmit::is_default_value_for_is_enabled"
     )]
     pub is_enabled: bool,
-    #[serde(rename = "mode", default = "ActionSubmit::default_value_for_mode")]
+    #[serde(
+        rename = "mode",
+        default = "ActionSubmit::default_value_for_mode",
+        skip_serializing_if = "ActionSubmit::is_default_value_for_mode"
+    )]
     pub mode: ActionMode,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ActionStyle>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[serde(rename = "tooltip")]
+    #[serde(rename = "tooltip", skip_serializing_if = "Option::is_none")]
     pub tooltip: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl ActionSubmit {
     fn default_value_for_associated_inputs() -> AssociatedInputs {
         AssociatedInputs::Auto
     }
+    fn is_default_value_for_associated_inputs(value: &AssociatedInputs) -> bool {
+        matches!(* value, AssociatedInputs::Auto)
+    }
 }
 impl ActionSubmit {
     fn default_value_for_is_enabled() -> bool {
         true
     }
+    fn is_default_value_for_is_enabled(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl ActionSubmit {
     fn default_value_for_mode() -> ActionMode {
         ActionMode::Primary
+    }
+    fn is_default_value_for_mode(value: &ActionMode) -> bool {
+        matches!(* value, ActionMode::Primary)
     }
 }
 #[derive(serde::Serialize, Clone)]
@@ -448,40 +500,51 @@ impl From<String> for TargetElementOrString {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionToggleVisibility {
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ActionOrFallbackOption>,
-    #[serde(rename = "iconUrl")]
+    #[serde(rename = "iconUrl", skip_serializing_if = "Option::is_none")]
     pub icon_url: Option<String>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
         rename = "isEnabled",
-        default = "ActionToggleVisibility::default_value_for_is_enabled"
+        default = "ActionToggleVisibility::default_value_for_is_enabled",
+        skip_serializing_if = "ActionToggleVisibility::is_default_value_for_is_enabled"
     )]
     pub is_enabled: bool,
-    #[serde(rename = "mode", default = "ActionToggleVisibility::default_value_for_mode")]
+    #[serde(
+        rename = "mode",
+        default = "ActionToggleVisibility::default_value_for_mode",
+        skip_serializing_if = "ActionToggleVisibility::is_default_value_for_mode"
+    )]
     pub mode: ActionMode,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ActionStyle>,
     #[serde(rename = "targetElements")]
     pub target_elements: Vec<TargetElementOrString>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
-    #[serde(rename = "tooltip")]
+    #[serde(rename = "tooltip", skip_serializing_if = "Option::is_none")]
     pub tooltip: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl ActionToggleVisibility {
     fn default_value_for_is_enabled() -> bool {
         true
     }
+    fn is_default_value_for_is_enabled(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl ActionToggleVisibility {
     fn default_value_for_mode() -> ActionMode {
         ActionMode::Primary
+    }
+    fn is_default_value_for_mode(value: &ActionMode) -> bool {
+        matches!(* value, ActionMode::Primary)
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -518,28 +581,35 @@ impl From<FallbackOption> for ElementOrFallbackOption {
 pub struct ActionSet {
     #[serde(rename = "actions")]
     pub actions: Vec<Action>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "ActionSet::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "ActionSet::default_value_for_is_visible",
+        skip_serializing_if = "ActionSet::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl ActionSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for ActionSet {
@@ -584,39 +654,42 @@ impl From<String> for BackgroundImageOrString {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AdaptiveCard {
-    #[serde(rename = "$schema")]
+    #[serde(rename = "$schema", skip_serializing_if = "Option::is_none")]
     pub schema: Option<String>,
-    #[serde(rename = "actions")]
+    #[serde(rename = "actions", skip_serializing_if = "Option::is_none")]
     pub actions: Option<Vec<Action>>,
-    #[serde(rename = "authentication")]
+    #[serde(rename = "authentication", skip_serializing_if = "Option::is_none")]
     pub authentication: Option<Authentication>,
-    #[serde(rename = "backgroundImage")]
+    #[serde(rename = "backgroundImage", skip_serializing_if = "Option::is_none")]
     pub background_image: Option<BackgroundImageOrString>,
-    #[serde(rename = "body")]
+    #[serde(rename = "body", skip_serializing_if = "Option::is_none")]
     pub body: Option<Vec<Element>>,
-    #[serde(rename = "fallbackText")]
+    #[serde(rename = "fallbackText", skip_serializing_if = "Option::is_none")]
     pub fallback_text: Option<String>,
-    #[serde(rename = "lang")]
+    #[serde(rename = "lang", skip_serializing_if = "Option::is_none")]
     pub lang: Option<String>,
-    #[serde(rename = "metadata")]
+    #[serde(rename = "metadata", skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Metadata>,
-    #[serde(rename = "minHeight")]
+    #[serde(rename = "minHeight", skip_serializing_if = "Option::is_none")]
     pub min_height: Option<String>,
-    #[serde(rename = "refresh")]
+    #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
     pub refresh: Option<Refresh>,
-    #[serde(rename = "rtl")]
+    #[serde(rename = "rtl", skip_serializing_if = "Option::is_none")]
     pub rtl: Option<bool>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "speak")]
+    #[serde(rename = "speak", skip_serializing_if = "Option::is_none")]
     pub speak: Option<String>,
-    #[serde(rename = "version")]
+    #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
-    #[serde(rename = "verticalContentAlignment")]
+    #[serde(
+        rename = "verticalContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl crate::layoutable::HasLayoutData for AdaptiveCard {
@@ -627,9 +700,9 @@ impl crate::layoutable::HasLayoutData for AdaptiveCard {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AuthCardButton {
-    #[serde(rename = "image")]
+    #[serde(rename = "image", skip_serializing_if = "Option::is_none")]
     pub image: Option<String>,
-    #[serde(rename = "title")]
+    #[serde(rename = "title", skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
     #[serde(rename = "type")]
     pub type_: String,
@@ -639,29 +712,29 @@ pub struct AuthCardButton {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Authentication {
-    #[serde(rename = "buttons")]
+    #[serde(rename = "buttons", skip_serializing_if = "Option::is_none")]
     pub buttons: Option<Vec<AuthCardButton>>,
-    #[serde(rename = "connectionName")]
+    #[serde(rename = "connectionName", skip_serializing_if = "Option::is_none")]
     pub connection_name: Option<String>,
-    #[serde(rename = "text")]
+    #[serde(rename = "text", skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
-    #[serde(rename = "tokenExchangeResource")]
+    #[serde(rename = "tokenExchangeResource", skip_serializing_if = "Option::is_none")]
     pub token_exchange_resource: Option<TokenExchangeResource>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct BackgroundImage {
-    #[serde(rename = "fillMode")]
+    #[serde(rename = "fillMode", skip_serializing_if = "Option::is_none")]
     pub fill_mode: Option<ImageFillMode>,
-    #[serde(rename = "horizontalAlignment")]
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "url")]
     pub url: String,
-    #[serde(rename = "verticalAlignment")]
+    #[serde(rename = "verticalAlignment", skip_serializing_if = "Option::is_none")]
     pub vertical_alignment: Option<VerticalAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -673,7 +746,7 @@ pub struct CaptionSource {
     pub mime_type: String,
     #[serde(rename = "url")]
     pub url: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Serialize, Clone)]
@@ -709,81 +782,98 @@ impl From<f64> for StringOrNumber {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Column {
-    #[serde(rename = "backgroundImage")]
+    #[serde(rename = "backgroundImage", skip_serializing_if = "Option::is_none")]
     pub background_image: Option<BackgroundImageOrString>,
-    #[serde(rename = "bleed")]
+    #[serde(rename = "bleed", skip_serializing_if = "Option::is_none")]
     pub bleed: Option<bool>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ColumnOrFallbackOption>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "Column::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "Column::default_value_for_is_visible",
+        skip_serializing_if = "Column::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "items")]
+    #[serde(rename = "items", skip_serializing_if = "Option::is_none")]
     pub items: Option<Vec<Element>>,
-    #[serde(rename = "minHeight")]
+    #[serde(rename = "minHeight", skip_serializing_if = "Option::is_none")]
     pub min_height: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "rtl")]
+    #[serde(rename = "rtl", skip_serializing_if = "Option::is_none")]
     pub rtl: Option<bool>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ContainerStyle>,
-    #[serde(rename = "verticalContentAlignment")]
+    #[serde(
+        rename = "verticalContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
-    #[serde(rename = "width")]
+    #[serde(rename = "width", skip_serializing_if = "Option::is_none")]
     pub width: Option<StringOrNumber>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl Column {
     fn default_value_for_is_visible() -> bool {
         true
     }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet {
-    #[serde(rename = "bleed")]
+    #[serde(rename = "bleed", skip_serializing_if = "Option::is_none")]
     pub bleed: Option<bool>,
-    #[serde(rename = "columns")]
+    #[serde(rename = "columns", skip_serializing_if = "Option::is_none")]
     pub columns: Option<Vec<Column>>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "horizontalAlignment")]
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "ColumnSet::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "ColumnSet::default_value_for_is_visible",
+        skip_serializing_if = "ColumnSet::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "minHeight")]
+    #[serde(rename = "minHeight", skip_serializing_if = "Option::is_none")]
     pub min_height: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ContainerStyle>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl ColumnSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for ColumnSet {
@@ -813,44 +903,54 @@ impl crate::element::LayoutableElement for ColumnSet {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Container {
-    #[serde(rename = "backgroundImage")]
+    #[serde(rename = "backgroundImage", skip_serializing_if = "Option::is_none")]
     pub background_image: Option<BackgroundImageOrString>,
-    #[serde(rename = "bleed")]
+    #[serde(rename = "bleed", skip_serializing_if = "Option::is_none")]
     pub bleed: Option<bool>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "Container::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "Container::default_value_for_is_visible",
+        skip_serializing_if = "Container::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
     #[serde(rename = "items")]
     pub items: Vec<Element>,
-    #[serde(rename = "minHeight")]
+    #[serde(rename = "minHeight", skip_serializing_if = "Option::is_none")]
     pub min_height: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "rtl")]
+    #[serde(rename = "rtl", skip_serializing_if = "Option::is_none")]
     pub rtl: Option<bool>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ContainerStyle>,
-    #[serde(rename = "verticalContentAlignment")]
+    #[serde(
+        rename = "verticalContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl Container {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for Container {
@@ -879,13 +979,13 @@ impl crate::element::LayoutableElement for Container {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DataQuery {
-    #[serde(rename = "count")]
+    #[serde(rename = "count", skip_serializing_if = "Option::is_none")]
     pub count: Option<f64>,
     #[serde(rename = "dataset")]
     pub dataset: String,
-    #[serde(rename = "skip")]
+    #[serde(rename = "skip", skip_serializing_if = "Option::is_none")]
     pub skip: Option<f64>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -927,7 +1027,7 @@ pub enum Element {
     TextBlock(Box<TextBlock>),
 }
 impl Element {
-    pub fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
+    pub(crate) fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -950,7 +1050,7 @@ impl Element {
     }
 }
 impl Element {
-    pub fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+    pub(crate) fn as_element(&self) -> &dyn crate::element::LayoutableElement {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -979,7 +1079,7 @@ pub struct Fact {
     pub title: String,
     #[serde(rename = "value")]
     pub value: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -987,28 +1087,35 @@ pub struct Fact {
 pub struct FactSet {
     #[serde(rename = "facts")]
     pub facts: Vec<Fact>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "FactSet::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "FactSet::default_value_for_is_visible",
+        skip_serializing_if = "FactSet::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl FactSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for FactSet {
@@ -1065,49 +1172,66 @@ impl From<BlockElementHeight> for StringOrBlockElementHeight {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Image {
-    #[serde(rename = "altText")]
+    #[serde(rename = "altText", skip_serializing_if = "Option::is_none")]
     pub alt_text: Option<String>,
-    #[serde(rename = "backgroundColor")]
+    #[serde(rename = "backgroundColor", skip_serializing_if = "Option::is_none")]
     pub background_color: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height", default = "Image::default_value_for_height")]
+    #[serde(
+        rename = "height",
+        default = "Image::default_value_for_height",
+        skip_serializing_if = "Image::is_default_value_for_height"
+    )]
     pub height: StringOrBlockElementHeight,
-    #[serde(rename = "horizontalAlignment")]
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "Image::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "Image::default_value_for_is_visible",
+        skip_serializing_if = "Image::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "size")]
+    #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
     pub size: Option<ImageSize>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ImageStyle>,
     #[serde(rename = "url")]
     pub url: String,
-    #[serde(rename = "width")]
+    #[serde(rename = "width", skip_serializing_if = "Option::is_none")]
     pub width: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl Image {
     fn default_value_for_height() -> StringOrBlockElementHeight {
         StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto)
     }
+    fn is_default_value_for_height(value: &StringOrBlockElementHeight) -> bool {
+        matches!(
+            * value,
+            StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto)
+        )
+    }
 }
 impl Image {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for Image {
@@ -1133,39 +1257,53 @@ impl crate::element::LayoutableElement for Image {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ImageSet {
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "imageSize", default = "ImageSet::default_value_for_image_size")]
+    #[serde(
+        rename = "imageSize",
+        default = "ImageSet::default_value_for_image_size",
+        skip_serializing_if = "ImageSet::is_default_value_for_image_size"
+    )]
     pub image_size: ImageSize,
     #[serde(rename = "images")]
     pub images: Vec<Image>,
-    #[serde(rename = "isVisible", default = "ImageSet::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "ImageSet::default_value_for_is_visible",
+        skip_serializing_if = "ImageSet::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ImageSetStyle>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl ImageSet {
     fn default_value_for_image_size() -> ImageSize {
         ImageSize::Medium
     }
+    fn is_default_value_for_image_size(value: &ImageSize) -> bool {
+        matches!(* value, ImageSize::Medium)
+    }
 }
 impl ImageSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for ImageSet {
@@ -1205,71 +1343,79 @@ pub struct InputChoice {
     pub title: String,
     #[serde(rename = "value")]
     pub value: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputChoiceSet {
-    #[serde(rename = "choices")]
+    #[serde(rename = "choices", skip_serializing_if = "Option::is_none")]
     pub choices: Option<Vec<InputChoice>>,
-    #[serde(rename = "choices.data")]
+    #[serde(rename = "choices.data", skip_serializing_if = "Option::is_none")]
     pub choices_data: Option<DataQuery>,
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
     #[serde(
         rename = "isMultiSelect",
-        default = "InputChoiceSet::default_value_for_is_multi_select"
+        default = "InputChoiceSet::default_value_for_is_multi_select",
+        skip_serializing_if = "InputChoiceSet::is_default_value_for_is_multi_select"
     )]
     pub is_multi_select: bool,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
     #[serde(
         rename = "isVisible",
-        default = "InputChoiceSet::default_value_for_is_visible"
+        default = "InputChoiceSet::default_value_for_is_visible",
+        skip_serializing_if = "InputChoiceSet::is_default_value_for_is_visible"
     )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "placeholder")]
+    #[serde(rename = "placeholder", skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ChoiceInputStyle>,
-    #[serde(rename = "value")]
+    #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
-    #[serde(rename = "wrap")]
+    #[serde(rename = "wrap", skip_serializing_if = "Option::is_none")]
     pub wrap: Option<bool>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputChoiceSet {
     fn default_value_for_is_multi_select() -> bool {
         false
     }
+    fn is_default_value_for_is_multi_select(value: &bool) -> bool {
+        *value == false
+    }
 }
 impl InputChoiceSet {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for InputChoiceSet {
@@ -1299,48 +1445,55 @@ impl crate::element::LayoutableElement for InputChoiceSet {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputDate {
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible", default = "InputDate::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "InputDate::default_value_for_is_visible",
+        skip_serializing_if = "InputDate::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "max")]
+    #[serde(rename = "max", skip_serializing_if = "Option::is_none")]
     pub max: Option<String>,
-    #[serde(rename = "min")]
+    #[serde(rename = "min", skip_serializing_if = "Option::is_none")]
     pub min: Option<String>,
-    #[serde(rename = "placeholder")]
+    #[serde(rename = "placeholder", skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "value")]
+    #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputDate {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for InputDate {
@@ -1370,48 +1523,55 @@ impl crate::element::LayoutableElement for InputDate {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputNumber {
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible", default = "InputNumber::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "InputNumber::default_value_for_is_visible",
+        skip_serializing_if = "InputNumber::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "max")]
+    #[serde(rename = "max", skip_serializing_if = "Option::is_none")]
     pub max: Option<f64>,
-    #[serde(rename = "min")]
+    #[serde(rename = "min", skip_serializing_if = "Option::is_none")]
     pub min: Option<f64>,
-    #[serde(rename = "placeholder")]
+    #[serde(rename = "placeholder", skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "value")]
+    #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<f64>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputNumber {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for InputNumber {
@@ -1441,62 +1601,73 @@ impl crate::element::LayoutableElement for InputNumber {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputText {
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inlineAction")]
+    #[serde(rename = "inlineAction", skip_serializing_if = "Option::is_none")]
     pub inline_action: Option<ISelectAction>,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
     #[serde(
         rename = "isMultiline",
-        default = "InputText::default_value_for_is_multiline"
+        default = "InputText::default_value_for_is_multiline",
+        skip_serializing_if = "InputText::is_default_value_for_is_multiline"
     )]
     pub is_multiline: bool,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible", default = "InputText::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "InputText::default_value_for_is_visible",
+        skip_serializing_if = "InputText::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "maxLength")]
+    #[serde(rename = "maxLength", skip_serializing_if = "Option::is_none")]
     pub max_length: Option<f64>,
-    #[serde(rename = "placeholder")]
+    #[serde(rename = "placeholder", skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
-    #[serde(rename = "regex")]
+    #[serde(rename = "regex", skip_serializing_if = "Option::is_none")]
     pub regex: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<TextInputStyle>,
-    #[serde(rename = "value")]
+    #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputText {
     fn default_value_for_is_multiline() -> bool {
         false
     }
+    fn is_default_value_for_is_multiline(value: &bool) -> bool {
+        *value == false
+    }
 }
 impl InputText {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for InputText {
@@ -1526,48 +1697,55 @@ impl crate::element::LayoutableElement for InputText {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputTime {
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible", default = "InputTime::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "InputTime::default_value_for_is_visible",
+        skip_serializing_if = "InputTime::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "max")]
+    #[serde(rename = "max", skip_serializing_if = "Option::is_none")]
     pub max: Option<String>,
-    #[serde(rename = "min")]
+    #[serde(rename = "min", skip_serializing_if = "Option::is_none")]
     pub min: Option<String>,
-    #[serde(rename = "placeholder")]
+    #[serde(rename = "placeholder", skip_serializing_if = "Option::is_none")]
     pub placeholder: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "value")]
+    #[serde(rename = "value", skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputTime {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for InputTime {
@@ -1597,65 +1775,93 @@ impl crate::element::LayoutableElement for InputTime {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputToggle {
-    #[serde(rename = "errorMessage")]
+    #[serde(rename = "errorMessage", skip_serializing_if = "Option::is_none")]
     pub error_message: Option<String>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(rename = "id")]
     pub id: String,
-    #[serde(rename = "inputStyle")]
+    #[serde(rename = "inputStyle", skip_serializing_if = "Option::is_none")]
     pub input_style: Option<InputStyle>,
-    #[serde(rename = "isRequired")]
+    #[serde(rename = "isRequired", skip_serializing_if = "Option::is_none")]
     pub is_required: Option<bool>,
-    #[serde(rename = "isVisible", default = "InputToggle::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "InputToggle::default_value_for_is_visible",
+        skip_serializing_if = "InputToggle::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "label")]
+    #[serde(rename = "label", skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
-    #[serde(rename = "labelPosition")]
+    #[serde(rename = "labelPosition", skip_serializing_if = "Option::is_none")]
     pub label_position: Option<InputLabelPosition>,
-    #[serde(rename = "labelWidth")]
+    #[serde(rename = "labelWidth", skip_serializing_if = "Option::is_none")]
     pub label_width: Option<StringOrNumber>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
     #[serde(rename = "title")]
     pub title: String,
-    #[serde(rename = "value", default = "InputToggle::default_value_for_value")]
+    #[serde(
+        rename = "value",
+        default = "InputToggle::default_value_for_value",
+        skip_serializing_if = "InputToggle::is_default_value_for_value"
+    )]
     pub value: String,
-    #[serde(rename = "valueOff", default = "InputToggle::default_value_for_value_off")]
+    #[serde(
+        rename = "valueOff",
+        default = "InputToggle::default_value_for_value_off",
+        skip_serializing_if = "InputToggle::is_default_value_for_value_off"
+    )]
     pub value_off: String,
-    #[serde(rename = "valueOn", default = "InputToggle::default_value_for_value_on")]
+    #[serde(
+        rename = "valueOn",
+        default = "InputToggle::default_value_for_value_on",
+        skip_serializing_if = "InputToggle::is_default_value_for_value_on"
+    )]
     pub value_on: String,
-    #[serde(rename = "wrap")]
+    #[serde(rename = "wrap", skip_serializing_if = "Option::is_none")]
     pub wrap: Option<bool>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl InputToggle {
     fn default_value_for_is_visible() -> bool {
         true
     }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl InputToggle {
     fn default_value_for_value() -> String {
         String::from("false")
+    }
+    fn is_default_value_for_value(value: &String) -> bool {
+        *value == "false"
     }
 }
 impl InputToggle {
     fn default_value_for_value_off() -> String {
         String::from("false")
     }
+    fn is_default_value_for_value_off(value: &String) -> bool {
+        *value == "false"
+    }
 }
 impl InputToggle {
     fn default_value_for_value_on() -> String {
         String::from("true")
+    }
+    fn is_default_value_for_value_on(value: &String) -> bool {
+        *value == "true"
     }
 }
 impl crate::layoutable::HasLayoutData for InputToggle {
@@ -1699,7 +1905,7 @@ pub enum Input {
     Toggle(Box<InputToggle>),
 }
 impl Input {
-    pub fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
+    pub(crate) fn as_layoutable(&self) -> &dyn crate::layoutable::Layoutable {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -1711,7 +1917,7 @@ impl Input {
     }
 }
 impl Input {
-    pub fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+    pub(crate) fn as_element(&self) -> &dyn crate::element::LayoutableElement {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -1781,36 +1987,43 @@ pub enum Item {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Media {
-    #[serde(rename = "altText")]
+    #[serde(rename = "altText", skip_serializing_if = "Option::is_none")]
     pub alt_text: Option<String>,
-    #[serde(rename = "captionSources")]
+    #[serde(rename = "captionSources", skip_serializing_if = "Option::is_none")]
     pub caption_sources: Option<Vec<CaptionSource>>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "Media::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "Media::default_value_for_is_visible",
+        skip_serializing_if = "Media::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "poster")]
+    #[serde(rename = "poster", skip_serializing_if = "Option::is_none")]
     pub poster: Option<String>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
     #[serde(rename = "sources")]
     pub sources: Vec<MediaSource>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl Media {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for Media {
@@ -1840,31 +2053,31 @@ impl crate::element::LayoutableElement for Media {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct MediaSource {
-    #[serde(rename = "mimeType")]
+    #[serde(rename = "mimeType", skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
     #[serde(rename = "url")]
     pub url: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Metadata {
-    #[serde(rename = "webUrl")]
+    #[serde(rename = "webUrl", skip_serializing_if = "Option::is_none")]
     pub web_url: Option<String>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Refresh {
-    #[serde(rename = "action")]
+    #[serde(rename = "action", skip_serializing_if = "Option::is_none")]
     pub action: Option<ActionExecute>,
-    #[serde(rename = "expires")]
+    #[serde(rename = "expires", skip_serializing_if = "Option::is_none")]
     pub expires: Option<String>,
-    #[serde(rename = "userIds")]
+    #[serde(rename = "userIds", skip_serializing_if = "Option::is_none")]
     pub user_ids: Option<Vec<String>>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Serialize, Clone)]
@@ -1885,35 +2098,39 @@ impl From<String> for InlineOrString {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct RichTextBlock {
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "horizontalAlignment")]
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(rename = "inlines")]
     pub inlines: Vec<InlineOrString>,
     #[serde(
         rename = "isVisible",
-        default = "RichTextBlock::default_value_for_is_visible"
+        default = "RichTextBlock::default_value_for_is_visible",
+        skip_serializing_if = "RichTextBlock::is_default_value_for_is_visible"
     )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl RichTextBlock {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for RichTextBlock {
@@ -1943,63 +2160,91 @@ impl crate::element::LayoutableElement for RichTextBlock {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Table {
-    #[serde(rename = "columns")]
+    #[serde(rename = "columns", skip_serializing_if = "Option::is_none")]
     pub columns: Option<Vec<TableColumnDefinition>>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
     #[serde(
         rename = "firstRowAsHeader",
-        default = "Table::default_value_for_first_row_as_header"
+        default = "Table::default_value_for_first_row_as_header",
+        skip_serializing_if = "Table::is_default_value_for_first_row_as_header"
     )]
     pub first_row_as_header: bool,
-    #[serde(rename = "gridStyle", default = "Table::default_value_for_grid_style")]
+    #[serde(
+        rename = "gridStyle",
+        default = "Table::default_value_for_grid_style",
+        skip_serializing_if = "Table::is_default_value_for_grid_style"
+    )]
     pub grid_style: ContainerStyle,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "horizontalCellContentAlignment")]
+    #[serde(
+        rename = "horizontalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isVisible", default = "Table::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "Table::default_value_for_is_visible",
+        skip_serializing_if = "Table::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "rows")]
+    #[serde(rename = "rows", skip_serializing_if = "Option::is_none")]
     pub rows: Option<Vec<TableRow>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
     #[serde(
         rename = "showGridLines",
-        default = "Table::default_value_for_show_grid_lines"
+        default = "Table::default_value_for_show_grid_lines",
+        skip_serializing_if = "Table::is_default_value_for_show_grid_lines"
     )]
     pub show_grid_lines: bool,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "verticalCellContentAlignment")]
+    #[serde(
+        rename = "verticalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl Table {
     fn default_value_for_first_row_as_header() -> bool {
         true
     }
+    fn is_default_value_for_first_row_as_header(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl Table {
     fn default_value_for_grid_style() -> ContainerStyle {
         ContainerStyle::Default
+    }
+    fn is_default_value_for_grid_style(value: &ContainerStyle) -> bool {
+        matches!(* value, ContainerStyle::Default)
     }
 }
 impl Table {
     fn default_value_for_is_visible() -> bool {
         true
     }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
+    }
 }
 impl Table {
     fn default_value_for_show_grid_lines() -> bool {
         true
+    }
+    fn is_default_value_for_show_grid_lines(value: &bool) -> bool {
+        *value == true
     }
 }
 impl crate::layoutable::HasLayoutData for Table {
@@ -2029,57 +2274,76 @@ impl crate::element::LayoutableElement for Table {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableCell {
-    #[serde(rename = "backgroundImage")]
+    #[serde(rename = "backgroundImage", skip_serializing_if = "Option::is_none")]
     pub background_image: Option<BackgroundImageOrString>,
-    #[serde(rename = "bleed")]
+    #[serde(rename = "bleed", skip_serializing_if = "Option::is_none")]
     pub bleed: Option<bool>,
     #[serde(rename = "items")]
     pub items: Vec<Element>,
-    #[serde(rename = "minHeight")]
+    #[serde(rename = "minHeight", skip_serializing_if = "Option::is_none")]
     pub min_height: Option<String>,
-    #[serde(rename = "rtl")]
+    #[serde(rename = "rtl", skip_serializing_if = "Option::is_none")]
     pub rtl: Option<bool>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ContainerStyle>,
-    #[serde(rename = "verticalContentAlignment")]
+    #[serde(
+        rename = "verticalContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableColumnDefinition {
-    #[serde(rename = "horizontalCellContentAlignment")]
+    #[serde(
+        rename = "horizontalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "verticalCellContentAlignment")]
+    #[serde(
+        rename = "verticalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
     #[serde(
         rename = "width",
-        default = "TableColumnDefinition::default_value_for_width"
+        default = "TableColumnDefinition::default_value_for_width",
+        skip_serializing_if = "TableColumnDefinition::is_default_value_for_width"
     )]
     pub width: StringOrNumber,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl TableColumnDefinition {
     fn default_value_for_width() -> StringOrNumber {
         StringOrNumber::Number(1f64)
     }
+    fn is_default_value_for_width(value: &StringOrNumber) -> bool {
+        matches!(* value, StringOrNumber::Number(1f64))
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableRow {
-    #[serde(rename = "cells")]
+    #[serde(rename = "cells", skip_serializing_if = "Option::is_none")]
     pub cells: Option<Vec<TableCell>>,
-    #[serde(rename = "horizontalCellContentAlignment")]
+    #[serde(
+        rename = "horizontalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub horizontal_cell_content_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "style")]
+    #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ContainerStyle>,
-    #[serde(rename = "verticalCellContentAlignment")]
+    #[serde(
+        rename = "verticalCellContentAlignment",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub vertical_cell_content_alignment: Option<VerticalAlignment>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2087,71 +2351,99 @@ pub struct TableRow {
 pub struct TargetElement {
     #[serde(rename = "elementId")]
     pub element_id: String,
-    #[serde(rename = "isVisible")]
+    #[serde(rename = "isVisible", skip_serializing_if = "Option::is_none")]
     pub is_visible: Option<bool>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextBlock {
-    #[serde(rename = "color")]
+    #[serde(rename = "color", skip_serializing_if = "Option::is_none")]
     pub color: Option<Colors>,
-    #[serde(rename = "fallback")]
+    #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption>,
-    #[serde(rename = "fontType")]
+    #[serde(rename = "fontType", skip_serializing_if = "Option::is_none")]
     pub font_type: Option<FontType>,
-    #[serde(rename = "height")]
+    #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
-    #[serde(rename = "horizontalAlignment")]
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
     pub horizontal_alignment: Option<HorizontalAlignment>,
-    #[serde(rename = "id")]
+    #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    #[serde(rename = "isSubtle", default = "TextBlock::default_value_for_is_subtle")]
+    #[serde(
+        rename = "isSubtle",
+        default = "TextBlock::default_value_for_is_subtle",
+        skip_serializing_if = "TextBlock::is_default_value_for_is_subtle"
+    )]
     pub is_subtle: bool,
-    #[serde(rename = "isVisible", default = "TextBlock::default_value_for_is_visible")]
+    #[serde(
+        rename = "isVisible",
+        default = "TextBlock::default_value_for_is_visible",
+        skip_serializing_if = "TextBlock::is_default_value_for_is_visible"
+    )]
     pub is_visible: bool,
-    #[serde(rename = "maxLines")]
+    #[serde(rename = "maxLines", skip_serializing_if = "Option::is_none")]
     pub max_lines: Option<f64>,
-    #[serde(rename = "requires")]
+    #[serde(rename = "requires", skip_serializing_if = "Option::is_none")]
     pub requires: Option<std::collections::HashMap<String, String>>,
-    #[serde(rename = "separator")]
+    #[serde(rename = "separator", skip_serializing_if = "Option::is_none")]
     pub separator: Option<bool>,
-    #[serde(rename = "size")]
+    #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
     pub size: Option<FontSize>,
-    #[serde(rename = "spacing")]
+    #[serde(rename = "spacing", skip_serializing_if = "Option::is_none")]
     pub spacing: Option<Spacing>,
-    #[serde(rename = "style", default = "TextBlock::default_value_for_style")]
+    #[serde(
+        rename = "style",
+        default = "TextBlock::default_value_for_style",
+        skip_serializing_if = "TextBlock::is_default_value_for_style"
+    )]
     pub style: TextBlockStyle,
     #[serde(rename = "text")]
     pub text: String,
-    #[serde(rename = "weight")]
+    #[serde(rename = "weight", skip_serializing_if = "Option::is_none")]
     pub weight: Option<FontWeight>,
-    #[serde(rename = "wrap", default = "TextBlock::default_value_for_wrap")]
+    #[serde(
+        rename = "wrap",
+        default = "TextBlock::default_value_for_wrap",
+        skip_serializing_if = "TextBlock::is_default_value_for_wrap"
+    )]
     pub wrap: bool,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(skip_deserializing)]
+    #[serde(rename = ".layout", skip_deserializing)]
     pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
 }
 impl TextBlock {
     fn default_value_for_is_subtle() -> bool {
         false
     }
+    fn is_default_value_for_is_subtle(value: &bool) -> bool {
+        *value == false
+    }
 }
 impl TextBlock {
     fn default_value_for_is_visible() -> bool {
         true
+    }
+    fn is_default_value_for_is_visible(value: &bool) -> bool {
+        *value == true
     }
 }
 impl TextBlock {
     fn default_value_for_style() -> TextBlockStyle {
         TextBlockStyle::Default
     }
+    fn is_default_value_for_style(value: &TextBlockStyle) -> bool {
+        matches!(* value, TextBlockStyle::Default)
+    }
 }
 impl TextBlock {
     fn default_value_for_wrap() -> bool {
         false
+    }
+    fn is_default_value_for_wrap(value: &bool) -> bool {
+        *value == false
     }
 }
 impl crate::layoutable::HasLayoutData for TextBlock {
@@ -2180,34 +2472,41 @@ impl crate::element::LayoutableElement for TextBlock {
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextRun {
-    #[serde(rename = "color")]
+    #[serde(rename = "color", skip_serializing_if = "Option::is_none")]
     pub color: Option<Colors>,
-    #[serde(rename = "fontType")]
+    #[serde(rename = "fontType", skip_serializing_if = "Option::is_none")]
     pub font_type: Option<FontType>,
-    #[serde(rename = "highlight")]
+    #[serde(rename = "highlight", skip_serializing_if = "Option::is_none")]
     pub highlight: Option<bool>,
-    #[serde(rename = "isSubtle", default = "TextRun::default_value_for_is_subtle")]
+    #[serde(
+        rename = "isSubtle",
+        default = "TextRun::default_value_for_is_subtle",
+        skip_serializing_if = "TextRun::is_default_value_for_is_subtle"
+    )]
     pub is_subtle: bool,
-    #[serde(rename = "italic")]
+    #[serde(rename = "italic", skip_serializing_if = "Option::is_none")]
     pub italic: Option<bool>,
-    #[serde(rename = "selectAction")]
+    #[serde(rename = "selectAction", skip_serializing_if = "Option::is_none")]
     pub select_action: Option<ISelectAction>,
-    #[serde(rename = "size")]
+    #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
     pub size: Option<FontSize>,
-    #[serde(rename = "strikethrough")]
+    #[serde(rename = "strikethrough", skip_serializing_if = "Option::is_none")]
     pub strikethrough: Option<bool>,
     #[serde(rename = "text")]
     pub text: String,
-    #[serde(rename = "underline")]
+    #[serde(rename = "underline", skip_serializing_if = "Option::is_none")]
     pub underline: Option<bool>,
-    #[serde(rename = "weight")]
+    #[serde(rename = "weight", skip_serializing_if = "Option::is_none")]
     pub weight: Option<FontWeight>,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
 impl TextRun {
     fn default_value_for_is_subtle() -> bool {
         false
+    }
+    fn is_default_value_for_is_subtle(value: &bool) -> bool {
+        *value == false
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2261,6 +2560,6 @@ pub struct TokenExchangeResource {
     pub provider_id: String,
     #[serde(rename = "uri")]
     pub uri: String,
-    #[serde(rename = "type")]
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }

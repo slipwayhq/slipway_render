@@ -14,7 +14,7 @@ pub(super) trait MoveableFromOrigin {
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
-pub(super) struct FinalRect {
+pub struct FinalRect {
     x: i32,
     y: i32,
     width: u32,
@@ -25,7 +25,7 @@ impl From<Rect> for FinalRect {
     fn from(rect: Rect) -> Self {
         FinalRect {
             x: rect.left(),
-            y: rect.right(),
+            y: rect.top(),
             width: rect.width(),
             height: rect.height(),
         }

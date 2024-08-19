@@ -1,0 +1,62 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "minHeight": "800px",
+  "body": [
+      {
+          "type": "Container",
+          "style": "accent",
+          "items": [
+              {
+                  "type": "TextBlock",
+                  "text": "1"
+              }
+          ]
+      },
+      {
+          "type": "Container",
+          "style": "accent",
+          "height": "stretch",
+          "items": [
+              {
+                  "type": "TextBlock",
+                  "text": "2"
+              }
+          ]
+      },
+      {
+          "type": "Container",
+          "style": "accent",
+          "height": "stretch",
+          "items": [
+              {
+                  "type": "TextBlock",
+                  "text": "3"
+              }
+          ]
+      },
+      {
+          "type": "Container",
+          "style": "accent",
+          "minHeight": "300px",
+          "height": "stretch",
+          "items": [
+              {
+                  "type": "TextBlock",
+                  "text": "4"
+              }
+          ]
+      },
+      {
+          "type": "Container",
+          "style": "accent",
+          "items": [
+              {
+                  "type": "TextBlock",
+                  "text": "5"
+              }
+          ]
+      }
+  ]
+}

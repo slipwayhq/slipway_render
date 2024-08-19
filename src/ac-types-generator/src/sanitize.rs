@@ -130,7 +130,7 @@ fn generate_enum_type_selector(
         .unzip();
 
     let additional_type = quote! {
-        #[derive(Clone)]
+        #[derive(serde::Serialize, Clone)]
         pub enum #type_name {
             #(#variants)*
         }

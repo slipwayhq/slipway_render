@@ -14,7 +14,7 @@ pub enum RenderError {
     },
 
     #[error("Measure result not found for {path}")]
-    NodeIdNotFound { path: Rc<LayoutPath> },
+    TaffyDataNotFound { path: Rc<LayoutPath> },
 
     #[error("Layout error at {path}:\n{taffy_error:?}")]
     Taffy {

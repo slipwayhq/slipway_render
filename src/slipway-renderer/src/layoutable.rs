@@ -8,6 +8,7 @@ use taffy::{Layout, NodeId, Point, Style, TaffyTree};
 use crate::errors::TaffyErrorToRenderError;
 use crate::layout_impl::NodeContext;
 use crate::masked_image::MaskedImage;
+use crate::rect::FinalRect;
 use crate::{errors::RenderError, host_config::generated::HostConfig, masked_image::SlipwayCanvas};
 
 pub(super) trait Layoutable: HasLayoutData {
@@ -19,10 +20,11 @@ pub(super) trait Layoutable: HasLayoutData {
     ) -> Result<NodeId, RenderError> {
         let layout_data = self.layout_data();
 
-        let node_id = self.layout_override(context, baseline_style, tree)?;
+        let taffy_data = self.layout_override(context, baseline_style, tree)?;
+        let node_id = taffy_data.node_id;
 
         let mut data_mut = layout_data.borrow_mut();
-        data_mut.node_id = Some(node_id);
+        data_mut.taffy_data = Some(taffy_data);
 
         Ok(node_id)
     }
@@ -32,7 +34,7 @@ pub(super) trait Layoutable: HasLayoutData {
         context: &LayoutContext,
         _baseline_style: Style,
         _tree: &mut TaffyTree<NodeContext>,
-    ) -> Result<NodeId, RenderError> {
+    ) -> Result<ElementTaffyData, RenderError> {
         unimplemented!("layout not implemented for {}", context.path.clone());
     }
 
@@ -44,22 +46,31 @@ pub(super) trait Layoutable: HasLayoutData {
     ) -> Result<(), RenderError> {
         context.print_local_context();
 
-        let layout_data = self.layout_data();
-        let data = layout_data.borrow();
+        let refcell_layout_data = self.layout_data();
 
-        let node_id = data.node_id.ok_or(RenderError::NodeIdNotFound {
-            path: context.path.clone(),
-        })?;
+        let actual_rect = {
+            let layout_data = refcell_layout_data.borrow();
+            let taffy_data =
+                layout_data
+                    .taffy_data
+                    .as_ref()
+                    .ok_or(RenderError::TaffyDataNotFound {
+                        path: context.path.clone(),
+                    })?;
 
-        let node_layout = tree.layout(node_id).err_context(context)?;
+            let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
 
-        let (width, height) = image.dimensions();
-        let image_rect = Rect::at(0, 0).of_size(width, height);
-        let actual_rect = node_layout.actual_rect(context);
+            let (width, height) = image.dimensions();
+            let image_rect = Rect::at(0, 0).of_size(width, height);
+            let actual_rect = node_layout.absolute_rect(context);
 
-        if image_rect.intersect(actual_rect).is_some() {
-            self.draw_override(context, tree, node_id, image)?;
-        }
+            if image_rect.intersect(actual_rect).is_some() {
+                self.draw_override(context, tree, taffy_data, image)?;
+            }
+            actual_rect
+        };
+
+        refcell_layout_data.borrow_mut().absolute_rect = Some(actual_rect.into());
 
         Ok(())
     }
@@ -68,7 +79,7 @@ pub(super) trait Layoutable: HasLayoutData {
         &self,
         context: &LayoutContext,
         _tree: &TaffyTree<NodeContext>,
-        _node_id: NodeId,
+        _taffy_data: &ElementTaffyData,
         _image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         unimplemented!("draw_override not implemented for {}", context.path.clone());
@@ -76,11 +87,11 @@ pub(super) trait Layoutable: HasLayoutData {
 }
 
 pub(super) trait TaffyLayoutUtils {
-    fn actual_rect(&self, context: &LayoutContext) -> Rect;
+    fn absolute_rect(&self, context: &LayoutContext) -> Rect;
 }
 
 impl TaffyLayoutUtils for Layout {
-    fn actual_rect(&self, context: &LayoutContext) -> Rect {
+    fn absolute_rect(&self, context: &LayoutContext) -> Rect {
         Rect::at(
             context.current_origin.x as i32,
             context.current_origin.y as i32,
@@ -108,7 +119,7 @@ impl<T: Layoutable> Layoutable for Box<T> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
-    ) -> Result<NodeId, RenderError> {
+    ) -> Result<ElementTaffyData, RenderError> {
         self.as_ref().layout_override(context, baseline_style, tree)
     }
 
@@ -125,32 +136,61 @@ impl<T: Layoutable> Layoutable for Box<T> {
         &self,
         context: &LayoutContext,
         tree: &TaffyTree<NodeContext>,
-        node_id: NodeId,
+        taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        self.as_ref().draw_override(context, tree, node_id, image)
+        self.as_ref()
+            .draw_override(context, tree, taffy_data, image)
     }
 }
 
 impl<T: HasLayoutData> HasLayoutData for Box<T> {
-    fn layout_data(&self) -> &RefCell<LayoutData> {
+    fn layout_data(&self) -> &RefCell<ElementLayoutData> {
         self.as_ref().layout_data()
     }
 }
 
 pub(super) trait HasLayoutData {
-    fn layout_data(&self) -> &RefCell<LayoutData>;
+    fn layout_data(&self) -> &RefCell<ElementLayoutData>;
     fn node_id(&self) -> NodeId {
         self.layout_data()
             .borrow()
+            .taffy_data
+            .as_ref()
+            .expect("Element should have taffy data")
             .node_id
-            .expect("Element should have a node_id")
+    }
+    fn child_node_ids(&self) -> Vec<NodeId> {
+        self.layout_data()
+            .borrow()
+            .taffy_data
+            .as_ref()
+            .expect("Element should have taffy data")
+            .child_element_node_ids
+            .clone()
     }
 }
 
-#[derive(Default, Debug, Clone)]
-pub(super) struct LayoutData {
-    pub node_id: Option<NodeId>,
+#[derive(serde::Serialize, serde::Deserialize, Default, Debug, Clone)]
+pub(super) struct ElementLayoutData {
+    #[serde(skip)]
+    pub taffy_data: Option<ElementTaffyData>,
+    pub absolute_rect: Option<FinalRect>,
+}
+
+#[derive(Debug, Clone)]
+pub(super) struct ElementTaffyData {
+    pub node_id: NodeId,
+    pub child_element_node_ids: Vec<NodeId>,
+}
+
+impl From<NodeId> for ElementTaffyData {
+    fn from(value: NodeId) -> Self {
+        ElementTaffyData {
+            node_id: value,
+            child_element_node_ids: Vec::new(),
+        }
+    }
 }
 
 #[derive(Default, Copy, Clone, Debug)]

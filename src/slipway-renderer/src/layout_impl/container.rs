@@ -3,12 +3,12 @@ use std::{cell::RefCell, rc::Rc};
 use imageproc::drawing::draw_hollow_rect_mut;
 use taffy::{
     prelude::FromLength, Dimension, Display, FlexDirection, JustifyContent, LengthPercentageAuto,
-    NodeId, Rect, Size, Style, TaffyTree,
+    Rect, Size, Style, TaffyTree,
 };
 
 use crate::{
     errors::{RenderError, TaffyErrorToRenderError},
-    layoutable::{LayoutContext, Layoutable, TaffyLayoutUtils},
+    layoutable::{ElementTaffyData, LayoutContext, Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
     BlockElementHeight, Container, Element, StringOrBlockElementHeight,
 };
@@ -24,7 +24,7 @@ impl Layoutable for Container {
         context: &LayoutContext,
         baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
-    ) -> Result<NodeId, RenderError> {
+    ) -> Result<ElementTaffyData, RenderError> {
         let min_height = match &self.min_height {
             Some(min_height) => parse_dimension(min_height, context)?,
             None => Dimension::Auto,
@@ -54,7 +54,7 @@ impl Layoutable for Container {
         &self,
         context: &LayoutContext,
         tree: &TaffyTree<NodeContext>,
-        node_id: NodeId,
+        taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         let child_elements_context = context.for_child_str("items");
@@ -63,7 +63,7 @@ impl Layoutable for Container {
         container_draw_override(
             context,
             tree,
-            node_id,
+            taffy_data,
             image,
             child_elements_context,
             child_elements,
@@ -77,8 +77,9 @@ pub(super) fn container_layout_override(
     tree: &mut TaffyTree<NodeContext>,
     child_elements_context: LayoutContext,
     child_elements: &[Element],
-) -> Result<NodeId, RenderError> {
-    let mut element_node_ids = Vec::new();
+) -> Result<ElementTaffyData, RenderError> {
+    let mut child_element_node_ids = Vec::new();
+    let mut child_node_ids = Vec::new();
 
     for (index, element) in child_elements.iter().enumerate() {
         let element_context = child_elements_context.for_child(index.to_string());
@@ -117,7 +118,8 @@ pub(super) fn container_layout_override(
                 .as_layoutable()
                 .layout(&element_context, element_baseline_style, tree)?;
 
-        element_node_ids.push(element_node_id);
+        child_element_node_ids.push(element_node_id);
+        child_node_ids.push(element_node_id);
     }
 
     tree.new_with_children(
@@ -127,21 +129,25 @@ pub(super) fn container_layout_override(
             justify_content: Some(JustifyContent::FlexStart),
             ..baseline_style
         },
-        &element_node_ids,
+        &child_node_ids,
     )
     .err_context(context)
+    .map(|node_id| ElementTaffyData {
+        node_id,
+        child_element_node_ids,
+    })
 }
 
 pub(super) fn container_draw_override(
     context: &LayoutContext,
     tree: &TaffyTree<NodeContext>,
-    node_id: NodeId,
+    taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     child_elements_context: LayoutContext,
     child_elements: &[Element],
 ) -> Result<(), RenderError> {
-    let node_layout = tree.layout(node_id).err_context(context)?;
-    let actual_rect = node_layout.actual_rect(context);
+    let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
+    let actual_rect = node_layout.absolute_rect(context);
 
     if context.debug_mode.outlines {
         let color = next_color();
@@ -150,7 +156,8 @@ pub(super) fn container_draw_override(
         draw_hollow_rect_mut(&mut *image_mut, actual_rect, color);
     }
 
-    let children_node_ids = tree.children(node_id).err_context(context)?;
+    // let child_node_ids = tree.children(taffy_data.node_id).err_context(context)?;
+    let child_element_node_ids = &taffy_data.child_element_node_ids;
 
     for (i, element) in child_elements
         .iter()
@@ -158,12 +165,12 @@ pub(super) fn container_draw_override(
         .filter(|(_, e)| e.as_element().get_is_visible())
     {
         let element_layout = tree
-            .layout(children_node_ids[i])
+            .layout(child_element_node_ids[i])
             .err_context(&child_elements_context)?;
 
         let element_context =
             child_elements_context.for_child_origin(i.to_string(), element_layout.location);
-        let element_rect = element_layout.actual_rect(&element_context);
+        let element_rect = element_layout.absolute_rect(&element_context);
 
         let maybe_intersection = actual_rect.intersect(element_rect);
 

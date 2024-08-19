@@ -103,23 +103,16 @@ impl Canvas for MaskedImage {
         };
 
         if let Some(final_pixel) = final_pixel {
-            if self.mask.contains(x, y) {
-                match &mut self.image {
-                    MaskOrImage::Mask(mask) => mask.borrow_mut().draw_pixel(x, y, final_pixel),
-                    MaskOrImage::Image { image, .. } => {
-                        image.borrow_mut().blend_pixel(x, y, final_pixel)
-                    }
+            match &mut self.image {
+                MaskOrImage::Mask(mask) => mask.borrow_mut().draw_pixel(x, y, final_pixel),
+                MaskOrImage::Image { image, .. } => {
+                    image.borrow_mut().blend_pixel(x, y, final_pixel)
                 }
             }
         }
     }
 
     fn get_pixel(&self, x: u32, y: u32) -> Self::Pixel {
-        // If the pixel is outside the mask, return a transparent pixel
-        // if !self.mask.contains(x, y) {
-        //     return Rgba([0, 0, 0, 0]);
-        // }
-
         match &self.image {
             MaskOrImage::Mask(mask) => mask.borrow().get_pixel(x, y),
             MaskOrImage::Image { image, .. } => *image.borrow().get_pixel(x, y),
@@ -228,12 +221,12 @@ mod tests {
         masked_image
             .borrow_mut()
             .draw_pixel(3, 3, Rgba([255, 0, 0, 255]));
-        assert_eq!(image.borrow().get_pixel(3, 3), &Rgba([0, 0, 0, 255]));
+        assert_eq!(image.borrow().get_pixel(3, 3), &Rgba([255, 0, 0, 255]));
 
         // Draw a pixel outside the mask, should not change
         masked_image
             .borrow_mut()
-            .draw_pixel(1, 1, Rgba([0, 0, 0, 255]));
+            .draw_pixel(1, 1, Rgba([0, 255, 0, 255]));
         assert_eq!(image.borrow().get_pixel(1, 1), &Rgba([255, 255, 255, 255]));
     }
 
@@ -248,13 +241,15 @@ mod tests {
         masked_image
             .borrow_mut()
             .draw_pixel(3, 3, Rgba([255, 0, 0, 255]));
-        assert_eq!(image.borrow().get_pixel(3, 3), &Rgba([0, 0, 0, 255]));
+        assert_eq!(image.borrow().get_pixel(3, 3), &Rgba([255, 0, 0, 255]));
 
         // Draw a pixel outside the mask with DebugMode::TransparentMasks should change.
         masked_image
             .borrow_mut()
-            .draw_pixel(1, 1, Rgba([0, 0, 0, 255]));
+            .draw_pixel(1, 1, Rgba([0, 255, 0, 255]));
 
+        // It should equal neither the original color nor the color we set.
+        assert_ne!(image.borrow().get_pixel(1, 1), &Rgba([0, 255, 0, 255]));
         assert_ne!(image.borrow().get_pixel(1, 1), &Rgba([255, 255, 255, 255]));
     }
 

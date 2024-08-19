@@ -170,7 +170,7 @@ pub(super) fn process_class(
 
         // Generate the enum.
         quote! {
-            #[derive(serde::Deserialize, Clone)]
+            #[derive(serde::Deserialize, serde::Serialize, Clone)]
             #[serde(tag = "type")]
             pub enum #struct_name {
                 #(#variants)*
@@ -289,14 +289,14 @@ pub(super) fn process_class(
         if is_layoutable {
             // Generate a layout_data field to store the layout metadata.
             fields.push(quote! {
-                #[serde(skip)]
-                pub layout_data: core::cell::RefCell<crate::layoutable::LayoutData>,
+                #[serde(skip_deserializing)]
+                pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
             });
 
             // Implement the HasLayoutData trait for the struct.
             post_struct_tokens.push(quote! {
                 impl crate::layoutable::HasLayoutData for #struct_name {
-                    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::LayoutData> {
+                    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
                         &self.layout_data
                     }
                 }
@@ -349,7 +349,7 @@ pub(super) fn process_class(
 
         // Generate the struct.
         quote! {
-            #[derive(serde::Deserialize, Clone)]
+            #[derive(serde::Deserialize, serde::Serialize, Clone)]
             #[serde(deny_unknown_fields)]
             pub struct #struct_name {
                 #(#fields)*

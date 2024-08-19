@@ -12,3 +12,22 @@ pub(super) trait SlipwayRegion<T> {
 pub(super) trait MoveableFromOrigin {
     fn move_from_origin_into(&self, outer_rect: Rect) -> Rect;
 }
+
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+pub(super) struct FinalRect {
+    x: i32,
+    y: i32,
+    width: u32,
+    height: u32,
+}
+
+impl From<Rect> for FinalRect {
+    fn from(rect: Rect) -> Self {
+        FinalRect {
+            x: rect.left(),
+            y: rect.right(),
+            width: rect.width(),
+            height: rect.height(),
+        }
+    }
+}

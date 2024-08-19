@@ -40,7 +40,7 @@ pub(super) fn process_enum(loaded_enum: &Loaded<Enum>) -> proc_macro2::TokenStre
     });
 
     let result = quote! {
-        #[derive(serde::Deserialize, Copy, Clone)]
+        #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
         pub enum #enum_name {
             #(#variants)*
         }

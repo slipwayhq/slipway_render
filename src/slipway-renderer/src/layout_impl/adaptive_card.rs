@@ -2,11 +2,11 @@ use std::{cell::RefCell, rc::Rc};
 
 use image::Rgba;
 use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
-use taffy::{Dimension, NodeId, Size, Style, TaffyTree};
+use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
     errors::RenderError,
-    layoutable::{LayoutContext, Layoutable},
+    layoutable::{ElementTaffyData, LayoutContext, Layoutable},
     masked_image::{MaskedImage, SlipwayCanvas},
     AdaptiveCard,
 };
@@ -25,7 +25,7 @@ impl Layoutable for AdaptiveCard {
         context: &LayoutContext,
         baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
-    ) -> Result<NodeId, RenderError> {
+    ) -> Result<ElementTaffyData, RenderError> {
         let baseline_style = Style {
             size: Size {
                 width: Dimension::Percent(1.),
@@ -50,7 +50,7 @@ impl Layoutable for AdaptiveCard {
         &self,
         context: &LayoutContext,
         tree: &TaffyTree<NodeContext>,
-        node_id: NodeId,
+        taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
         // Fill the background with white.
@@ -70,7 +70,7 @@ impl Layoutable for AdaptiveCard {
         container_draw_override(
             context,
             tree,
-            node_id,
+            taffy_data,
             image,
             child_elements_context,
             child_elements,

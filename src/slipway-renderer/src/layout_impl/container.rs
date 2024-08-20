@@ -2,14 +2,13 @@ use std::{cell::RefCell, rc::Rc};
 
 use imageproc::drawing::draw_hollow_rect_mut;
 use taffy::{
-    prelude::{length, FromLength},
-    Dimension, Display, FlexDirection, JustifyContent, LengthPercentageAuto, Rect, Size, Style,
+    prelude::length, Dimension, Display, FlexDirection, JustifyContent, Rect, Size, Style,
     TaffyTree,
 };
 
 use crate::{
     debug_mode::next_color,
-    element_layout_data::{ElementTaffyData, PositionWithinParent},
+    element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
@@ -48,33 +47,33 @@ impl Layoutable for Container {
             let position = self
                 .layout_data
                 .borrow()
-                .position_within_parent
+                .placement
                 .expect("PositionWithinParent should be set");
 
             baseline_style.margin = match position {
-                PositionWithinParent::Top => Rect {
-                    top: LengthPercentageAuto::from_length(negative_padding),
-                    left: LengthPercentageAuto::from_length(negative_padding),
-                    right: LengthPercentageAuto::from_length(negative_padding),
-                    bottom: LengthPercentageAuto::from_length(0.),
+                Placement::Top => Rect {
+                    top: length(negative_padding),
+                    left: length(negative_padding),
+                    right: length(negative_padding),
+                    bottom: length(0.),
                 },
-                PositionWithinParent::Bottom => Rect {
-                    top: LengthPercentageAuto::from_length(0.),
-                    left: LengthPercentageAuto::from_length(negative_padding),
-                    right: LengthPercentageAuto::from_length(negative_padding),
-                    bottom: LengthPercentageAuto::from_length(negative_padding),
+                Placement::Bottom => Rect {
+                    top: length(0.),
+                    left: length(negative_padding),
+                    right: length(negative_padding),
+                    bottom: length(negative_padding),
                 },
-                PositionWithinParent::VerticalOnly => Rect {
-                    top: LengthPercentageAuto::from_length(negative_padding),
-                    left: LengthPercentageAuto::from_length(negative_padding),
-                    right: LengthPercentageAuto::from_length(negative_padding),
-                    bottom: LengthPercentageAuto::from_length(negative_padding),
+                Placement::SoleVertical => Rect {
+                    top: length(negative_padding),
+                    left: length(negative_padding),
+                    right: length(negative_padding),
+                    bottom: length(negative_padding),
                 },
-                PositionWithinParent::VerticalMiddle => Rect {
-                    top: LengthPercentageAuto::from_length(0.),
-                    left: LengthPercentageAuto::from_length(negative_padding),
-                    right: LengthPercentageAuto::from_length(negative_padding),
-                    bottom: LengthPercentageAuto::from_length(0.),
+                Placement::WithinVertical => Rect {
+                    top: length(0.),
+                    left: length(negative_padding),
+                    right: length(negative_padding),
+                    bottom: length(0.),
                 },
                 _ => panic!("Unexpected position in vertical container: {:?}", position),
             };
@@ -127,24 +126,21 @@ pub(super) fn container_layout_override(
 
     for (index, element) in child_elements.iter().enumerate() {
         let element_position = match index {
-            0 if element_count == 1 => PositionWithinParent::VerticalOnly,
-            0 => PositionWithinParent::Top,
-            i if i == element_count - 1 => PositionWithinParent::Bottom,
-            _ => PositionWithinParent::VerticalMiddle,
+            0 if element_count == 1 => Placement::SoleVertical,
+            0 => Placement::Top,
+            i if i == element_count - 1 => Placement::Bottom,
+            _ => Placement::WithinVertical,
         };
 
         let as_layoutable = element.as_layoutable();
-        as_layoutable
-            .layout_data()
-            .borrow_mut()
-            .position_within_parent = Some(element_position);
+        as_layoutable.layout_data().borrow_mut().placement = Some(element_position);
 
         let as_element = element.as_element();
         let spacing = context.host_config.spacing.from(as_element);
 
         if spacing > 0 {
             match element_position {
-                PositionWithinParent::Bottom | PositionWithinParent::VerticalMiddle => {
+                Placement::Bottom | Placement::WithinVertical => {
                     let spacer_style = Style {
                         size: Size {
                             height: length(spacing as f32),

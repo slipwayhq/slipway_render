@@ -10,7 +10,7 @@ pub struct ElementLayoutData {
     pub taffy_data: Option<ElementTaffyData>,
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub position_within_parent: Option<PositionWithinParent>,
+    pub placement: Option<Placement>,
 }
 
 #[derive(Debug, Clone)]
@@ -29,13 +29,13 @@ impl From<NodeId> for ElementTaffyData {
 }
 
 #[derive(serde::Serialize, Debug, Copy, Clone)]
-pub enum PositionWithinParent {
+pub enum Placement {
     Top,
     Bottom,
-    VerticalOnly,
-    VerticalMiddle,
+    SoleVertical,
+    WithinVertical,
     Left,
     Right,
-    HorizontalOnly,
-    HorizontalMiddle,
+    SoleHorizontal,
+    WithinHorizontal,
 }

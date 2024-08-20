@@ -1,7 +1,7 @@
 ---
 source: slipway-renderer/tests/snapshot_tests.rs
 expression: card
-input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
+input_file: slipway-renderer/tests/snapshot_inputs/mixed_container_heights.json
 ---
 {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -14,22 +14,24 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
           "text": "1",
           ".layout": {
             "rect": {
-              "x": 450,
+              "x": 24,
               "y": 24,
               "width": 100,
               "height": 10
-            }
+            },
+            "placement": "SoleVertical"
           }
         }
       ],
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 0,
+          "x": 12,
           "y": 12,
-          "width": 1000,
-          "height": 22
-        }
+          "width": 976,
+          "height": 34
+        },
+        "placement": "Top"
       }
     },
     {
@@ -41,22 +43,24 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
           "text": "2",
           ".layout": {
             "rect": {
-              "x": 450,
-              "y": 63,
+              "x": 24,
+              "y": 70,
               "width": 100,
               "height": 10
-            }
+            },
+            "placement": "SoleVertical"
           }
         }
       ],
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 0,
-          "y": 51,
-          "width": 1000,
+          "x": 12,
+          "y": 58,
+          "width": 976,
           "height": 131
-        }
+        },
+        "placement": "WithinVertical"
       }
     },
     {
@@ -68,22 +72,24 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
           "text": "3",
           ".layout": {
             "rect": {
-              "x": 450,
-              "y": 211,
+              "x": 24,
+              "y": 213,
               "width": 100,
               "height": 10
-            }
+            },
+            "placement": "SoleVertical"
           }
         }
       ],
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 0,
-          "y": 199,
-          "width": 1000,
-          "height": 131
-        }
+          "x": 12,
+          "y": 201,
+          "width": 976,
+          "height": 132
+        },
+        "placement": "WithinVertical"
       }
     },
     {
@@ -95,11 +101,12 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
           "text": "4",
           ".layout": {
             "rect": {
-              "x": 450,
-              "y": 359,
+              "x": 24,
+              "y": 357,
               "width": 100,
               "height": 10
-            }
+            },
+            "placement": "SoleVertical"
           }
         }
       ],
@@ -107,11 +114,12 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 0,
-          "y": 347,
-          "width": 1000,
-          "height": 409
-        }
+          "x": 12,
+          "y": 345,
+          "width": 976,
+          "height": 397
+        },
+        "placement": "WithinVertical"
       }
     },
     {
@@ -122,22 +130,24 @@ input_file: slipway-renderer/tests/snapshot-inputs/mixed_container_heights.json
           "text": "5",
           ".layout": {
             "rect": {
-              "x": 450,
-              "y": 785,
+              "x": 24,
+              "y": 766,
               "width": 100,
               "height": 10
-            }
+            },
+            "placement": "SoleVertical"
           }
         }
       ],
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 0,
-          "y": 773,
-          "width": 1000,
-          "height": 22
-        }
+          "x": 12,
+          "y": 754,
+          "width": 976,
+          "height": 34
+        },
+        "placement": "Bottom"
       }
     }
   ],

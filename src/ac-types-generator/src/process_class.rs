@@ -300,13 +300,13 @@ pub(super) fn process_class(
             // Generate a layout_data field to store the layout metadata.
             fields.push(quote! {
                 #[serde(rename = ".layout", skip_deserializing)]
-                pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+                pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
             });
 
             // Implement the HasLayoutData trait for the struct.
             post_struct_tokens.push(quote! {
                 impl crate::layoutable::HasLayoutData for #struct_name {
-                    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+                    fn layout_data(&self) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
                         &self.layout_data
                     }
                 }

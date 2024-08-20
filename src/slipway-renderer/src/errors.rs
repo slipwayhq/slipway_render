@@ -3,7 +3,7 @@ use std::rc::Rc;
 use image::ImageError;
 use thiserror::Error;
 
-use crate::layoutable::{LayoutContext, LayoutPath};
+use crate::layout_context::{LayoutContext, LayoutPath};
 
 #[derive(Error, Debug)]
 pub enum RenderError {

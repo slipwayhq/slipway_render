@@ -602,7 +602,7 @@ pub struct ActionSet {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl ActionSet {
     fn default_value_for_is_visible() -> bool {
@@ -613,7 +613,9 @@ impl ActionSet {
     }
 }
 impl crate::layoutable::HasLayoutData for ActionSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -690,10 +692,12 @@ pub struct AdaptiveCard {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl crate::layoutable::HasLayoutData for AdaptiveCard {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -866,7 +870,7 @@ pub struct ColumnSet {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl ColumnSet {
     fn default_value_for_is_visible() -> bool {
@@ -877,7 +881,9 @@ impl ColumnSet {
     }
 }
 impl crate::layoutable::HasLayoutData for ColumnSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -943,7 +949,7 @@ pub struct Container {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl Container {
     fn default_value_for_is_visible() -> bool {
@@ -954,7 +960,9 @@ impl Container {
     }
 }
 impl crate::layoutable::HasLayoutData for Container {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1108,7 +1116,7 @@ pub struct FactSet {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl FactSet {
     fn default_value_for_is_visible() -> bool {
@@ -1119,7 +1127,9 @@ impl FactSet {
     }
 }
 impl crate::layoutable::HasLayoutData for FactSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1213,7 +1223,7 @@ pub struct Image {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl Image {
     fn default_value_for_height() -> StringOrBlockElementHeight {
@@ -1235,7 +1245,9 @@ impl Image {
     }
 }
 impl crate::layoutable::HasLayoutData for Image {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1288,7 +1300,7 @@ pub struct ImageSet {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl ImageSet {
     fn default_value_for_image_size() -> ImageSize {
@@ -1307,7 +1319,9 @@ impl ImageSet {
     }
 }
 impl crate::layoutable::HasLayoutData for ImageSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1400,7 +1414,7 @@ pub struct InputChoiceSet {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputChoiceSet {
     fn default_value_for_is_multi_select() -> bool {
@@ -1419,7 +1433,9 @@ impl InputChoiceSet {
     }
 }
 impl crate::layoutable::HasLayoutData for InputChoiceSet {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1486,7 +1502,7 @@ pub struct InputDate {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputDate {
     fn default_value_for_is_visible() -> bool {
@@ -1497,7 +1513,9 @@ impl InputDate {
     }
 }
 impl crate::layoutable::HasLayoutData for InputDate {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1564,7 +1582,7 @@ pub struct InputNumber {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputNumber {
     fn default_value_for_is_visible() -> bool {
@@ -1575,7 +1593,9 @@ impl InputNumber {
     }
 }
 impl crate::layoutable::HasLayoutData for InputNumber {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1652,7 +1672,7 @@ pub struct InputText {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputText {
     fn default_value_for_is_multiline() -> bool {
@@ -1671,7 +1691,9 @@ impl InputText {
     }
 }
 impl crate::layoutable::HasLayoutData for InputText {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1738,7 +1760,7 @@ pub struct InputTime {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputTime {
     fn default_value_for_is_visible() -> bool {
@@ -1749,7 +1771,9 @@ impl InputTime {
     }
 }
 impl crate::layoutable::HasLayoutData for InputTime {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -1830,7 +1854,7 @@ pub struct InputToggle {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl InputToggle {
     fn default_value_for_is_visible() -> bool {
@@ -1865,7 +1889,9 @@ impl InputToggle {
     }
 }
 impl crate::layoutable::HasLayoutData for InputToggle {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -2016,7 +2042,7 @@ pub struct Media {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl Media {
     fn default_value_for_is_visible() -> bool {
@@ -2027,7 +2053,9 @@ impl Media {
     }
 }
 impl crate::layoutable::HasLayoutData for Media {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -2123,7 +2151,7 @@ pub struct RichTextBlock {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl RichTextBlock {
     fn default_value_for_is_visible() -> bool {
@@ -2134,7 +2162,9 @@ impl RichTextBlock {
     }
 }
 impl crate::layoutable::HasLayoutData for RichTextBlock {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -2213,7 +2243,7 @@ pub struct Table {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl Table {
     fn default_value_for_first_row_as_header() -> bool {
@@ -2248,7 +2278,9 @@ impl Table {
     }
 }
 impl crate::layoutable::HasLayoutData for Table {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }
@@ -2412,7 +2444,7 @@ pub struct TextBlock {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<crate::layoutable::ElementLayoutData>,
+    pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
 }
 impl TextBlock {
     fn default_value_for_is_subtle() -> bool {
@@ -2447,7 +2479,9 @@ impl TextBlock {
     }
 }
 impl crate::layoutable::HasLayoutData for TextBlock {
-    fn layout_data(&self) -> &core::cell::RefCell<crate::layoutable::ElementLayoutData> {
+    fn layout_data(
+        &self,
+    ) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
         &self.layout_data
     }
 }

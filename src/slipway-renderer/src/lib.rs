@@ -11,10 +11,13 @@ mod masked_image;
 mod rect;
 mod render;
 use adaptive_cards_types::generated::*;
+mod debug_mode;
+mod element_layout_data;
+mod layout_context;
 mod utils;
 
+pub use debug_mode::DebugMode;
 pub use host_config::default_host_config::default_host_config;
-pub use layoutable::DebugMode;
 pub use render::render;
 
 #[cfg(test)]

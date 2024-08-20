@@ -2,18 +2,22 @@ use std::{cell::RefCell, rc::Rc};
 
 use imageproc::drawing::draw_hollow_rect_mut;
 use taffy::{
-    prelude::FromLength, Dimension, Display, FlexDirection, JustifyContent, LengthPercentageAuto,
-    Rect, Size, Style, TaffyTree,
+    prelude::{length, FromLength},
+    Dimension, Display, FlexDirection, JustifyContent, LengthPercentageAuto, Rect, Size, Style,
+    TaffyTree,
 };
 
 use crate::{
+    debug_mode::next_color,
+    element_layout_data::{ElementTaffyData, PositionWithinParent},
     errors::{RenderError, TaffyErrorToRenderError},
-    layoutable::{ElementTaffyData, LayoutContext, Layoutable, TaffyLayoutUtils},
+    layout_context::LayoutContext,
+    layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
     BlockElementHeight, Container, Element, StringOrBlockElementHeight,
 };
 
-use super::{next_color, parse_dimension, NodeContext, ValidSpacing};
+use super::{parse_dimension, NodeContext, ValidSpacing};
 
 impl Layoutable for Container {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -30,13 +34,51 @@ impl Layoutable for Container {
             None => Dimension::Auto,
         };
 
-        let baseline_style = Style {
+        let mut baseline_style = Style {
             min_size: Size {
                 width: Dimension::Percent(1.),
                 height: min_height,
             },
             ..baseline_style
         };
+
+        let bleed = self.bleed.unwrap_or(false);
+        if bleed {
+            let negative_padding = -1. * context.host_config.spacing.padding() as f32;
+            let position = self
+                .layout_data
+                .borrow()
+                .position_within_parent
+                .expect("PositionWithinParent should be set");
+
+            baseline_style.margin = match position {
+                PositionWithinParent::Top => Rect {
+                    top: LengthPercentageAuto::from_length(negative_padding),
+                    left: LengthPercentageAuto::from_length(negative_padding),
+                    right: LengthPercentageAuto::from_length(negative_padding),
+                    bottom: LengthPercentageAuto::from_length(0.),
+                },
+                PositionWithinParent::Bottom => Rect {
+                    top: LengthPercentageAuto::from_length(0.),
+                    left: LengthPercentageAuto::from_length(negative_padding),
+                    right: LengthPercentageAuto::from_length(negative_padding),
+                    bottom: LengthPercentageAuto::from_length(negative_padding),
+                },
+                PositionWithinParent::VerticalOnly => Rect {
+                    top: LengthPercentageAuto::from_length(negative_padding),
+                    left: LengthPercentageAuto::from_length(negative_padding),
+                    right: LengthPercentageAuto::from_length(negative_padding),
+                    bottom: LengthPercentageAuto::from_length(negative_padding),
+                },
+                PositionWithinParent::VerticalMiddle => Rect {
+                    top: LengthPercentageAuto::from_length(0.),
+                    left: LengthPercentageAuto::from_length(negative_padding),
+                    right: LengthPercentageAuto::from_length(negative_padding),
+                    bottom: LengthPercentageAuto::from_length(0.),
+                },
+                _ => panic!("Unexpected position in vertical container: {:?}", position),
+            };
+        }
 
         let child_elements_context = context.for_child_str("items");
         let child_elements = &self.items;
@@ -81,19 +123,45 @@ pub(super) fn container_layout_override(
     let mut child_element_node_ids = Vec::new();
     let mut child_node_ids = Vec::new();
 
+    let element_count = child_elements.len();
+
     for (index, element) in child_elements.iter().enumerate() {
-        let element_context = child_elements_context.for_child(index.to_string());
+        let element_position = match index {
+            0 if element_count == 1 => PositionWithinParent::VerticalOnly,
+            0 => PositionWithinParent::Top,
+            i if i == element_count - 1 => PositionWithinParent::Bottom,
+            _ => PositionWithinParent::VerticalMiddle,
+        };
+
+        let as_layoutable = element.as_layoutable();
+        as_layoutable
+            .layout_data()
+            .borrow_mut()
+            .position_within_parent = Some(element_position);
 
         let as_element = element.as_element();
         let spacing = context.host_config.spacing.from(as_element);
 
-        let mut element_baseline_style = Style {
-            margin: Rect {
-                top: LengthPercentageAuto::from_length(spacing as f32),
-                ..Rect::auto()
-            },
-            ..Style::default()
-        };
+        if spacing > 0 {
+            match element_position {
+                PositionWithinParent::Bottom | PositionWithinParent::VerticalMiddle => {
+                    let spacer_style = Style {
+                        size: Size {
+                            height: length(spacing as f32),
+                            width: Dimension::Auto,
+                        },
+                        ..Style::default()
+                    };
+                    let spacer_node_id = tree.new_leaf(spacer_style).err_context(context)?;
+                    child_node_ids.push(spacer_node_id);
+                }
+                _ => {}
+            }
+        }
+
+        let element_context = child_elements_context.for_child(index.to_string());
+
+        let mut element_baseline_style = Style::default();
 
         match as_element.get_height() {
             StringOrBlockElementHeight::String(height) => {
@@ -114,19 +182,25 @@ pub(super) fn container_layout_override(
         };
 
         let element_node_id =
-            element
-                .as_layoutable()
-                .layout(&element_context, element_baseline_style, tree)?;
+            as_layoutable.layout(&element_context, element_baseline_style, tree)?;
 
         child_element_node_ids.push(element_node_id);
         child_node_ids.push(element_node_id);
     }
+
+    let padding = context.host_config.spacing.padding() as f32;
 
     tree.new_with_children(
         Style {
             display: Display::Flex,
             flex_direction: FlexDirection::Column,
             justify_content: Some(JustifyContent::FlexStart),
+            padding: Rect {
+                top: length(padding),
+                left: length(padding),
+                right: length(padding),
+                bottom: length(padding),
+            },
             ..baseline_style
         },
         &child_node_ids,

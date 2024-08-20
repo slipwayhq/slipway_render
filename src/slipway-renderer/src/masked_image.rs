@@ -1,10 +1,8 @@
 use std::{cell::RefCell, rc::Rc};
 
 use crate::{
-    errors::RenderError,
-    layoutable::{DebugMode, LayoutContext},
-    rect::SlipwayRegion,
-    utils::extract_from_rc_refcell,
+    errors::RenderError, layout_context::LayoutContext, rect::SlipwayRegion,
+    utils::extract_from_rc_refcell, DebugMode,
 };
 use image::{Pixel, Rgba, RgbaImage};
 use imageproc::{drawing::Canvas, rect::Rect};

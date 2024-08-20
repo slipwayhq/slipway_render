@@ -14,7 +14,7 @@ fn snapshots() {
             )
             .unwrap();
 
-            image.save(path.with_extension(".png")).unwrap();
+            image.save(path.with_extension("png")).unwrap();
             insta::assert_json_snapshot!(card);
         });
     });

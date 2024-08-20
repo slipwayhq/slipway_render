@@ -1,15 +1,14 @@
 use std::{cell::RefCell, rc::Rc};
 
-use std::fmt;
-
 use imageproc::rect::Rect;
-use taffy::{Layout, NodeId, Point, Style, TaffyTree};
+use taffy::{Layout, NodeId, Style, TaffyTree};
 
+use crate::element_layout_data::{ElementLayoutData, ElementTaffyData};
 use crate::errors::TaffyErrorToRenderError;
+use crate::layout_context::LayoutContext;
 use crate::layout_impl::NodeContext;
 use crate::masked_image::MaskedImage;
-use crate::rect::FinalRect;
-use crate::{errors::RenderError, host_config::generated::HostConfig, masked_image::SlipwayCanvas};
+use crate::{errors::RenderError, masked_image::SlipwayCanvas};
 
 pub(super) trait Layoutable: HasLayoutData {
     fn layout(
@@ -168,128 +167,5 @@ pub(super) trait HasLayoutData {
             .expect("Element should have taffy data")
             .child_element_node_ids
             .clone()
-    }
-}
-
-#[derive(serde::Serialize, serde::Deserialize, Default, Debug, Clone)]
-pub struct ElementLayoutData {
-    #[serde(skip)]
-    pub taffy_data: Option<ElementTaffyData>,
-    pub rect: Option<FinalRect>,
-}
-
-#[derive(Debug, Clone)]
-pub struct ElementTaffyData {
-    pub node_id: NodeId,
-    pub child_element_node_ids: Vec<NodeId>,
-}
-
-impl From<NodeId> for ElementTaffyData {
-    fn from(value: NodeId) -> Self {
-        ElementTaffyData {
-            node_id: value,
-            child_element_node_ids: Vec::new(),
-        }
-    }
-}
-
-#[derive(Default, Copy, Clone, Debug)]
-pub struct DebugMode {
-    pub transparent_masks: bool,
-    pub outlines: bool,
-}
-
-impl DebugMode {
-    pub fn none() -> Self {
-        DebugMode {
-            transparent_masks: false,
-            outlines: false,
-        }
-    }
-
-    pub fn with_transparent_masks() -> Self {
-        DebugMode {
-            transparent_masks: true,
-            outlines: false,
-        }
-    }
-
-    pub fn with_outlines() -> Self {
-        DebugMode {
-            transparent_masks: false,
-            outlines: true,
-        }
-    }
-
-    pub fn full() -> Self {
-        DebugMode {
-            transparent_masks: true,
-            outlines: true,
-        }
-    }
-}
-
-pub(super) struct LayoutContext<'hc> {
-    pub host_config: &'hc HostConfig,
-    pub debug_mode: DebugMode,
-    pub path: Rc<LayoutPath>,
-    pub current_origin: Point<f32>,
-}
-
-impl<'hc> LayoutContext<'hc> {
-    pub fn new(host_config: &'hc HostConfig, debug_mode: DebugMode) -> Self {
-        LayoutContext {
-            host_config,
-            debug_mode,
-            path: Rc::new(LayoutPath {
-                current: "root".to_string(),
-                previous: None,
-            }),
-            current_origin: Point { x: 0., y: 0. },
-        }
-    }
-
-    pub fn for_child_str(&self, child_name: &str) -> Self {
-        self.for_child(child_name.to_string())
-    }
-
-    pub fn for_child(&self, child_name: String) -> Self {
-        self.for_child_origin(child_name, Point { x: 0., y: 0. })
-    }
-
-    pub fn for_child_str_origin(&self, child_name: &str, relative_location: Point<f32>) -> Self {
-        self.for_child_origin(child_name.to_string(), relative_location)
-    }
-
-    pub fn for_child_origin(&self, child_name: String, relative_location: Point<f32>) -> Self {
-        LayoutContext {
-            host_config: self.host_config,
-            debug_mode: self.debug_mode,
-            path: Rc::new(LayoutPath {
-                current: child_name,
-                previous: Some(self.path.clone()),
-            }),
-            current_origin: self.current_origin + relative_location,
-        }
-    }
-
-    pub fn print_local_context(&self) {
-        println!("{}: {:?}", self.path, self.current_origin);
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct LayoutPath {
-    pub current: String,
-    pub previous: Option<Rc<LayoutPath>>,
-}
-
-impl fmt::Display for LayoutPath {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.current)?;
-        if let Some(previous) = self.previous.as_ref() {
-            write!(f, " <- {}", previous)?;
-        }
-        Ok(())
     }
 }

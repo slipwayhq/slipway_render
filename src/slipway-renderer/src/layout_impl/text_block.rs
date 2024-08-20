@@ -5,8 +5,10 @@ use imageproc::drawing::draw_filled_rect_mut;
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
+    element_layout_data::ElementTaffyData,
     errors::{RenderError, TaffyErrorToRenderError},
-    layoutable::{ElementTaffyData, LayoutContext, Layoutable, TaffyLayoutUtils},
+    layout_context::LayoutContext,
+    layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
     TextBlock,
 };

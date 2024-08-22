@@ -5,6 +5,7 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+csscolorparser = "0.7.0"
 image.workspace = true
 imageproc = "0.25.0"
 serde = { workspace = true, features = ["derive"] }

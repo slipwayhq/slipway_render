@@ -13,6 +13,12 @@ pub struct ElementLayoutData {
     pub placement: Option<Placement>,
 }
 
+impl ElementLayoutData {
+    pub fn placement(&self) -> Placement {
+        self.placement.expect("Element placement should be set")
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct ElementTaffyData {
     pub node_id: NodeId,

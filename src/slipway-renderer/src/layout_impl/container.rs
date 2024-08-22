@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use imageproc::drawing::draw_hollow_rect_mut;
+use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
 use taffy::{
     prelude::length, Dimension, Display, FlexDirection, JustifyContent, Rect, Size, Style,
     TaffyTree,
@@ -8,15 +8,17 @@ use taffy::{
 
 use crate::{
     debug_mode::next_color,
+    element::LayoutableElement,
     element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
+    host_config::ValidSpacing,
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
     BlockElementHeight, Container, Element, StringOrBlockElementHeight,
 };
 
-use super::{parse_dimension, NodeContext, ValidSpacing};
+use super::{get_margins_for_bleed, parse_dimension, NodeContext};
 
 impl Layoutable for Container {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -41,42 +43,9 @@ impl Layoutable for Container {
             ..baseline_style
         };
 
-        let bleed = self.bleed.unwrap_or(false);
-        if bleed {
-            let negative_padding = -1. * context.host_config.spacing.padding() as f32;
-            let position = self
-                .layout_data
-                .borrow()
-                .placement
-                .expect("PositionWithinParent should be set");
-
-            baseline_style.margin = match position {
-                Placement::Top => Rect {
-                    top: length(negative_padding),
-                    left: length(negative_padding),
-                    right: length(negative_padding),
-                    bottom: length(0.),
-                },
-                Placement::Bottom => Rect {
-                    top: length(0.),
-                    left: length(negative_padding),
-                    right: length(negative_padding),
-                    bottom: length(negative_padding),
-                },
-                Placement::SoleVertical => Rect {
-                    top: length(negative_padding),
-                    left: length(negative_padding),
-                    right: length(negative_padding),
-                    bottom: length(negative_padding),
-                },
-                Placement::WithinVertical => Rect {
-                    top: length(0.),
-                    left: length(negative_padding),
-                    right: length(negative_padding),
-                    bottom: length(0.),
-                },
-                _ => panic!("Unexpected position in vertical container: {:?}", position),
-            };
+        if self.bleed() {
+            let placement = self.layout_data.borrow().placement();
+            baseline_style.margin = get_margins_for_bleed(&placement, context.host_config);
         }
 
         let child_elements_context = context.for_child_str("items");
@@ -122,6 +91,8 @@ pub(super) fn container_layout_override(
     let mut child_element_node_ids = Vec::new();
     let mut child_node_ids = Vec::new();
 
+    let separator_line_thickness = context.host_config.get_separator_line_thickness()?;
+
     let element_count = child_elements.len();
 
     for (index, element) in child_elements.iter().enumerate() {
@@ -136,7 +107,12 @@ pub(super) fn container_layout_override(
         as_layoutable.layout_data().borrow_mut().placement = Some(element_position);
 
         let as_element = element.as_element();
-        let spacing = context.host_config.spacing.from(as_element);
+        let has_separator = as_element.get_separator();
+        let spacing = context.host_config.spacing.from(as_element)
+            + match has_separator {
+                true => separator_line_thickness,
+                false => 0,
+            };
 
         if spacing > 0 {
             match element_position {
@@ -226,6 +202,9 @@ pub(super) fn container_draw_override(
         draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
     }
 
+    let separator_line_thickness = context.host_config.get_separator_line_thickness()?;
+    let separator_color = context.host_config.get_separator_line_color()?;
+
     // let child_node_ids = tree.children(taffy_data.node_id).err_context(context)?;
     let child_element_node_ids = &taffy_data.child_element_node_ids;
 
@@ -234,6 +213,8 @@ pub(super) fn container_draw_override(
         .enumerate() // Enumerate before filtering, so the index is correct.
         .filter(|(_, e)| e.as_element().get_is_visible())
     {
+        let as_element = element.as_element();
+
         let element_layout = tree
             .layout(child_element_node_ids[i])
             .err_context(&child_elements_context)?;
@@ -241,6 +222,16 @@ pub(super) fn container_draw_override(
         let element_context =
             child_elements_context.for_child_origin(i.to_string(), element_layout.location);
         let element_rect = element_layout.absolute_rect(&element_context);
+
+        draw_separator(
+            context,
+            i,
+            element_rect,
+            as_element,
+            separator_line_thickness,
+            separator_color,
+            &image,
+        );
 
         let maybe_intersection = absolute_rect.intersect(element_rect);
 
@@ -276,31 +267,29 @@ pub(super) fn container_draw_override(
     Ok(())
 }
 
-// Test:
-// {
-//     "type": "AdaptiveCard",
-//     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-//     "version": "1.5",
-//     "minHeight": "800px",
-//     "body": [
-//         {
-//             "type": "Container"
-//         },
-//         {
-//             "type": "Container",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container",
-//             "minHeight": "300px",
-//             "height": "stretch"
-//         },
-//         {
-//             "type": "Container"
-//         }
-//     ]
-// }
+fn draw_separator(
+    context: &LayoutContext,
+    element_index: usize,
+    element_rect: imageproc::rect::Rect,
+    as_element: &dyn LayoutableElement,
+    separator_line_thickness: u32,
+    separator_color: image::Rgba<u8>,
+    image: &Rc<RefCell<MaskedImage>>,
+) {
+    let has_separator = as_element.get_separator();
+    if has_separator && element_index > 0 {
+        let spacing = context.host_config.spacing.from(as_element)
+            + match has_separator {
+                true => separator_line_thickness,
+                false => 0,
+            };
+
+        let half_spacing = (spacing / 2) as f32;
+        let y = element_rect.top() as f32 - half_spacing - separator_line_thickness as f32;
+        let x_start = element_rect.left() as f32;
+        let x_end = element_rect.right() as f32;
+
+        let mut image_mut = image.borrow_mut();
+        draw_line_segment_mut(&mut *image_mut, (x_start, y), (x_end, y), separator_color);
+    }
+}

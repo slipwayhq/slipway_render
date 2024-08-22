@@ -1,53 +1,17 @@
 use std::num::ParseFloatError;
 
-use taffy::{Dimension, Size};
+use taffy::{prelude::length, Dimension, LengthPercentageAuto, Rect, Size};
 
 use crate::{
-    element::LayoutableElement, errors::RenderError, host_config::generated::SpacingsConfig,
-    layout_context::LayoutContext, Spacing,
+    element_layout_data::Placement,
+    errors::RenderError,
+    host_config::{generated::HostConfig, ValidSpacing},
+    layout_context::LayoutContext,
 };
 
 mod adaptive_card;
 mod container;
 mod text_block;
-
-trait ValidSpacing {
-    fn from(&self, element: &dyn LayoutableElement) -> u32;
-
-    #[allow(clippy::wrong_self_convention)]
-    fn from_spacing(&self, spacing: Spacing) -> u32;
-
-    fn padding(&self) -> u32;
-}
-
-impl ValidSpacing for Option<SpacingsConfig> {
-    fn from(&self, element: &dyn LayoutableElement) -> u32 {
-        self.from_spacing(element.get_spacing())
-    }
-    fn from_spacing(&self, spacing: Spacing) -> u32 {
-        match spacing {
-            Spacing::None => 0,
-            Spacing::Small => valid_spacing(self.as_ref().map_or(0, |s| s.small)),
-            Spacing::Medium => valid_spacing(self.as_ref().map_or(0, |s| s.medium)),
-            Spacing::Large => valid_spacing(self.as_ref().map_or(0, |s| s.large)),
-            Spacing::ExtraLarge => valid_spacing(self.as_ref().map_or(0, |s| s.extra_large)),
-            Spacing::Padding => valid_spacing(self.as_ref().map_or(0, |s| s.padding)),
-            Spacing::Default => valid_spacing(self.as_ref().map_or(0, |s| s.default)),
-        }
-    }
-
-    fn padding(&self) -> u32 {
-        valid_spacing(self.as_ref().map_or(0, |s| s.default))
-    }
-}
-
-fn valid_spacing(spacing: i64) -> u32 {
-    if spacing < 0 {
-        0
-    } else {
-        spacing as u32
-    }
-}
 
 fn parse_dimension(input: &str, context: &LayoutContext) -> Result<Dimension, RenderError> {
     fn inner(input: &str) -> Result<Dimension, ParseFloatError> {
@@ -90,6 +54,66 @@ pub(super) fn measure_function(
         Some(NodeContext::Text) => Size {
             width: 100.,
             height: 10.,
+        },
+    }
+}
+
+fn get_margins_for_bleed(
+    placement: &Placement,
+    host_config: &HostConfig,
+) -> Rect<LengthPercentageAuto> {
+    let negative_padding = -1. * host_config.spacing.padding() as f32;
+
+    // Note, this currently does not render as desired, I think because of an issue in Taffy:
+    // https://github.com/DioxusLabs/taffy/issues/706
+    match placement {
+        Placement::Top => Rect {
+            top: length(negative_padding),
+            left: length(negative_padding),
+            right: length(negative_padding),
+            bottom: length(0.),
+        },
+        Placement::Bottom => Rect {
+            top: length(0.),
+            left: length(negative_padding),
+            right: length(negative_padding),
+            bottom: length(negative_padding),
+        },
+        Placement::SoleVertical => Rect {
+            top: length(negative_padding),
+            left: length(negative_padding),
+            right: length(negative_padding),
+            bottom: length(negative_padding),
+        },
+        Placement::WithinVertical => Rect {
+            top: length(0.),
+            left: length(negative_padding),
+            right: length(negative_padding),
+            bottom: length(0.),
+        },
+        Placement::Left => Rect {
+            top: length(negative_padding),
+            left: length(negative_padding),
+            right: length(0.),
+            bottom: length(negative_padding),
+        },
+        Placement::Right => Rect {
+            top: length(negative_padding),
+            left: length(0.),
+            right: length(negative_padding),
+            bottom: length(negative_padding),
+        },
+        Placement::SoleHorizontal => Rect {
+            top: length(negative_padding),
+            left: length(negative_padding),
+            right: length(negative_padding),
+            bottom: length(negative_padding),
+        },
+        Placement::WithinHorizontal => Rect {
+            top: length(negative_padding),
+            left: length(0.),
+            right: length(0.),
+            bottom: length(negative_padding),
         },
     }
 }

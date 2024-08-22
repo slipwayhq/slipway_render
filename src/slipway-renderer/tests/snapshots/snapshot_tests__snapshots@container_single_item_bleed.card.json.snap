@@ -1,0 +1,50 @@
+---
+source: slipway-renderer/tests/snapshot_tests.rs
+expression: card
+input_file: slipway-renderer/tests/snapshot_inputs/container_single_item_bleed.card.json
+---
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "Container",
+      "bleed": true,
+      "height": "stretch",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "1",
+          ".layout": {
+            "rect": {
+              "x": 12,
+              "y": 12,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 150,
+          "height": 150
+        },
+        "placement": "SoleVertical"
+      }
+    }
+  ],
+  "version": "1.5",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 150,
+      "height": 150
+    }
+  }
+}

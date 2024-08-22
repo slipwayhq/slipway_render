@@ -30,6 +30,9 @@ pub enum RenderError {
         path: Rc<LayoutPath>,
         inner: ImageError,
     },
+
+    #[error("HostConfig error at {path}:\n{message}")]
+    HostConfig { path: String, message: String },
 }
 
 pub(super) trait TaffyErrorToRenderError<T> {

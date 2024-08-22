@@ -4,3 +4,9 @@ mod utils;
 
 #[cfg(test)]
 mod tests;
+
+impl generated::Container {
+    pub fn bleed(&self) -> bool {
+        self.bleed.unwrap_or(false)
+    }
+}

@@ -52,15 +52,15 @@ fn valid_spacing(spacing: i64) -> u32 {
 }
 
 impl generated::HostConfig {
-    pub fn get_separator(&self) -> generated::SeparatorConfig {
+    pub fn separator(&self) -> generated::SeparatorConfig {
         self.separator.clone().unwrap_or_else(|| {
             generated::builder::SeparatorConfig::default()
                 .try_into()
                 .expect("Default separator config should be valid")
         })
     }
-    pub fn get_separator_line_thickness(&self) -> Result<u32, RenderError> {
-        let maybe_line_thickness = self.get_separator().line_thickness;
+    pub fn separator_line_thickness(&self) -> Result<u32, RenderError> {
+        let maybe_line_thickness = self.separator().line_thickness;
         maybe_line_thickness
             .try_into()
             .map_err(|_| RenderError::HostConfig {
@@ -69,9 +69,9 @@ impl generated::HostConfig {
             })
     }
 
-    pub fn get_separator_line_color(&self) -> Result<Rgba<u8>, RenderError> {
+    pub fn separator_line_color(&self) -> Result<Rgba<u8>, RenderError> {
         let line_color = self
-            .get_separator()
+            .separator()
             .line_color
             .expect("separator.lineColor should be set");
         parse_color(&line_color).map_err(|_| RenderError::HostConfig {

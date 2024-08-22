@@ -300,14 +300,14 @@ const DEFAULT_TEAMS_LIGHT_HOST_CONFIG_JSON: &str = r##"{
             "color": "default",
             "isSubtle": false,
             "weight": "bolder",
-            "warp": true
+            "wrap": true
         },
         "value": {
             "size": "default",
             "color": "default",
             "isSubtle": false,
             "weight": "normal",
-            "warp": true
+            "wrap": true
         },
         "spacing": 16
     }

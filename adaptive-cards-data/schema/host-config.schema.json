@@ -3,6 +3,7 @@
 		"AdaptiveCardConfig": {
 			"type": "object",
 			"description": "Toplevel options for `AdaptiveCards`",
+			"additionalProperties": false,
 			"properties": {
 				"allowCustomStyle": {
 					"type": "boolean",
@@ -14,6 +15,7 @@
 		"ActionsConfig": {
 			"type": "object",
 			"description": "Options for `Action`s",
+			"additionalProperties": false,
 			"properties": {
 				"actionsOrientation": {
 					"type": "string",
@@ -75,12 +77,18 @@
 					"type": "integer",
 					"description": "Controls size of action icon",
 					"default": 30
+				},
+				"preExpandSingleShowCardAction": {
+					"type": "boolean",
+					"description": "Controls whether to pre-expand single show card actions",
+					"default": false
 				}
 			}
 		},
 		"ContainerStyleConfig": {
 			"type": "object",
 			"description": "Controls styling of a container",
+			"additionalProperties": false,
 			"properties": {
 				"backgroundColor": {
 					"type": [
@@ -88,6 +96,13 @@
 						"null"
 					],
 					"default": "#FFFFFFFF"
+				},
+				"borderColor": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null
 				},
 				"foregroundColors": {
 					"$ref": "#/definitions/ForegroundColorsConfig"
@@ -97,6 +112,7 @@
 		"ContainerStylesConfig": {
 			"type": "object",
 			"description": "Controls styling for default and emphasis containers",
+			"additionalProperties": false,
 			"properties": {
 				"default": {
 					"$ref": "#/definitions/ContainerStyleConfig",
@@ -105,6 +121,22 @@
 				"emphasis": {
 					"$ref": "#/definitions/ContainerStyleConfig",
 					"description": "Container style to use for emphasis"
+				},
+				"accent": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Container style to use for accent"
+				},
+				"good": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Container style to use for good"
+				},
+				"attention": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Container style to use for attention"
+				},
+				"warning": {
+					"$ref": "#/definitions/ContainerStyleConfig",
+					"description": "Container style to use for warning"
 				}
 			}
 		},
@@ -112,6 +144,7 @@
 			"type": "object",
 			"description": "Controls styling for input error messages",
 			"version": "1.3",
+			"additionalProperties": false,
 			"properties": {
 				"size": {
 					"type": "string",
@@ -154,6 +187,7 @@
 		"FactSetConfig": {
 			"type": "object",
 			"description": "Controls the display of `FactSet`s",
+			"additionalProperties": false,
 			"properties": {
 				"title": {
 					"$ref": "#/definitions/FactSetTextConfig",
@@ -187,6 +221,7 @@
 		},
 		"FontColorConfig": {
 			"type": "object",
+			"additionalProperties": false,
 			"properties": {
 				"default": {
 					"type": [
@@ -207,6 +242,7 @@
 		"FontSizesConfig": {
 			"type": "object",
 			"description": "Controls font size metrics for different text styles",
+			"additionalProperties": false,
 			"properties": {
 				"small": {
 					"type": "integer",
@@ -238,6 +274,7 @@
 		"FontWeightsConfig": {
 			"type": "object",
 			"description": "Controls font weight metrics",
+			"additionalProperties": false,
 			"properties": {
 				"lighter": {
 					"type": "integer",
@@ -256,6 +293,7 @@
 		"ForegroundColorsConfig": {
 			"type": "object",
 			"description": "Controls various font colors",
+			"additionalProperties": false,
 			"properties": {
 				"default": {
 					"$ref": "#/definitions/FontColorConfig",
@@ -311,6 +349,7 @@
 		"ImageSetConfig": {
 			"type": "object",
 			"description": "Controls how `ImageSet`s are displayed",
+			"additionalProperties": false,
 			"properties": {
 				"imageSize": {
 					"type": "string",
@@ -334,6 +373,7 @@
 		"ImageSizesConfig": {
 			"type": "object",
 			"description": "Controls `Image` sizes",
+			"additionalProperties": false,
 			"properties": {
 				"small": {
 					"type": "integer",
@@ -356,6 +396,7 @@
 			"type": "object",
 			"description": "Controls display and behavior of Input types",
 			"version": "1.3",
+			"additionalProperties": false,
 			"properties": {
 				"label": {
 					"$ref": "#/definitions/LabelConfig"
@@ -369,6 +410,7 @@
 			"type": "object",
 			"description": "Controls display of input labels",
 			"version": "1.3",
+			"additionalProperties": false,
 			"properties": {
 				"color": {
 					"type": "string",
@@ -421,6 +463,7 @@
 			"type": "object",
 			"description": "Controls display of input labels",
 			"version": "1.3",
+			"additionalProperties": false,
 			"properties": {
 				"inputSpacing": {
 					"type": "string",
@@ -450,6 +493,7 @@
 			"type": "object",
 			"version": "1.1",
 			"description": "Controls the display and behavior of `Media` elements",
+			"additionalProperties": false,
 			"properties": {
 				"defaultPoster": {
 					"type": "string",
@@ -471,6 +515,7 @@
 		"SeparatorConfig": {
 			"type": "object",
 			"description": "Controls how separators are displayed",
+			"additionalProperties": false,
 			"properties": {
 				"lineThickness": {
 					"type": "integer",
@@ -490,6 +535,7 @@
 		"ShowCardConfig": {
 			"type": "object",
 			"description": "Controls behavior and styling of `Action.ShowCard`",
+			"additionalProperties": false,
 			"properties": {
 				"actionMode": {
 					"type": "string",
@@ -518,6 +564,7 @@
 		"SpacingsConfig": {
 			"type": "object",
 			"description": "Controls how elements are to be laid out",
+			"additionalProperties": false,
 			"properties": {
 				"small": {
 					"type": "integer",
@@ -554,6 +601,7 @@
 		"FactSetTextConfig": {
 			"type": "object",
 			"description": "Parameters controlling the display of text in a fact set",
+			"additionalProperties": false,
 			"properties": {
 				"size": {
 					"type": "string",
@@ -620,6 +668,7 @@
 		"TextStyleConfig": {
 			"type": "object",
 			"description": "Sets default properties for text of a given style",
+			"additionalProperties": false,
 			"properties": {
 				"size": {
 					"type": "string",
@@ -676,6 +725,7 @@
 		"TextStylesConfig": {
 			"type": "object",
 			"description": "Sets default properties for text of a given style",
+			"additionalProperties": false,
 			"properties": {
 				"heading": {
 					"$ref": "#/definitions/TextStyleConfig",
@@ -702,6 +752,7 @@
 		"TextBlockConfig": {
 			"type": "object",
 			"description": "Configuration settings for TextBlocks",
+			"additionalProperties": false,
 			"properties": {
 				"headingLevel": {
 					"type": "integer",
@@ -710,9 +761,101 @@
 				}
 			}
 		},
+		"FontTypesConfig": {
+			"type": "object",
+			"description": "Controls font styles",
+			"additionalProperties": false,
+			"properties": {
+				"default": {
+					"description": "Default font type",
+					"unevaluatedProperties": false,
+					"allOf": [
+						{
+							"$ref": "#/definitions/FontTypeConfig"
+						},
+						{
+							"properties": {
+								"fontFamily": {
+									"type": "string",
+									"default": "sans-serif"
+								}
+							}
+						}
+					]
+				},
+				"monospace": {
+					"description": "Monospace font type",
+					"unevaluatedProperties": false,
+					"allOf": [
+						{
+							"$ref": "#/definitions/FontTypeConfig"
+						},
+						{
+							"properties": {
+								"fontFamily": {
+									"type": "string",
+									"default": "monospace"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"FontTypeConfig": {
+			"type": "object",
+			"description": "Controls font styles",
+			"properties": {
+				"fontSizes": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"small": {
+							"type": "integer",
+							"default": 12
+						},
+						"default": {
+							"type": "integer",
+							"default": 14
+						},
+						"medium": {
+							"type": "integer",
+							"default": 17
+						},
+						"large": {
+							"type": "integer",
+							"default": 21
+						},
+						"extraLarge": {
+							"type": "integer",
+							"default": 26
+						}
+					}
+				},
+				"fontWeights": {
+					"type": "object",
+					"additionalProperties": false,
+					"properties": {
+						"lighter": {
+							"type": "integer",
+							"default": 200
+						},
+						"default": {
+							"type": "integer",
+							"default": 400
+						},
+						"bolder": {
+							"type": "integer",
+							"default": 600
+						}
+					}
+				}
+			}
+		},
 		"HostConfig": {
 			"type": "object",
 			"description": "Contains host-configurable settings",
+			"additionalProperties": false,
 			"properties": {
 				"supportsInteractivity": {
 					"type": "boolean",
@@ -728,6 +871,11 @@
 					"type": "string",
 					"description": "Font face to use when rendering text",
 					"default": "Calibri"
+				},
+				"choiceSetInputValueSeparator": {
+					"type": "string",
+					"description": "Separator to use when displaying multiple values for a `ChoiceSet`",
+					"default": ", "
 				},
 				"actions": {
 					"$ref": "#/definitions/ActionsConfig"
@@ -770,8 +918,16 @@
 				},
 				"textStyles": {
 					"$ref": "#/definitions/TextStylesConfig"
+				},
+				"fontTypes": {
+					"$ref": "#/definitions/FontTypesConfig"
+				},
+				"$schema": {
+					"type": "string",
+					"description": "The Host Config schema."
 				}
 			}
 		}
-	}
+	},
+	"$ref": "#/definitions/HostConfig"
 }

@@ -91,7 +91,7 @@ pub(super) fn container_layout_override(
     let mut child_element_node_ids = Vec::new();
     let mut child_node_ids = Vec::new();
 
-    let separator_line_thickness = context.host_config.get_separator_line_thickness()?;
+    let separator_line_thickness = context.host_config.separator_line_thickness()?;
 
     let element_count = child_elements.len();
 
@@ -202,8 +202,8 @@ pub(super) fn container_draw_override(
         draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
     }
 
-    let separator_line_thickness = context.host_config.get_separator_line_thickness()?;
-    let separator_color = context.host_config.get_separator_line_color()?;
+    let separator_line_thickness = context.host_config.separator_line_thickness()?;
+    let separator_color = context.host_config.separator_line_color()?;
 
     // let child_node_ids = tree.children(taffy_data.node_id).err_context(context)?;
     let child_element_node_ids = &taffy_data.child_element_node_ids;

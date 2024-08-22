@@ -1,4 +1,5 @@
 {
+    "$schema": "../../schema/host-config.schema.json",
     "choiceSetInputValueSeparator": ",",
     "supportsInteractivity": true,
     "spacing": {
@@ -270,38 +271,38 @@
     },
     "actions": {
         "maxActions": 6,
-        "spacing": "Default",
+        "spacing": "default",
         "buttonSpacing": 8,
         "showCard": {
-            "actionMode": "Inline",
+            "actionMode": "inline",
             "inlineTopMargin": 16,
             "style": "emphasis"
         },
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Horizontal",
-        "actionAlignment": "Left"
+        "actionsOrientation": "horizontal",
+        "actionAlignment": "left"
     },
     "adaptiveCard": {
         "allowCustomStyle": false
     },
     "imageSet": {
-        "imageSize": "Medium",
+        "imageSize": "medium",
         "maxImageHeight": 100
     },
     "factSet": {
         "title": {
-            "size": "Default",
-            "color": "Default",
+            "size": "default",
+            "color": "default",
             "isSubtle": false,
-            "weight": "Bolder",
-            "warp": true
+            "weight": "bolder",
+            "wrap": true
         },
         "value": {
-            "size": "Default",
-            "color": "Default",
+            "size": "default",
+            "color": "default",
             "isSubtle": false,
-            "weight": "Default",
-            "warp": true
+            "weight": "normal",
+            "wrap": true
         },
         "spacing": 16
     }

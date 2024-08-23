@@ -13,3 +13,25 @@ pub(super) fn extract_from_rc_refcell<T>(shared: Rc<RefCell<T>>) -> Option<T> {
         }
     }
 }
+
+pub(super) trait ClampToU32 {
+    fn clamp_to_u32(self) -> u32;
+}
+
+impl<T> ClampToU32 for T
+where
+    T: PartialOrd + From<u32> + TryInto<u32>,
+{
+    fn clamp_to_u32(self) -> u32 {
+        let lower_bound: T = 0.into();
+        let upper_bound: T = u32::MAX.into();
+
+        if self < lower_bound {
+            0
+        } else if self > upper_bound {
+            u32::MAX
+        } else {
+            self.try_into().unwrap_or(u32::MAX)
+        }
+    }
+}

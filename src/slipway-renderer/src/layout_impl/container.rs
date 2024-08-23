@@ -11,10 +11,11 @@ use crate::{
     element::LayoutableElement,
     element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
-    host_config::ValidSpacing,
+    host_config::{StringToColor, ValidSpacing},
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
+    utils::ClampToU32,
     BlockElementHeight, Container, Element, StringOrBlockElementHeight,
 };
 
@@ -91,7 +92,7 @@ pub(super) fn container_layout_override(
     let mut child_element_node_ids = Vec::new();
     let mut child_node_ids = Vec::new();
 
-    let separator_line_thickness = context.host_config.separator_line_thickness()?;
+    let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
 
     let element_count = child_elements.len();
 
@@ -202,8 +203,8 @@ pub(super) fn container_draw_override(
         draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
     }
 
-    let separator_line_thickness = context.host_config.separator_line_thickness()?;
-    let separator_color = context.host_config.separator_line_color()?;
+    let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
+    let separator_color = context.host_config.separator.line_color.to_color()?;
 
     // let child_node_ids = tree.children(taffy_data.node_id).err_context(context)?;
     let child_element_node_ids = &taffy_data.child_element_node_ids;

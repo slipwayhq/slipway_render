@@ -1,12 +1,12 @@
 use std::{cell::RefCell, rc::Rc};
 
-use image::Rgba;
 use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
     element_layout_data::ElementTaffyData,
     errors::RenderError,
+    host_config::StringToColor,
     layout_context::LayoutContext,
     layoutable::Layoutable,
     masked_image::{MaskedImage, SlipwayCanvas},
@@ -55,15 +55,20 @@ impl Layoutable for AdaptiveCard {
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        // Fill the background with white.
         {
-            // let background_color = context.host_config.container_styles
+            let background_color = context
+                .host_config
+                .container_styles
+                .default
+                .background_color
+                .to_color()?;
+
             let (width, height) = image.dimensions();
             let mut image_mut = image.borrow_mut();
             draw_filled_rect_mut(
                 &mut *image_mut,
                 Rect::at(0, 0).of_size(width, height),
-                Rgba([255, 255, 255, 255]),
+                background_color,
             );
         }
 

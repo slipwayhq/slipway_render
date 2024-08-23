@@ -57,7 +57,7 @@ impl Layoutable for AdaptiveCard {
     ) -> Result<(), RenderError> {
         // Fill the background with white.
         {
-            // let background_color = context.host_config.
+            // let background_color = context.host_config.container_styles
             let (width, height) = image.dimensions();
             let mut image_mut = image.borrow_mut();
             draw_filled_rect_mut(

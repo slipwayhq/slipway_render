@@ -1,5 +1,5 @@
 [workspace]
-members = ["ac-types-generator", "slipway-renderer"]
+members = ["set-schema-defaults", "ac-types-generator", "slipway-renderer"]
 resolver = "2"
 
 [workspace.package]
@@ -11,3 +11,4 @@ authors = ["James Thurley"]
 image = "0.25.1"
 serde = "1.0.203"
 serde_json = "1.0.117"
+insta = "1.39.0"

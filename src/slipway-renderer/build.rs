@@ -6,6 +6,7 @@ use std::{
 
 fn main() {
     generate_adaptive_cards_types();
+    generate_host_config_schema_with_defaults();
     generate_host_config_types();
     copy_host_config_types();
 }
@@ -19,9 +20,19 @@ fn generate_adaptive_cards_types() {
     println!("cargo:rerun-if-changed={}", src.display());
 }
 
+fn generate_host_config_schema_with_defaults() {
+    let src = PathBuf::from("../../adaptive-cards-data/schema/host-config.schema.json");
+    let dst =
+        PathBuf::from("../../adaptive-cards-data/schema/host-config-with-defaults.schema.json");
+
+    set_schema_defaults::process_schema_path(src.clone(), dst);
+
+    println!("cargo:rerun-if-changed={}", src.display());
+}
+
 fn generate_host_config_types() {
     // Run the `cargo typify` command
-    let json_src = "../../adaptive-cards-data/schema/host-config.schema.json";
+    let json_src = "../../adaptive-cards-data/schema/host-config-with-defaults.schema.json";
     let output = Command::new("cargo")
         .arg("typify")
         .arg(json_src)
@@ -37,7 +48,7 @@ fn generate_host_config_types() {
 
 fn copy_host_config_types() {
     // Copy the generated typed schema types to the src directory
-    let src = Path::new("../../adaptive-cards-data/schema/host-config.schema.rs");
+    let src = Path::new("../../adaptive-cards-data/schema/host-config-with-defaults.schema.rs");
     let dst = Path::new("./src/host_config/generated.rs");
 
     if let Err(e) = fs::rename(src, dst) {

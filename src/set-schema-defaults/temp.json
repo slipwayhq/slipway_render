@@ -1,0 +1,272 @@
+{
+  "$ref": "#/definitions/HostConfig",
+  "choiceSetInputValueSeparator": ", ",
+  "definitions": {
+    "AdaptiveCardConfig": {
+      "additionalProperties": false,
+      "description": "Toplevel options for `AdaptiveCards`",
+      "properties": {
+        "allowCustomStyle": {
+          "default": true,
+          "description": "Controls whether custom styling is allowed",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "FontTypeConfig": {
+      "description": "Controls font styles",
+      "properties": {
+        "fontSizes": {
+          "additionalProperties": false,
+          "properties": {
+            "default": {
+              "default": 14,
+              "type": "integer"
+            },
+            "extraLarge": {
+              "default": 26,
+              "type": "integer"
+            },
+            "large": {
+              "default": 21,
+              "type": "integer"
+            },
+            "medium": {
+              "default": 17,
+              "type": "integer"
+            },
+            "small": {
+              "default": 12,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "fontWeights": {
+          "additionalProperties": false,
+          "properties": {
+            "bolder": {
+              "default": 600,
+              "type": "integer"
+            },
+            "default": {
+              "default": 400,
+              "type": "integer"
+            },
+            "lighter": {
+              "default": 200,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "FontTypesConfig": {
+      "additionalProperties": false,
+      "description": "Controls font styles",
+      "properties": {
+        "default": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/FontTypeConfig"
+            },
+            {
+              "properties": {
+                "fontFamily": {
+                  "default": "sans-serif",
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "description": "Default font type",
+          "unevaluatedProperties": false
+        },
+        "monospace": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/FontTypeConfig"
+            },
+            {
+              "properties": {
+                "fontFamily": {
+                  "default": "monospace",
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "description": "Monospace font type",
+          "unevaluatedProperties": false
+        }
+      },
+      "type": "object"
+    },
+    "HostConfig": {
+      "additionalProperties": false,
+      "description": "Contains host-configurable settings",
+      "properties": {
+        "$schema": {
+          "description": "The Host Config schema.",
+          "type": "string"
+        },
+        "choiceSetInputValueSeparator": {
+          "default": ", ",
+          "description": "Separator to use when displaying multiple values for a `ChoiceSet`",
+          "type": "string"
+        },
+        "fontFamily": {
+          "default": "Calibri",
+          "description": "Font face to use when rendering text",
+          "type": "string"
+        },
+        "fontTypes": {
+          "$ref": "#/definitions/FontTypesConfig"
+        },
+        "imageBaseUrl": {
+          "description": "Base URL to be used when loading resources",
+          "format": "uri",
+          "type": "string"
+        },
+        "supportsInteractivity": {
+          "default": true,
+          "description": "Control whether interactive `Action`s are allowed to be invoked",
+          "type": "boolean"
+        },
+        "textBlock": {
+          "$ref": "#/definitions/TextBlockConfig",
+          "headingLevel": 2
+        },
+        "textStyles": {
+          "$ref": "#/definitions/TextStylesConfig",
+          "columnHeader": {
+            "color": "default",
+            "fontType": "default",
+            "isSubtle": false,
+            "size": "default",
+            "weight": "bolder"
+          },
+          "heading": {
+            "color": "default",
+            "fontType": "default",
+            "isSubtle": false,
+            "size": "large",
+            "weight": "bolder"
+          }
+        }
+      },
+      "type": "object"
+    },
+    "TextBlockConfig": {
+      "additionalProperties": false,
+      "description": "Configuration settings for TextBlocks",
+      "properties": {
+        "headingLevel": {
+          "default": 2,
+          "description": "When displaying a `TextBlock` element with the `heading` style, this is the heading level exposed to accessibility tools.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "TextStyleConfig": {
+      "additionalProperties": false,
+      "description": "Sets default properties for text of a given style",
+      "properties": {
+        "color": {
+          "default": "default",
+          "description": "Default font color for text of this style",
+          "enum": [
+            "default",
+            "dark",
+            "light",
+            "accent",
+            "good",
+            "warning",
+            "attention"
+          ],
+          "type": "string"
+        },
+        "fontType": {
+          "default": "default",
+          "description": "Default font type for text of this style",
+          "enum": [
+            "default",
+            "monospace"
+          ],
+          "type": "string"
+        },
+        "isSubtle": {
+          "default": false,
+          "description": "Whether text of this style should be subtle by default",
+          "type": "boolean"
+        },
+        "size": {
+          "default": "default",
+          "description": "Default font size for text of this style",
+          "enum": [
+            "default",
+            "small",
+            "medium",
+            "large",
+            "extraLarge"
+          ],
+          "type": "string"
+        },
+        "weight": {
+          "default": "normal",
+          "description": "Default font weight for text of this style",
+          "enum": [
+            "normal",
+            "lighter",
+            "bolder"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TextStylesConfig": {
+      "additionalProperties": false,
+      "description": "Sets default properties for text of a given style",
+      "properties": {
+        "columnHeader": {
+          "$ref": "#/definitions/TextStyleConfig",
+          "color": "default",
+          "default": {
+            "color": "default",
+            "fontType": "default",
+            "isSubtle": false,
+            "size": "default",
+            "weight": "bolder"
+          },
+          "fontType": "default",
+          "isSubtle": false,
+          "size": "default",
+          "weight": "normal"
+        },
+        "heading": {
+          "$ref": "#/definitions/TextStyleConfig",
+          "color": "default",
+          "default": {
+            "color": "default",
+            "fontType": "default",
+            "isSubtle": false,
+            "size": "large",
+            "weight": "bolder"
+          },
+          "fontType": "default",
+          "isSubtle": false,
+          "size": "default",
+          "weight": "normal"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "fontFamily": "Calibri",
+  "supportsInteractivity": true
+}

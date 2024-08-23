@@ -74,11 +74,20 @@ impl generated::HostConfig {
             .separator()
             .line_color
             .expect("separator.lineColor should be set");
+
         parse_color(&line_color).map_err(|_| RenderError::HostConfig {
             path: "separator.lineColor".to_string(),
             message: format!("Failed to parse color {}", line_color),
         })
     }
+
+    // pub fn container_styles(&self) -> generated::ContainerStylesConfig {
+    //     self.container_styles.clone().unwrap_or_else(|| {
+    //         generated::builder::ContainerStylesConfig::default()
+    //             .try_into()
+    //             .expect("Default container styles config should be valid")
+    //     })
+    // }
 }
 
 fn parse_color(input: &str) -> Result<image::Rgba<u8>, ParseColorError> {

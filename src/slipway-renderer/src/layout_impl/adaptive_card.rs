@@ -14,7 +14,7 @@ use crate::{
 };
 
 use super::{
-    container::{container_draw_override, container_layout_override},
+    container_shared::{container_draw_override, container_layout_override},
     NodeContext,
 };
 
@@ -55,22 +55,7 @@ impl Layoutable for AdaptiveCard {
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
-        {
-            let background_color = context
-                .host_config
-                .container_styles
-                .default
-                .background_color
-                .to_color()?;
-
-            let (width, height) = image.dimensions();
-            let mut image_mut = image.borrow_mut();
-            draw_filled_rect_mut(
-                &mut *image_mut,
-                Rect::at(0, 0).of_size(width, height),
-                background_color,
-            );
-        }
+        draw_background(context, &image)?;
 
         let child_elements_context = context.for_child_str("body");
         let child_elements = self.body.as_deref().unwrap_or(&[]);
@@ -84,4 +69,27 @@ impl Layoutable for AdaptiveCard {
             child_elements,
         )
     }
+}
+
+fn draw_background(
+    context: &LayoutContext,
+    image: &Rc<RefCell<MaskedImage>>,
+) -> Result<(), RenderError> {
+    let background_color = context
+        .host_config
+        .container_styles
+        .default
+        .background_color
+        .to_color()?;
+
+    let (width, height) = image.dimensions();
+    let mut image_mut = image.borrow_mut();
+
+    draw_filled_rect_mut(
+        &mut *image_mut,
+        Rect::at(0, 0).of_size(width, height),
+        background_color,
+    );
+
+    Ok(())
 }

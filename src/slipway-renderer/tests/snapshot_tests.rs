@@ -22,7 +22,7 @@ fn snapshots() {
                 &json_data,
                 spec.width,
                 spec.height,
-                DebugMode::full(),
+                DebugMode::none(),
             )
             .unwrap();
 

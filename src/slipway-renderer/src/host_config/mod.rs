@@ -1,7 +1,7 @@
 use csscolorparser::ParseColorError;
-use generated::SpacingsConfig;
+use generated::{ContainerStyleConfig, ContainerStylesConfig, SpacingsConfig};
 
-use crate::{element::LayoutableElement, errors::RenderError, Spacing};
+use crate::{element::LayoutableElement, errors::RenderError, ContainerStyle, Spacing};
 
 pub mod default_host_config;
 
@@ -50,45 +50,6 @@ fn valid_spacing(spacing: i64) -> u32 {
     }
 }
 
-// impl generated::HostConfig {
-//     pub fn separator(&self) -> generated::SeparatorConfig {
-//         self.separator.clone().unwrap_or_else(|| {
-//             generated::builder::SeparatorConfig::default()
-//                 .try_into()
-//                 .expect("Default separator config should be valid")
-//         })
-//     }
-//     pub fn separator_line_thickness(&self) -> Result<u32, RenderError> {
-//         let maybe_line_thickness = self.separator().line_thickness;
-//         maybe_line_thickness
-//             .try_into()
-//             .map_err(|_| RenderError::HostConfig {
-//                 path: "separator.lineThickness".to_string(),
-//                 message: format!("Failed to parse {} as u32", maybe_line_thickness),
-//             })
-//     }
-
-//     pub fn separator_line_color(&self) -> Result<Rgba<u8>, RenderError> {
-//         let line_color = self
-//             .separator()
-//             .line_color
-//             .expect("separator.lineColor should be set");
-
-//         parse_color(&line_color).map_err(|_| RenderError::HostConfig {
-//             path: "separator.lineColor".to_string(),
-//             message: format!("Failed to parse color {}", line_color),
-//         })
-//     }
-
-//     // pub fn container_styles(&self) -> generated::ContainerStylesConfig {
-//     //     self.container_styles.clone().unwrap_or_else(|| {
-//     //         generated::builder::ContainerStylesConfig::default()
-//     //             .try_into()
-//     //             .expect("Default container styles config should be valid")
-//     //     })
-//     // }
-// }
-
 pub(super) trait StringToColor {
     fn to_color(&self) -> Result<image::Rgba<u8>, RenderError>;
 }
@@ -115,12 +76,41 @@ impl StringToColor for Option<String> {
 }
 
 fn parse_color(input: &str) -> Result<image::Rgba<u8>, ParseColorError> {
-    let c = csscolorparser::parse(input)?;
-    Ok(image::Rgba(c.to_rgba8()))
+    if let Some(s) = input.strip_prefix('#') {
+        if s.len() == 4 {
+            // Swap characters 0 and 3 so ARGB becomes RGBA.
+            let mut chars: Vec<char> = s.chars().collect();
+            chars.swap(0, 3);
+            let rgba_string: String = chars.into_iter().collect();
+            return csscolorparser::parse(&rgba_string).map(|c| image::Rgba(c.to_rgba8()));
+        } else if s.len() == 8 {
+            // Swap characters 0 and 1 with characters 6 and 7 so ARGB becomes RGBA.
+            let mut chars: Vec<char> = s.chars().collect();
+            chars.swap(0, 6);
+            chars.swap(1, 7);
+            let rgba_string: String = chars.into_iter().collect();
+            return csscolorparser::parse(&rgba_string).map(|c| image::Rgba(c.to_rgba8()));
+        }
+    }
+
+    csscolorparser::parse(input).map(|c| image::Rgba(c.to_rgba8()))
 }
 
 fn parse_color_map_error(input: &str) -> Result<image::Rgba<u8>, RenderError> {
     parse_color(input).map_err(|_| RenderError::HostConfig {
         message: format!("Failed to parse color: {}", input),
     })
+}
+
+impl ContainerStylesConfig {
+    pub fn from(&self, style: ContainerStyle) -> &ContainerStyleConfig {
+        match style {
+            ContainerStyle::Default => &self.default,
+            ContainerStyle::Emphasis => &self.emphasis,
+            ContainerStyle::Good => &self.good,
+            ContainerStyle::Warning => &self.warning,
+            ContainerStyle::Attention => &self.attention,
+            ContainerStyle::Accent => &self.accent,
+        }
+    }
 }

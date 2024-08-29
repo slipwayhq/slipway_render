@@ -15,6 +15,11 @@ pub enum ActionStyle {
     #[serde(rename = "destructive", alias = "Destructive")]
     Destructive,
 }
+impl Default for ActionStyle {
+    fn default() -> Self {
+        ActionStyle::Default
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum AssociatedInputs {
     #[serde(rename = "Auto", alias = "auto")]
@@ -22,12 +27,22 @@ pub enum AssociatedInputs {
     #[serde(rename = "None", alias = "none")]
     None,
 }
+impl Default for AssociatedInputs {
+    fn default() -> Self {
+        AssociatedInputs::Auto
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum BlockElementHeight {
     #[serde(rename = "auto", alias = "Auto")]
     Auto,
     #[serde(rename = "stretch", alias = "Stretch")]
     Stretch,
+}
+impl Default for BlockElementHeight {
+    fn default() -> Self {
+        BlockElementHeight::Auto
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum ChoiceInputStyle {
@@ -55,6 +70,11 @@ pub enum Colors {
     #[serde(rename = "attention", alias = "Attention")]
     Attention,
 }
+impl Default for Colors {
+    fn default() -> Self {
+        Colors::Default
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum ContainerStyle {
     #[serde(rename = "default", alias = "Default")]
@@ -69,6 +89,11 @@ pub enum ContainerStyle {
     Warning,
     #[serde(rename = "accent", alias = "Accent")]
     Accent,
+}
+impl Default for ContainerStyle {
+    fn default() -> Self {
+        ContainerStyle::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum FallbackOption {
@@ -88,12 +113,22 @@ pub enum FontSize {
     #[serde(rename = "extraLarge", alias = "ExtraLarge")]
     ExtraLarge,
 }
+impl Default for FontSize {
+    fn default() -> Self {
+        FontSize::Default
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum FontType {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "monospace", alias = "Monospace")]
     Monospace,
+}
+impl Default for FontType {
+    fn default() -> Self {
+        FontType::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum FontWeight {
@@ -103,6 +138,11 @@ pub enum FontWeight {
     Lighter,
     #[serde(rename = "bolder", alias = "Bolder")]
     Bolder,
+}
+impl Default for FontWeight {
+    fn default() -> Self {
+        FontWeight::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum HorizontalAlignment {
@@ -133,6 +173,11 @@ pub enum ImageSetStyle {
     #[serde(rename = "grid", alias = "Grid")]
     Grid,
 }
+impl Default for ImageSetStyle {
+    fn default() -> Self {
+        ImageSetStyle::Default
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum ImageSize {
     #[serde(rename = "auto", alias = "Auto")]
@@ -146,12 +191,22 @@ pub enum ImageSize {
     #[serde(rename = "large", alias = "Large")]
     Large,
 }
+impl Default for ImageSize {
+    fn default() -> Self {
+        ImageSize::Auto
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum ImageStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "person", alias = "Person")]
     Person,
+}
+impl Default for ImageStyle {
+    fn default() -> Self {
+        ImageStyle::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum InputLabelPosition {
@@ -166,6 +221,11 @@ pub enum InputStyle {
     RevealOnHover,
     #[serde(rename = "default", alias = "Default")]
     Default,
+}
+impl Default for InputStyle {
+    fn default() -> Self {
+        InputStyle::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum Spacing {
@@ -184,12 +244,22 @@ pub enum Spacing {
     #[serde(rename = "padding", alias = "Padding")]
     Padding,
 }
+impl Default for Spacing {
+    fn default() -> Self {
+        Spacing::Default
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum TextBlockStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
     #[serde(rename = "heading", alias = "Heading")]
     Heading,
+}
+impl Default for TextBlockStyle {
+    fn default() -> Self {
+        TextBlockStyle::Default
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
 pub enum TextInputStyle {

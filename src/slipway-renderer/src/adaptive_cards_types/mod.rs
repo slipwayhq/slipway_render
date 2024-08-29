@@ -1,4 +1,8 @@
-#[allow(clippy::enum_variant_names, clippy::bool_comparison)]
+#[allow(
+    clippy::enum_variant_names,
+    clippy::bool_comparison,
+    clippy::derivable_impls
+)]
 pub(super) mod generated;
 mod utils;
 

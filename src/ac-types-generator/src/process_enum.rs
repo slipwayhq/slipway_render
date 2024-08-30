@@ -8,7 +8,7 @@ use crate::{
     typed_schema_types::{Enum, EnumValue},
 };
 
-const DEFAULT_VARIANT_NAMES: [&str; 2] = ["Default", "Auto"];
+const DEFAULT_VARIANT_NAMES: [&str; 3] = ["Default", "Auto", "Top"];
 
 pub(super) fn process_enum(loaded_enum: &Loaded<Enum>) -> proc_macro2::TokenStream {
     let type_name = &loaded_enum.type_name;
@@ -66,7 +66,7 @@ pub(super) fn process_enum(loaded_enum: &Loaded<Enum>) -> proc_macro2::TokenStre
     };
 
     let result = quote! {
-        #[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+        #[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
         pub enum #enum_name {
             #(#variants)*
         }

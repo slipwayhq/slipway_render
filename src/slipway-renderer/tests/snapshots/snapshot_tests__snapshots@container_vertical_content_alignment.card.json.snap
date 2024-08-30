@@ -1,0 +1,155 @@
+---
+source: slipway-renderer/tests/snapshot_tests.rs
+expression: card
+input_file: slipway-renderer/tests/snapshot_inputs/container_vertical_content_alignment.card.json
+---
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "inherit-center",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 183,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "minHeight": "100px",
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 138,
+          "width": 176,
+          "height": 100
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "inherit-center",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 295,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "minHeight": "100px",
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 250,
+          "width": 176,
+          "height": 100
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Container",
+          "height": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "inherit-bottom",
+              ".layout": {
+                "rect": {
+                  "x": 36,
+                  "y": 484,
+                  "width": 100,
+                  "height": 10
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "style": "warning",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 374,
+              "width": 152,
+              "height": 132
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "type": "Container",
+          "height": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "top",
+              ".layout": {
+                "rect": {
+                  "x": 36,
+                  "y": 530,
+                  "width": 100,
+                  "height": 10
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "style": "warning",
+          "verticalContentAlignment": "top",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 518,
+              "width": 152,
+              "height": 132
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      "minHeight": "300px",
+      "style": "accent",
+      "verticalContentAlignment": "bottom",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 362,
+          "width": 176,
+          "height": 300
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "version": "1.5",
+  "verticalContentAlignment": "center",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 200,
+      "height": 800
+    }
+  }
+}

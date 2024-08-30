@@ -1,12 +1,12 @@
 #![allow(dead_code)]
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ActionMode {
     #[serde(rename = "primary", alias = "Primary")]
     Primary,
     #[serde(rename = "secondary", alias = "Secondary")]
     Secondary,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ActionStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -20,7 +20,7 @@ impl Default for ActionStyle {
         ActionStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum AssociatedInputs {
     #[serde(rename = "Auto", alias = "auto")]
     Auto,
@@ -32,7 +32,7 @@ impl Default for AssociatedInputs {
         AssociatedInputs::Auto
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum BlockElementHeight {
     #[serde(rename = "auto", alias = "Auto")]
     Auto,
@@ -44,7 +44,7 @@ impl Default for BlockElementHeight {
         BlockElementHeight::Auto
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ChoiceInputStyle {
     #[serde(rename = "compact", alias = "Compact")]
     Compact,
@@ -53,7 +53,7 @@ pub enum ChoiceInputStyle {
     #[serde(rename = "filtered", alias = "Filtered")]
     Filtered,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Colors {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -75,7 +75,7 @@ impl Default for Colors {
         Colors::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ContainerStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -95,12 +95,12 @@ impl Default for ContainerStyle {
         ContainerStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum FallbackOption {
     #[serde(rename = "drop", alias = "Drop")]
     Drop,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum FontSize {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -118,7 +118,7 @@ impl Default for FontSize {
         FontSize::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum FontType {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -130,7 +130,7 @@ impl Default for FontType {
         FontType::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum FontWeight {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -144,7 +144,7 @@ impl Default for FontWeight {
         FontWeight::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum HorizontalAlignment {
     #[serde(rename = "left", alias = "Left")]
     Left,
@@ -153,7 +153,7 @@ pub enum HorizontalAlignment {
     #[serde(rename = "right", alias = "Right")]
     Right,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ImageFillMode {
     #[serde(rename = "cover", alias = "Cover")]
     Cover,
@@ -164,7 +164,7 @@ pub enum ImageFillMode {
     #[serde(rename = "repeat", alias = "Repeat")]
     Repeat,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ImageSetStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -178,7 +178,7 @@ impl Default for ImageSetStyle {
         ImageSetStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ImageSize {
     #[serde(rename = "auto", alias = "Auto")]
     Auto,
@@ -196,7 +196,7 @@ impl Default for ImageSize {
         ImageSize::Auto
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ImageStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -208,14 +208,14 @@ impl Default for ImageStyle {
         ImageStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum InputLabelPosition {
     #[serde(rename = "inline", alias = "Inline")]
     Inline,
     #[serde(rename = "above", alias = "Above")]
     Above,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum InputStyle {
     #[serde(rename = "revealOnHover", alias = "RevealOnHover")]
     RevealOnHover,
@@ -227,7 +227,7 @@ impl Default for InputStyle {
         InputStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum Spacing {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -249,7 +249,7 @@ impl Default for Spacing {
         Spacing::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum TextBlockStyle {
     #[serde(rename = "default", alias = "Default")]
     Default,
@@ -261,7 +261,7 @@ impl Default for TextBlockStyle {
         TextBlockStyle::Default
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum TextInputStyle {
     #[serde(rename = "text", alias = "Text")]
     Text,
@@ -274,7 +274,7 @@ pub enum TextInputStyle {
     #[serde(rename = "password", alias = "Password")]
     Password,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum VerticalAlignment {
     #[serde(rename = "top", alias = "Top")]
     Top,
@@ -283,7 +283,12 @@ pub enum VerticalAlignment {
     #[serde(rename = "bottom", alias = "Bottom")]
     Bottom,
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone)]
+impl Default for VerticalAlignment {
+    fn default() -> Self {
+        VerticalAlignment::Top
+    }
+}
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum VerticalContentAlignment {
     #[serde(rename = "top", alias = "Top")]
     Top,
@@ -291,6 +296,11 @@ pub enum VerticalContentAlignment {
     Center,
     #[serde(rename = "bottom", alias = "Bottom")]
     Bottom,
+}
+impl Default for VerticalContentAlignment {
+    fn default() -> Self {
+        VerticalContentAlignment::Top
+    }
 }
 #[derive(serde::Serialize, Clone)]
 pub enum StringOrObject {

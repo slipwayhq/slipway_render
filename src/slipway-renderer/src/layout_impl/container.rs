@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use imageproc::drawing::draw_filled_rect_mut;
+use imageproc::drawing::{draw_filled_rect_mut, draw_hollow_rect_mut};
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
@@ -46,7 +46,11 @@ impl Layoutable for Container {
             baseline_style.margin = get_margins_for_bleed(&placement, context.host_config);
         }
 
-        let child_elements_context = context.for_child_str("items");
+        let child_elements_context = context
+            .for_child_str("items")
+            .with_vertical_content_alignment(&self.vertical_content_alignment)
+            .with_style(&self.style);
+
         let child_elements = &self.items;
 
         container_layout_override(
@@ -89,23 +93,32 @@ fn draw_background(
     image: &Rc<RefCell<MaskedImage>>,
 ) -> Result<(), RenderError> {
     let Some(style) = container.style else {
+        // We don't need to check the inherited style because we can just
+        // use the existing background color and we don't want to draw a border
+        // if the style isn't explicitly specified on this container.
         return Ok(());
     };
 
     let style_config = context.host_config.container_styles.from(style);
 
-    let Some(background_color_str) = style_config.background_color.as_ref() else {
-        return Ok(());
-    };
-
-    let background_color = background_color_str.to_color()?;
-
     let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
-
     let rect = node_layout.absolute_rect(context);
     let mut image_mut = image.borrow_mut();
 
-    draw_filled_rect_mut(&mut *image_mut, rect, background_color);
+    if let Some(background_color_str) = style_config.background_color.as_ref() {
+        let background_color = background_color_str.to_color()?;
+        draw_filled_rect_mut(&mut *image_mut, rect, background_color);
+    }
+
+    // Technically, we shouldn't draw a border here:
+    // https://github.com/microsoft/AdaptiveCards/blob/15418ce93b452dd0858415db40ddba05cd154c73/specs/features/Tables.md?plain=1#L65-L91
+    // The border color property seems to be used with "gridStyle" property on a table
+    // to color the table grid lines. This seems counterintuitive.
+    // We're going to deviate from the spec here to do the intuitive thing.
+    if let Some(border_color_str) = style_config.border_color.as_ref() {
+        let border_color = border_color_str.to_color()?;
+        draw_hollow_rect_mut(&mut *image_mut, rect, border_color);
+    }
 
     Ok(())
 }

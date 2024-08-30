@@ -16,7 +16,7 @@ use crate::{
     layoutable::TaffyLayoutUtils,
     masked_image::MaskedImage,
     utils::ClampToU32,
-    BlockElementHeight, Element, StringOrBlockElementHeight,
+    BlockElementHeight, Element, StringOrBlockElementHeight, VerticalContentAlignment,
 };
 
 use super::{parse_dimension, NodeContext};
@@ -102,11 +102,15 @@ pub(super) fn container_layout_override(
 
     let padding = context.host_config.spacing.padding() as f32;
 
+    let justify_content = vertical_content_alignment_to_justify_content(
+        child_elements_context.inherited.vertical_content_alignment,
+    );
+
     tree.new_with_children(
         Style {
             display: Display::Flex,
             flex_direction: FlexDirection::Column,
-            justify_content: Some(JustifyContent::FlexStart),
+            justify_content: Some(justify_content),
             padding: Rect {
                 top: length(padding),
                 left: length(padding),
@@ -122,6 +126,16 @@ pub(super) fn container_layout_override(
         node_id,
         child_element_node_ids,
     })
+}
+
+fn vertical_content_alignment_to_justify_content(
+    vertical_content_alignment: VerticalContentAlignment,
+) -> JustifyContent {
+    match vertical_content_alignment {
+        VerticalContentAlignment::Top => JustifyContent::FlexStart,
+        VerticalContentAlignment::Center => JustifyContent::Center,
+        VerticalContentAlignment::Bottom => JustifyContent::FlexEnd,
+    }
 }
 
 pub(super) fn container_draw_override(

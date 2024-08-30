@@ -87,3 +87,28 @@ These come from here:
 
 https://github.com/microsoft/AdaptiveCards/tree/main/schemas
 
+
+# Deviations from Adaptive Cards standard rendering
+
+While I'm trying to retain compatibility with Adaptive Cards as much as possible,
+compatibility isn't actually essential (our use cases are quite different), and I don't want
+to adopt their mistakes.
+
+I'll list here any deviations from what Adaptive Cards does here.
+
+## hostConfig.containerStyles.[styleName].borderColor
+
+In the official Adaptive Cards implementation the `borderColor` property of a container style is not used for
+specifying the border color of a container, but is instead used to color the grid lines of a table when 
+the "gridStyle" property is specified.
+
+For Slipway, the `borderColor` **is** used for the border color of a container, adhering the principle of least
+surprise.
+
+How I color the grid lines will be decided when I implement tables. Perhaps using a separate `gridColor` property, or perhaps using the `borderColor` property.
+
+
+# Not Yet Supported
+
+- Actions
+- RTL (right-to-left) flags

@@ -36,7 +36,10 @@ impl Layoutable for AdaptiveCard {
             ..baseline_style
         };
 
-        let child_elements_context = context.for_child_str("body");
+        let child_elements_context = context
+            .for_child_str("body")
+            .with_vertical_content_alignment(&self.vertical_content_alignment);
+
         let child_elements = self.body.as_deref().unwrap_or(&[]);
 
         container_layout_override(

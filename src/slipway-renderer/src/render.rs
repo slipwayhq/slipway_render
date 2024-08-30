@@ -1,12 +1,12 @@
 use std::{cell::RefCell, rc::Rc};
 
 use image::RgbaImage;
-use taffy::{AvailableSpace, Point, TaffyTree};
+use taffy::{AvailableSpace, TaffyTree};
 
 use crate::{
     errors::{RenderError, TaffyErrorToRenderError},
     host_config::generated::HostConfig,
-    layout_context::{LayoutContext, LayoutPath},
+    layout_context::LayoutContext,
     layout_impl::{measure_function, NodeContext},
     layoutable::Layoutable,
     masked_image::{Ejectable, MaskedImage},
@@ -21,15 +21,7 @@ pub fn render(
     debug_mode: DebugMode,
 ) -> Result<(RgbaImage, AdaptiveCard), RenderError> {
     let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
-    let context = LayoutContext {
-        host_config,
-        debug_mode,
-        path: Rc::new(LayoutPath {
-            current: "root".to_string(),
-            previous: None,
-        }),
-        current_origin: Point { x: 0., y: 0. },
-    };
+    let context = LayoutContext::new(host_config, debug_mode);
 
     let mut tree: TaffyTree<NodeContext> = TaffyTree::new();
     let root = target.layout(&context, Default::default(), &mut tree)?;

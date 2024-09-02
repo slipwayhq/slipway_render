@@ -15,7 +15,7 @@ fn generate_adaptive_cards_types() {
     let src = PathBuf::from("../../adaptive-cards-data/schema/typed-schema-1.6/");
     let dst = PathBuf::from("./src/adaptive_cards_types/generated.rs");
 
-    ac_types_generator::generate(src.clone(), dst).expect("Failed to generate types");
+    adaptive_cards_types_generator::generate(src.clone(), dst).expect("Failed to generate types");
 
     println!("cargo:rerun-if-changed={}", src.display());
 }
@@ -25,7 +25,7 @@ fn generate_host_config_schema_with_defaults() {
     let dst =
         PathBuf::from("../../adaptive-cards-data/schema/host-config-with-defaults.schema.json");
 
-    set_schema_defaults::process_schema_path(src.clone(), dst);
+    populate_schema_defaults::process_schema_path(src.clone(), dst);
 
     println!("cargo:rerun-if-changed={}", src.display());
 }

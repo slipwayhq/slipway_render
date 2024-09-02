@@ -1,7 +1,7 @@
 use std::path::Path;
 
+use adaptive_cards_renderer::{default_host_config, render, DebugMode};
 use image::RgbaImage;
-use slipway_renderer::{default_host_config, render, DebugMode};
 
 const CARD_EXTENSION: &str = ".card.json";
 

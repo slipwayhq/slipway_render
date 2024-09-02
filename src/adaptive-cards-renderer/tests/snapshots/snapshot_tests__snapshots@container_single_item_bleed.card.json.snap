@@ -1,7 +1,7 @@
 ---
-source: slipway-renderer/tests/snapshot_tests.rs
+source: adaptive-cards-renderer/tests/snapshot_tests.rs
 expression: card
-input_file: slipway-renderer/tests/snapshot_inputs/container_single_item_bleed.card.json
+input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_single_item_bleed.card.json
 ---
 {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

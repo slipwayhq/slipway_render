@@ -1,5 +1,5 @@
 [package]
-name = "slipway-renderer"
+name = "adaptive-cards-renderer"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -14,8 +14,8 @@ taffy = "0.5.2"
 thiserror = "1.0.63"
 
 [build-dependencies]
-ac-types-generator = { path = "../ac-types-generator" }
-set-schema-defaults = { path = "../set-schema-defaults" }
+adaptive-cards-types-generator = { path = "../adaptive-cards-types-generator" }
+populate-schema-defaults = { path = "../populate-schema-defaults" }
 
 [dev-dependencies]
 walkdir = "2.5.0"

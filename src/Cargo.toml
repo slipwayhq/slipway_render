@@ -1,5 +1,9 @@
 [workspace]
-members = ["set-schema-defaults", "ac-types-generator", "slipway-renderer"]
+members = [
+    "populate-schema-defaults",
+    "adaptive-cards-types-generator",
+    "adaptive-cards-renderer",
+]
 resolver = "2"
 
 [workspace.package]

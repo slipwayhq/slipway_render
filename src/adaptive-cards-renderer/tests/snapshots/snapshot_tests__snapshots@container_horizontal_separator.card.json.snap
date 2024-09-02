@@ -1,7 +1,7 @@
 ---
-source: slipway-renderer/tests/snapshot_tests.rs
+source: adaptive-cards-renderer/tests/snapshot_tests.rs
 expression: card
-input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.json
+input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_horizontal_separator.card.json
 ---
 {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -23,6 +23,7 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
           }
         }
       ],
+      "separator": true,
       "style": "accent",
       ".layout": {
         "rect": {
@@ -36,7 +37,6 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
     },
     {
       "type": "Container",
-      "height": "stretch",
       "items": [
         {
           "type": "TextBlock",
@@ -52,13 +52,14 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
           }
         }
       ],
+      "separator": false,
       "style": "accent",
       ".layout": {
         "rect": {
           "x": 12,
           "y": 58,
           "width": 126,
-          "height": 131
+          "height": 34
         },
         "placement": "WithinVertical"
       }
@@ -73,7 +74,7 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
           ".layout": {
             "rect": {
               "x": 24,
-              "y": 213,
+              "y": 117,
               "width": 100,
               "height": 10
             },
@@ -81,71 +82,14 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
           }
         }
       ],
+      "separator": true,
       "style": "accent",
       ".layout": {
         "rect": {
           "x": 12,
-          "y": 201,
+          "y": 105,
           "width": 126,
-          "height": 132
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "Container",
-      "height": "stretch",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "4",
-          ".layout": {
-            "rect": {
-              "x": 24,
-              "y": 357,
-              "width": 100,
-              "height": 10
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "minHeight": "300px",
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 12,
-          "y": 345,
-          "width": 126,
-          "height": 397
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "5",
-          ".layout": {
-            "rect": {
-              "x": 24,
-              "y": 766,
-              "width": 100,
-              "height": 10
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 12,
-          "y": 754,
-          "width": 126,
-          "height": 34
+          "height": 83
         },
         "placement": "Bottom"
       }
@@ -158,7 +102,7 @@ input_file: slipway-renderer/tests/snapshot_inputs/container_mixed_heights.card.
       "x": 0,
       "y": 0,
       "width": 150,
-      "height": 800
+      "height": 200
     }
   }
 }

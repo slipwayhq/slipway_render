@@ -1,5 +1,5 @@
 [package]
-name = "set-schema-defaults"
+name = "populate-schema-defaults"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

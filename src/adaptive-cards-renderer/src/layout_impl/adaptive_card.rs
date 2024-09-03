@@ -4,13 +4,13 @@ use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
+    adaptive_cards::AdaptiveCard,
     element_layout_data::ElementTaffyData,
     errors::RenderError,
     host_config::StringToColor,
     layout_context::LayoutContext,
     layoutable::Layoutable,
     masked_image::{MaskedImage, SlipwayCanvas},
-    AdaptiveCard,
 };
 
 use super::{

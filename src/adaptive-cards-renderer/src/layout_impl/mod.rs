@@ -5,7 +5,7 @@ use taffy::{prelude::length, Dimension, LengthPercentageAuto, Rect, Size};
 use crate::{
     element_layout_data::Placement,
     errors::RenderError,
-    host_config::{generated::HostConfig, ValidSpacing},
+    host_config::{HostConfig, ValidSpacing},
     layout_context::LayoutContext,
 };
 

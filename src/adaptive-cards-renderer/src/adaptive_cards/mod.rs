@@ -3,11 +3,13 @@
     clippy::bool_comparison,
     clippy::derivable_impls
 )]
-pub(super) mod generated;
+mod generated;
 mod utils;
 
 #[cfg(test)]
 mod tests;
+
+pub use generated::*;
 
 impl generated::Container {
     pub fn bleed(&self) -> bool {

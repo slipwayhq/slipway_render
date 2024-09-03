@@ -1,0 +1,76 @@
+{
+  "publisher": "slipway",
+  "name": "slipway_test_component",
+  "description": "Does a simple JSON modification.",
+  "version": "0.0.1",
+  "input": {
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "properties": {
+      "card": {
+        "$ref": "adaptive-card.schema.json#"
+      },
+      "hostConfig": {
+        "$ref": "host-config-with-defaults.schema.json#"
+      },
+      "canvas": {
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "string",
+            "description": "Base64 encoded vector of RGBA unsigned bytes. If omitted a new image will be created. At least one of `canvas` or `size` should be specified."
+          },
+          "rect": {
+            "type": "object",
+            "description": "The rectangle to draw the rendered card in. If omitted, the full image will be used.",
+            "properties": {
+              "x": {
+                "type": "integer"
+              },
+              "y": {
+                "type": "integer"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              }
+            },
+            "required": ["x", "y", "width", "height"],
+            "additionalProperties": false
+          },
+          "required": ["width", "height"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["data"],
+    "additionalProperties": false
+  },
+  "output": {
+    "properties": {
+      "canvas": {
+        "type": "object",
+        "properties": {
+          "width": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "string",
+            "description": "Base64 encoded vector of RGBA unsigned bytes."
+          }
+        }
+      }
+    }
+  }
+}

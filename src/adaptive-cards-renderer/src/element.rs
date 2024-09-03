@@ -1,4 +1,4 @@
-use crate::{Spacing, StringOrBlockElementHeight};
+use crate::{adaptive_cards::Spacing, adaptive_cards::StringOrBlockElementHeight};
 
 pub(super) trait LayoutableElement {
     fn get_height(&self) -> StringOrBlockElementHeight;

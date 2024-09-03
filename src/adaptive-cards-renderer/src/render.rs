@@ -4,23 +4,35 @@ use image::RgbaImage;
 use taffy::{AvailableSpace, TaffyTree};
 
 use crate::{
+    adaptive_cards::AdaptiveCard,
     errors::{RenderError, TaffyErrorToRenderError},
-    host_config::generated::HostConfig,
+    host_config::HostConfig,
     layout_context::LayoutContext,
     layout_impl::{measure_function, NodeContext},
     layoutable::Layoutable,
     masked_image::{Ejectable, MaskedImage},
-    AdaptiveCard, DebugMode,
+    DebugMode,
 };
 
-pub fn render(
-    host_config: &HostConfig,
+pub fn render_from_str(
     target: &str,
+    host_config: &HostConfig,
     width: u32,
     height: u32,
     debug_mode: DebugMode,
 ) -> Result<(RgbaImage, AdaptiveCard), RenderError> {
     let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
+    let image = render(&target, host_config, width, height, debug_mode)?;
+    Ok((image, target))
+}
+
+pub fn render(
+    target: &AdaptiveCard,
+    host_config: &HostConfig,
+    width: u32,
+    height: u32,
+    debug_mode: DebugMode,
+) -> Result<RgbaImage, RenderError> {
     let context = LayoutContext::new(host_config, debug_mode);
 
     let mut tree: TaffyTree<NodeContext> = TaffyTree::new();
@@ -48,5 +60,5 @@ pub fn render(
 
     let image = masked_image.eject()?;
 
-    Ok((image, target))
+    Ok(image)
 }

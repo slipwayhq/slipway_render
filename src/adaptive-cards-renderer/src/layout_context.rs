@@ -4,7 +4,8 @@ use std::rc::Rc;
 use taffy::Point;
 
 use crate::{
-    host_config::generated::HostConfig, ContainerStyle, DebugMode, VerticalContentAlignment,
+    adaptive_cards::ContainerStyle, adaptive_cards::VerticalContentAlignment,
+    host_config::HostConfig, DebugMode,
 };
 
 #[derive(Clone)]

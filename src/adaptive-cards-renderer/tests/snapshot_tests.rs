@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use adaptive_cards_renderer::{default_host_config, render, DebugMode};
+use adaptive_cards_renderer::{default_host_config, render::render_from_str, DebugMode};
 use image::RgbaImage;
 
 const CARD_EXTENSION: &str = ".card.json";
@@ -17,9 +17,9 @@ fn snapshots() {
             let spec = load_spec_file_for(card_prefix);
 
             let json_data = std::fs::read_to_string(path).unwrap();
-            let (image, card) = render(
-                &default_host_config(),
+            let (image, card) = render_from_str(
                 &json_data,
+                &default_host_config(),
                 spec.width,
                 spec.height,
                 DebugMode::none(),

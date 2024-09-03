@@ -5,12 +5,12 @@ use imageproc::drawing::draw_filled_rect_mut;
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
+    adaptive_cards::TextBlock,
     element_layout_data::ElementTaffyData,
     errors::{RenderError, TaffyErrorToRenderError},
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
-    TextBlock,
 };
 
 use super::NodeContext;

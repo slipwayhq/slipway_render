@@ -1,7 +1,9 @@
 use csscolorparser::ParseColorError;
-use generated::{ContainerStyleConfig, ContainerStylesConfig, SpacingsConfig};
 
-use crate::{element::LayoutableElement, errors::RenderError, ContainerStyle, Spacing};
+use crate::{
+    adaptive_cards::ContainerStyle, adaptive_cards::Spacing, element::LayoutableElement,
+    errors::RenderError,
+};
 
 pub mod default_host_config;
 
@@ -10,7 +12,9 @@ pub mod default_host_config;
     clippy::derivable_impls,
     clippy::wrong_self_convention
 )]
-pub(super) mod generated;
+mod generated;
+
+pub use generated::*;
 
 pub(super) trait ValidSpacing {
     fn from(&self, element: &dyn LayoutableElement) -> u32;

@@ -7,6 +7,10 @@ use taffy::{
 };
 
 use crate::{
+    adaptive_cards::BlockElementHeight,
+    adaptive_cards::Element,
+    adaptive_cards::StringOrBlockElementHeight,
+    adaptive_cards::VerticalContentAlignment,
     debug_mode::next_color,
     element::LayoutableElement,
     element_layout_data::{ElementTaffyData, Placement},
@@ -16,7 +20,6 @@ use crate::{
     layoutable::TaffyLayoutUtils,
     masked_image::MaskedImage,
     utils::ClampToU32,
-    BlockElementHeight, Element, StringOrBlockElementHeight, VerticalContentAlignment,
 };
 
 use super::{parse_dimension, NodeContext};

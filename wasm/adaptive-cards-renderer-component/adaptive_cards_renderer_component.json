@@ -45,10 +45,10 @@
             },
             "required": ["x", "y", "width", "height"],
             "additionalProperties": false
-          },
-          "required": ["width", "height"],
-          "additionalProperties": false
-        }
+          }
+        },
+        "required": ["width", "height"],
+        "additionalProperties": false
       }
     },
     "required": ["data"],
@@ -57,17 +57,18 @@
   "output": {
     "properties": {
       "canvas": {
-        "type": "object",
         "properties": {
           "width": {
-            "type": "integer"
+            "type": "int32"
           },
           "height": {
-            "type": "integer"
+            "type": "int32"
           },
           "data": {
             "type": "string",
-            "description": "Base64 encoded vector of RGBA unsigned bytes."
+            "metadata": {
+              "description": "Base64 encoded vector of RGBA unsigned bytes."
+            }
           }
         }
       }

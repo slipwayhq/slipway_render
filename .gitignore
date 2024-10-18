@@ -6,3 +6,5 @@
 
 *.png
 *.new
+
+/adaptive-cards-data/schema/typed-schema.schema.rs

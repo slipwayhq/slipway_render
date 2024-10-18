@@ -1,21 +1,18 @@
 default:
   just --list
   
-build: build-wasm build-src
+build target="debug": (build-src target) (build-wasm target)
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}
 
 clean: clean-src clean-wasm
 
-build-src:
-  cd src && cargo build
+build-src target="debug":
+  cd src && cargo build {{ if target == "release" { "--release" } else { "" } }}
 
-build-wasm: && (assemble-component "debug")
-  cd wasm && cargo build
-
-release-wasm: && (assemble-component "release")
-  cd wasm && cargo build --release
+build-wasm target="debug": && (assemble-component target)
+  cd wasm && cargo build {{ if target == "release" { "--release" } else { "" } }}
 
 clean-src:
   cd src && cargo clean

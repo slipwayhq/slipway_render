@@ -1,5 +1,6 @@
 use std::io::Read;
 
+use adaptive_cards_renderer::host_config::HostConfig;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
@@ -18,7 +19,11 @@ pub fn step() {
 
     let image = adaptive_cards_renderer::render::render(
         &input.card,
-        &input.host_config,
+        &input.host_config.unwrap_or_else(|| {
+            HostConfig::builder()
+                .try_into()
+                .expect("Default host config should be valid")
+        }),
         width,
         height,
         adaptive_cards_renderer::DebugMode::none(),
@@ -78,7 +83,7 @@ struct Input {
     card: adaptive_cards_renderer::adaptive_cards::AdaptiveCard,
 
     #[serde(alias = "hostConfig")]
-    host_config: adaptive_cards_renderer::host_config::HostConfig,
+    host_config: Option<adaptive_cards_renderer::host_config::HostConfig>,
 
     canvas: Canvas,
 }

@@ -1,5 +1,5 @@
 [workspace]
-members = ["adaptive-cards-renderer-component"]
+members = ["slipway-renderer-component"]
 resolver = "2"
 
 [workspace.package]

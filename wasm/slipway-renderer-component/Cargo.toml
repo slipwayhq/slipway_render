@@ -1,9 +1,8 @@
 [package]
-name = "adaptive-cards-renderer-component"
+name = "slipway-renderer-component"
 version = "0.1.0"
 edition.workspace = true
 authors.workspace = true
-build = "build.rs"
 
 [lib]
 crate-type = ["cdylib"]

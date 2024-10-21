@@ -52,7 +52,7 @@ pub fn render(
     )
     .err_context(&context)?;
 
-    tree.print_tree(root);
+    super::print_tree::print_tree(&tree, root);
 
     let image = Rc::new(RefCell::new(RgbaImage::new(width, height)));
     let masked_image = MaskedImage::from_image(image, debug_mode);

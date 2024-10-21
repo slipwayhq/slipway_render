@@ -82,7 +82,7 @@ impl<'hc> LayoutContext<'hc> {
     }
 
     pub fn print_local_context(&self) {
-        println!("{}: {:?}", self.path, self.current_origin);
+        println!("debug: {}: {:?}", self.path, self.current_origin);
     }
 }
 

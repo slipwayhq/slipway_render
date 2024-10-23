@@ -1,5 +1,9 @@
 [workspace]
-members = ["slipway-renderer-component"]
+members = [
+    "slipway-render-component",
+    "slipway-theme-component",
+    "slipway-modify-component",
+]
 resolver = "2"
 
 [workspace.package]

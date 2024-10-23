@@ -1,0 +1,24 @@
+{
+  "publisher": "slipway",
+  "name": "theme",
+  "description": "Provides various host config themes.",
+  "version": "0.0.1",
+  "input": {
+    "properties": {
+      "name": {
+        "enum": ["color_light", "color_dark" ]
+      }
+    }
+  },
+  "output": {
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
+    "properties": {
+      "hostConfig": {
+        "$ref": "host-config-with-defaults.schema.json#"
+      }
+    },
+    "required": ["hostConfig"],
+    "additionalProperties": false
+  }
+}

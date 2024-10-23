@@ -1,5 +1,3 @@
-use std::io::Read;
-
 use adaptive_cards_renderer::host_config::HostConfig;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
@@ -7,13 +5,8 @@ use serde::{Deserialize, Serialize};
 
 #[no_mangle]
 pub fn step() {
-    let mut input_string = String::new();
-
-    std::io::stdin()
-        .read_to_string(&mut input_string)
-        .expect("should read from stdin");
-
-    let input: Input = serde_json::from_str(&input_string).expect("should parse JSON from stdin");
+    let input: Input =
+        serde_json::from_reader(std::io::stdin()).expect("should parse JSON from stdin");
 
     let (width, height) = get_render_image_size(&input.canvas);
 
@@ -40,9 +33,9 @@ pub fn step() {
         },
     };
 
-    let json = serde_json::to_string(&output).expect("should serialize to JSON");
-
-    println!("{}", json);
+    let stdout = std::io::stdout();
+    let handle = stdout.lock();
+    serde_json::to_writer(handle, &output).expect("should serialize JSON to stdout");
 }
 
 fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {

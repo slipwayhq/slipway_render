@@ -1,18 +1,19 @@
 default:
   just --list
   
-build target="debug": (build-src target) (build-wasm target)
+build configuration="debug": (build-src configuration) (build-wasm configuration)
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}
+  cd wasm && cargo nextest run {{FLAGS}}
 
-clean: clean-src clean-wasm
+clean: clean-src clean-wasm (clean-artifacts "")
 
-build-src target="debug":
-  cd src && cargo build {{ if target == "release" { "--release" } else { "" } }}
+build-src configuration="debug":
+  cd src && cargo build {{ if configuration == "release" { "--release" } else { "" } }}
 
-build-wasm target="debug": && (assemble-component target)
-  cd wasm && cargo build {{ if target == "release" { "--release" } else { "" } }}
+build-wasm configuration="debug": && (assemble-components configuration)
+  cd wasm && cargo build --target "wasm32-wasi" {{ if configuration == "release" { "--release" } else { "" } }}
 
 clean-src:
   cd src && cargo clean
@@ -20,22 +21,40 @@ clean-src:
 clean-wasm:
   cd wasm && cargo clean
 
-assemble-component target:
+assemble-components configuration: \
+  (clean-artifacts configuration) \
+  (copy-component-files configuration "render") \
+  (copy-render-component-additional-files configuration) \
+  (tar-component-files configuration "render") \
+  (rename-component-tar configuration "render") \
+  (copy-component-files configuration "modify") \
+  (tar-component-files configuration "modify") \
+  (rename-component-tar configuration "modify") \
+  (copy-component-files configuration "theme") \
+  (tar-component-files configuration "theme") \
+  (rename-component-tar configuration "theme") \
+
+clean-artifacts configuration:
   mkdir -p artifacts
-  rm -rf artifacts/{{target}}
-  mkdir -p artifacts/{{target}}/slipway_renderer
-  cp wasm/target/wasm32-wasi/{{target}}/slipway_renderer_component.wasm artifacts/{{target}}/slipway_renderer/slipway_component.wasm
-  cp wasm/slipway-renderer-component/slipway_component.json artifacts/{{target}}/slipway_renderer/slipway_component.json
-  cp adaptive-cards-data/schema/adaptive-card.schema.json artifacts/{{target}}/slipway_renderer/adaptive-card.schema.json
-  cp adaptive-cards-data/schema/host-config-with-defaults.schema.json artifacts/{{target}}/slipway_renderer/host-config-with-defaults.schema.json
+  rm -rf artifacts/{{configuration}}
 
-  tar -cf artifacts/{{target}}/slipway_renderer.tar -C artifacts/{{target}}/slipway_renderer .
+copy-render-component-additional-files configuration:
+  cp adaptive-cards-data/schema/adaptive-card.schema.json artifacts/{{configuration}}/slipway_render/adaptive-card.schema.json
+  cp adaptive-cards-data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_render/host-config-with-defaults.schema.json
 
+copy-component-files configuration name:
+  mkdir -p artifacts/{{configuration}}/slipway_{{name}}
+  cp wasm/target/wasm32-wasi/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{configuration}}/slipway_{{name}}/slipway_component.wasm
+  cp wasm/slipway-{{name}}-component/slipway_component.json artifacts/{{configuration}}/slipway_{{name}}/slipway_component.json
+
+tar-component-files configuration name:
+  tar -cf artifacts/{{configuration}}/slipway_{{name}}.tar -C artifacts/{{configuration}}/slipway_{{name}} .
+
+
+rename-component-tar configuration name:
   # Rename the tarball with a name that includes the publisher, name and version.
-  publisher=$(jq -r '.publisher' wasm/slipway-renderer-component/slipway_component.json) && \
-    name=$(jq -r '.name' wasm/slipway-renderer-component/slipway_component.json) && \
-    version=$(jq -r '.version' wasm/slipway-renderer-component/slipway_component.json) && \
+  publisher=$(jq -r '.publisher' wasm/slipway-{{name}}-component/slipway_component.json) && \
+    name=$(jq -r '.name' wasm/slipway-{{name}}-component/slipway_component.json) && \
+    version=$(jq -r '.version' wasm/slipway-{{name}}-component/slipway_component.json) && \
     new_filename="${publisher}.${name}.${version}.tar" && \
-    mv artifacts/{{target}}/slipway_renderer.tar "artifacts/{{target}}/$new_filename"
-
-
+    mv artifacts/{{configuration}}/slipway_{{name}}.tar "artifacts/{{configuration}}/$new_filename"

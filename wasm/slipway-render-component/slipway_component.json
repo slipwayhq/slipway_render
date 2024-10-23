@@ -1,7 +1,7 @@
 {
   "publisher": "slipway",
-  "name": "slipway_renderer",
-  "description": "Renders adaptive cards.",
+  "name": "render",
+  "description": "Renders JSON to a canvas.",
   "version": "0.0.1",
   "input": {
     "$schema": "http://json-schema.org/draft-06/schema#",

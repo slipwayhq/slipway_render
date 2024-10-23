@@ -1,0 +1,37 @@
+{
+  "publisher": "slipway",
+  "name": "modify",
+  "description": "Modifies JSON.",
+  "version": "0.0.1",
+  "input": {
+    "properties": {
+      "data": {}
+    },
+    "optionalProperties": {
+      "set": {
+        "elements": {
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "value": {}
+          }  
+        }
+      },
+      "delete": {
+        "elements": {
+          "properties": {
+            "path": {
+              "type": "string"
+            }
+          }  
+        }
+      }
+    }
+  },
+  "output": {
+    "properties": {
+      "data": {}
+    }
+  }
+}

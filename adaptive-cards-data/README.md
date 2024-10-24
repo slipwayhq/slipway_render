@@ -48,7 +48,7 @@ The following should be removed from Enum and the `required` properties:
 ```
 
 Remove from EnumValue:
-```
+```json
             "classType": {
               "enum": [
                 "EnumValue"
@@ -57,7 +57,7 @@ Remove from EnumValue:
             },
 ```
 add
-```
+```json
             "version": {
               "type": "string",
               "description": "The version of Adaptive Cards that this enum value was introduced in"

@@ -1,0 +1,66 @@
+{
+  "publisher": "slipway",
+  "name": "test_rig",
+  "version": "0.0.1",
+  "description": "A slipway rig which renders some UI",
+  "constants": {
+  },
+  "rigging": {
+    "theme": {
+      "component": "file:artifacts/debug/slipway.theme.0.0.1.tar",
+      "input": {
+        "name": "color_light"
+      }
+    },
+    "render": {
+      "component": "file:artifacts/debug/slipway.render.0.0.1.tar",
+      "input": {
+        "card": {
+          "type": "AdaptiveCard",
+          "version": "1.5",
+          "body": [
+            {
+              "type": "Container",
+              "style": "accent",
+              "separator": true,
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "1"
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "style": "accent",
+              "separator": false,
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "2"
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "style": "accent",
+              "height": "stretch",
+              "separator": true,
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "3"
+                }
+              ]
+            }
+          ]
+        },
+        "hostConfig": "$$.theme.hostConfig",
+        "canvas": {
+          "width": 400,
+          "height": 300
+        }
+      }
+    }
+  }
+}  

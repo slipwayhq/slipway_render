@@ -1,3 +1,5 @@
+use std::io::Write;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -15,8 +17,9 @@ pub fn step() {
     let output = Output { data };
 
     let stdout = std::io::stdout();
-    let handle = stdout.lock();
-    serde_json::to_writer(handle, &output).expect("should serialize JSON to stdout");
+    let mut handle = stdout.lock();
+    serde_json::to_writer(&mut handle, &output).expect("should serialize JSON to stdout");
+    handle.flush().expect("should flush stdout");
 }
 
 #[derive(Deserialize)]

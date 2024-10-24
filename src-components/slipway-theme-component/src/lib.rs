@@ -1,9 +1,9 @@
-use std::io::Read;
+use std::io::{Read, Write};
 
 use serde::{Deserialize, Serialize};
 
 const COLOR_DARK: &str = include_str!("../themes/color_dark.json");
-const COLOR_LIGHT: &str = include_str!("../themes/color_dark.json");
+const COLOR_LIGHT: &str = include_str!("../themes/color_light.json");
 
 #[no_mangle]
 pub fn step() {
@@ -25,8 +25,9 @@ pub fn step() {
     let output = Output { host_config };
 
     let stdout = std::io::stdout();
-    let handle = stdout.lock();
-    serde_json::to_writer(handle, &output).expect("should serialize JSON to stdout");
+    let mut handle = stdout.lock();
+    serde_json::to_writer(&mut handle, &output).expect("should serialize JSON to stdout");
+    handle.flush().expect("should flush stdout");
 }
 
 #[derive(Deserialize)]
@@ -45,6 +46,6 @@ enum ThemeName {
 
 #[derive(Serialize)]
 struct Output {
-    #[serde(alias = "hostConfig")]
+    #[serde(rename = "hostConfig")]
     host_config: serde_json::Value,
 }

@@ -31,6 +31,7 @@ assemble-components configuration: \
   (tar-component-files configuration "modify") \
   (rename-component-tar configuration "modify") \
   (copy-component-files configuration "theme") \
+  (copy-theme-component-additional-files configuration) \
   (tar-component-files configuration "theme") \
   (rename-component-tar configuration "theme") \
 
@@ -41,6 +42,9 @@ clean-artifacts configuration:
 copy-render-component-additional-files configuration:
   cp adaptive-cards-data/schema/adaptive-card.schema.json artifacts/{{configuration}}/slipway_render/adaptive-card.schema.json
   cp adaptive-cards-data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_render/host-config-with-defaults.schema.json
+
+copy-theme-component-additional-files configuration:
+  cp adaptive-cards-data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_theme/host-config-with-defaults.schema.json
 
 copy-component-files configuration name:
   mkdir -p artifacts/{{configuration}}/slipway_{{name}}

@@ -1,3 +1,5 @@
+use std::io::Write;
+
 use adaptive_cards_renderer::host_config::HostConfig;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
@@ -34,8 +36,9 @@ pub fn step() {
     };
 
     let stdout = std::io::stdout();
-    let handle = stdout.lock();
-    serde_json::to_writer(handle, &output).expect("should serialize JSON to stdout");
+    let mut handle = stdout.lock();
+    serde_json::to_writer(&mut handle, &output).expect("should serialize JSON to stdout");
+    handle.flush().expect("should flush stdout");
 }
 
 fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {

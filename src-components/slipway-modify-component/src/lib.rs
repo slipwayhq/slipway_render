@@ -36,6 +36,9 @@ struct Output {
 #[derive(Deserialize)]
 #[serde(tag = "type")]
 enum Instruction {
+    #[serde(rename = "set")]
     Set { path: String, value: Value },
+
+    #[serde(rename = "delete")]
     Delete { path: String },
 }

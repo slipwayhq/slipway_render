@@ -328,6 +328,10 @@ mod tests {
                 path: "a.b[*].d".to_string(),
                 value: json!(4),
             },
+            Instruction::Set {
+                path: "e.f".to_string(),
+                value: json!(5),
+            },
             Instruction::Delete {
                 path: "a.b[1].c".to_string(),
             },
@@ -340,7 +344,8 @@ mod tests {
                     {"d": 4},
                     {"c": 3, "d": 4}
                 ]
-            }
+            },
+            "e": {"f": 5},
         });
         assert_eq!(data, expected);
     }

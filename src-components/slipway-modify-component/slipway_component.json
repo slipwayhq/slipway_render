@@ -8,23 +8,26 @@
       "data": {}
     },
     "optionalProperties": {
-      "set": {
+      "instructions": {
         "elements": {
-          "properties": {
-            "path": {
-              "type": "string"
+          "discriminator": "type",
+          "mapping": {
+            "set": {
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "value": {}
+              }
             },
-            "value": {}
-          }  
-        }
-      },
-      "delete": {
-        "elements": {
-          "properties": {
-            "path": {
-              "type": "string"
+            "delete": {
+              "properties": {
+                "path": {
+                  "type": "string"
+                }
+              }
             }
-          }  
+          }
         }
       }
     }

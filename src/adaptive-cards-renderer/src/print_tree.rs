@@ -1,9 +1,12 @@
 use taffy::{NodeId, PrintTree};
 
-/// Based on the built-in Taffy print_tree function, but prepends `debug: ` to each line.
+/// Based on the built-in Taffy print_tree function, but prepends `debug: ` to each line, so that when output from a
+/// Slipway component it will only display if debug logging is enabled.
 /// Prints a debug representation of the computed layout for a tree of nodes, starting with the passed root node.
 pub fn print_tree(tree: &impl PrintTree, root: NodeId) {
-    println!("debug: TREE");
+    const PREFIX: &str = "debug: ";
+    println!("{PREFIX}TREE");
+
     print_node(tree, root, false, String::new());
 
     /// Recursive function that prints each node in the tree
@@ -18,7 +21,7 @@ pub fn print_tree(tree: &impl PrintTree, root: NodeId) {
             "└── "
         };
         println!(
-                "debug: {lines}{fork} {display} [x: {x:<4} y: {y:<4} w: {width:<4} h: {height:<4} content_w: {content_width:<4} content_h: {content_height:<4} border: l:{bl} r:{br} t:{bt} b:{bb}, padding: l:{pl} r:{pr} t:{pt} b:{pb}] ({key:?})",
+                "{PREFIX}{lines}{fork} {display} [x: {x:<4} y: {y:<4} w: {width:<4} h: {height:<4} content_w: {content_width:<4} content_h: {content_height:<4} border: l:{bl} r:{br} t:{bt} b:{bb}, padding: l:{pl} r:{pr} t:{pt} b:{pb}] ({key:?})",
                 lines = lines_string,
                 fork = fork_string,
                 display = display,

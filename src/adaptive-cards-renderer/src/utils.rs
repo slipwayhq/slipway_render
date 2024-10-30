@@ -1,5 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
+/// Extracts the inner `T` value from an `Rc<RefCell<T>>` if the reference count is 1,
+/// returning `None` otherwise.
 pub(super) fn extract_from_rc_refcell<T>(shared: Rc<RefCell<T>>) -> Option<T> {
     // Attempt to unwrap the Rc, which should succeed if the reference count is 1
     match Rc::try_unwrap(shared) {

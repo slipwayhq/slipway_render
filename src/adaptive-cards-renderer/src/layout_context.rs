@@ -8,12 +8,24 @@ use crate::{
     host_config::HostConfig, DebugMode,
 };
 
+/// The context for the layout and draw passes of a single element.
 #[derive(Clone)]
 pub(super) struct LayoutContext<'hc> {
+    /// The host configuration for the layout.
     pub host_config: &'hc HostConfig,
+
+    /// The debug mode for the layout (whether we should draw additional debug information).
     pub debug_mode: DebugMode,
+
+    /// The path of the current element in the element tree.
     pub path: Rc<LayoutPath>,
+
+    /// The current origin of the element relative to the origin of the image being rendered.
+    /// This should only be used during the draw pass, where it should be set by the
+    /// parent element based on the calculated layout position of the child element.
     pub current_origin: Point<f32>,
+
+    /// The inherited context for the current element, passed down from the parent element.
     pub inherited: InheritedContext,
 }
 
@@ -32,21 +44,29 @@ impl<'hc> LayoutContext<'hc> {
         }
     }
 
+    /// Creates a new LayoutContext for a child element with the given name.
+    /// The `current_origin` of the child element will remain the same.
     #[must_use]
     pub fn for_child_str(&self, child_name: &str) -> Self {
         self.for_child(child_name.to_string())
     }
 
+    // Creates a new LayoutContext for a child element with the given name.
+    /// The `current_origin` of the child element will remain the same.
     #[must_use]
     pub fn for_child(&self, child_name: String) -> Self {
         self.for_child_origin(child_name, Point { x: 0., y: 0. })
     }
 
+    /// Creates a new LayoutContext for a child element with the given name and relative location.
+    /// The `current_origin` of the child element will be the sum of the current origin and the relative location.
     #[must_use]
     pub fn for_child_str_origin(&self, child_name: &str, relative_location: Point<f32>) -> Self {
         self.for_child_origin(child_name.to_string(), relative_location)
     }
 
+    /// Creates a new LayoutContext for a child element with the given name and relative location.
+    /// The `current_origin` of the child element will be the sum of the current origin and the relative location.
     #[must_use]
     pub fn for_child_origin(&self, child_name: String, relative_location: Point<f32>) -> Self {
         LayoutContext {
@@ -61,6 +81,7 @@ impl<'hc> LayoutContext<'hc> {
         }
     }
 
+    /// Creates a new LayoutContext based on the current context but with the given container style.
     #[must_use]
     pub fn with_style(mut self, value: &Option<ContainerStyle>) -> Self {
         if let Some(value) = value {
@@ -70,6 +91,7 @@ impl<'hc> LayoutContext<'hc> {
         self
     }
 
+    /// Creates a new LayoutContext based on the current context but with the given vertical content alignment.
     #[must_use]
     pub fn with_vertical_content_alignment(
         mut self,
@@ -81,14 +103,19 @@ impl<'hc> LayoutContext<'hc> {
         self
     }
 
+    /// Prints the current context to the console.
     pub fn print_local_context(&self) {
         println!("debug: {}: {:?}", self.path, self.current_origin);
     }
 }
 
+/// The path of an element in the element tree.
 #[derive(Clone, Debug)]
 pub struct LayoutPath {
+    /// The name of the current element.
     pub current: String,
+
+    /// The path of the parent element, if any.
     pub previous: Option<Rc<LayoutPath>>,
 }
 
@@ -102,6 +129,8 @@ impl fmt::Display for LayoutPath {
     }
 }
 
+/// The inherited context for an element. This is context which affects
+/// layout and drawing but is not directly controlled by the element itself.
 #[derive(Default, Copy, Clone, Debug)]
 pub(super) struct InheritedContext {
     pub style: ContainerStyle,

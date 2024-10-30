@@ -7,6 +7,8 @@ use crate::{
 use image::{Pixel, Rgba, RgbaImage};
 use imageproc::{drawing::Canvas, rect::Rect};
 
+/// An enum of either a masked image, or RgbaImage and metadata.
+/// This allows us to wrap an image in a mask, and then wrap that mask in further masks.
 enum MaskOrImage {
     Mask(Rc<RefCell<MaskedImage>>),
     Image {
@@ -15,12 +17,16 @@ enum MaskOrImage {
     },
 }
 
+/// A struct representing a mask and a child `MaskOrImage`.
+/// This allows us to wrap an image in a mask, and then wrap that mask in further masks.
 pub(super) struct MaskedImage {
     image: MaskOrImage,
     mask: Rect,
 }
 
 impl MaskedImage {
+    /// Create a new `MaskedImage` from an `RgbaImage` and a `LayoutContext`, where the initial mask will
+    /// cover the entire image.
     pub fn from_image_context(
         image: Rc<RefCell<RgbaImage>>,
         context: &LayoutContext,
@@ -28,6 +34,8 @@ impl MaskedImage {
         Self::from_image(image, context.debug_mode)
     }
 
+    /// Create a new `MaskedImage` from an `RgbaImage` and a `DebugMode`, where the initial mask will
+    /// cover the entire image.
     pub fn from_image(image: Rc<RefCell<RgbaImage>>, debug_mode: DebugMode) -> Rc<RefCell<Self>> {
         let (width, height) = image.borrow().dimensions();
         Rc::new(RefCell::new(Self {
@@ -39,6 +47,8 @@ impl MaskedImage {
         }))
     }
 
+    /// Create a new `MaskedImage` from an existing `MaskedImage` and a new mask which should be
+    /// applied in addition to any existing masks.
     pub fn from_mask(image: Rc<RefCell<MaskedImage>>, mask: Rect) -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Self {
             image: MaskOrImage::Mask(image.clone()),
@@ -46,6 +56,8 @@ impl MaskedImage {
         }))
     }
 
+    /// Eject the image from the `MaskedImage`, returning the `RgbaImage`. The reference
+    /// count of all descendants must be 1, otherwise an error will be returned.
     pub fn eject(self) -> Result<RgbaImage, RenderError> {
         match self.image {
             MaskOrImage::Mask(mask) => extract_from_rc_refcell(mask)
@@ -57,6 +69,7 @@ impl MaskedImage {
         }
     }
 
+    /// Get the debug mode of the `MaskedImage`.
     fn debug_mode(&self) -> DebugMode {
         match &self.image {
             MaskOrImage::Image { debug_mode, .. } => *debug_mode,
@@ -65,6 +78,8 @@ impl MaskedImage {
     }
 }
 
+/// A trait for a thing that can be masked. This is a convenience trait to allow us to call
+/// `mask` on a `Rc<RefCell<MaskedImage>>` directly.
 trait Maskable {
     fn mask(self, mask: Rect) -> Rc<RefCell<MaskedImage>>;
 }
@@ -75,6 +90,8 @@ impl Maskable for Rc<RefCell<MaskedImage>> {
     }
 }
 
+/// A trait for a thing that can be ejected. This is a convenience trait to allow us to call
+/// `eject` on a `Rc<RefCell<MaskedImage>>` directly.
 pub(super) trait Ejectable<T> {
     fn eject(self) -> Result<T, RenderError>;
 }
@@ -87,16 +104,20 @@ impl Ejectable<RgbaImage> for Rc<RefCell<MaskedImage>> {
     }
 }
 
-// Implement the Canvas trait for MaskedImage
+/// Implement the Canvas trait for MaskedImage, which allows us to use it directly as an
+/// `imageproc` crate drawing target.
 impl Canvas for MaskedImage {
     type Pixel = Rgba<u8>;
 
     fn draw_pixel(&mut self, x: u32, y: u32, pixel: Self::Pixel) {
         let final_pixel = if self.mask.contains(x, y) {
+            // If we're inside the mask, draw the pixel as normal.
             Some(pixel)
         } else if self.debug_mode().transparent_masks {
+            // If we're outside the mask but we're in transparent mask debug mode, draw a faint pixel.
             Some(Rgba([200, 200, 200, 255]))
         } else {
+            // If we're outside the mask and not in transparent mask debug mode, draw nothing.
             None
         };
 
@@ -111,6 +132,7 @@ impl Canvas for MaskedImage {
     }
 
     fn get_pixel(&self, x: u32, y: u32) -> Self::Pixel {
+        // We always return the pixel from the image, regardless of whether it's inside the mask.
         match &self.image {
             MaskOrImage::Mask(mask) => mask.borrow().get_pixel(x, y),
             MaskOrImage::Image { image, .. } => *image.borrow().get_pixel(x, y),
@@ -125,6 +147,7 @@ impl Canvas for MaskedImage {
     }
 }
 
+/// A convenience trait for blending a pixel onto an image.
 trait BlendingPutPixel {
     fn blend_pixel(&mut self, x: u32, y: u32, pixel: Rgba<u8>);
 }
@@ -136,6 +159,9 @@ impl BlendingPutPixel for RgbaImage {
     }
 }
 
+/// A convenience trait for giving us `Canvas` functionality on a `Rc<RefCell<MaskedImage>>`.
+/// We can't implement `Canvas` directly on `Rc<RefCell<MaskedImage>>` because `Canvas` is a trait
+/// from the `imageproc` crate, and we can't implement foreign traits on foreign types.
 pub(super) trait SlipwayCanvas {
     fn draw_pixel(&mut self, x: u32, y: u32, pixel: Rgba<u8>);
     fn get_pixel(&self, x: u32, y: u32) -> Rgba<u8>;

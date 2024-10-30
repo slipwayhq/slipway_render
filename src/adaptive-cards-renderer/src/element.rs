@@ -1,5 +1,10 @@
 use crate::{adaptive_cards::Spacing, adaptive_cards::StringOrBlockElementHeight};
 
+/// A trait for getting the properties common to all layoutable Adaptive Cards elements.
+/// These are the properties which appear in the `Element` and `ToggleableItem` (which
+/// `Element` extends) schema items from the Adaptive Cards typed schema.
+/// This trait is implemented for all Adaptive Cards elements automatically by the
+/// Adaptive Cards types generator.
 pub(super) trait LayoutableElement {
     fn get_height(&self) -> StringOrBlockElementHeight;
     fn get_separator(&self) -> bool;

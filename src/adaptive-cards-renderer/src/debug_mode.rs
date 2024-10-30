@@ -1,8 +1,14 @@
 use image::Rgba;
 
+/// A struct that can be used to enable various debug features in the renderer
+/// which can help when debugging rendering issues.
 #[derive(Default, Copy, Clone, Debug)]
 pub struct DebugMode {
+    /// When this is enabled masks do not fully block pixels from being drawn, but
+    /// instead the pixels are drawn faintly.
     pub transparent_masks: bool,
+
+    /// When this is enabled outlines are drawn around elements to help visualize the layout.
     pub outlines: bool,
 }
 
@@ -36,10 +42,11 @@ impl DebugMode {
     }
 }
 
-/// Return the next random color from COLORS using a global counter.
+/// Return the next color from COLORS using a global counter.
 pub fn next_color() -> Rgba<u8> {
     use std::sync::atomic::{AtomicUsize, Ordering};
 
+    /// A set of randomly generated colors to use for debug rendering.
     const COLORS: [[u8; 4]; 20] = [
         [204, 143, 148, 255],
         [204, 178, 148, 255],

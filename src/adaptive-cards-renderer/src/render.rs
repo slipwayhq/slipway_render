@@ -6,11 +6,12 @@ use taffy::{AvailableSpace, TaffyTree};
 use crate::{
     adaptive_cards::AdaptiveCard,
     errors::{RenderError, TaffyErrorToRenderError},
+    fonts::FontCache,
     host_config::HostConfig,
     layout_context::LayoutContext,
-    layout_impl::{measure_function, NodeContext},
     layoutable::Layoutable,
     masked_image::{Ejectable, MaskedImage},
+    measure::{measure_function, NodeContext},
     DebugMode,
 };
 
@@ -47,6 +48,8 @@ pub fn render(
     // Layout the root element, which will recursively layout all descendants.
     let root = target.layout(&context, Default::default(), &mut tree)?;
 
+    let font_cache = FontCache::new();
+
     // Calculate the final layout of the tree.
     tree.compute_layout_with_measure(
         root,
@@ -54,10 +57,10 @@ pub fn render(
             width: AvailableSpace::Definite(width as f32),
             height: AvailableSpace::Definite(height as f32),
         },
-        // Note: this closure is a FnMut closure and can be used to borrow external context for the duration of layout
+        // This closure is a FnMut closure and can be used to borrow external context for the duration of layout
         // For example, you may wish to borrow a global font registry and pass it into your text measuring function
         |known_dimensions, available_space, _node_id, node_context, _style| {
-            measure_function(known_dimensions, available_space, node_context)
+            measure_function(known_dimensions, available_space, node_context, &font_cache)
         },
     )
     .err_context(&context)?;

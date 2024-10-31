@@ -11,12 +11,10 @@ use crate::{
     layout_context::LayoutContext,
     layoutable::Layoutable,
     masked_image::{MaskedImage, SlipwayCanvas},
+    measure::NodeContext,
 };
 
-use super::{
-    container_shared::{container_draw_override, container_layout_override},
-    NodeContext,
-};
+use super::container_shared::{container_draw_override, container_layout_override};
 
 impl Layoutable for AdaptiveCard {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -28,6 +26,7 @@ impl Layoutable for AdaptiveCard {
         baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
     ) -> Result<ElementTaffyData, RenderError> {
+        // The root AdaptiveCard element always has a size of 100% width and height.
         let baseline_style = Style {
             size: Size {
                 width: Dimension::Percent(1.),
@@ -36,12 +35,17 @@ impl Layoutable for AdaptiveCard {
             ..baseline_style
         };
 
+        // An AdaptiveCard element behaves like a vertical container, with the child
+        // elements stored in the `body` field.
+        // Create the child context.
         let child_elements_context = context
             .for_child_str("body")
             .with_vertical_content_alignment(&self.vertical_content_alignment);
 
+        // Get the child elements.
         let child_elements = self.body.as_deref().unwrap_or(&[]);
 
+        // Delegate to the shared container layout function.
         container_layout_override(
             context,
             baseline_style,
@@ -58,11 +62,16 @@ impl Layoutable for AdaptiveCard {
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
     ) -> Result<(), RenderError> {
+        // Draw the background of the AdaptiveCard.
         draw_background(context, &image)?;
 
+        // Create the child context.
         let child_elements_context = context.for_child_str("body");
+
+        // Get the child elements.
         let child_elements = self.body.as_deref().unwrap_or(&[]);
 
+        // Delegate to the shared container draw function.
         container_draw_override(
             context,
             tree,
@@ -74,10 +83,13 @@ impl Layoutable for AdaptiveCard {
     }
 }
 
+/// Draws the background of the AdaptiveCard.
 fn draw_background(
     context: &LayoutContext,
     image: &Rc<RefCell<MaskedImage>>,
 ) -> Result<(), RenderError> {
+    // The AdaptiveCard element just uses the default background color from
+    // the host config, so fetch it.
     let background_color = context
         .host_config
         .container_styles
@@ -88,6 +100,7 @@ fn draw_background(
     let (width, height) = image.dimensions();
     let mut image_mut = image.borrow_mut();
 
+    // Draw the background color over the entire image.
     draw_filled_rect_mut(
         &mut *image_mut,
         Rect::at(0, 0).of_size(width, height),

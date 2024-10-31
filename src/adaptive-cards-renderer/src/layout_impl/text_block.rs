@@ -11,9 +11,8 @@ use crate::{
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,
+    measure::NodeContext,
 };
-
-use super::NodeContext;
 
 impl Layoutable for TextBlock {
     fn layout_override(

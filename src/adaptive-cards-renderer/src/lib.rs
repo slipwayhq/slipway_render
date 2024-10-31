@@ -12,6 +12,7 @@ mod layout_context;
 mod layout_impl;
 mod layoutable;
 mod masked_image;
+mod measure;
 mod print_tree;
 mod rect;
 pub mod render;

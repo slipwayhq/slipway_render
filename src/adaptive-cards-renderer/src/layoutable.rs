@@ -6,8 +6,8 @@ use taffy::{Layout, NodeId, Style, TaffyTree};
 use crate::element_layout_data::{ElementLayoutData, ElementTaffyData};
 use crate::errors::TaffyErrorToRenderError;
 use crate::layout_context::LayoutContext;
-use crate::layout_impl::NodeContext;
 use crate::masked_image::MaskedImage;
+use crate::measure::NodeContext;
 use crate::{errors::RenderError, masked_image::SlipwayCanvas};
 
 /// A trait for Adaptive Card elements which can be laid out and drawn.

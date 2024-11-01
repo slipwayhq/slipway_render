@@ -36,6 +36,14 @@ fn apply_defaults(obj: &mut Map<String, Value>, defs: &Value) {
                         // Only insert the combined default if it’s not empty and doesn’t already exist
                         if !default_obj.is_empty() {
                             obj.entry("default".to_string())
+                                .and_modify(|e| {
+                                    // Merge the existing default with the new default.
+                                    if let Value::Object(existing_defaults) = e {
+                                        for (key, value) in default_obj.clone() {
+                                            existing_defaults.entry(key).or_insert(value);
+                                        }
+                                    }
+                                })
                                 .or_insert(Value::Object(default_obj));
                         }
                     }
@@ -61,15 +69,24 @@ fn create_default_obj_from_properties(
 ) -> Map<String, Value> {
     let mut default_obj = Map::new();
     for (prop_key, prop_val) in properties {
-        if let Some(default_val) = prop_val.get("default") {
-            default_obj.insert(prop_key.to_string(), default_val.clone());
-        } else if let Some(Value::String(sub_ref)) = prop_val.get("$ref") {
+        if let Some(Value::String(sub_ref)) = prop_val.get("$ref") {
+            // If there is a $ref then we apply_defaults even if a "default" is present
+            // at the same level in the tree, because "apply_defaults" will merge them.
             let mut sub_obj = serde_json::Map::new();
             sub_obj.insert("$ref".to_string(), Value::String(sub_ref.clone()));
+
+            // Include any existing defaults in our sub-object so they can be merged.
+            if let Some(default_val) = prop_val.get("default") {
+                sub_obj.insert("default".to_string(), default_val.clone());
+            }
+
             apply_defaults(&mut sub_obj, defs);
             if let Some(Value::Object(inner_default)) = sub_obj.get("default") {
                 default_obj.insert(prop_key.to_string(), Value::Object(inner_default.clone()));
             }
+        } else if let Some(default_val) = prop_val.get("default") {
+            // If there is no $ref we can just use the default value as-is.
+            default_obj.insert(prop_key.to_string(), default_val.clone());
         } else if let Some(Value::Array(all_of)) = prop_val.get("allOf") {
             // Handle allOf, combining defaults from each part
             let mut combined_defaults = Map::new();

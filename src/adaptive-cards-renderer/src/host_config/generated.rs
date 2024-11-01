@@ -541,32 +541,32 @@ impl AdaptiveCardConfig {
 #[doc = "    \"foregroundColors\": {"]
 #[doc = "      \"default\": {"]
 #[doc = "        \"accent\": {"]
-#[doc = "          \"default\": \"#FF0000FF\","]
-#[doc = "          \"subtle\": \"#B20000FF\""]
+#[doc = "          \"default\": \"#6264a7\","]
+#[doc = "          \"subtle\": \"#8b8cc7\""]
 #[doc = "        },"]
 #[doc = "        \"attention\": {"]
-#[doc = "          \"default\": \"#FF8B0000\","]
-#[doc = "          \"subtle\": \"#B28B0000\""]
+#[doc = "          \"default\": \"#c4314b\","]
+#[doc = "          \"subtle\": \"#e5c4314b\""]
 #[doc = "        },"]
 #[doc = "        \"dark\": {"]
-#[doc = "          \"default\": \"#FF101010\","]
-#[doc = "          \"subtle\": \"#B2101010\""]
+#[doc = "          \"default\": \"#252424\","]
+#[doc = "          \"subtle\": \"#bf252424\""]
 #[doc = "        },"]
 #[doc = "        \"default\": {"]
-#[doc = "          \"default\": \"#FF000000\","]
-#[doc = "          \"subtle\": \"#B2000000\""]
+#[doc = "          \"default\": \"#ff252424\","]
+#[doc = "          \"subtle\": \"#bf252424\""]
 #[doc = "        },"]
 #[doc = "        \"good\": {"]
-#[doc = "          \"default\": \"#FF008000\","]
-#[doc = "          \"subtle\": \"#B2008000\""]
+#[doc = "          \"default\": \"#92c353\","]
+#[doc = "          \"subtle\": \"#e592c353\""]
 #[doc = "        },"]
 #[doc = "        \"light\": {"]
-#[doc = "          \"default\": \"#FFFFFFFF\","]
-#[doc = "          \"subtle\": \"#B2FFFFFF\""]
+#[doc = "          \"default\": \"#ffffff\","]
+#[doc = "          \"subtle\": \"#fff3f2f1\""]
 #[doc = "        },"]
 #[doc = "        \"warning\": {"]
-#[doc = "          \"default\": \"#FFFFD700\","]
-#[doc = "          \"subtle\": \"#B2FFD700\""]
+#[doc = "          \"default\": \"#f8d22a\","]
+#[doc = "          \"subtle\": \"#e5f8d22a\""]
 #[doc = "        }"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ForegroundColorsConfig\""]
@@ -618,36 +618,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"accent\": {"]
 #[doc = "      \"description\": \"Container style to use for accent\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#C7DEF9\","]
+#[doc = "        \"borderColor\": \"#62A8F7\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -656,36 +656,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"attention\": {"]
 #[doc = "      \"description\": \"Container style to use for attention\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#FFC5B2\","]
+#[doc = "        \"borderColor\": \"#FF764C\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -694,36 +694,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Default container style\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#ffffff\","]
+#[doc = "        \"borderColor\": \"#CCCCCC\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -732,36 +732,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"emphasis\": {"]
 #[doc = "      \"description\": \"Container style to use for emphasis\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#fff9f8f7\","]
+#[doc = "        \"borderColor\": \"#666666\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -770,36 +770,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"good\": {"]
 #[doc = "      \"description\": \"Container style to use for good\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#CCFFCC\","]
+#[doc = "        \"borderColor\": \"#69E569\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -808,36 +808,36 @@ impl ContainerStyleConfig {
 #[doc = "    \"warning\": {"]
 #[doc = "      \"description\": \"Container style to use for warning\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "        \"borderColor\": null,"]
+#[doc = "        \"backgroundColor\": \"#FFE2B2\","]
+#[doc = "        \"borderColor\": \"#FFBC51\","]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
-#[doc = "            \"default\": \"#FF0000FF\","]
-#[doc = "            \"subtle\": \"#B20000FF\""]
+#[doc = "            \"default\": \"#6264a7\","]
+#[doc = "            \"subtle\": \"#8b8cc7\""]
 #[doc = "          },"]
 #[doc = "          \"attention\": {"]
-#[doc = "            \"default\": \"#FF8B0000\","]
-#[doc = "            \"subtle\": \"#B28B0000\""]
+#[doc = "            \"default\": \"#c4314b\","]
+#[doc = "            \"subtle\": \"#e5c4314b\""]
 #[doc = "          },"]
 #[doc = "          \"dark\": {"]
-#[doc = "            \"default\": \"#FF101010\","]
-#[doc = "            \"subtle\": \"#B2101010\""]
+#[doc = "            \"default\": \"#252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"default\": {"]
-#[doc = "            \"default\": \"#FF000000\","]
-#[doc = "            \"subtle\": \"#B2000000\""]
+#[doc = "            \"default\": \"#ff252424\","]
+#[doc = "            \"subtle\": \"#bf252424\""]
 #[doc = "          },"]
 #[doc = "          \"good\": {"]
-#[doc = "            \"default\": \"#FF008000\","]
-#[doc = "            \"subtle\": \"#B2008000\""]
+#[doc = "            \"default\": \"#92c353\","]
+#[doc = "            \"subtle\": \"#e592c353\""]
 #[doc = "          },"]
 #[doc = "          \"light\": {"]
-#[doc = "            \"default\": \"#FFFFFFFF\","]
-#[doc = "            \"subtle\": \"#B2FFFFFF\""]
+#[doc = "            \"default\": \"#ffffff\","]
+#[doc = "            \"subtle\": \"#fff3f2f1\""]
 #[doc = "          },"]
 #[doc = "          \"warning\": {"]
-#[doc = "            \"default\": \"#FFFFD700\","]
-#[doc = "            \"subtle\": \"#B2FFD700\""]
+#[doc = "            \"default\": \"#f8d22a\","]
+#[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -1216,7 +1216,7 @@ impl Default for ErrorMessageConfigWeight {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"spacing\": {"]
-#[doc = "      \"default\": 10,"]
+#[doc = "      \"default\": 16,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"title\": {"]
@@ -1251,7 +1251,7 @@ impl Default for ErrorMessageConfigWeight {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct FactSetConfig {
-    #[serde(default = "defaults::default_u64::<i64, 10>")]
+    #[serde(default = "defaults::default_u64::<i64, 16>")]
     pub spacing: i64,
     #[serde(default = "defaults::fact_set_config_title")]
     pub title: FactSetTextConfig,
@@ -1711,6 +1711,7 @@ impl Default for FactSetTextConfigWeight {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Color to use when displaying default text\","]
+#[doc = "      \"default\": \"#ff252424\","]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
@@ -1718,6 +1719,7 @@ impl Default for FactSetTextConfigWeight {
 #[doc = "    },"]
 #[doc = "    \"subtle\": {"]
 #[doc = "      \"description\": \"Color to use when displaying subtle text\","]
+#[doc = "      \"default\": \"#bf252424\","]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
@@ -1732,10 +1734,10 @@ impl Default for FactSetTextConfigWeight {
 #[serde(deny_unknown_fields)]
 pub struct FontColorConfig {
     #[doc = "Color to use when displaying default text"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(default = "defaults::font_color_config_default")]
     pub default: Option<String>,
     #[doc = "Color to use when displaying subtle text"]
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(default = "defaults::font_color_config_subtle")]
     pub subtle: Option<String>,
 }
 impl From<&FontColorConfig> for FontColorConfig {
@@ -1759,17 +1761,17 @@ impl FontColorConfig {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Default font size\","]
-#[doc = "      \"default\": 12,"]
+#[doc = "      \"default\": 14,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"extraLarge\": {"]
 #[doc = "      \"description\": \"Extra large font size\","]
-#[doc = "      \"default\": 20,"]
+#[doc = "      \"default\": 24,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"large\": {"]
 #[doc = "      \"description\": \"Large font size\","]
-#[doc = "      \"default\": 17,"]
+#[doc = "      \"default\": 18,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
@@ -1779,7 +1781,7 @@ impl FontColorConfig {
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
 #[doc = "      \"description\": \"Small font size\","]
-#[doc = "      \"default\": 10,"]
+#[doc = "      \"default\": 12,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    }"]
 #[doc = "  },"]
@@ -1791,19 +1793,19 @@ impl FontColorConfig {
 #[serde(deny_unknown_fields)]
 pub struct FontSizesConfig {
     #[doc = "Default font size"]
-    #[serde(default = "defaults::default_u64::<i64, 12>")]
+    #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub default: i64,
     #[doc = "Extra large font size"]
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 20>")]
+    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
     pub extra_large: i64,
     #[doc = "Large font size"]
-    #[serde(default = "defaults::default_u64::<i64, 17>")]
+    #[serde(default = "defaults::default_u64::<i64, 18>")]
     pub large: i64,
     #[doc = "Medium font size"]
     #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub medium: i64,
     #[doc = "Small font size"]
-    #[serde(default = "defaults::default_u64::<i64, 10>")]
+    #[serde(default = "defaults::default_u64::<i64, 12>")]
     pub small: i64,
 }
 impl From<&FontSizesConfig> for FontSizesConfig {
@@ -1833,15 +1835,15 @@ impl FontSizesConfig {
 #[doc = "          \"type\": \"integer\""]
 #[doc = "        },"]
 #[doc = "        \"extraLarge\": {"]
-#[doc = "          \"default\": 26,"]
+#[doc = "          \"default\": 24,"]
 #[doc = "          \"type\": \"integer\""]
 #[doc = "        },"]
 #[doc = "        \"large\": {"]
-#[doc = "          \"default\": 21,"]
+#[doc = "          \"default\": 18,"]
 #[doc = "          \"type\": \"integer\""]
 #[doc = "        },"]
 #[doc = "        \"medium\": {"]
-#[doc = "          \"default\": 17,"]
+#[doc = "          \"default\": 14,"]
 #[doc = "          \"type\": \"integer\""]
 #[doc = "        },"]
 #[doc = "        \"small\": {"]
@@ -1907,15 +1909,15 @@ impl FontTypeConfig {
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 26,"]
+#[doc = "      \"default\": 24,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"large\": {"]
-#[doc = "      \"default\": 21,"]
+#[doc = "      \"default\": 18,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 17,"]
+#[doc = "      \"default\": 14,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
@@ -1932,11 +1934,11 @@ impl FontTypeConfig {
 pub struct FontTypeConfigFontSizes {
     #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 26>")]
+    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
     pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 21>")]
+    #[serde(default = "defaults::default_u64::<i64, 18>")]
     pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 17>")]
+    #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub medium: i64,
     #[serde(default = "defaults::default_u64::<i64, 12>")]
     pub small: i64,
@@ -2012,9 +2014,9 @@ impl FontTypeConfigFontWeights {
 #[doc = "          \"default\": {"]
 #[doc = "            \"fontSizes\": {"]
 #[doc = "              \"default\": 14,"]
-#[doc = "              \"extraLarge\": 26,"]
-#[doc = "              \"large\": 21,"]
-#[doc = "              \"medium\": 17,"]
+#[doc = "              \"extraLarge\": 24,"]
+#[doc = "              \"large\": 18,"]
+#[doc = "              \"medium\": 14,"]
 #[doc = "              \"small\": 12"]
 #[doc = "            },"]
 #[doc = "            \"fontWeights\": {"]
@@ -2043,9 +2045,9 @@ impl FontTypeConfigFontWeights {
 #[doc = "          \"default\": {"]
 #[doc = "            \"fontSizes\": {"]
 #[doc = "              \"default\": 14,"]
-#[doc = "              \"extraLarge\": 26,"]
-#[doc = "              \"large\": 21,"]
-#[doc = "              \"medium\": 17,"]
+#[doc = "              \"extraLarge\": 24,"]
+#[doc = "              \"large\": 18,"]
+#[doc = "              \"medium\": 14,"]
 #[doc = "              \"small\": 12"]
 #[doc = "            },"]
 #[doc = "            \"fontWeights\": {"]
@@ -2102,9 +2104,9 @@ impl FontTypesConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"fontSizes\": {"]
 #[doc = "          \"default\": 14,"]
-#[doc = "          \"extraLarge\": 26,"]
-#[doc = "          \"large\": 21,"]
-#[doc = "          \"medium\": 17,"]
+#[doc = "          \"extraLarge\": 24,"]
+#[doc = "          \"large\": 18,"]
+#[doc = "          \"medium\": 14,"]
 #[doc = "          \"small\": 12"]
 #[doc = "        },"]
 #[doc = "        \"fontWeights\": {"]
@@ -2167,15 +2169,15 @@ impl FontTypesConfigDefault {
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 26,"]
+#[doc = "      \"default\": 24,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"large\": {"]
-#[doc = "      \"default\": 21,"]
+#[doc = "      \"default\": 18,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 17,"]
+#[doc = "      \"default\": 14,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
@@ -2192,11 +2194,11 @@ impl FontTypesConfigDefault {
 pub struct FontTypesConfigDefaultFontSizes {
     #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 26>")]
+    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
     pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 21>")]
+    #[serde(default = "defaults::default_u64::<i64, 18>")]
     pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 17>")]
+    #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub medium: i64,
     #[serde(default = "defaults::default_u64::<i64, 12>")]
     pub small: i64,
@@ -2268,9 +2270,9 @@ impl FontTypesConfigDefaultFontWeights {
 #[doc = "      \"default\": {"]
 #[doc = "        \"fontSizes\": {"]
 #[doc = "          \"default\": 14,"]
-#[doc = "          \"extraLarge\": 26,"]
-#[doc = "          \"large\": 21,"]
-#[doc = "          \"medium\": 17,"]
+#[doc = "          \"extraLarge\": 24,"]
+#[doc = "          \"large\": 18,"]
+#[doc = "          \"medium\": 14,"]
 #[doc = "          \"small\": 12"]
 #[doc = "        },"]
 #[doc = "        \"fontWeights\": {"]
@@ -2333,15 +2335,15 @@ impl FontTypesConfigMonospace {
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 26,"]
+#[doc = "      \"default\": 24,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"large\": {"]
-#[doc = "      \"default\": 21,"]
+#[doc = "      \"default\": 18,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 17,"]
+#[doc = "      \"default\": 14,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
@@ -2358,11 +2360,11 @@ impl FontTypesConfigMonospace {
 pub struct FontTypesConfigMonospaceFontSizes {
     #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 26>")]
+    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
     pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 21>")]
+    #[serde(default = "defaults::default_u64::<i64, 18>")]
     pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 17>")]
+    #[serde(default = "defaults::default_u64::<i64, 14>")]
     pub medium: i64,
     #[serde(default = "defaults::default_u64::<i64, 12>")]
     pub small: i64,
@@ -2432,7 +2434,7 @@ impl FontTypesConfigMonospaceFontWeights {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"bolder\": {"]
-#[doc = "      \"default\": 800,"]
+#[doc = "      \"default\": 600,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"default\": {"]
@@ -2451,7 +2453,7 @@ impl FontTypesConfigMonospaceFontWeights {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct FontWeightsConfig {
-    #[serde(default = "defaults::default_u64::<i64, 800>")]
+    #[serde(default = "defaults::default_u64::<i64, 600>")]
     pub bolder: i64,
     #[serde(default = "defaults::default_u64::<i64, 400>")]
     pub default: i64,
@@ -2479,50 +2481,50 @@ impl FontWeightsConfig {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"accent\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FF0000FF\","]
-#[doc = "        \"subtle\": \"#B20000FF\""]
+#[doc = "        \"default\": \"#6264a7\","]
+#[doc = "        \"subtle\": \"#8b8cc7\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"attention\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FF8B0000\","]
-#[doc = "        \"subtle\": \"#B28B0000\""]
+#[doc = "        \"default\": \"#c4314b\","]
+#[doc = "        \"subtle\": \"#e5c4314b\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"dark\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FF101010\","]
-#[doc = "        \"subtle\": \"#B2101010\""]
+#[doc = "        \"default\": \"#252424\","]
+#[doc = "        \"subtle\": \"#bf252424\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FF000000\","]
-#[doc = "        \"subtle\": \"#B2000000\""]
+#[doc = "        \"default\": \"#ff252424\","]
+#[doc = "        \"subtle\": \"#bf252424\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"good\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FF008000\","]
-#[doc = "        \"subtle\": \"#B2008000\""]
+#[doc = "        \"default\": \"#92c353\","]
+#[doc = "        \"subtle\": \"#e592c353\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"light\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FFFFFFFF\","]
-#[doc = "        \"subtle\": \"#B2FFFFFF\""]
+#[doc = "        \"default\": \"#ffffff\","]
+#[doc = "        \"subtle\": \"#fff3f2f1\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"warning\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": \"#FFFFD700\","]
-#[doc = "        \"subtle\": \"#B2FFD700\""]
+#[doc = "        \"default\": \"#f8d22a\","]
+#[doc = "        \"subtle\": \"#e5f8d22a\""]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontColorConfig\""]
 #[doc = "    }"]
@@ -2604,206 +2606,206 @@ impl ForegroundColorsConfig {
 #[doc = "    \"containerStyles\": {"]
 #[doc = "      \"default\": {"]
 #[doc = "        \"accent\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#C7DEF9\","]
+#[doc = "          \"borderColor\": \"#62A8F7\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        },"]
 #[doc = "        \"attention\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#FFC5B2\","]
+#[doc = "          \"borderColor\": \"#FF764C\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        },"]
 #[doc = "        \"default\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#ffffff\","]
+#[doc = "          \"borderColor\": \"#CCCCCC\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        },"]
 #[doc = "        \"emphasis\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#fff9f8f7\","]
+#[doc = "          \"borderColor\": \"#666666\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        },"]
 #[doc = "        \"good\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#CCFFCC\","]
+#[doc = "          \"borderColor\": \"#69E569\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        },"]
 #[doc = "        \"warning\": {"]
-#[doc = "          \"backgroundColor\": \"#FFFFFFFF\","]
-#[doc = "          \"borderColor\": null,"]
+#[doc = "          \"backgroundColor\": \"#FFE2B2\","]
+#[doc = "          \"borderColor\": \"#FFBC51\","]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
-#[doc = "              \"default\": \"#FF0000FF\","]
-#[doc = "              \"subtle\": \"#B20000FF\""]
+#[doc = "              \"default\": \"#6264a7\","]
+#[doc = "              \"subtle\": \"#8b8cc7\""]
 #[doc = "            },"]
 #[doc = "            \"attention\": {"]
-#[doc = "              \"default\": \"#FF8B0000\","]
-#[doc = "              \"subtle\": \"#B28B0000\""]
+#[doc = "              \"default\": \"#c4314b\","]
+#[doc = "              \"subtle\": \"#e5c4314b\""]
 #[doc = "            },"]
 #[doc = "            \"dark\": {"]
-#[doc = "              \"default\": \"#FF101010\","]
-#[doc = "              \"subtle\": \"#B2101010\""]
+#[doc = "              \"default\": \"#252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"default\": {"]
-#[doc = "              \"default\": \"#FF000000\","]
-#[doc = "              \"subtle\": \"#B2000000\""]
+#[doc = "              \"default\": \"#ff252424\","]
+#[doc = "              \"subtle\": \"#bf252424\""]
 #[doc = "            },"]
 #[doc = "            \"good\": {"]
-#[doc = "              \"default\": \"#FF008000\","]
-#[doc = "              \"subtle\": \"#B2008000\""]
+#[doc = "              \"default\": \"#92c353\","]
+#[doc = "              \"subtle\": \"#e592c353\""]
 #[doc = "            },"]
 #[doc = "            \"light\": {"]
-#[doc = "              \"default\": \"#FFFFFFFF\","]
-#[doc = "              \"subtle\": \"#B2FFFFFF\""]
+#[doc = "              \"default\": \"#ffffff\","]
+#[doc = "              \"subtle\": \"#fff3f2f1\""]
 #[doc = "            },"]
 #[doc = "            \"warning\": {"]
-#[doc = "              \"default\": \"#FFFFD700\","]
-#[doc = "              \"subtle\": \"#B2FFD700\""]
+#[doc = "              \"default\": \"#f8d22a\","]
+#[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
 #[doc = "          }"]
 #[doc = "        }"]
@@ -2812,7 +2814,7 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"factSet\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"spacing\": 10,"]
+#[doc = "        \"spacing\": 16,"]
 #[doc = "        \"title\": {"]
 #[doc = "          \"color\": \"default\","]
 #[doc = "          \"fontType\": \"default\","]
@@ -2836,16 +2838,16 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"fontFamily\": {"]
 #[doc = "      \"description\": \"Font face to use when rendering text\","]
-#[doc = "      \"default\": \"Calibri\","]
+#[doc = "      \"default\": \"sans-serif\","]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
 #[doc = "    \"fontSizes\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": 12,"]
-#[doc = "        \"extraLarge\": 20,"]
-#[doc = "        \"large\": 17,"]
+#[doc = "        \"default\": 14,"]
+#[doc = "        \"extraLarge\": 24,"]
+#[doc = "        \"large\": 18,"]
 #[doc = "        \"medium\": 14,"]
-#[doc = "        \"small\": 10"]
+#[doc = "        \"small\": 12"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FontSizesConfig\""]
 #[doc = "    },"]
@@ -2855,9 +2857,9 @@ impl ForegroundColorsConfig {
 #[doc = "          \"fontFamily\": \"sans-serif\","]
 #[doc = "          \"fontSizes\": {"]
 #[doc = "            \"default\": 14,"]
-#[doc = "            \"extraLarge\": 26,"]
-#[doc = "            \"large\": 21,"]
-#[doc = "            \"medium\": 17,"]
+#[doc = "            \"extraLarge\": 24,"]
+#[doc = "            \"large\": 18,"]
+#[doc = "            \"medium\": 14,"]
 #[doc = "            \"small\": 12"]
 #[doc = "          },"]
 #[doc = "          \"fontWeights\": {"]
@@ -2870,9 +2872,9 @@ impl ForegroundColorsConfig {
 #[doc = "          \"fontFamily\": \"monospace\","]
 #[doc = "          \"fontSizes\": {"]
 #[doc = "            \"default\": 14,"]
-#[doc = "            \"extraLarge\": 26,"]
-#[doc = "            \"large\": 21,"]
-#[doc = "            \"medium\": 17,"]
+#[doc = "            \"extraLarge\": 24,"]
+#[doc = "            \"large\": 18,"]
+#[doc = "            \"medium\": 14,"]
 #[doc = "            \"small\": 12"]
 #[doc = "          },"]
 #[doc = "          \"fontWeights\": {"]
@@ -2886,7 +2888,7 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"fontWeights\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"bolder\": 800,"]
+#[doc = "        \"bolder\": 600,"]
 #[doc = "        \"default\": 400,"]
 #[doc = "        \"lighter\": 200"]
 #[doc = "      },"]
@@ -2899,16 +2901,16 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"imageSet\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"imageSize\": \"auto\","]
+#[doc = "        \"imageSize\": \"medium\","]
 #[doc = "        \"maxImageHeight\": 100"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ImageSetConfig\""]
 #[doc = "    },"]
 #[doc = "    \"imageSizes\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"large\": 180,"]
-#[doc = "        \"medium\": 120,"]
-#[doc = "        \"small\": 80"]
+#[doc = "        \"large\": 100,"]
+#[doc = "        \"medium\": 52,"]
+#[doc = "        \"small\": 32"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ImageSizesConfig\""]
 #[doc = "    },"]
@@ -2945,25 +2947,25 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"separator\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"lineColor\": \"#B2000000\","]
+#[doc = "        \"lineColor\": \"#EEEEEE\","]
 #[doc = "        \"lineThickness\": 1"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/SeparatorConfig\""]
 #[doc = "    },"]
 #[doc = "    \"spacing\": {"]
 #[doc = "      \"default\": {"]
-#[doc = "        \"default\": 8,"]
-#[doc = "        \"extraLarge\": 40,"]
-#[doc = "        \"large\": 30,"]
-#[doc = "        \"medium\": 20,"]
-#[doc = "        \"padding\": 20,"]
-#[doc = "        \"small\": 3"]
+#[doc = "        \"default\": 12,"]
+#[doc = "        \"extraLarge\": 24,"]
+#[doc = "        \"large\": 20,"]
+#[doc = "        \"medium\": 16,"]
+#[doc = "        \"padding\": 16,"]
+#[doc = "        \"small\": 8"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/SpacingsConfig\""]
 #[doc = "    },"]
 #[doc = "    \"supportsInteractivity\": {"]
 #[doc = "      \"description\": \"Control whether interactive `Action`s are allowed to be invoked\","]
-#[doc = "      \"default\": true,"]
+#[doc = "      \"default\": false,"]
 #[doc = "      \"type\": \"boolean\""]
 #[doc = "    },"]
 #[doc = "    \"textBlock\": {"]
@@ -3051,10 +3053,7 @@ pub struct HostConfig {
     #[serde(default = "defaults::host_config_spacing")]
     pub spacing: SpacingsConfig,
     #[doc = "Control whether interactive `Action`s are allowed to be invoked"]
-    #[serde(
-        rename = "supportsInteractivity",
-        default = "defaults::default_bool::<true>"
-    )]
+    #[serde(rename = "supportsInteractivity", default)]
     pub supports_interactivity: bool,
     #[serde(rename = "textBlock", default = "defaults::host_config_text_block")]
     pub text_block: TextBlockConfig,
@@ -3082,7 +3081,7 @@ impl HostConfig {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"imageSize\": {"]
 #[doc = "      \"description\": \"Controls individual image sizing\","]
-#[doc = "      \"default\": \"auto\","]
+#[doc = "      \"default\": \"medium\","]
 #[doc = "      \"type\": \"string\","]
 #[doc = "      \"enum\": ["]
 #[doc = "        \"auto\","]
@@ -3135,7 +3134,7 @@ impl ImageSetConfig {
 #[doc = r" ```json"]
 #[doc = "{"]
 #[doc = "  \"description\": \"Controls individual image sizing\","]
-#[doc = "  \"default\": \"auto\","]
+#[doc = "  \"default\": \"medium\","]
 #[doc = "  \"type\": \"string\","]
 #[doc = "  \"enum\": ["]
 #[doc = "    \"auto\","]
@@ -3209,7 +3208,7 @@ impl std::convert::TryFrom<String> for ImageSetConfigImageSize {
 }
 impl Default for ImageSetConfigImageSize {
     fn default() -> Self {
-        ImageSetConfigImageSize::Auto
+        ImageSetConfigImageSize::Medium
     }
 }
 #[doc = "Controls `Image` sizes"]
@@ -3223,17 +3222,17 @@ impl Default for ImageSetConfigImageSize {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"large\": {"]
 #[doc = "      \"description\": \"Large image size value\","]
-#[doc = "      \"default\": 180,"]
+#[doc = "      \"default\": 100,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
 #[doc = "      \"description\": \"Medium image size value\","]
-#[doc = "      \"default\": 120,"]
+#[doc = "      \"default\": 52,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
 #[doc = "      \"description\": \"Small image size value\","]
-#[doc = "      \"default\": 80,"]
+#[doc = "      \"default\": 32,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    }"]
 #[doc = "  },"]
@@ -3245,13 +3244,13 @@ impl Default for ImageSetConfigImageSize {
 #[serde(deny_unknown_fields)]
 pub struct ImageSizesConfig {
     #[doc = "Large image size value"]
-    #[serde(default = "defaults::default_u64::<i64, 180>")]
+    #[serde(default = "defaults::default_u64::<i64, 100>")]
     pub large: i64,
     #[doc = "Medium image size value"]
-    #[serde(default = "defaults::default_u64::<i64, 120>")]
+    #[serde(default = "defaults::default_u64::<i64, 52>")]
     pub medium: i64,
     #[doc = "Small image size value"]
-    #[serde(default = "defaults::default_u64::<i64, 80>")]
+    #[serde(default = "defaults::default_u64::<i64, 32>")]
     pub small: i64,
 }
 impl From<&ImageSizesConfig> for ImageSizesConfig {
@@ -3917,7 +3916,7 @@ impl MediaConfig {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"lineColor\": {"]
 #[doc = "      \"description\": \"Color to use when drawing separator line\","]
-#[doc = "      \"default\": \"#B2000000\","]
+#[doc = "      \"default\": \"#EEEEEE\","]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
@@ -4168,32 +4167,32 @@ impl Default for ShowCardConfigStyle {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Default spacing value\","]
-#[doc = "      \"default\": 8,"]
+#[doc = "      \"default\": 12,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"extraLarge\": {"]
 #[doc = "      \"description\": \"Extra large spacing value\","]
-#[doc = "      \"default\": 40,"]
+#[doc = "      \"default\": 24,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"large\": {"]
 #[doc = "      \"description\": \"Large spacing value\","]
-#[doc = "      \"default\": 30,"]
+#[doc = "      \"default\": 20,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"medium\": {"]
 #[doc = "      \"description\": \"Medium spacing value\","]
-#[doc = "      \"default\": 20,"]
+#[doc = "      \"default\": 16,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"padding\": {"]
 #[doc = "      \"description\": \"Padding value\","]
-#[doc = "      \"default\": 20,"]
+#[doc = "      \"default\": 16,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"small\": {"]
 #[doc = "      \"description\": \"Small spacing value\","]
-#[doc = "      \"default\": 3,"]
+#[doc = "      \"default\": 8,"]
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    }"]
 #[doc = "  },"]
@@ -4205,22 +4204,22 @@ impl Default for ShowCardConfigStyle {
 #[serde(deny_unknown_fields)]
 pub struct SpacingsConfig {
     #[doc = "Default spacing value"]
-    #[serde(default = "defaults::default_u64::<i64, 8>")]
+    #[serde(default = "defaults::default_u64::<i64, 12>")]
     pub default: i64,
     #[doc = "Extra large spacing value"]
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 40>")]
+    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
     pub extra_large: i64,
     #[doc = "Large spacing value"]
-    #[serde(default = "defaults::default_u64::<i64, 30>")]
+    #[serde(default = "defaults::default_u64::<i64, 20>")]
     pub large: i64,
     #[doc = "Medium spacing value"]
-    #[serde(default = "defaults::default_u64::<i64, 20>")]
+    #[serde(default = "defaults::default_u64::<i64, 16>")]
     pub medium: i64,
     #[doc = "Padding value"]
-    #[serde(default = "defaults::default_u64::<i64, 20>")]
+    #[serde(default = "defaults::default_u64::<i64, 16>")]
     pub padding: i64,
     #[doc = "Small spacing value"]
-    #[serde(default = "defaults::default_u64::<i64, 3>")]
+    #[serde(default = "defaults::default_u64::<i64, 8>")]
     pub small: i64,
 }
 impl From<&SpacingsConfig> for SpacingsConfig {
@@ -5195,7 +5194,7 @@ pub mod builder {
     impl Default for FactSetConfig {
         fn default() -> Self {
             Self {
-                spacing: Ok(super::defaults::default_u64::<i64, 10>()),
+                spacing: Ok(super::defaults::default_u64::<i64, 16>()),
                 title: Ok(super::defaults::fact_set_config_title()),
                 value: Ok(super::defaults::fact_set_config_value()),
             }
@@ -5382,8 +5381,8 @@ pub mod builder {
     impl Default for FontColorConfig {
         fn default() -> Self {
             Self {
-                default: Ok(Default::default()),
-                subtle: Ok(Default::default()),
+                default: Ok(super::defaults::font_color_config_default()),
+                subtle: Ok(super::defaults::font_color_config_subtle()),
             }
         }
     }
@@ -5437,11 +5436,11 @@ pub mod builder {
     impl Default for FontSizesConfig {
         fn default() -> Self {
             Self {
-                default: Ok(super::defaults::default_u64::<i64, 12>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 20>()),
-                large: Ok(super::defaults::default_u64::<i64, 17>()),
+                default: Ok(super::defaults::default_u64::<i64, 14>()),
+                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
+                large: Ok(super::defaults::default_u64::<i64, 18>()),
                 medium: Ok(super::defaults::default_u64::<i64, 14>()),
-                small: Ok(super::defaults::default_u64::<i64, 10>()),
+                small: Ok(super::defaults::default_u64::<i64, 12>()),
             }
         }
     }
@@ -5584,9 +5583,9 @@ pub mod builder {
         fn default() -> Self {
             Self {
                 default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 26>()),
-                large: Ok(super::defaults::default_u64::<i64, 21>()),
-                medium: Ok(super::defaults::default_u64::<i64, 17>()),
+                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
+                large: Ok(super::defaults::default_u64::<i64, 18>()),
+                medium: Ok(super::defaults::default_u64::<i64, 14>()),
                 small: Ok(super::defaults::default_u64::<i64, 12>()),
             }
         }
@@ -5864,9 +5863,9 @@ pub mod builder {
         fn default() -> Self {
             Self {
                 default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 26>()),
-                large: Ok(super::defaults::default_u64::<i64, 21>()),
-                medium: Ok(super::defaults::default_u64::<i64, 17>()),
+                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
+                large: Ok(super::defaults::default_u64::<i64, 18>()),
+                medium: Ok(super::defaults::default_u64::<i64, 14>()),
                 small: Ok(super::defaults::default_u64::<i64, 12>()),
             }
         }
@@ -6100,9 +6099,9 @@ pub mod builder {
         fn default() -> Self {
             Self {
                 default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 26>()),
-                large: Ok(super::defaults::default_u64::<i64, 21>()),
-                medium: Ok(super::defaults::default_u64::<i64, 17>()),
+                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
+                large: Ok(super::defaults::default_u64::<i64, 18>()),
+                medium: Ok(super::defaults::default_u64::<i64, 14>()),
                 small: Ok(super::defaults::default_u64::<i64, 12>()),
             }
         }
@@ -6265,7 +6264,7 @@ pub mod builder {
     impl Default for FontWeightsConfig {
         fn default() -> Self {
             Self {
-                bolder: Ok(super::defaults::default_u64::<i64, 800>()),
+                bolder: Ok(super::defaults::default_u64::<i64, 600>()),
                 default: Ok(super::defaults::default_u64::<i64, 400>()),
                 lighter: Ok(super::defaults::default_u64::<i64, 200>()),
             }
@@ -6489,7 +6488,7 @@ pub mod builder {
                 schema: Ok(Default::default()),
                 separator: Ok(super::defaults::host_config_separator()),
                 spacing: Ok(super::defaults::host_config_spacing()),
-                supports_interactivity: Ok(super::defaults::default_bool::<true>()),
+                supports_interactivity: Ok(Default::default()),
                 text_block: Ok(super::defaults::host_config_text_block()),
                 text_styles: Ok(super::defaults::host_config_text_styles()),
             }
@@ -6823,9 +6822,9 @@ pub mod builder {
     impl Default for ImageSizesConfig {
         fn default() -> Self {
             Self {
-                large: Ok(super::defaults::default_u64::<i64, 180>()),
-                medium: Ok(super::defaults::default_u64::<i64, 120>()),
-                small: Ok(super::defaults::default_u64::<i64, 80>()),
+                large: Ok(super::defaults::default_u64::<i64, 100>()),
+                medium: Ok(super::defaults::default_u64::<i64, 52>()),
+                small: Ok(super::defaults::default_u64::<i64, 32>()),
             }
         }
     }
@@ -7294,12 +7293,12 @@ pub mod builder {
     impl Default for SpacingsConfig {
         fn default() -> Self {
             Self {
-                default: Ok(super::defaults::default_u64::<i64, 8>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 40>()),
-                large: Ok(super::defaults::default_u64::<i64, 30>()),
-                medium: Ok(super::defaults::default_u64::<i64, 20>()),
-                padding: Ok(super::defaults::default_u64::<i64, 20>()),
-                small: Ok(super::defaults::default_u64::<i64, 3>()),
+                default: Ok(super::defaults::default_u64::<i64, 12>()),
+                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
+                large: Ok(super::defaults::default_u64::<i64, 20>()),
+                medium: Ok(super::defaults::default_u64::<i64, 16>()),
+                padding: Ok(super::defaults::default_u64::<i64, 16>()),
+                small: Ok(super::defaults::default_u64::<i64, 8>()),
             }
         }
     }
@@ -7612,247 +7611,247 @@ pub mod defaults {
     pub(super) fn container_style_config_foreground_colors() -> super::ForegroundColorsConfig {
         super::ForegroundColorsConfig {
             accent: super::FontColorConfig {
-                default: Some("#FF0000FF".to_string()),
-                subtle: Some("#B20000FF".to_string()),
+                default: Some("#6264a7".to_string()),
+                subtle: Some("#8b8cc7".to_string()),
             },
             attention: super::FontColorConfig {
-                default: Some("#FF8B0000".to_string()),
-                subtle: Some("#B28B0000".to_string()),
+                default: Some("#c4314b".to_string()),
+                subtle: Some("#e5c4314b".to_string()),
             },
             dark: super::FontColorConfig {
-                default: Some("#FF101010".to_string()),
-                subtle: Some("#B2101010".to_string()),
+                default: Some("#252424".to_string()),
+                subtle: Some("#bf252424".to_string()),
             },
             default: super::FontColorConfig {
-                default: Some("#FF000000".to_string()),
-                subtle: Some("#B2000000".to_string()),
+                default: Some("#ff252424".to_string()),
+                subtle: Some("#bf252424".to_string()),
             },
             good: super::FontColorConfig {
-                default: Some("#FF008000".to_string()),
-                subtle: Some("#B2008000".to_string()),
+                default: Some("#92c353".to_string()),
+                subtle: Some("#e592c353".to_string()),
             },
             light: super::FontColorConfig {
-                default: Some("#FFFFFFFF".to_string()),
-                subtle: Some("#B2FFFFFF".to_string()),
+                default: Some("#ffffff".to_string()),
+                subtle: Some("#fff3f2f1".to_string()),
             },
             warning: super::FontColorConfig {
-                default: Some("#FFFFD700".to_string()),
-                subtle: Some("#B2FFD700".to_string()),
+                default: Some("#f8d22a".to_string()),
+                subtle: Some("#e5f8d22a".to_string()),
             },
         }
     }
     pub(super) fn container_styles_config_accent() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#C7DEF9".to_string()),
+            border_color: Some("#62A8F7".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
     }
     pub(super) fn container_styles_config_attention() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#FFC5B2".to_string()),
+            border_color: Some("#FF764C".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
     }
     pub(super) fn container_styles_config_default() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#ffffff".to_string()),
+            border_color: Some("#CCCCCC".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
     }
     pub(super) fn container_styles_config_emphasis() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#fff9f8f7".to_string()),
+            border_color: Some("#666666".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
     }
     pub(super) fn container_styles_config_good() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#CCFFCC".to_string()),
+            border_color: Some("#69E569".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
     }
     pub(super) fn container_styles_config_warning() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
-            background_color: Some("#FFFFFFFF".to_string()),
-            border_color: None,
+            background_color: Some("#FFE2B2".to_string()),
+            border_color: Some("#FFBC51".to_string()),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
-                    default: Some("#FF0000FF".to_string()),
-                    subtle: Some("#B20000FF".to_string()),
+                    default: Some("#6264a7".to_string()),
+                    subtle: Some("#8b8cc7".to_string()),
                 },
                 attention: super::FontColorConfig {
-                    default: Some("#FF8B0000".to_string()),
-                    subtle: Some("#B28B0000".to_string()),
+                    default: Some("#c4314b".to_string()),
+                    subtle: Some("#e5c4314b".to_string()),
                 },
                 dark: super::FontColorConfig {
-                    default: Some("#FF101010".to_string()),
-                    subtle: Some("#B2101010".to_string()),
+                    default: Some("#252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 default: super::FontColorConfig {
-                    default: Some("#FF000000".to_string()),
-                    subtle: Some("#B2000000".to_string()),
+                    default: Some("#ff252424".to_string()),
+                    subtle: Some("#bf252424".to_string()),
                 },
                 good: super::FontColorConfig {
-                    default: Some("#FF008000".to_string()),
-                    subtle: Some("#B2008000".to_string()),
+                    default: Some("#92c353".to_string()),
+                    subtle: Some("#e592c353".to_string()),
                 },
                 light: super::FontColorConfig {
-                    default: Some("#FFFFFFFF".to_string()),
-                    subtle: Some("#B2FFFFFF".to_string()),
+                    default: Some("#ffffff".to_string()),
+                    subtle: Some("#fff3f2f1".to_string()),
                 },
                 warning: super::FontColorConfig {
-                    default: Some("#FFFFD700".to_string()),
-                    subtle: Some("#B2FFD700".to_string()),
+                    default: Some("#f8d22a".to_string()),
+                    subtle: Some("#e5f8d22a".to_string()),
                 },
             },
         }
@@ -7900,6 +7899,12 @@ pub mod defaults {
     pub(super) fn fact_set_text_config_weight() -> super::FactSetTextConfigWeight {
         super::FactSetTextConfigWeight::Normal
     }
+    pub(super) fn font_color_config_default() -> Option<String> {
+        Some("#ff252424".to_string())
+    }
+    pub(super) fn font_color_config_subtle() -> Option<String> {
+        Some("#bf252424".to_string())
+    }
     pub(super) fn font_types_config_default_font_family() -> String {
         "sans-serif".to_string()
     }
@@ -7908,44 +7913,44 @@ pub mod defaults {
     }
     pub(super) fn foreground_colors_config_accent() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FF0000FF".to_string()),
-            subtle: Some("#B20000FF".to_string()),
+            default: Some("#6264a7".to_string()),
+            subtle: Some("#8b8cc7".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_attention() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FF8B0000".to_string()),
-            subtle: Some("#B28B0000".to_string()),
+            default: Some("#c4314b".to_string()),
+            subtle: Some("#e5c4314b".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_dark() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FF101010".to_string()),
-            subtle: Some("#B2101010".to_string()),
+            default: Some("#252424".to_string()),
+            subtle: Some("#bf252424".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_default() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FF000000".to_string()),
-            subtle: Some("#B2000000".to_string()),
+            default: Some("#ff252424".to_string()),
+            subtle: Some("#bf252424".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_good() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FF008000".to_string()),
-            subtle: Some("#B2008000".to_string()),
+            default: Some("#92c353".to_string()),
+            subtle: Some("#e592c353".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_light() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FFFFFFFF".to_string()),
-            subtle: Some("#B2FFFFFF".to_string()),
+            default: Some("#ffffff".to_string()),
+            subtle: Some("#fff3f2f1".to_string()),
         }
     }
     pub(super) fn foreground_colors_config_warning() -> super::FontColorConfig {
         super::FontColorConfig {
-            default: Some("#FFFFD700".to_string()),
-            subtle: Some("#B2FFD700".to_string()),
+            default: Some("#f8d22a".to_string()),
+            subtle: Some("#e5f8d22a".to_string()),
         }
     }
     pub(super) fn host_config_actions() -> super::ActionsConfig {
@@ -7976,206 +7981,206 @@ pub mod defaults {
     pub(super) fn host_config_container_styles() -> super::ContainerStylesConfig {
         super::ContainerStylesConfig {
             accent: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#C7DEF9".to_string()),
+                border_color: Some("#62A8F7".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
             attention: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#FFC5B2".to_string()),
+                border_color: Some("#FF764C".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
             default: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#ffffff".to_string()),
+                border_color: Some("#CCCCCC".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
             emphasis: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#fff9f8f7".to_string()),
+                border_color: Some("#666666".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
             good: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#CCFFCC".to_string()),
+                border_color: Some("#69E569".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
             warning: super::ContainerStyleConfig {
-                background_color: Some("#FFFFFFFF".to_string()),
-                border_color: None,
+                background_color: Some("#FFE2B2".to_string()),
+                border_color: Some("#FFBC51".to_string()),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
-                        default: Some("#FF0000FF".to_string()),
-                        subtle: Some("#B20000FF".to_string()),
+                        default: Some("#6264a7".to_string()),
+                        subtle: Some("#8b8cc7".to_string()),
                     },
                     attention: super::FontColorConfig {
-                        default: Some("#FF8B0000".to_string()),
-                        subtle: Some("#B28B0000".to_string()),
+                        default: Some("#c4314b".to_string()),
+                        subtle: Some("#e5c4314b".to_string()),
                     },
                     dark: super::FontColorConfig {
-                        default: Some("#FF101010".to_string()),
-                        subtle: Some("#B2101010".to_string()),
+                        default: Some("#252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     default: super::FontColorConfig {
-                        default: Some("#FF000000".to_string()),
-                        subtle: Some("#B2000000".to_string()),
+                        default: Some("#ff252424".to_string()),
+                        subtle: Some("#bf252424".to_string()),
                     },
                     good: super::FontColorConfig {
-                        default: Some("#FF008000".to_string()),
-                        subtle: Some("#B2008000".to_string()),
+                        default: Some("#92c353".to_string()),
+                        subtle: Some("#e592c353".to_string()),
                     },
                     light: super::FontColorConfig {
-                        default: Some("#FFFFFFFF".to_string()),
-                        subtle: Some("#B2FFFFFF".to_string()),
+                        default: Some("#ffffff".to_string()),
+                        subtle: Some("#fff3f2f1".to_string()),
                     },
                     warning: super::FontColorConfig {
-                        default: Some("#FFFFD700".to_string()),
-                        subtle: Some("#B2FFD700".to_string()),
+                        default: Some("#f8d22a".to_string()),
+                        subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
             },
@@ -8183,7 +8188,7 @@ pub mod defaults {
     }
     pub(super) fn host_config_fact_set() -> super::FactSetConfig {
         super::FactSetConfig {
-            spacing: 10_i64,
+            spacing: 16_i64,
             title: super::FactSetTextConfig {
                 color: super::FactSetTextConfigColor::Default,
                 font_type: super::FactSetTextConfigFontType::Default,
@@ -8205,15 +8210,15 @@ pub mod defaults {
         }
     }
     pub(super) fn host_config_font_family() -> String {
-        "Calibri".to_string()
+        "sans-serif".to_string()
     }
     pub(super) fn host_config_font_sizes() -> super::FontSizesConfig {
         super::FontSizesConfig {
-            default: 12_i64,
-            extra_large: 20_i64,
-            large: 17_i64,
+            default: 14_i64,
+            extra_large: 24_i64,
+            large: 18_i64,
             medium: 14_i64,
-            small: 10_i64,
+            small: 12_i64,
         }
     }
     pub(super) fn host_config_font_types() -> super::FontTypesConfig {
@@ -8222,9 +8227,9 @@ pub mod defaults {
                 font_family: "sans-serif".to_string(),
                 font_sizes: Some(super::FontTypesConfigDefaultFontSizes {
                     default: 14_i64,
-                    extra_large: 26_i64,
-                    large: 21_i64,
-                    medium: 17_i64,
+                    extra_large: 24_i64,
+                    large: 18_i64,
+                    medium: 14_i64,
                     small: 12_i64,
                 }),
                 font_weights: Some(super::FontTypesConfigDefaultFontWeights {
@@ -8237,9 +8242,9 @@ pub mod defaults {
                 font_family: "monospace".to_string(),
                 font_sizes: Some(super::FontTypesConfigMonospaceFontSizes {
                     default: 14_i64,
-                    extra_large: 26_i64,
-                    large: 21_i64,
-                    medium: 17_i64,
+                    extra_large: 24_i64,
+                    large: 18_i64,
+                    medium: 14_i64,
                     small: 12_i64,
                 }),
                 font_weights: Some(super::FontTypesConfigMonospaceFontWeights {
@@ -8252,22 +8257,22 @@ pub mod defaults {
     }
     pub(super) fn host_config_font_weights() -> super::FontWeightsConfig {
         super::FontWeightsConfig {
-            bolder: 800_i64,
+            bolder: 600_i64,
             default: 400_i64,
             lighter: 200_i64,
         }
     }
     pub(super) fn host_config_image_set() -> super::ImageSetConfig {
         super::ImageSetConfig {
-            image_size: super::ImageSetConfigImageSize::Auto,
+            image_size: super::ImageSetConfigImageSize::Medium,
             max_image_height: 100_i64,
         }
     }
     pub(super) fn host_config_image_sizes() -> super::ImageSizesConfig {
         super::ImageSizesConfig {
-            large: 180_i64,
-            medium: 120_i64,
-            small: 80_i64,
+            large: 100_i64,
+            medium: 52_i64,
+            small: 32_i64,
         }
     }
     pub(super) fn host_config_inputs() -> super::InputsConfig {
@@ -8305,18 +8310,18 @@ pub mod defaults {
     }
     pub(super) fn host_config_separator() -> super::SeparatorConfig {
         super::SeparatorConfig {
-            line_color: Some("#B2000000".to_string()),
+            line_color: Some("#EEEEEE".to_string()),
             line_thickness: 1_i64,
         }
     }
     pub(super) fn host_config_spacing() -> super::SpacingsConfig {
         super::SpacingsConfig {
-            default: 8_i64,
-            extra_large: 40_i64,
-            large: 30_i64,
-            medium: 20_i64,
-            padding: 20_i64,
-            small: 3_i64,
+            default: 12_i64,
+            extra_large: 24_i64,
+            large: 20_i64,
+            medium: 16_i64,
+            padding: 16_i64,
+            small: 8_i64,
         }
     }
     pub(super) fn host_config_text_block() -> super::TextBlockConfig {
@@ -8343,7 +8348,7 @@ pub mod defaults {
         }
     }
     pub(super) fn image_set_config_image_size() -> super::ImageSetConfigImageSize {
-        super::ImageSetConfigImageSize::Auto
+        super::ImageSetConfigImageSize::Medium
     }
     pub(super) fn input_label_config_color() -> super::InputLabelConfigColor {
         super::InputLabelConfigColor::Default
@@ -8402,7 +8407,7 @@ pub mod defaults {
         }
     }
     pub(super) fn separator_config_line_color() -> Option<String> {
-        Some("#B2000000".to_string())
+        Some("#EEEEEE".to_string())
     }
     pub(super) fn show_card_config_action_mode() -> super::ShowCardConfigActionMode {
         super::ShowCardConfigActionMode::Inline

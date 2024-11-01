@@ -22,212 +22,212 @@
     "choiceSetInputValueSeparator": ", ",
     "containerStyles": {
       "accent": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#C7DEF9",
+        "borderColor": "#62A8F7",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
       "attention": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#FFC5B2",
+        "borderColor": "#FF764C",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
       "default": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#ffffff",
+        "borderColor": "#CCCCCC",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
       "emphasis": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#fff9f8f7",
+        "borderColor": "#666666",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
       "good": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#CCFFCC",
+        "borderColor": "#69E569",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
       "warning": {
-        "backgroundColor": "#FFFFFFFF",
-        "borderColor": null,
+        "backgroundColor": "#FFE2B2",
+        "borderColor": "#FFBC51",
         "foregroundColors": {
           "accent": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           },
           "attention": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           },
           "dark": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           },
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           },
           "good": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           },
           "light": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           },
           "warning": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       }
     },
     "factSet": {
-      "spacing": 10,
+      "spacing": 16,
       "title": {
         "color": "default",
         "fontType": "default",
@@ -247,22 +247,22 @@
         "wrap": true
       }
     },
-    "fontFamily": "Calibri",
+    "fontFamily": "sans-serif",
     "fontSizes": {
-      "default": 12,
-      "extraLarge": 20,
-      "large": 17,
+      "default": 14,
+      "extraLarge": 24,
+      "large": 18,
       "medium": 14,
-      "small": 10
+      "small": 12
     },
     "fontTypes": {
       "default": {
         "fontFamily": "sans-serif",
         "fontSizes": {
           "default": 14,
-          "extraLarge": 26,
-          "large": 21,
-          "medium": 17,
+          "extraLarge": 24,
+          "large": 18,
+          "medium": 14,
           "small": 12
         },
         "fontWeights": {
@@ -275,9 +275,9 @@
         "fontFamily": "monospace",
         "fontSizes": {
           "default": 14,
-          "extraLarge": 26,
-          "large": 21,
-          "medium": 17,
+          "extraLarge": 24,
+          "large": 18,
+          "medium": 14,
           "small": 12
         },
         "fontWeights": {
@@ -288,18 +288,18 @@
       }
     },
     "fontWeights": {
-      "bolder": 800,
+      "bolder": 600,
       "default": 400,
       "lighter": 200
     },
     "imageSet": {
-      "imageSize": "auto",
+      "imageSize": "medium",
       "maxImageHeight": 100
     },
     "imageSizes": {
-      "large": 180,
-      "medium": 120,
-      "small": 80
+      "large": 100,
+      "medium": 52,
+      "small": 32
     },
     "inputs": {
       "errorMessage": {
@@ -327,18 +327,18 @@
       "allowInlinePlayback": true
     },
     "separator": {
-      "lineColor": "#B2000000",
+      "lineColor": "#EEEEEE",
       "lineThickness": 1
     },
     "spacing": {
-      "default": 8,
-      "extraLarge": 40,
-      "large": 30,
-      "medium": 20,
-      "padding": 20,
-      "small": 3
+      "default": 12,
+      "extraLarge": 24,
+      "large": 20,
+      "medium": 16,
+      "padding": 16,
+      "small": 8
     },
-    "supportsInteractivity": true,
+    "supportsInteractivity": false,
     "textBlock": {
       "headingLevel": 2
     },
@@ -472,32 +472,32 @@
           "$ref": "#/definitions/ForegroundColorsConfig",
           "default": {
             "accent": {
-              "default": "#FF0000FF",
-              "subtle": "#B20000FF"
+              "default": "#6264a7",
+              "subtle": "#8b8cc7"
             },
             "attention": {
-              "default": "#FF8B0000",
-              "subtle": "#B28B0000"
+              "default": "#c4314b",
+              "subtle": "#e5c4314b"
             },
             "dark": {
-              "default": "#FF101010",
-              "subtle": "#B2101010"
+              "default": "#252424",
+              "subtle": "#bf252424"
             },
             "default": {
-              "default": "#FF000000",
-              "subtle": "#B2000000"
+              "default": "#ff252424",
+              "subtle": "#bf252424"
             },
             "good": {
-              "default": "#FF008000",
-              "subtle": "#B2008000"
+              "default": "#92c353",
+              "subtle": "#e592c353"
             },
             "light": {
-              "default": "#FFFFFFFF",
-              "subtle": "#B2FFFFFF"
+              "default": "#ffffff",
+              "subtle": "#fff3f2f1"
             },
             "warning": {
-              "default": "#FFFFD700",
-              "subtle": "#B2FFD700"
+              "default": "#f8d22a",
+              "subtle": "#e5f8d22a"
             }
           }
         }
@@ -511,36 +511,36 @@
         "accent": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#C7DEF9",
+            "borderColor": "#62A8F7",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -549,36 +549,36 @@
         "attention": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#FFC5B2",
+            "borderColor": "#FF764C",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -587,36 +587,36 @@
         "default": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#ffffff",
+            "borderColor": "#CCCCCC",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -625,36 +625,36 @@
         "emphasis": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#fff9f8f7",
+            "borderColor": "#666666",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -663,36 +663,36 @@
         "good": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#CCFFCC",
+            "borderColor": "#69E569",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -701,36 +701,36 @@
         "warning": {
           "$ref": "#/definitions/ContainerStyleConfig",
           "default": {
-            "backgroundColor": "#FFFFFFFF",
-            "borderColor": null,
+            "backgroundColor": "#FFE2B2",
+            "borderColor": "#FFBC51",
             "foregroundColors": {
               "accent": {
-                "default": "#FF0000FF",
-                "subtle": "#B20000FF"
+                "default": "#6264a7",
+                "subtle": "#8b8cc7"
               },
               "attention": {
-                "default": "#FF8B0000",
-                "subtle": "#B28B0000"
+                "default": "#c4314b",
+                "subtle": "#e5c4314b"
               },
               "dark": {
-                "default": "#FF101010",
-                "subtle": "#B2101010"
+                "default": "#252424",
+                "subtle": "#bf252424"
               },
               "default": {
-                "default": "#FF000000",
-                "subtle": "#B2000000"
+                "default": "#ff252424",
+                "subtle": "#bf252424"
               },
               "good": {
-                "default": "#FF008000",
-                "subtle": "#B2008000"
+                "default": "#92c353",
+                "subtle": "#e592c353"
               },
               "light": {
-                "default": "#FFFFFFFF",
-                "subtle": "#B2FFFFFF"
+                "default": "#ffffff",
+                "subtle": "#fff3f2f1"
               },
               "warning": {
-                "default": "#FFFFD700",
-                "subtle": "#B2FFD700"
+                "default": "#f8d22a",
+                "subtle": "#e5f8d22a"
               }
             }
           },
@@ -788,7 +788,7 @@
       "description": "Controls the display of `FactSet`s",
       "properties": {
         "spacing": {
-          "default": 10,
+          "default": 16,
           "type": "integer"
         },
         "title": {
@@ -889,6 +889,7 @@
       "additionalProperties": false,
       "properties": {
         "default": {
+          "default": "#ff252424",
           "description": "Color to use when displaying default text",
           "type": [
             "string",
@@ -896,6 +897,7 @@
           ]
         },
         "subtle": {
+          "default": "#bf252424",
           "description": "Color to use when displaying subtle text",
           "type": [
             "string",
@@ -910,17 +912,17 @@
       "description": "Controls font size metrics for different text styles",
       "properties": {
         "default": {
-          "default": 12,
+          "default": 14,
           "description": "Default font size",
           "type": "integer"
         },
         "extraLarge": {
-          "default": 20,
+          "default": 24,
           "description": "Extra large font size",
           "type": "integer"
         },
         "large": {
-          "default": 17,
+          "default": 18,
           "description": "Large font size",
           "type": "integer"
         },
@@ -930,7 +932,7 @@
           "type": "integer"
         },
         "small": {
-          "default": 10,
+          "default": 12,
           "description": "Small font size",
           "type": "integer"
         }
@@ -948,15 +950,15 @@
               "type": "integer"
             },
             "extraLarge": {
-              "default": 26,
+              "default": 24,
               "type": "integer"
             },
             "large": {
-              "default": 21,
+              "default": 18,
               "type": "integer"
             },
             "medium": {
-              "default": 17,
+              "default": 14,
               "type": "integer"
             },
             "small": {
@@ -998,9 +1000,9 @@
               "default": {
                 "fontSizes": {
                   "default": 14,
-                  "extraLarge": 26,
-                  "large": 21,
-                  "medium": 17,
+                  "extraLarge": 24,
+                  "large": 18,
+                  "medium": 14,
                   "small": 12
                 },
                 "fontWeights": {
@@ -1029,9 +1031,9 @@
               "default": {
                 "fontSizes": {
                   "default": 14,
-                  "extraLarge": 26,
-                  "large": 21,
-                  "medium": 17,
+                  "extraLarge": 24,
+                  "large": 18,
+                  "medium": 14,
                   "small": 12
                 },
                 "fontWeights": {
@@ -1061,7 +1063,7 @@
       "description": "Controls font weight metrics",
       "properties": {
         "bolder": {
-          "default": 800,
+          "default": 600,
           "type": "integer"
         },
         "default": {
@@ -1082,50 +1084,50 @@
         "accent": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FF0000FF",
-            "subtle": "#B20000FF"
+            "default": "#6264a7",
+            "subtle": "#8b8cc7"
           }
         },
         "attention": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FF8B0000",
-            "subtle": "#B28B0000"
+            "default": "#c4314b",
+            "subtle": "#e5c4314b"
           }
         },
         "dark": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FF101010",
-            "subtle": "#B2101010"
+            "default": "#252424",
+            "subtle": "#bf252424"
           }
         },
         "default": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FF000000",
-            "subtle": "#B2000000"
+            "default": "#ff252424",
+            "subtle": "#bf252424"
           }
         },
         "good": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FF008000",
-            "subtle": "#B2008000"
+            "default": "#92c353",
+            "subtle": "#e592c353"
           }
         },
         "light": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FFFFFFFF",
-            "subtle": "#B2FFFFFF"
+            "default": "#ffffff",
+            "subtle": "#fff3f2f1"
           }
         },
         "warning": {
           "$ref": "#/definitions/FontColorConfig",
           "default": {
-            "default": "#FFFFD700",
-            "subtle": "#B2FFD700"
+            "default": "#f8d22a",
+            "subtle": "#e5f8d22a"
           }
         }
       },
@@ -1172,206 +1174,206 @@
           "$ref": "#/definitions/ContainerStylesConfig",
           "default": {
             "accent": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#C7DEF9",
+              "borderColor": "#62A8F7",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             },
             "attention": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#FFC5B2",
+              "borderColor": "#FF764C",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             },
             "default": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#ffffff",
+              "borderColor": "#CCCCCC",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             },
             "emphasis": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#fff9f8f7",
+              "borderColor": "#666666",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             },
             "good": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#CCFFCC",
+              "borderColor": "#69E569",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             },
             "warning": {
-              "backgroundColor": "#FFFFFFFF",
-              "borderColor": null,
+              "backgroundColor": "#FFE2B2",
+              "borderColor": "#FFBC51",
               "foregroundColors": {
                 "accent": {
-                  "default": "#FF0000FF",
-                  "subtle": "#B20000FF"
+                  "default": "#6264a7",
+                  "subtle": "#8b8cc7"
                 },
                 "attention": {
-                  "default": "#FF8B0000",
-                  "subtle": "#B28B0000"
+                  "default": "#c4314b",
+                  "subtle": "#e5c4314b"
                 },
                 "dark": {
-                  "default": "#FF101010",
-                  "subtle": "#B2101010"
+                  "default": "#252424",
+                  "subtle": "#bf252424"
                 },
                 "default": {
-                  "default": "#FF000000",
-                  "subtle": "#B2000000"
+                  "default": "#ff252424",
+                  "subtle": "#bf252424"
                 },
                 "good": {
-                  "default": "#FF008000",
-                  "subtle": "#B2008000"
+                  "default": "#92c353",
+                  "subtle": "#e592c353"
                 },
                 "light": {
-                  "default": "#FFFFFFFF",
-                  "subtle": "#B2FFFFFF"
+                  "default": "#ffffff",
+                  "subtle": "#fff3f2f1"
                 },
                 "warning": {
-                  "default": "#FFFFD700",
-                  "subtle": "#B2FFD700"
+                  "default": "#f8d22a",
+                  "subtle": "#e5f8d22a"
                 }
               }
             }
@@ -1380,7 +1382,7 @@
         "factSet": {
           "$ref": "#/definitions/FactSetConfig",
           "default": {
-            "spacing": 10,
+            "spacing": 16,
             "title": {
               "color": "default",
               "fontType": "default",
@@ -1402,18 +1404,18 @@
           }
         },
         "fontFamily": {
-          "default": "Calibri",
+          "default": "sans-serif",
           "description": "Font face to use when rendering text",
           "type": "string"
         },
         "fontSizes": {
           "$ref": "#/definitions/FontSizesConfig",
           "default": {
-            "default": 12,
-            "extraLarge": 20,
-            "large": 17,
+            "default": 14,
+            "extraLarge": 24,
+            "large": 18,
             "medium": 14,
-            "small": 10
+            "small": 12
           }
         },
         "fontTypes": {
@@ -1423,9 +1425,9 @@
               "fontFamily": "sans-serif",
               "fontSizes": {
                 "default": 14,
-                "extraLarge": 26,
-                "large": 21,
-                "medium": 17,
+                "extraLarge": 24,
+                "large": 18,
+                "medium": 14,
                 "small": 12
               },
               "fontWeights": {
@@ -1438,9 +1440,9 @@
               "fontFamily": "monospace",
               "fontSizes": {
                 "default": 14,
-                "extraLarge": 26,
-                "large": 21,
-                "medium": 17,
+                "extraLarge": 24,
+                "large": 18,
+                "medium": 14,
                 "small": 12
               },
               "fontWeights": {
@@ -1454,7 +1456,7 @@
         "fontWeights": {
           "$ref": "#/definitions/FontWeightsConfig",
           "default": {
-            "bolder": 800,
+            "bolder": 600,
             "default": 400,
             "lighter": 200
           }
@@ -1467,16 +1469,16 @@
         "imageSet": {
           "$ref": "#/definitions/ImageSetConfig",
           "default": {
-            "imageSize": "auto",
+            "imageSize": "medium",
             "maxImageHeight": 100
           }
         },
         "imageSizes": {
           "$ref": "#/definitions/ImageSizesConfig",
           "default": {
-            "large": 180,
-            "medium": 120,
-            "small": 80
+            "large": 100,
+            "medium": 52,
+            "small": 32
           }
         },
         "inputs": {
@@ -1513,23 +1515,23 @@
         "separator": {
           "$ref": "#/definitions/SeparatorConfig",
           "default": {
-            "lineColor": "#B2000000",
+            "lineColor": "#EEEEEE",
             "lineThickness": 1
           }
         },
         "spacing": {
           "$ref": "#/definitions/SpacingsConfig",
           "default": {
-            "default": 8,
-            "extraLarge": 40,
-            "large": 30,
-            "medium": 20,
-            "padding": 20,
-            "small": 3
+            "default": 12,
+            "extraLarge": 24,
+            "large": 20,
+            "medium": 16,
+            "padding": 16,
+            "small": 8
           }
         },
         "supportsInteractivity": {
-          "default": true,
+          "default": false,
           "description": "Control whether interactive `Action`s are allowed to be invoked",
           "type": "boolean"
         },
@@ -1566,7 +1568,7 @@
       "description": "Controls how `ImageSet`s are displayed",
       "properties": {
         "imageSize": {
-          "default": "auto",
+          "default": "medium",
           "description": "Controls individual image sizing",
           "enum": [
             "auto",
@@ -1590,17 +1592,17 @@
       "description": "Controls `Image` sizes",
       "properties": {
         "large": {
-          "default": 180,
+          "default": 100,
           "description": "Large image size value",
           "type": "integer"
         },
         "medium": {
-          "default": 120,
+          "default": 52,
           "description": "Medium image size value",
           "type": "integer"
         },
         "small": {
-          "default": 80,
+          "default": 32,
           "description": "Small image size value",
           "type": "integer"
         }
@@ -1764,7 +1766,7 @@
       "description": "Controls how separators are displayed",
       "properties": {
         "lineColor": {
-          "default": "#B2000000",
+          "default": "#EEEEEE",
           "description": "Color to use when drawing separator line",
           "type": [
             "string",
@@ -1813,32 +1815,32 @@
       "description": "Controls how elements are to be laid out",
       "properties": {
         "default": {
-          "default": 8,
+          "default": 12,
           "description": "Default spacing value",
           "type": "integer"
         },
         "extraLarge": {
-          "default": 40,
+          "default": 24,
           "description": "Extra large spacing value",
           "type": "integer"
         },
         "large": {
-          "default": 30,
+          "default": 20,
           "description": "Large spacing value",
           "type": "integer"
         },
         "medium": {
-          "default": 20,
+          "default": 16,
           "description": "Medium spacing value",
           "type": "integer"
         },
         "padding": {
-          "default": 20,
+          "default": 16,
           "description": "Padding value",
           "type": "integer"
         },
         "small": {
-          "default": 3,
+          "default": 8,
           "description": "Small spacing value",
           "type": "integer"
         }

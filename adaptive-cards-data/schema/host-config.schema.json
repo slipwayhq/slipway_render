@@ -116,27 +116,51 @@
 			"properties": {
 				"default": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Default container style"
+					"description": "Default container style",
+					"default": {
+            "borderColor": "#CCCCCC",
+            "backgroundColor": "#ffffff"
+					}
 				},
 				"emphasis": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Container style to use for emphasis"
+					"description": "Container style to use for emphasis",
+					"default": {
+            "borderColor": "#666666",
+            "backgroundColor": "#fff9f8f7"
+					}
 				},
 				"accent": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Container style to use for accent"
+					"description": "Container style to use for accent",
+					"default": {
+            "borderColor": "#62A8F7",
+            "backgroundColor": "#C7DEF9"
+					}
 				},
 				"good": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Container style to use for good"
+					"description": "Container style to use for good",
+					"default": {
+            "borderColor": "#69E569",
+            "backgroundColor": "#CCFFCC"
+					}
 				},
 				"attention": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Container style to use for attention"
+					"description": "Container style to use for attention",
+					"default": {
+            "borderColor": "#FF764C",
+            "backgroundColor": "#FFC5B2"
+					}
 				},
 				"warning": {
 					"$ref": "#/definitions/ContainerStyleConfig",
-					"description": "Container style to use for warning"
+					"description": "Container style to use for warning",
+					"default": {
+            "borderColor": "#FFBC51",
+            "backgroundColor": "#FFE2B2"
+					}
 				}
 			}
 		},
@@ -215,7 +239,7 @@
 				},
 				"spacing": {
 					"type": "integer",
-					"default": 10
+					"default": 16
 				}
 			}
 		},
@@ -228,6 +252,7 @@
 						"string",
 						"null"
 					],
+					"default": "#ff252424",
 					"description": "Color to use when displaying default text"
 				},
 				"subtle": {
@@ -235,6 +260,7 @@
 						"string",
 						"null"
 					],
+					"default": "#bf252424",
 					"description": "Color to use when displaying subtle text"
 				}
 			}
@@ -247,12 +273,12 @@
 				"small": {
 					"type": "integer",
 					"description": "Small font size",
-					"default": 10
+					"default": 12
 				},
 				"default": {
 					"type": "integer",
 					"description": "Default font size",
-					"default": 12
+					"default": 14
 				},
 				"medium": {
 					"type": "integer",
@@ -262,12 +288,12 @@
 				"large": {
 					"type": "integer",
 					"description": "Large font size",
-					"default": 17
+					"default": 18
 				},
 				"extraLarge": {
 					"type": "integer",
 					"description": "Extra large font size",
-					"default": 20
+					"default": 24
 				}
 			}
 		},
@@ -286,7 +312,7 @@
 				},
 				"bolder": {
 					"type": "integer",
-					"default": 800
+					"default": 600
 				}
 			}
 		},
@@ -295,55 +321,55 @@
 			"description": "Controls various font colors",
 			"additionalProperties": false,
 			"properties": {
-				"default": {
+        "accent": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FF000000",
-						"subtle": "#B2000000"
+						"default": "#6264a7",
+						"subtle": "#8b8cc7"
 					}
-				},
-				"accent": {
+        },
+        "attention": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FF0000FF",
-						"subtle": "#B20000FF"
+						"default": "#c4314b",
+						"subtle": "#e5c4314b"
 					}
-				},
-				"dark": {
+        },
+        "dark": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FF101010",
-						"subtle": "#B2101010"
+						"default": "#252424",
+						"subtle": "#bf252424"
 					}
-				},
-				"light": {
+        },
+        "default": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FFFFFFFF",
-						"subtle": "#B2FFFFFF"
+						"default": "#ff252424",
+						"subtle": "#bf252424"
 					}
-				},
-				"good": {
+        },
+        "good": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FF008000",
-						"subtle": "#B2008000"
+						"default": "#92c353",
+						"subtle": "#e592c353"
 					}
-				},
-				"warning": {
+        },
+        "light": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FFFFD700",
-						"subtle": "#B2FFD700"
+						"default": "#ffffff",
+						"subtle": "#fff3f2f1"
 					}
-				},
-				"attention": {
+        },
+        "warning": {
 					"$ref": "#/definitions/FontColorConfig",
 					"default": {
-						"default": "#FF8B0000",
-						"subtle": "#B28B0000"
+						"default": "#f8d22a",
+						"subtle": "#e5f8d22a"
 					}
-				}
+        }
 			}
 		},
 		"ImageSetConfig": {
@@ -361,7 +387,7 @@
 						"medium",
 						"large"
 					],
-					"default": "auto"
+					"default": "medium"
 				},
 				"maxImageHeight": {
 					"type": "integer",
@@ -378,17 +404,17 @@
 				"small": {
 					"type": "integer",
 					"description": "Small image size value",
-					"default": 80
+					"default": 32
 				},
 				"medium": {
 					"type": "integer",
 					"description": "Medium image size value",
-					"default": 120
+					"default": 52
 				},
 				"large": {
 					"type": "integer",
 					"description": "Large image size value",
-					"default": 180
+					"default": 100
 				}
 			}
 		},
@@ -528,7 +554,7 @@
 						"null"
 					],
 					"description": "Color to use when drawing separator line",
-					"default": "#B2000000"
+					"default": "#EEEEEE"
 				}
 			}
 		},
@@ -569,32 +595,32 @@
 				"small": {
 					"type": "integer",
 					"description": "Small spacing value",
-					"default": 3
+					"default": 8
 				},
 				"default": {
 					"type": "integer",
 					"description": "Default spacing value",
-					"default": 8
+					"default": 12
 				},
 				"medium": {
 					"type": "integer",
 					"description": "Medium spacing value",
-					"default": 20
+					"default": 16
 				},
 				"large": {
 					"type": "integer",
 					"description": "Large spacing value",
-					"default": 30
+					"default": 20
 				},
 				"extraLarge": {
 					"type": "integer",
 					"description": "Extra large spacing value",
-					"default": 40
+					"default": 24
 				},
 				"padding": {
 					"type": "integer",
 					"description": "Padding value",
-					"default": 20
+					"default": 16
 				}
 			}
 		},
@@ -820,15 +846,15 @@
 						},
 						"medium": {
 							"type": "integer",
-							"default": 17
+							"default": 14
 						},
 						"large": {
 							"type": "integer",
-							"default": 21
+							"default": 18
 						},
 						"extraLarge": {
 							"type": "integer",
-							"default": 26
+							"default": 24
 						}
 					}
 				},
@@ -860,7 +886,7 @@
 				"supportsInteractivity": {
 					"type": "boolean",
 					"description": "Control whether interactive `Action`s are allowed to be invoked",
-					"default": true
+					"default": false
 				},
 				"imageBaseUrl": {
 					"type": "string",
@@ -870,7 +896,7 @@
 				"fontFamily": {
 					"type": "string",
 					"description": "Font face to use when rendering text",
-					"default": "Calibri"
+					"default": "sans-serif"
 				},
 				"choiceSetInputValueSeparator": {
 					"type": "string",

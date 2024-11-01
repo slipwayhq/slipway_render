@@ -1,7 +1,10 @@
 use crate::host_config::generated::HostConfig;
 
 pub fn default_host_config() -> HostConfig {
-    serde_json::from_str::<HostConfig>(DEFAULT_TEAMS_LIGHT_HOST_CONFIG_JSON).unwrap()
+    super::builder::HostConfig::default()
+        .try_into()
+        .expect("Default host config should be valid")
+    // serde_json::from_str::<HostConfig>(DEFAULT_TEAMS_LIGHT_HOST_CONFIG_JSON).unwrap()
 }
 
 const DEFAULT_TEAMS_LIGHT_HOST_CONFIG_JSON: &str = r##"{

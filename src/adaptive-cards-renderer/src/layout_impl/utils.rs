@@ -3,11 +3,11 @@ use std::num::ParseFloatError;
 use taffy::{prelude::length, Dimension, LengthPercentageAuto, Rect};
 
 use crate::{
-    element_layout_data::Placement,
-    errors::RenderError,
-    host_config::{HostConfig, ValidSpacing},
+    element_layout_data::Placement, errors::RenderError, host_config_utils::ValidSpacing,
     layout_context::LayoutContext,
 };
+
+use adaptive_cards_host_config::HostConfig;
 
 /// Parse a string as a dimension.
 pub(super) fn parse_dimension(

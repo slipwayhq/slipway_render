@@ -1,6 +1,6 @@
 use std::io::Write;
 
-use adaptive_cards_renderer::host_config::HostConfig;
+use adaptive_cards_host_config::HostConfig;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
@@ -79,7 +79,7 @@ struct Input {
     card: adaptive_cards_renderer::adaptive_cards::AdaptiveCard,
 
     #[serde(alias = "hostConfig")]
-    host_config: Option<adaptive_cards_renderer::host_config::HostConfig>,
+    host_config: Option<HostConfig>,
 
     canvas: Canvas,
 }

@@ -1,12 +1,10 @@
 use core::fmt;
 use std::rc::Rc;
 
+use adaptive_cards_host_config::HostConfig;
 use taffy::Point;
 
-use crate::{
-    adaptive_cards::ContainerStyle, adaptive_cards::VerticalContentAlignment,
-    host_config::HostConfig, DebugMode,
-};
+use crate::{adaptive_cards::ContainerStyle, adaptive_cards::VerticalContentAlignment, DebugMode};
 
 /// The context for the layout and draw passes of a single element.
 #[derive(Clone)]

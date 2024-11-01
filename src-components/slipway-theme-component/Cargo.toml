@@ -10,3 +10,4 @@ crate-type = ["cdylib"]
 [dependencies]
 serde_json = "1.0.104"
 serde = { version = "1.0.180", features = ["derive"] }
+adaptive-cards-host-config = { path = "../../src/adaptive-cards-host-config" }

@@ -7,26 +7,26 @@
   },
   "rigging": {
     "theme": {
-      "component": "file:artifacts/release/slipway.theme.0.0.1.tar",
+      "component": "file:artifacts/debug/slipway.theme.0.0.1.tar",
       "input": {
         "name": "color_light"
       }
     },
     "modify_theme": {
-      "component": "file:artifacts/release/slipway.modify.0.0.1.tar",
+      "component": "file:artifacts/debug/slipway.modify.0.0.1.tar",
       "input": {
         "data": "$$.theme.hostConfig",
         "instructions": [
           {
             "type": "set",
             "path": "containerStyles.accent.backgroundColor",
-            "value": "#ffffff"
+            "value": "#ff0000"
           }
         ]
       }
     },
     "render": {
-      "component": "file:artifacts/release/slipway.render.0.0.1.tar",
+      "component": "file:artifacts/debug/slipway.render.0.0.1.tar",
       "input": {
         "card": {
           "type": "AdaptiveCard",

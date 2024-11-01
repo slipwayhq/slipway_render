@@ -1,0 +1,11 @@
+[package]
+name = "adaptive-cards-host-config"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+
+[build-dependencies]
+populate-schema-defaults = { path = "../populate-schema-defaults" }

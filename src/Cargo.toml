@@ -3,6 +3,7 @@ members = [
     "populate-schema-defaults",
     "adaptive-cards-types-generator",
     "adaptive-cards-renderer",
+    "adaptive-cards-host-config",
 ]
 resolver = "2"
 

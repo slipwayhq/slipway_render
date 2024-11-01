@@ -7,7 +7,7 @@ mod element;
 mod element_layout_data;
 mod errors;
 mod fonts;
-pub mod host_config;
+pub mod host_config_utils;
 mod layout_context;
 mod layout_impl;
 mod layoutable;
@@ -19,4 +19,4 @@ pub mod render;
 mod utils;
 
 pub use debug_mode::DebugMode;
-pub use host_config::default_host_config::default_host_config;
+pub use host_config_utils::default_host_config::default_host_config;

@@ -7,7 +7,7 @@ use crate::{
     adaptive_cards::AdaptiveCard,
     element_layout_data::ElementTaffyData,
     errors::RenderError,
-    host_config::StringToColor,
+    host_config_utils::StringToColor,
     layout_context::LayoutContext,
     layoutable::Layoutable,
     masked_image::{MaskedImage, SlipwayCanvas},

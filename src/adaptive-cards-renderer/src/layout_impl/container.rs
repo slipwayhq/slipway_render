@@ -7,7 +7,7 @@ use crate::{
     adaptive_cards::Container,
     element_layout_data::ElementTaffyData,
     errors::{RenderError, TaffyErrorToRenderError},
-    host_config::StringToColor,
+    host_config_utils::{ContainerStyleToConfig, StringToColor},
     layout_context::LayoutContext,
     layoutable::{Layoutable, TaffyLayoutUtils},
     masked_image::MaskedImage,

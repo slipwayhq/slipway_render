@@ -1,67 +1,5 @@
 {
     "$schema": "../../../adaptive-cards-data/schema/host-config.schema.json",
-    "choiceSetInputValueSeparator": ",",
-    "spacing": {
-        "small": 8,
-        "default": 12,
-        "medium": 16,
-        "large": 20,
-        "extraLarge": 24,
-        "padding": 16
-    },
-    "separator": {
-        "lineThickness": 1,
-        "lineColor": "#EEEEEE"
-    },
-    "fontTypes": {
-        "default": {
-            "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-            "fontSizes": {
-                "small": 12,
-                "default": 14,
-                "medium": 14,
-                "large": 18,
-                "extraLarge": 24
-            },
-            "fontWeights": {
-                "lighter": 200,
-                "default": 400,
-                "bolder": 600
-            }
-        },
-        "monospace": {
-            "fontFamily": "'Courier New', Courier, monospace",
-            "fontSizes": {
-                "small": 12,
-                "default": 14,
-                "medium": 14,
-                "large": 18,
-                "extraLarge": 24
-            },
-            "fontWeights": {
-                "lighter": 200,
-                "default": 400,
-                "bolder": 600
-            }
-        }
-    },
-    "textStyles": {
-        "heading": {
-            "fontType": "default",
-            "size": "large",
-            "weight": "bolder",
-            "color": "default",
-            "isSubtle": false
-        }
-    },
-    "textBlock": {
-        "headingLevel": 2
-    },
-    "imageSizes": {
-        "small": 32,
-        "medium": 52,
-        "large": 100
-    },
     "containerStyles": {
         "default": {
             "foregroundColors": {
@@ -267,29 +205,5 @@
                 }
             }
         }
-    },
-    "adaptiveCard": {
-        "allowCustomStyle": true
-    },
-    "imageSet": {
-        "imageSize": "medium",
-        "maxImageHeight": 100
-    },
-    "factSet": {
-        "title": {
-            "size": "default",
-            "color": "default",
-            "isSubtle": false,
-            "weight": "bolder",
-            "wrap": true
-        },
-        "value": {
-            "size": "default",
-            "color": "default",
-            "isSubtle": false,
-            "weight": "normal",
-            "wrap": true
-        },
-        "spacing": 16
     }
 }

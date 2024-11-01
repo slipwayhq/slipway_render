@@ -1,5 +1,6 @@
 use std::io::{Read, Write};
 
+use adaptive_cards_host_config::HostConfig;
 use serde::{Deserialize, Serialize};
 
 const COLOR_DARK: &str = include_str!("../themes/color_dark.json");
@@ -20,7 +21,11 @@ pub fn step() {
         ThemeName::ColorLight => COLOR_LIGHT,
     };
 
-    let host_config = serde_json::from_str(theme_str).expect("should parse theme JSON");
+    // By deserializing to the HostConfig struct we ensure that all default values are populated
+    // before we serialize it back to JSON.
+    // This makes it more intuitive to modify the theme using the `modify` component, because you're
+    // modifying the final JSON structure which the renderer will use.
+    let host_config: HostConfig = serde_json::from_str(theme_str).expect("should parse theme JSON");
 
     let output = Output { host_config };
 
@@ -47,5 +52,5 @@ enum ThemeName {
 #[derive(Serialize)]
 struct Output {
     #[serde(rename = "hostConfig")]
-    host_config: serde_json::Value,
+    host_config: HostConfig,
 }

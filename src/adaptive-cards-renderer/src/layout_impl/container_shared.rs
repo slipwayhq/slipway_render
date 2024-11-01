@@ -14,7 +14,7 @@ use crate::{
     element::LayoutableElement,
     element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
-    host_config::{StringToColor, ValidSpacing},
+    host_config_utils::{StringToColor, ValidSpacing},
     layout_context::LayoutContext,
     layoutable::TaffyLayoutUtils,
     masked_image::MaskedImage,

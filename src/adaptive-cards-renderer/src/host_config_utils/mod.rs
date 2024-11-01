@@ -1,3 +1,4 @@
+use adaptive_cards_host_config::{ContainerStyleConfig, ContainerStylesConfig, SpacingsConfig};
 use csscolorparser::ParseColorError;
 
 use crate::{
@@ -6,15 +7,6 @@ use crate::{
 };
 
 pub mod default_host_config;
-
-#[allow(
-    clippy::to_string_trait_impl,
-    clippy::derivable_impls,
-    clippy::wrong_self_convention
-)]
-mod generated;
-
-pub use generated::*;
 
 pub(super) trait ValidSpacing {
     fn from(&self, element: &dyn LayoutableElement) -> u32;
@@ -106,8 +98,12 @@ fn parse_color_map_error(input: &str) -> Result<image::Rgba<u8>, RenderError> {
     })
 }
 
-impl ContainerStylesConfig {
-    pub fn from(&self, style: ContainerStyle) -> &ContainerStyleConfig {
+pub(super) trait ContainerStyleToConfig {
+    fn from(&self, style: ContainerStyle) -> &ContainerStyleConfig;
+}
+
+impl ContainerStyleToConfig for ContainerStylesConfig {
+    fn from(&self, style: ContainerStyle) -> &ContainerStyleConfig {
         match style {
             ContainerStyle::Default => &self.default,
             ContainerStyle::Emphasis => &self.emphasis,

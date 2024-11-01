@@ -1,8 +1,7 @@
 use std::path::Path;
 
-use adaptive_cards_renderer::{
-    default_host_config, host_config::HostConfig, render::render_from_str, DebugMode,
-};
+use adaptive_cards_host_config::HostConfig;
+use adaptive_cards_renderer::{default_host_config, render::render_from_str, DebugMode};
 use image::RgbaImage;
 
 const CARD_EXTENSION: &str = ".card.json";

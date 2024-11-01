@@ -1,5 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
+use adaptive_cards_host_config::HostConfig;
 use image::RgbaImage;
 use taffy::{AvailableSpace, TaffyTree};
 
@@ -7,7 +8,6 @@ use crate::{
     adaptive_cards::AdaptiveCard,
     errors::{RenderError, TaffyErrorToRenderError},
     fonts::FontCache,
-    host_config::HostConfig,
     layout_context::LayoutContext,
     layoutable::Layoutable,
     masked_image::{Ejectable, MaskedImage},

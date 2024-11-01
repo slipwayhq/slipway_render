@@ -4,11 +4,18 @@
   "description": "Provides various host config themes.",
   "version": "0.0.1",
   "input": {
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
     "properties": {
       "name": {
-        "enum": ["color_light", "color_dark" ]
+        "enum": [ "none", "color_light", "color_dark" ]
+      },
+      "hostConfig": {
+        "$ref": "host-config-with-defaults.schema.json#"
       }
-    }
+    },
+    "required": ["name"],
+    "additionalProperties": false
   },
   "output": {
     "$schema": "http://json-schema.org/draft-06/schema#",

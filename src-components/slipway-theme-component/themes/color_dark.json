@@ -1,5 +1,9 @@
 {
     "$schema": "../../../adaptive-cards-data/schema/host-config.schema.json",
+    "separator": {
+        "lineThickness": 1,
+        "lineColor": "#EEEEEE"
+    },
     "containerStyles": {
         "default": {
             "foregroundColors": {

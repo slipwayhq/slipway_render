@@ -1,9 +1,7 @@
 use adaptive_cards_host_config::HostConfig;
 
 pub fn default_host_config() -> HostConfig {
-    adaptive_cards_host_config::builder::HostConfig::default()
-        .try_into()
-        .expect("Default host config should be valid")
+    adaptive_cards_host_config::default()
     // serde_json::from_str::<HostConfig>(DEFAULT_TEAMS_LIGHT_HOST_CONFIG_JSON).unwrap()
 }
 

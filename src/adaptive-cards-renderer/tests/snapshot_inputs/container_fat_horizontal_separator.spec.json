@@ -1,0 +1,9 @@
+{
+  "width": 150,
+  "height": 200,
+  "host_config": {
+    "separator": {
+      "lineThickness": 5
+    }
+  }
+}

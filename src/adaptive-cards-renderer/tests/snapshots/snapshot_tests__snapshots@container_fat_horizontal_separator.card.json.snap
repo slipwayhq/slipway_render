@@ -1,0 +1,108 @@
+---
+source: adaptive-cards-renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_fat_horizontal_separator.card.json
+---
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "1",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 24,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "separator": true,
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 126,
+          "height": 34
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "2",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 70,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "separator": false,
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 58,
+          "width": 126,
+          "height": 34
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "Container",
+      "height": "stretch",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "3",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 121,
+              "width": 100,
+              "height": 10
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "separator": true,
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 109,
+          "width": 126,
+          "height": 79
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "version": "1.5",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 150,
+      "height": 200
+    }
+  }
+}

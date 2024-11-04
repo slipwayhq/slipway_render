@@ -1,6 +1,7 @@
 use core::panic;
 use itertools::Itertools;
 use load::Loaded;
+use proc_macro2::token_stream;
 use quote::quote;
 use relationships::get_relationships;
 use std::collections::{HashMap, HashSet};
@@ -8,6 +9,7 @@ use std::path::PathBuf;
 use std::{env, fs};
 
 mod common_prefix;
+mod layout_data;
 mod load;
 mod process_class;
 mod process_enum;
@@ -19,6 +21,47 @@ mod typed_schema_types;
 use typed_schema_types::{Class, Enum};
 
 const PRINT_RAW: bool = false;
+
+struct GeneratedAdditionalTypes {
+    list: Vec<GeneratedAdditionalType>,
+}
+
+impl GeneratedAdditionalTypes {
+    fn new() -> Self {
+        Self { list: Vec::new() }
+    }
+
+    fn add(
+        &mut self,
+        type_name: &str,
+        contains_layoutable: bool,
+        token_stream: token_stream::TokenStream,
+    ) -> &GeneratedAdditionalType {
+        self.list.push(GeneratedAdditionalType {
+            type_name: type_name.to_string(),
+            contains_layoutable,
+            token_stream,
+        });
+
+        self.list.last().unwrap()
+    }
+
+    fn is_layoutable(&self, type_name: &str) -> bool {
+        self.list
+            .iter()
+            .any(|t| t.type_name == type_name && t.contains_layoutable)
+    }
+
+    fn contains(&self, type_name: &str) -> bool {
+        self.list.iter().any(|t| t.type_name == type_name)
+    }
+}
+
+struct GeneratedAdditionalType {
+    pub type_name: String,
+    pub contains_layoutable: bool,
+    pub token_stream: proc_macro2::TokenStream,
+}
 
 pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
     let tokens = generate_inner(in_path)?;
@@ -52,7 +95,9 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
 
     let relationships = get_relationships(&loaded_types.classes);
 
-    let mut generated_additional_types = Vec::new();
+    // output_class_debug_information(&relationships, &mut tokens);
+
+    let mut generated_additional_types = GeneratedAdditionalTypes::new();
 
     for loaded_class in loaded_types
         .classes
@@ -68,6 +113,24 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
 
     Ok(tokens)
 }
+
+// fn output_class_debug_information(
+//     relationships: &relationships::Relationships<'_>,
+//     tokens: &mut Vec<proc_macro2::TokenStream>,
+// ) {
+//     for class_id in relationships.classes.keys() {
+//         let class = relationships.classes.get(class_id).unwrap();
+
+//         let unique_ident = format_ident!("{}__ID", class.type_name);
+//         tokens.push(quote! { const #unique_ident: &str = #class_id; });
+
+//         let is_layoutable = relationships.is_layoutable(class_id);
+//         for ancestor in relationships.ancestors.get(class_id).unwrap() {
+//             let unique_ident = format_ident!("{}__{}", class.type_name, ancestor.id);
+//             tokens.push(quote! { const #unique_ident: bool = #is_layoutable; });
+//         }
+//     }
+// }
 
 struct LoadedTypes {
     classes: HashMap<String, Loaded<Class>>,

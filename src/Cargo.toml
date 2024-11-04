@@ -4,6 +4,7 @@ members = [
     "adaptive-cards-types-generator",
     "adaptive-cards-renderer",
     "adaptive-cards-host-config",
+    "adaptive-cards",
 ]
 resolver = "2"
 

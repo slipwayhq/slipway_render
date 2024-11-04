@@ -4,10 +4,87 @@ use itertools::Itertools;
 
 use crate::{load::Loaded, typed_schema_types::Class};
 
+const IMAGE_TYPE: &str = "Image";
+const LAYOUTABLE_TYPES: [&str; 7] = [
+    "Item",
+    "AdaptiveCard",
+    // We include this because it is an Action but does not extend Item.
+    "ISelectAction",
+    "TableCell",
+    "TableRow",
+    "Inline",
+    // This contains an action, and so requires the TLayoutType generic parameter.
+    "Refresh",
+];
+const ELEMENT_TYPE: &str = "Element";
+
 pub(super) struct Relationships<'c> {
     pub classes: &'c HashMap<String, Loaded<Class>>,
     pub ancestors: HashMap<String, Vec<&'c Loaded<Class>>>,
     pub descendants: HashMap<String, Vec<&'c Loaded<Class>>>,
+    pub metadata: HashMap<String, ClassMetadata>,
+    pub type_name_to_id: HashMap<String, String>,
+}
+
+pub(super) struct ClassRelationships<'c> {
+    pub ancestors: Vec<&'c Loaded<Class>>,
+    pub descendants: Vec<&'c Loaded<Class>>,
+    pub metadata: ClassMetadata,
+}
+
+#[derive(Debug, Copy, Clone)]
+pub(super) struct ClassMetadata {
+    pub is_abstract: bool,
+
+    // Private because we should use the Relationships::is_layoutable method.
+    is_layoutable: bool,
+
+    pub is_image: bool,
+    pub is_element: bool,
+}
+
+impl<'c> Relationships<'c> {
+    pub fn get_class_data(&self, id: &str) -> ClassRelationships<'c> {
+        let ancestors = self
+            .ancestors
+            .get(id)
+            .unwrap_or_else(|| panic!("No ancestors for {}", id));
+
+        let descendants = self
+            .descendants
+            .get(id)
+            .unwrap_or_else(|| panic!("No descendants for {}", id));
+
+        let metadata = *self
+            .metadata
+            .get(id)
+            .unwrap_or_else(|| panic!("No metadata for {}", id));
+
+        ClassRelationships {
+            ancestors: ancestors.clone(),
+            descendants: descendants.clone(),
+            metadata,
+        }
+    }
+
+    pub fn is_layoutable(&self, id: &str) -> bool {
+        self.metadata
+            .get(id)
+            .map(|m| m.is_layoutable)
+            .unwrap_or_else(|| {
+                // Try as if the ID passed in was a type name.
+                // e.g. map ActionExecute to Action.Execute
+                self.type_name_to_id
+                    .get(id)
+                    .map(|id| {
+                        self.metadata
+                            .get(id)
+                            .map(|m| m.is_layoutable)
+                            .unwrap_or(false)
+                    })
+                    .unwrap_or(false)
+            })
+    }
 }
 
 pub(super) fn get_relationships(classes: &HashMap<String, Loaded<Class>>) -> Relationships<'_> {
@@ -17,10 +94,50 @@ pub(super) fn get_relationships(classes: &HashMap<String, Loaded<Class>>) -> Rel
     let ancestors = flatten_class_map(&parents);
     let descendants = flatten_class_map(&children);
 
+    let metadata = classes
+        .iter()
+        .map(|(id, class)| {
+            let ancestors = ancestors
+                .get(id)
+                .unwrap_or_else(|| panic!("No ancestors for {}", class.id));
+
+            let is_abstract = class.value.is_abstract.unwrap_or(false);
+
+            // Does this type need to have layout data added.
+            let is_layoutable = LAYOUTABLE_TYPES.contains(&class.type_name.as_str())
+                || ancestors
+                    .iter()
+                    .any(|a| LAYOUTABLE_TYPES.contains(&a.type_name.as_str()));
+
+            let is_image = IMAGE_TYPE == class.type_name
+                || ancestors.iter().any(|a| IMAGE_TYPE == a.type_name);
+
+            let is_element = ELEMENT_TYPE == class.type_name
+                || ancestors.iter().any(|a| ELEMENT_TYPE == a.type_name);
+
+            (
+                id.clone(),
+                ClassMetadata {
+                    is_abstract,
+                    is_layoutable,
+                    is_image,
+                    is_element,
+                },
+            )
+        })
+        .collect::<HashMap<_, _>>();
+
+    let type_name_to_id = classes
+        .iter()
+        .map(|(id, class)| (class.type_name.clone(), id.clone()))
+        .collect::<HashMap<_, _>>();
+
     Relationships {
         classes,
         ancestors,
         descendants,
+        metadata,
+        type_name_to_id,
     }
 }
 

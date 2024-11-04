@@ -1,0 +1,12 @@
+[package]
+name = "adaptive-cards"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+
+[build-dependencies]
+adaptive-cards-types-generator = { path = "../adaptive-cards-types-generator" }

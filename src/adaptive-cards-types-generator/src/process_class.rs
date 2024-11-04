@@ -8,49 +8,57 @@ use syn::{parse_str, Ident, Type};
 
 use crate::{
     common_prefix::common_prefix,
+    layout_data::{
+        create_layoutable_tokens, LAYOUT_DATA_GENERIC_PARAMETER_STR, LAYOUT_DATA_TURBOFISH_STR,
+    },
     load::Loaded,
     relationships::Relationships,
     sanitize::{sanitize_field_ident, sanitize_type},
     typed_schema_types::Class,
+    GeneratedAdditionalTypes,
 };
 
-const ADAPTIVE_CARD_TYPE: &str = "AdaptiveCard";
-const IMAGE_TYPE: &str = "Image";
-const LAYOUTABLE_TYPES: [&str; 2] = ["Element", "AdaptiveCard"];
-const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 15] = [
-    "ActionSet",
-    "ColumnSet",
-    "FactSet",
-    "Image",
-    "ImageSet",
-    "InputChoiceSet",
-    "InputDate",
-    "InputNumber",
-    "InputText",
-    "InputTime",
-    "InputToggle",
-    "Input",
-    "Media",
-    "RichTextBlock",
-    "Table",
-];
+// const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 15] = [
+//     "ActionSet",
+//     "ColumnSet",
+//     "FactSet",
+//     "Image",
+//     "ImageSet",
+//     "InputChoiceSet",
+//     "InputDate",
+//     "InputNumber",
+//     "InputText",
+//     "InputTime",
+//     "InputToggle",
+//     "Input",
+//     "Media",
+//     "RichTextBlock",
+//     "Table",
+// ];
 
 pub(super) fn process_class(
     class: &Loaded<Class>,
     relationships: &Relationships,
-    generated_additional_types: &mut Vec<String>,
+    generated_additional_types: &mut GeneratedAdditionalTypes,
 ) -> proc_macro2::TokenStream {
-    let ancestors = relationships
-        .ancestors
-        .get(&class.id)
-        .unwrap_or_else(|| panic!("No ancestors for {}", class.id));
-    let descendants = relationships
-        .descendants
-        .get(&class.id)
-        .unwrap_or_else(|| panic!("No descendants for {}", class.id));
+    let class_id = &class.id;
+    let class_data = relationships.get_class_data(class_id);
+
+    let ancestors = class_data.ancestors;
+    let descendants = class_data.descendants;
+    let metadata = class_data.metadata;
+
+    let is_layoutable = relationships.is_layoutable(class_id);
+
+    let (generic_parameter, _turbofish, where_clause) = create_layoutable_tokens(is_layoutable);
 
     let struct_name_str = &class.type_name;
     let struct_name = format_ident!("{}", struct_name_str);
+    let struct_turbofish_str = if is_layoutable {
+        LAYOUT_DATA_TURBOFISH_STR
+    } else {
+        ""
+    };
 
     // Additional code to be generated before the struct.
     let mut pre_struct_tokens = Vec::new();
@@ -58,25 +66,11 @@ pub(super) fn process_class(
     // Additional code to be generated after the struct.
     let mut post_struct_tokens = Vec::new();
 
-    let is_abstract = class.value.is_abstract.unwrap_or(false);
-
-    // Does this type need to support measure / arrange / draw.
-    let is_layoutable = LAYOUTABLE_TYPES.contains(&class.type_name.as_str())
-        || ancestors
-            .iter()
-            .any(|a| LAYOUTABLE_TYPES.contains(&a.type_name.as_str()));
-
-    let is_adaptive_card = ADAPTIVE_CARD_TYPE == class.type_name
-        || ancestors.iter().any(|a| ADAPTIVE_CARD_TYPE == a.type_name);
-
-    let is_image =
-        IMAGE_TYPE == class.type_name || ancestors.iter().any(|a| IMAGE_TYPE == a.type_name);
-
     // If we're an abstract type, we will generate an enum instead of a struct.
-    let struct_tokens = if is_abstract {
+    let struct_tokens = if metadata.is_abstract {
         // If we're an abstract type, we should have descendants, or there is nothing to generate.
         if descendants.is_empty() {
-            panic!("Abstract class has no descendants: {}", class.id);
+            panic!("Abstract class has no descendants: {}", class_id);
         };
 
         // Sort the descendants so we always generate the entries in the same order.
@@ -100,38 +94,45 @@ pub(super) fn process_class(
         }
 
         // Collect the variant tokens and metadata about each variant.
-        let (variants, variant_infos): (Vec<TokenStream>, Vec<VariantInfo>) = descendants
-            .iter()
-            .map(|&d| {
-                let name = format_ident!("{}", d.type_name);
-                let short_name_str = d
-                    .type_name
-                    .strip_prefix(&common_prefix)
-                    .unwrap_or(&d.type_name);
-                let short_name = format_ident!("{}", short_name_str);
-                let id = &d.id;
+        let (variants, variant_infos): (Vec<TokenStream>, Vec<VariantInfo>) =
+            descendants
+                .iter()
+                .map(|&d| {
+                    let name = format_ident!("{}", d.type_name);
+                    let short_name_str = d
+                        .type_name
+                        .strip_prefix(&common_prefix)
+                        .unwrap_or(&d.type_name);
+                    let short_name = format_ident!("{}", short_name_str);
+                    let id = &d.id;
+                    let descendant_is_layoutable = relationships.is_layoutable(&d.type_name);
+                    let (
+                        descendant_generic_parameter,
+                        _descendant_turbofish,
+                        _descendant_where_clause,
+                    ) = create_layoutable_tokens(descendant_is_layoutable);
 
-                (
-                    quote! {
-                        #[serde(rename = #id)]
-                        #short_name(Box<#name>),
-                    },
-                    VariantInfo {
-                        ident: short_name,
-                        is_abstract: d.value.is_abstract.unwrap_or(false),
-                    },
-                )
-            })
-            .unzip();
+                    (
+                        quote! {
+                            #[serde(rename = #id)]
+                            #short_name(Box<#name #descendant_generic_parameter>),
+                        },
+                        VariantInfo {
+                            ident: short_name,
+                            is_abstract: d.value.is_abstract.unwrap_or(false),
+                        },
+                    )
+                })
+                .unzip();
 
         // If this type needs to support layout...
         if is_layoutable {
             let mut generate_methods = Vec::new();
             generate_methods.push((
-                format_ident!("as_layoutable"),
-                quote! { &dyn crate::layoutable::Layoutable },
+                format_ident!("as_has_layout_data"),
+                quote! { &dyn crate::HasLayoutData #generic_parameter },
             ));
-            if !is_adaptive_card {
+            if metadata.is_element {
                 generate_methods.push((
                     format_ident!("as_element"),
                     quote! { &dyn crate::element::LayoutableElement },
@@ -158,7 +159,8 @@ pub(super) fn process_class(
 
                 // Generate the as_layoutable method.
                 post_struct_tokens.push(quote! {
-                    impl #struct_name {
+                    impl #generic_parameter #struct_name #generic_parameter
+                        #where_clause {
                         pub(crate) fn #as_name(&self) -> #as_type {
                             match self {
                                 #(#match_tokens)*
@@ -173,7 +175,8 @@ pub(super) fn process_class(
         quote! {
             #[derive(serde::Deserialize, serde::Serialize, Clone)]
             #[serde(tag = "type")]
-            pub enum #struct_name {
+            pub enum #struct_name #generic_parameter
+                #where_clause {
                 #(#variants)*
             }
         }
@@ -188,7 +191,7 @@ pub(super) fn process_class(
 
         // Order is important here. More distant ancestors are after closer ones.
         let all_field_sources: Vec<&Loaded<Class>> =
-            std::iter::once(&class).chain(ancestors).copied().collect();
+            std::iter::once(class).chain(ancestors).collect();
 
         // Ancestors can have the same field name, so we need to deduplicate them.
         let mut seen_fields = HashSet::new();
@@ -232,10 +235,39 @@ pub(super) fn process_class(
 
             // If additional types were generated during sanitization, add them to the pre-struct tokens.
             if let Some(additional_type) = sanitized_field_type.additional_type {
-                pre_struct_tokens.push(additional_type);
+                pre_struct_tokens.push(additional_type.token_stream.clone());
             }
 
             let field_type_str = sanitized_field_type.type_name;
+
+            let is_vec = field_type_str.starts_with("Vec<");
+
+            let field_type_str = if !is_vec {
+                let field_is_layoutable = relationships.is_layoutable(&field_type_str)
+                    || generated_additional_types.is_layoutable(&field_type_str);
+
+                if field_is_layoutable {
+                    format!("{}{}", field_type_str, LAYOUT_DATA_GENERIC_PARAMETER_STR)
+                } else {
+                    field_type_str.to_string()
+                }
+            } else {
+                let inner_type = field_type_str
+                    .strip_prefix("Vec<")
+                    .unwrap()
+                    .strip_suffix('>')
+                    .unwrap();
+
+                let field_is_layoutable = relationships.is_layoutable(inner_type)
+                    || generated_additional_types.is_layoutable(inner_type);
+
+                if field_is_layoutable {
+                    format!("Vec<{}{}>", inner_type, LAYOUT_DATA_GENERIC_PARAMETER_STR)
+                } else {
+                    field_type_str.to_string()
+                }
+            };
+
             let field_type: Type = parse_str(&field_type_str)
                 .unwrap_or_else(|_| panic!("Failed to parse type: {}", field_type_str));
 
@@ -248,19 +280,24 @@ pub(super) fn process_class(
             } else if let Some(default_value) = default_value {
                 // If the field has a default value, generate a function to get the default value.
                 let default_value_function = format!("default_value_for_{}", name);
-                let default_value_function_qualified =
-                    format!("{}::{}", struct_name, default_value_function);
+                let default_value_function_qualified = format!(
+                    "{}{}::{}",
+                    struct_name, struct_turbofish_str, default_value_function
+                );
                 let default_value_function_ident = format_ident!("{}", default_value_function);
                 let is_default_value_function_str = format!("is_{}", default_value_function);
-                let is_default_value_function_fully_qualified_str =
-                    format!("{}::{}", struct_name_str, is_default_value_function_str);
+                let is_default_value_function_fully_qualified_str = format!(
+                    "{}{}::{}",
+                    struct_name_str, struct_turbofish_str, is_default_value_function_str
+                );
                 let is_default_value_function_ident =
                     format_ident!("{}", is_default_value_function_str);
                 let (default_value_impl, is_default_value_impl) =
                     get_default_value_impl(field_type_str, default_value, &field_type);
 
                 let default_value_function_tokens = quote! {
-                    impl #struct_name {
+                    impl #generic_parameter #struct_name #generic_parameter
+                        #where_clause {
                         fn #default_value_function_ident() -> #field_type {
                             #default_value_impl
                         }
@@ -300,34 +337,42 @@ pub(super) fn process_class(
             // Generate a layout_data field to store the layout metadata.
             fields.push(quote! {
                 #[serde(rename = ".layout", skip_deserializing)]
-                pub layout_data: core::cell::RefCell<crate::element_layout_data::ElementLayoutData>,
+                pub layout_data: core::cell::RefCell #generic_parameter,
             });
 
             // Implement the HasLayoutData trait for the struct.
             post_struct_tokens.push(quote! {
-                impl crate::layoutable::HasLayoutData for #struct_name {
-                    fn layout_data(&self) -> &core::cell::RefCell<crate::element_layout_data::ElementLayoutData> {
+                impl #generic_parameter crate::HasLayoutData #generic_parameter for #struct_name #generic_parameter
+                    #where_clause {
+                    fn layout_data(&self) -> &core::cell::RefCell #generic_parameter {
+                        &self.layout_data
+                    }
+                }
+
+                impl #generic_parameter crate::HasLayoutData #generic_parameter for Box<#struct_name #generic_parameter>
+                    #where_clause {
+                    fn layout_data(&self) -> &core::cell::RefCell #generic_parameter {
                         &self.layout_data
                     }
                 }
             });
 
             // And if we haven't yet implemented the Layoutable trait for this type, generate an empty impl.
-            let is_unimplemented_layoutable =
-                UNIMPLEMENTED_LAYOUTABLE_TYPES.contains(&class.type_name.as_str());
-            if is_unimplemented_layoutable {
-                post_struct_tokens.push(quote! {
-                    impl crate::layoutable::Layoutable for #struct_name {
-                    }
-                });
-            }
+            // let is_unimplemented_layoutable =
+            //     UNIMPLEMENTED_LAYOUTABLE_TYPES.contains(&class.type_name.as_str());
+            // if is_unimplemented_layoutable {
+            //     post_struct_tokens.push(quote! {
+            //         impl crate::layoutable::Layoutable for #struct_name {
+            //         }
+            //     });
+            // }
 
             // If we're layoutable and not an adaptive card, implement the
             // LayoutableElement trait for this type.
-            if !is_adaptive_card {
+            if metadata.is_element {
                 // If we're an image, we need to handle the height field differently
                 // as it is overridden and a different type to other elements.
-                let height_impl = if is_image {
+                let height_impl = if metadata.is_image {
                     quote! { self.height.clone() }
                 } else {
                     quote! {
@@ -338,7 +383,8 @@ pub(super) fn process_class(
                 };
 
                 post_struct_tokens.push(quote! {
-                    impl crate::element::LayoutableElement for #struct_name {
+                    impl #generic_parameter crate::element::LayoutableElement for #struct_name #generic_parameter
+                        #where_clause {
                         fn get_height(&self) -> StringOrBlockElementHeight {
                             #height_impl
                         }
@@ -361,7 +407,8 @@ pub(super) fn process_class(
         quote! {
             #[derive(serde::Deserialize, serde::Serialize, Clone)]
             #[serde(deny_unknown_fields)]
-            pub struct #struct_name {
+            pub struct #struct_name #generic_parameter
+                #where_clause {
                 #(#fields)*
             }
         }

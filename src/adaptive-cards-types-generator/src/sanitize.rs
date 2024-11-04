@@ -2,7 +2,10 @@ use convert_case::{Case, Casing};
 use quote::{format_ident, quote};
 use syn::{parse_str, Type};
 
-use crate::relationships::Relationships;
+use crate::{
+    layout_data::create_layoutable_tokens, relationships::Relationships, GeneratedAdditionalType,
+    GeneratedAdditionalTypes,
+};
 
 const FALLBACK_OPTION: &str = "FallbackOption";
 
@@ -19,17 +22,17 @@ pub(super) fn sanitize_type_ident(ident: &str) -> String {
     ident.replace(['.', '$'], "_").to_case(Case::Pascal)
 }
 
-pub(super) struct SanitizeTypeResult {
+pub(super) struct SanitizeTypeResult<'a> {
     pub type_name: String,
-    pub additional_type: Option<proc_macro2::TokenStream>,
+    pub additional_type: Option<&'a GeneratedAdditionalType>,
 }
 
-pub(super) fn sanitize_type(
+pub(super) fn sanitize_type<'a>(
     type_name: &str,
-    generated_additional_types: &mut Vec<String>,
+    generated_additional_types: &'a mut GeneratedAdditionalTypes,
     property_has_shorthand: bool,
     relationships: &Relationships,
-) -> SanitizeTypeResult {
+) -> SanitizeTypeResult<'a> {
     // The type may end with a suffix like [] or ?, so extract it.
     let (type_name_without_suffix, type_name_suffix) = type_without_modifiers(type_name);
 
@@ -63,15 +66,25 @@ pub(super) fn sanitize_type(
         .collect::<Vec<_>>()
         .join("Or");
 
+    // Have we already generated the type?
     if generated_additional_types.contains(&enum_name_str) {
         return SanitizeTypeResult {
             type_name: enum_name_str,
             additional_type: None,
         };
     }
-    generated_additional_types.push(enum_name_str.clone());
 
-    let additional_type = generate_enum_type_selector(&enum_name_str, type_names);
+    // Does this enum contain a layoutable type?
+    let contains_layoutable = type_names.iter().any(|&t| relationships.is_layoutable(t));
+
+    let additional_type_token_stream =
+        generate_enum_type_selector(&enum_name_str, type_names, relationships);
+
+    let additional_type = generated_additional_types.add(
+        &enum_name_str,
+        contains_layoutable,
+        additional_type_token_stream,
+    );
 
     // If the type originally had a suffix, add it back on to the enum type.
     SanitizeTypeResult {
@@ -83,6 +96,7 @@ pub(super) fn sanitize_type(
 fn generate_enum_type_selector(
     enum_name_str: &String,
     type_names: Vec<&str>,
+    relationships: &Relationships,
 ) -> proc_macro2::TokenStream {
     let type_name = format_ident!("{}", enum_name_str);
 
@@ -90,10 +104,20 @@ fn generate_enum_type_selector(
     // as the parent struct and so we'll need to box it.
     let use_box = type_names.iter().any(|&t| t == FALLBACK_OPTION);
 
+    let contains_layoutable = type_names.iter().any(|&t| relationships.is_layoutable(t));
+
+    let (generic_parameter, turbofish, where_clause) =
+        create_layoutable_tokens(contains_layoutable);
+
     let (variants, from_impls): (Vec<_>, Vec<_>) = type_names
         .iter()
         .map(|&t| {
             let name = format_ident!("{}", sanitize_type_ident(t));
+            let is_layoutable = relationships.is_layoutable(t);
+
+            let (variant_generic_parameter, _variant_turbofish, _variant_where_clause) =
+                create_layoutable_tokens(is_layoutable);
+
             let inner_type: Type = parse_str(&sanitize_type_inner(t))
                 .unwrap_or_else(|_| panic!("Failed to parse type: {}", t));
 
@@ -101,12 +125,12 @@ fn generate_enum_type_selector(
                 // This is likely the same type as the parent struct so we need to box it.
                 return (
                     quote! {
-                        #name(Box<#inner_type>),
+                        #name(Box<#inner_type #variant_generic_parameter>),
                     },
                     quote! {
-                        impl From<#inner_type> for #type_name {
-                            fn from(value: #inner_type) -> Self {
-                                #type_name::#name(Box::new(value))
+                        impl #generic_parameter From<#inner_type #variant_generic_parameter> for #type_name #generic_parameter #where_clause {
+                            fn from(value: #inner_type #variant_generic_parameter) -> Self {
+                                #type_name #turbofish ::#name(Box::new(value))
                             }
                         }
                     },
@@ -116,12 +140,12 @@ fn generate_enum_type_selector(
             // No need to box.
             (
                 quote! {
-                    #name(#inner_type),
+                    #name(#inner_type #variant_generic_parameter),
                 },
                 quote! {
-                    impl From<#inner_type> for #type_name {
-                        fn from(value: #inner_type) -> Self {
-                            #type_name::#name(value)
+                    impl #generic_parameter From<#inner_type #variant_generic_parameter> for #type_name #generic_parameter #where_clause {
+                        fn from(value: #inner_type #variant_generic_parameter) -> Self {
+                            #type_name #turbofish ::#name(value)
                         }
                     }
                 },
@@ -129,15 +153,21 @@ fn generate_enum_type_selector(
         })
         .unzip();
 
-    let additional_type = quote! {
-        #[derive(serde::Serialize, Clone)]
-        pub enum #type_name {
+    let phantom_data = if contains_layoutable {
+        quote! { _Phantom(std::marker::PhantomData #generic_parameter), }
+    } else {
+        quote! {}
+    };
+
+    quote! {
+        #[derive(serde::Deserialize, serde::Serialize, Clone)]
+        pub enum #type_name #generic_parameter #where_clause {
             #(#variants)*
+            #phantom_data
         }
 
         #(#from_impls)*
-    };
-    additional_type
+    }
 }
 
 fn get_type_has_shorthand(type_names: &[&str], relationships: &Relationships) -> bool {

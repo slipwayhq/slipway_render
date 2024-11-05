@@ -12,7 +12,7 @@ use crate::{
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
-    BlockElementHeight, Element, LayoutableElement, StringOrBlockElementHeight,
+    BlockElementHeight, Element, HasLayoutData, LayoutableElement, StringOrBlockElementHeight,
     VerticalContentAlignment,
 };
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
@@ -53,10 +53,8 @@ pub(super) fn container_layout_override(
             _ => Placement::WithinVertical,
         };
 
-        let as_has_layout_data = element.as_has_layout_data();
-
         // Save the placement to the element's layout data so we can use it when drawing the element.
-        as_has_layout_data.layout_data().borrow_mut().placement = Some(element_position);
+        element.layout_data().borrow_mut().placement = Some(element_position);
 
         let as_element = element.as_element();
 

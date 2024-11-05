@@ -18,24 +18,6 @@ use crate::{
     GeneratedAdditionalTypes,
 };
 
-// const UNIMPLEMENTED_LAYOUTABLE_TYPES: [&str; 15] = [
-//     "ActionSet",
-//     "ColumnSet",
-//     "FactSet",
-//     "Image",
-//     "ImageSet",
-//     "InputChoiceSet",
-//     "InputDate",
-//     "InputNumber",
-//     "InputText",
-//     "InputTime",
-//     "InputToggle",
-//     "Input",
-//     "Media",
-//     "RichTextBlock",
-//     "Table",
-// ];
-
 pub(super) struct ProcessClassResult {
     pub class_tokens: TokenStream,
     pub impl_as_trait_macro_tokens: TokenStream,
@@ -148,21 +130,23 @@ pub(super) fn process_class(
                 ));
             }
 
+            let get_inner_call = |is_abstract: bool, call: TokenStream| {
+                if is_abstract {
+                    // If the inner variant is abstract it is an enum, so call the same method on it.
+                    call
+                } else {
+                    // Otherwise it will be a boxed struct, so we can just return it.
+                    quote! {}
+                }
+            };
+
             for (as_name, as_type) in generate_methods {
                 // ... we need to generate a method to get the trait for the inner variant type.
                 let match_tokens = variant_infos.iter().map(|v| {
                     let variant_ident = &v.ident;
-
-                    if v.is_abstract {
-                        // If the inner variant is abstract it is an enum, so call as_layoutable.
-                        quote! {
-                            #struct_name::#variant_ident(inner) => inner.#as_name(),
-                        }
-                    } else {
-                        // Otherwise it will be a boxed struct, so we can just return it.
-                        quote! {
-                            #struct_name::#variant_ident(inner) => inner,
-                        }
+                    let inner_call = get_inner_call(v.is_abstract, quote! { .#as_name() });
+                    quote! {
+                        #struct_name::#variant_ident(inner) => inner #inner_call,
                     }
                 });
 
@@ -179,33 +163,39 @@ pub(super) fn process_class(
                 });
             }
 
-            // Build the macro to allow users to generate their own `as_*` implementations.
-            let match_tokens = variant_infos.iter().map(|v| {
-                let variant_ident = &v.ident;
-
-                if v.is_abstract {
-                    // If the inner variant is abstract it is an enum, so call as_layoutable.
-                    quote! {
-                        adaptive_cards::#struct_name::#variant_ident(inner) => inner.$method_name(),
-                    }
-                } else {
-                    // Otherwise it will be a boxed struct, so we can just return it.
-                    quote! {
-                        adaptive_cards::#struct_name::#variant_ident(inner) => inner,
-                    }
-                }
-            });
-
-            // Generate the as_layoutable method.
-            impl_as_trait_macro_tokens.push(quote! {
-                impl $as_trait_name for adaptive_cards::#struct_name<$layout_data> {
-                    fn $method_name(&self) -> &dyn $trait_name {
-                        match self {
-                            #(#match_tokens)*
+            {
+                // Generate the as_layoutable method.
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::HasLayoutData #generic_parameter for #struct_name #generic_parameter
+                        #where_clause {
+                        fn layout_data(&self) -> &core::cell::RefCell #generic_parameter {
+                            self.as_has_layout_data().layout_data()
                         }
                     }
-                }
-            });
+                });
+            }
+
+            {
+                // Build the macro to allow users to generate their own `as_*` implementations.
+                let match_tokens = variant_infos.iter().map(|v| {
+                    let variant_ident = &v.ident;
+                    let inner_call = get_inner_call(v.is_abstract, quote! { .$method_name() });
+                    quote! {
+                        adaptive_cards::#struct_name::#variant_ident(inner) => inner #inner_call,
+                    }
+                });
+
+                // Generate the as_layoutable method.
+                impl_as_trait_macro_tokens.push(quote! {
+                    impl $as_trait_name for adaptive_cards::#struct_name<$layout_data> {
+                        fn $method_name(&self) -> &dyn $trait_name {
+                            match self {
+                                #(#match_tokens)*
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // Generate the enum.
@@ -386,16 +376,6 @@ pub(super) fn process_class(
                     }
                 }
             });
-
-            // And if we haven't yet implemented the Layoutable trait for this type, generate an empty impl.
-            // let is_unimplemented_layoutable =
-            //     UNIMPLEMENTED_LAYOUTABLE_TYPES.contains(&class.type_name.as_str());
-            // if is_unimplemented_layoutable {
-            //     post_struct_tokens.push(quote! {
-            //         impl crate::layoutable::Layoutable for #struct_name {
-            //         }
-            //     });
-            // }
 
             // If we're layoutable and not an adaptive card, implement the
             // LayoutableElement trait for this type.

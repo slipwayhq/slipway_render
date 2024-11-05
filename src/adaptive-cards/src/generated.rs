@@ -770,6 +770,14 @@ where
         }
     }
 }
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Action<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
+    }
+}
 #[derive(serde::Serialize, Clone)]
 pub enum ElementOrFallbackOption<TLayoutData>
 where
@@ -1366,6 +1374,14 @@ where
         }
     }
 }
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Fact {
@@ -1473,6 +1489,14 @@ where
             ISelectAction::Submit(inner) => inner,
             ISelectAction::ToggleVisibility(inner) => inner,
         }
+    }
+}
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for ISelectAction<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
     }
 }
 #[derive(serde::Serialize, Clone)]
@@ -1696,6 +1720,14 @@ where
         match self {
             Inline::TextRun(inner) => inner,
         }
+    }
+}
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Inline<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2380,6 +2412,14 @@ where
         }
     }
 }
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(tag = "type")]
 pub enum Item<TLayoutData>
@@ -2472,6 +2512,14 @@ where
             Item::TextBlock(inner) => inner,
             Item::ToggleableItem(inner) => inner.as_has_layout_data(),
         }
+    }
+}
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Item<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3198,6 +3246,14 @@ where
             ToggleableItem::Table(inner) => inner,
             ToggleableItem::TextBlock(inner) => inner,
         }
+    }
+}
+impl<TLayoutData> crate::HasLayoutData<TLayoutData> for ToggleableItem<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
+        self.as_has_layout_data().layout_data()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]

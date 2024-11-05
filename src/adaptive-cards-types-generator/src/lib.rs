@@ -71,7 +71,7 @@ pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
     };
 
     if PRINT_RAW {
-        fs::write(out_path, output.to_string()).unwrap();
+        fs::write(out_path, output.to_string().replace("# [", "\n#[")).unwrap();
     } else {
         let syntax_tree = syn::parse2(output).unwrap();
         let formatted = prettyplease::unparse(&syntax_tree);
@@ -99,17 +99,35 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
 
     let mut generated_additional_types = GeneratedAdditionalTypes::new();
 
+    let mut impl_as_trait_macro_tokens = Vec::new();
+
     for loaded_class in loaded_types
         .classes
         .values()
         .sorted_by_key(|c| c.file_name.clone())
     {
-        tokens.push(process_class::process_class(
+        let process_class_result = process_class::process_class(
             loaded_class,
             &relationships,
             &mut generated_additional_types,
-        ));
+        );
+        tokens.push(process_class_result.class_tokens);
+        impl_as_trait_macro_tokens.push(process_class_result.impl_as_trait_macro_tokens);
     }
+
+    tokens.push(quote! {
+        #[macro_export]
+        macro_rules! impl_as_trait {
+            ($trait_name:path, $as_trait_name:ident, $method_name:ident, $layout_data: ident) => {
+
+                pub(crate) trait $as_trait_name {
+                    fn $method_name(&self) -> &dyn $trait_name;
+                }
+
+                #(#impl_as_trait_macro_tokens)*
+            };
+        }
+    });
 
     Ok(tokens)
 }

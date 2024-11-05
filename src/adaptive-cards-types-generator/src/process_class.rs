@@ -36,11 +36,16 @@ use crate::{
 //     "Table",
 // ];
 
+pub(super) struct ProcessClassResult {
+    pub class_tokens: TokenStream,
+    pub impl_as_trait_macro_tokens: TokenStream,
+}
+
 pub(super) fn process_class(
     class: &Loaded<Class>,
     relationships: &Relationships,
     generated_additional_types: &mut GeneratedAdditionalTypes,
-) -> proc_macro2::TokenStream {
+) -> ProcessClassResult {
     let class_id = &class.id;
     let class_data = relationships.get_class_data(class_id);
 
@@ -65,6 +70,9 @@ pub(super) fn process_class(
 
     // Additional code to be generated after the struct.
     let mut post_struct_tokens = Vec::new();
+
+    // Tokens which will be used as part of the impl_as_trait macro.
+    let mut impl_as_trait_macro_tokens = Vec::new();
 
     // If we're an abstract type, we will generate an enum instead of a struct.
     let struct_tokens = if metadata.is_abstract {
@@ -127,6 +135,7 @@ pub(super) fn process_class(
 
         // If this type needs to support layout...
         if is_layoutable {
+            // Generate the standard generic as_* methods.
             let mut generate_methods = Vec::new();
             generate_methods.push((
                 format_ident!("as_has_layout_data"),
@@ -135,7 +144,7 @@ pub(super) fn process_class(
             if metadata.is_element {
                 generate_methods.push((
                     format_ident!("as_element"),
-                    quote! { &dyn crate::element::LayoutableElement },
+                    quote! { &dyn crate::LayoutableElement },
                 ));
             }
 
@@ -161,7 +170,7 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter #struct_name #generic_parameter
                         #where_clause {
-                        pub(crate) fn #as_name(&self) -> #as_type {
+                        pub fn #as_name(&self) -> #as_type {
                             match self {
                                 #(#match_tokens)*
                             }
@@ -169,6 +178,34 @@ pub(super) fn process_class(
                     }
                 });
             }
+
+            // Build the macro to allow users to generate their own `as_*` implementations.
+            let match_tokens = variant_infos.iter().map(|v| {
+                let variant_ident = &v.ident;
+
+                if v.is_abstract {
+                    // If the inner variant is abstract it is an enum, so call as_layoutable.
+                    quote! {
+                        adaptive_cards::#struct_name::#variant_ident(inner) => inner.$method_name(),
+                    }
+                } else {
+                    // Otherwise it will be a boxed struct, so we can just return it.
+                    quote! {
+                        adaptive_cards::#struct_name::#variant_ident(inner) => inner,
+                    }
+                }
+            });
+
+            // Generate the as_layoutable method.
+            impl_as_trait_macro_tokens.push(quote! {
+                impl $as_trait_name for adaptive_cards::#struct_name<$layout_data> {
+                    fn $method_name(&self) -> &dyn $trait_name {
+                        match self {
+                            #(#match_tokens)*
+                        }
+                    }
+                }
+            });
         }
 
         // Generate the enum.
@@ -348,13 +385,6 @@ pub(super) fn process_class(
                         &self.layout_data
                     }
                 }
-
-                impl #generic_parameter crate::HasLayoutData #generic_parameter for Box<#struct_name #generic_parameter>
-                    #where_clause {
-                    fn layout_data(&self) -> &core::cell::RefCell #generic_parameter {
-                        &self.layout_data
-                    }
-                }
             });
 
             // And if we haven't yet implemented the Layoutable trait for this type, generate an empty impl.
@@ -383,7 +413,7 @@ pub(super) fn process_class(
                 };
 
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::element::LayoutableElement for #struct_name #generic_parameter
+                    impl #generic_parameter crate::LayoutableElement for #struct_name #generic_parameter
                         #where_clause {
                         fn get_height(&self) -> StringOrBlockElementHeight {
                             #height_impl
@@ -424,7 +454,10 @@ pub(super) fn process_class(
 
     println!("{}", result);
 
-    result
+    ProcessClassResult {
+        class_tokens: result,
+        impl_as_trait_macro_tokens: quote! { #(#impl_as_trait_macro_tokens)* },
+    }
 }
 
 /// Generate the default value for a field.

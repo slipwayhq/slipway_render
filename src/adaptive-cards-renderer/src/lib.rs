@@ -1,9 +1,7 @@
 // Allow unused code
 #![allow(dead_code)]
 
-pub mod adaptive_cards;
 mod debug_mode;
-mod element;
 mod element_layout_data;
 mod errors;
 mod fonts;
@@ -19,4 +17,8 @@ pub mod render;
 mod utils;
 
 pub use debug_mode::DebugMode;
+pub use element_layout_data::ElementLayoutData;
 pub use host_config_utils::default_host_config::default_host_config;
+
+// Bring in the `impl_as_trait!` macro.
+extern crate adaptive_cards;

@@ -302,7 +302,7 @@ impl Default for VerticalContentAlignment {
         VerticalContentAlignment::Top
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum StringOrObject {
     String(String),
     Object(serde_json::Value),
@@ -317,7 +317,7 @@ impl From<serde_json::Value> for StringOrObject {
         StringOrObject::Object(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum ActionOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -430,14 +430,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ActionExecute<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionOpenUrl<TLayoutData>
@@ -507,14 +499,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ActionOpenUrl<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionShowCard<TLayoutData>
@@ -577,14 +561,6 @@ where
     }
 }
 impl<TLayoutData> crate::HasLayoutData<TLayoutData> for ActionShowCard<TLayoutData>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ActionShowCard<TLayoutData>>
 where
     TLayoutData: Default,
 {
@@ -678,15 +654,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ActionSubmit<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum TargetElementOrString {
     TargetElement(TargetElement),
     String(String),
@@ -771,15 +739,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData>
-for Box<ActionToggleVisibility<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(tag = "type")]
 pub enum Action<TLayoutData>
@@ -801,7 +760,7 @@ impl<TLayoutData> Action<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             Action::Execute(inner) => inner,
             Action::OpenUrl(inner) => inner,
@@ -811,7 +770,7 @@ where
         }
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum ElementOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -886,15 +845,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ActionSet<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for ActionSet<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -915,7 +866,7 @@ where
         self.is_visible
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum BackgroundImageOrString {
     BackgroundImage(BackgroundImage),
     String(String),
@@ -982,14 +933,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<AdaptiveCard<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AuthCardButton {
@@ -1042,7 +985,7 @@ pub struct CaptionSource {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum ColumnOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -1067,7 +1010,7 @@ where
         ColumnOrFallbackOption::<TLayoutData>::FallbackOption(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum StringOrNumber {
     String(String),
     Number(f64),
@@ -1149,14 +1092,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Column<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet<TLayoutData>
@@ -1217,15 +1152,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ColumnSet<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1313,15 +1240,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Container<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for Container<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1399,7 +1318,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1425,7 +1344,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+    pub fn as_element(&self) -> &dyn crate::LayoutableElement {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1507,15 +1426,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<FactSet<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for FactSet<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1555,7 +1466,7 @@ impl<TLayoutData> ISelectAction<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             ISelectAction::Execute(inner) => inner,
             ISelectAction::OpenUrl(inner) => inner,
@@ -1564,7 +1475,7 @@ where
         }
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum StringOrBlockElementHeight {
     String(String),
     BlockElementHeight(BlockElementHeight),
@@ -1661,15 +1572,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Image<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for Image<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1755,15 +1658,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<ImageSet<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for ImageSet<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1797,7 +1692,7 @@ impl<TLayoutData> Inline<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             Inline::TextRun(inner) => inner,
         }
@@ -1902,15 +1797,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputChoiceSet<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1999,15 +1886,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputDate<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputDate<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2096,15 +1975,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputNumber<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputNumber<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2214,15 +2085,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputText<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputText<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2311,15 +2174,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputTime<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputTime<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2455,15 +2310,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<InputToggle<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for InputToggle<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2507,7 +2354,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2522,7 +2369,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_element(&self) -> &dyn crate::element::LayoutableElement {
+    pub fn as_element(&self) -> &dyn crate::LayoutableElement {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2596,7 +2443,7 @@ impl<TLayoutData> Item<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             Item::ActionExecute(inner) => inner,
             Item::ActionOpenUrl(inner) => inner,
@@ -2683,15 +2530,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Media<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for Media<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2755,15 +2594,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Refresh<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Serialize, Clone)]
 pub enum InlineOrString<TLayoutData>
 where
     TLayoutData: Default,
@@ -2840,15 +2671,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<RichTextBlock<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2982,15 +2805,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<Table<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for Table<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3042,14 +2857,6 @@ where
     pub layout_data: core::cell::RefCell<TLayoutData>,
 }
 impl<TLayoutData> crate::HasLayoutData<TLayoutData> for TableCell<TLayoutData>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<TableCell<TLayoutData>>
 where
     TLayoutData: Default,
 {
@@ -3113,14 +2920,6 @@ where
     pub layout_data: core::cell::RefCell<TLayoutData>,
 }
 impl<TLayoutData> crate::HasLayoutData<TLayoutData> for TableRow<TLayoutData>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<TableRow<TLayoutData>>
 where
     TLayoutData: Default,
 {
@@ -3251,15 +3050,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<TextBlock<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
-impl<TLayoutData> crate::element::LayoutableElement for TextBlock<TLayoutData>
+impl<TLayoutData> crate::LayoutableElement for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3336,14 +3127,6 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Box<TextRun<TLayoutData>>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
-}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(tag = "type")]
 pub enum ToggleableItem<TLayoutData>
@@ -3393,7 +3176,7 @@ impl<TLayoutData> ToggleableItem<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub(crate) fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
+    pub fn as_has_layout_data(&self) -> &dyn crate::HasLayoutData<TLayoutData> {
         match self {
             ToggleableItem::ActionSet(inner) => inner,
             ToggleableItem::Column(inner) => inner,
@@ -3428,4 +3211,97 @@ pub struct TokenExchangeResource {
     pub uri: String,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+}
+#[macro_export]
+macro_rules! impl_as_trait {
+    ($trait_name:path, $as_trait_name:ident, $method_name:ident, $layout_data:ident) => {
+        pub (crate) trait $as_trait_name { fn $method_name (& self) -> & dyn $trait_name;
+        } impl $as_trait_name for adaptive_cards::Action < $layout_data > { fn
+        $method_name (& self) -> & dyn $trait_name { match self {
+        adaptive_cards::Action::Execute(inner) => inner,
+        adaptive_cards::Action::OpenUrl(inner) => inner,
+        adaptive_cards::Action::ShowCard(inner) => inner,
+        adaptive_cards::Action::Submit(inner) => inner,
+        adaptive_cards::Action::ToggleVisibility(inner) => inner, } } } impl
+        $as_trait_name for adaptive_cards::Element < $layout_data > { fn $method_name (&
+        self) -> & dyn $trait_name { match self {
+        adaptive_cards::Element::ActionSet(inner) => inner,
+        adaptive_cards::Element::ColumnSet(inner) => inner,
+        adaptive_cards::Element::Container(inner) => inner,
+        adaptive_cards::Element::FactSet(inner) => inner,
+        adaptive_cards::Element::Image(inner) => inner,
+        adaptive_cards::Element::ImageSet(inner) => inner,
+        adaptive_cards::Element::InputChoiceSet(inner) => inner,
+        adaptive_cards::Element::InputDate(inner) => inner,
+        adaptive_cards::Element::InputNumber(inner) => inner,
+        adaptive_cards::Element::InputText(inner) => inner,
+        adaptive_cards::Element::InputTime(inner) => inner,
+        adaptive_cards::Element::InputToggle(inner) => inner,
+        adaptive_cards::Element::Input(inner) => inner. $method_name (),
+        adaptive_cards::Element::Media(inner) => inner,
+        adaptive_cards::Element::RichTextBlock(inner) => inner,
+        adaptive_cards::Element::Table(inner) => inner,
+        adaptive_cards::Element::TextBlock(inner) => inner, } } } impl $as_trait_name for
+        adaptive_cards::ISelectAction < $layout_data > { fn $method_name (& self) -> &
+        dyn $trait_name { match self { adaptive_cards::ISelectAction::Execute(inner) =>
+        inner, adaptive_cards::ISelectAction::OpenUrl(inner) => inner,
+        adaptive_cards::ISelectAction::Submit(inner) => inner,
+        adaptive_cards::ISelectAction::ToggleVisibility(inner) => inner, } } } impl
+        $as_trait_name for adaptive_cards::Inline < $layout_data > { fn $method_name (&
+        self) -> & dyn $trait_name { match self { adaptive_cards::Inline::TextRun(inner)
+        => inner, } } } impl $as_trait_name for adaptive_cards::Input < $layout_data > {
+        fn $method_name (& self) -> & dyn $trait_name { match self {
+        adaptive_cards::Input::ChoiceSet(inner) => inner,
+        adaptive_cards::Input::Date(inner) => inner, adaptive_cards::Input::Number(inner)
+        => inner, adaptive_cards::Input::Text(inner) => inner,
+        adaptive_cards::Input::Time(inner) => inner, adaptive_cards::Input::Toggle(inner)
+        => inner, } } } impl $as_trait_name for adaptive_cards::Item < $layout_data > {
+        fn $method_name (& self) -> & dyn $trait_name { match self {
+        adaptive_cards::Item::ActionExecute(inner) => inner,
+        adaptive_cards::Item::ActionOpenUrl(inner) => inner,
+        adaptive_cards::Item::ActionShowCard(inner) => inner,
+        adaptive_cards::Item::ActionSubmit(inner) => inner,
+        adaptive_cards::Item::ActionToggleVisibility(inner) => inner,
+        adaptive_cards::Item::Action(inner) => inner. $method_name (),
+        adaptive_cards::Item::ActionSet(inner) => inner,
+        adaptive_cards::Item::Column(inner) => inner,
+        adaptive_cards::Item::ColumnSet(inner) => inner,
+        adaptive_cards::Item::Container(inner) => inner,
+        adaptive_cards::Item::Element(inner) => inner. $method_name (),
+        adaptive_cards::Item::FactSet(inner) => inner, adaptive_cards::Item::Image(inner)
+        => inner, adaptive_cards::Item::ImageSet(inner) => inner,
+        adaptive_cards::Item::InputChoiceSet(inner) => inner,
+        adaptive_cards::Item::InputDate(inner) => inner,
+        adaptive_cards::Item::InputNumber(inner) => inner,
+        adaptive_cards::Item::InputText(inner) => inner,
+        adaptive_cards::Item::InputTime(inner) => inner,
+        adaptive_cards::Item::InputToggle(inner) => inner,
+        adaptive_cards::Item::Input(inner) => inner. $method_name (),
+        adaptive_cards::Item::Media(inner) => inner,
+        adaptive_cards::Item::RichTextBlock(inner) => inner,
+        adaptive_cards::Item::Table(inner) => inner,
+        adaptive_cards::Item::TextBlock(inner) => inner,
+        adaptive_cards::Item::ToggleableItem(inner) => inner. $method_name (), } } } impl
+        $as_trait_name for adaptive_cards::ToggleableItem < $layout_data > { fn
+        $method_name (& self) -> & dyn $trait_name { match self {
+        adaptive_cards::ToggleableItem::ActionSet(inner) => inner,
+        adaptive_cards::ToggleableItem::Column(inner) => inner,
+        adaptive_cards::ToggleableItem::ColumnSet(inner) => inner,
+        adaptive_cards::ToggleableItem::Container(inner) => inner,
+        adaptive_cards::ToggleableItem::Element(inner) => inner. $method_name (),
+        adaptive_cards::ToggleableItem::FactSet(inner) => inner,
+        adaptive_cards::ToggleableItem::Image(inner) => inner,
+        adaptive_cards::ToggleableItem::ImageSet(inner) => inner,
+        adaptive_cards::ToggleableItem::InputChoiceSet(inner) => inner,
+        adaptive_cards::ToggleableItem::InputDate(inner) => inner,
+        adaptive_cards::ToggleableItem::InputNumber(inner) => inner,
+        adaptive_cards::ToggleableItem::InputText(inner) => inner,
+        adaptive_cards::ToggleableItem::InputTime(inner) => inner,
+        adaptive_cards::ToggleableItem::InputToggle(inner) => inner,
+        adaptive_cards::ToggleableItem::Input(inner) => inner. $method_name (),
+        adaptive_cards::ToggleableItem::Media(inner) => inner,
+        adaptive_cards::ToggleableItem::RichTextBlock(inner) => inner,
+        adaptive_cards::ToggleableItem::Table(inner) => inner,
+        adaptive_cards::ToggleableItem::TextBlock(inner) => inner, } } }
+    };
 }

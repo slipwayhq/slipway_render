@@ -8,9 +8,7 @@ use std::{
 };
 use walkdir::WalkDir;
 
-use generated::AdaptiveCard;
-
-use super::*;
+use crate::AdaptiveCard;
 
 #[test]
 fn it_should_parse_samples() {
@@ -87,7 +85,8 @@ fn parse_samples_in_folder(
 
         let file = File::open(&json_file).expect("Failed to open file");
         let reader = BufReader::new(file);
-        let maybe_card: Result<AdaptiveCard, serde_json::Error> = serde_json::from_reader(reader);
+        let maybe_card: Result<AdaptiveCard<TestLayoutData>, serde_json::Error> =
+            serde_json::from_reader(reader);
 
         if should_fail {
             *fail_count += 1;
@@ -115,4 +114,10 @@ fn load_json_files<P: AsRef<Path>>(path: P) -> impl Iterator<Item = PathBuf> {
             None
         }
     })
+}
+
+#[derive(Default, serde::Deserialize)]
+struct TestLayoutData {
+    #[allow(dead_code)]
+    pub foo: String,
 }

@@ -18,6 +18,7 @@ image = "0.25.2"
 serde = "1.0.209"
 serde_json = "1.0.127"
 insta = "1.39.0"
+jsonschema = "0.18.0"
 
 [profile.dev.package]
 insta.opt-level = 3

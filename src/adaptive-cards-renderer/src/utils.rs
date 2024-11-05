@@ -1,4 +1,8 @@
+use imageproc::rect::Rect;
 use std::{cell::RefCell, rc::Rc};
+use taffy::Layout;
+
+use crate::layout_context::LayoutContext;
 
 /// Extracts the inner `T` value from an `Rc<RefCell<T>>` if the reference count is 1,
 /// returning `None` otherwise.
@@ -35,5 +39,27 @@ where
         } else {
             self.try_into().unwrap_or(u32::MAX)
         }
+    }
+}
+
+/// A trait for easily getting the absolute rect of an element from the Taffy
+/// Layout data using the element's context data.
+pub(super) trait TaffyLayoutUtils {
+    /// Gets the absolute rect of the element using the context data.
+    fn absolute_rect(&self, context: &LayoutContext) -> Rect;
+}
+
+impl TaffyLayoutUtils for Layout {
+    fn absolute_rect(&self, context: &LayoutContext) -> Rect {
+        // The context already has the element's absolute origin set,
+        // so we just need to use that and the element's size to get the absolute rect.
+        Rect::at(
+            context.current_origin.x as i32,
+            context.current_origin.y as i32,
+        )
+        .of_size(
+            self.size.width.max(1.) as u32,
+            self.size.height.max(1.) as u32,
+        )
     }
 }

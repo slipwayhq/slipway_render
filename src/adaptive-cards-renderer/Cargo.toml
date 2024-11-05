@@ -5,6 +5,7 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+adaptive-cards = { path = "../adaptive-cards" }
 adaptive-cards-host-config = { path = "../adaptive-cards-host-config" }
 csscolorparser = "0.7.0"
 image.workspace = true
@@ -24,5 +25,5 @@ populate-schema-defaults = { path = "../populate-schema-defaults" }
 
 [dev-dependencies]
 walkdir = "2.5.0"
-jsonschema = "0.18.0"
+jsonschema = { workspace = true }
 insta = { workspace = true, features = ["json", "glob"] }

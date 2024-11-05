@@ -39,23 +39,44 @@ macro_rules! deserialize_string_or_other {
     };
 }
 
+macro_rules! deserialize_string_or_other_generic {
+    ($expecting:expr, $t_string:ident, $t_struct:ident, $t_enum:ident) => {
+        impl<'de, TLayoutData> Deserialize<'de> for $t_enum<TLayoutData>
+        where
+            TLayoutData: Default + Deserialize<'de>,
+        {
+            fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+            where
+                D: Deserializer<'de>,
+            {
+                deserialize_string_or_other::<
+                    $t_string,
+                    $t_struct<TLayoutData>,
+                    $t_enum<TLayoutData>,
+                    D,
+                >(deserializer, $expecting)
+            }
+        }
+    };
+}
+
 deserialize_string_or_other!("an object or a fallback", String, Value, StringOrObject);
 
-deserialize_string_or_other!(
+deserialize_string_or_other_generic!(
     "an element or a fallback",
     FallbackOption,
     Element,
     ElementOrFallbackOption
 );
 
-deserialize_string_or_other!(
+deserialize_string_or_other_generic!(
     "a column or a fallback",
     FallbackOption,
     Column,
     ColumnOrFallbackOption
 );
 
-deserialize_string_or_other!(
+deserialize_string_or_other_generic!(
     "an action or a fallback",
     FallbackOption,
     Action,
@@ -76,7 +97,7 @@ deserialize_string_or_other!(
     TargetElementOrString
 );
 
-deserialize_string_or_other!(
+deserialize_string_or_other_generic!(
     "an inline (TextRun) or string",
     String,
     Inline,

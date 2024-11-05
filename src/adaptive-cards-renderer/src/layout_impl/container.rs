@@ -1,17 +1,18 @@
 use std::{cell::RefCell, rc::Rc};
 
+use adaptive_cards::Container;
 use imageproc::drawing::{draw_filled_rect_mut, draw_hollow_rect_mut};
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
-    adaptive_cards::Container,
-    element_layout_data::ElementTaffyData,
+    element_layout_data::{ElementLayoutData, ElementTaffyData},
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::{ContainerStyleToConfig, StringToColor},
     layout_context::LayoutContext,
-    layoutable::{Layoutable, TaffyLayoutUtils},
+    layoutable::Layoutable,
     masked_image::MaskedImage,
     measure::NodeContext,
+    utils::TaffyLayoutUtils,
 };
 
 use super::{
@@ -19,7 +20,7 @@ use super::{
     utils::{get_margins_for_bleed, parse_dimension},
 };
 
-impl Layoutable for Container {
+impl Layoutable for Container<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
     // Reference: https://github.com/microsoft/AdaptiveCards/blob/728044c67510871445d23533fb9830ac57fbbf99/source/nodejs/adaptivecards/src/card-elements.ts#L7820-L7888
 
@@ -98,7 +99,7 @@ impl Layoutable for Container {
 }
 
 fn draw_background(
-    container: &Container,
+    container: &Container<ElementLayoutData>,
     context: &LayoutContext,
     tree: &TaffyTree<NodeContext>,
     taffy_data: &ElementTaffyData,

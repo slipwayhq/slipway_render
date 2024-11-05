@@ -1,6 +1,7 @@
 use std::io::Write;
 
 use adaptive_cards_host_config::HostConfig;
+use adaptive_cards_renderer::ElementLayoutData;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
@@ -76,7 +77,7 @@ fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
 
 #[derive(Deserialize)]
 struct Input {
-    card: adaptive_cards_renderer::adaptive_cards::AdaptiveCard,
+    card: adaptive_cards::AdaptiveCard<ElementLayoutData>,
 
     #[serde(alias = "hostConfig")]
     host_config: Option<HostConfig>,

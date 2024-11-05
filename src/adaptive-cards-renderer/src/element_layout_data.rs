@@ -4,7 +4,7 @@ use crate::rect::FinalRect;
 
 /// The layout data for an element. This is used to store transient layout data on an element
 /// struct during the layout and draw passes of the renderer.
-#[derive(serde::Serialize, Default, Debug, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug, Clone)]
 pub struct ElementLayoutData {
     /// The final absolute rect of the element which was used to draw the element.
     pub rect: Option<FinalRect>,
@@ -52,7 +52,7 @@ impl From<NodeId> for ElementTaffyData {
 }
 
 /// The placement of an element relative to its sibling elements.
-#[derive(serde::Serialize, Debug, Copy, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Copy, Clone)]
 pub enum Placement {
     /// The element is the top element in a vertical layout.
     Top,

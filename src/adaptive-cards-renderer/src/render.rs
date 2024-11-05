@@ -1,11 +1,12 @@
 use std::{cell::RefCell, rc::Rc};
 
+use adaptive_cards::AdaptiveCard;
 use adaptive_cards_host_config::HostConfig;
 use image::RgbaImage;
 use taffy::{AvailableSpace, TaffyTree};
 
 use crate::{
-    adaptive_cards::AdaptiveCard,
+    element_layout_data::ElementLayoutData,
     errors::{RenderError, TaffyErrorToRenderError},
     fonts::FontCache,
     layout_context::LayoutContext,
@@ -21,8 +22,8 @@ pub fn render_from_str(
     width: u32,
     height: u32,
     debug_mode: DebugMode,
-) -> Result<(RgbaImage, AdaptiveCard), RenderError> {
-    let target = serde_json::from_str::<AdaptiveCard>(target).unwrap();
+) -> Result<(RgbaImage, AdaptiveCard<ElementLayoutData>), RenderError> {
+    let target = serde_json::from_str::<AdaptiveCard<ElementLayoutData>>(target).unwrap();
     let image = render(&target, host_config, width, height, debug_mode)?;
     Ok((image, target))
 }
@@ -33,7 +34,7 @@ pub fn render_from_str(
 /// - Calculate: Taffy calculates the final layout.
 /// - Draw: The AdaptiveCard elements draw themselves onto an image using the layout data.
 pub fn render(
-    target: &AdaptiveCard,
+    target: &AdaptiveCard<ElementLayoutData>,
     host_config: &HostConfig,
     width: u32,
     height: u32,

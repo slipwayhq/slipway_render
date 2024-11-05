@@ -1,25 +1,24 @@
 use std::{cell::RefCell, rc::Rc};
 
+use crate::{
+    debug_mode::next_color,
+    element_layout_data::{ElementLayoutData, ElementTaffyData, Placement},
+    errors::{RenderError, TaffyErrorToRenderError},
+    host_config_utils::{StringToColor, ValidSpacing},
+    layout_context::LayoutContext,
+    layoutable::AsLayoutable,
+    masked_image::MaskedImage,
+    measure::NodeContext,
+    utils::{ClampToU32, TaffyLayoutUtils},
+};
+use adaptive_cards::{
+    BlockElementHeight, Element, LayoutableElement, StringOrBlockElementHeight,
+    VerticalContentAlignment,
+};
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
 use taffy::{
     prelude::length, Dimension, Display, FlexDirection, JustifyContent, Rect, Size, Style,
     TaffyTree,
-};
-
-use crate::{
-    adaptive_cards::{
-        BlockElementHeight, Element, StringOrBlockElementHeight, VerticalContentAlignment,
-    },
-    debug_mode::next_color,
-    element::LayoutableElement,
-    element_layout_data::{ElementTaffyData, Placement},
-    errors::{RenderError, TaffyErrorToRenderError},
-    host_config_utils::{StringToColor, ValidSpacing},
-    layout_context::LayoutContext,
-    layoutable::TaffyLayoutUtils,
-    masked_image::MaskedImage,
-    measure::NodeContext,
-    utils::ClampToU32,
 };
 
 use super::utils::parse_dimension;
@@ -30,7 +29,7 @@ pub(super) fn container_layout_override(
     baseline_style: Style,
     tree: &mut TaffyTree<NodeContext>,
     child_elements_context: LayoutContext,
-    child_elements: &[Element],
+    child_elements: &[Element<ElementLayoutData>],
 ) -> Result<ElementTaffyData, RenderError> {
     // This will contain one node id for each child element, in the same order as the child_elements array.
     let mut child_element_node_ids = Vec::new();
@@ -54,10 +53,10 @@ pub(super) fn container_layout_override(
             _ => Placement::WithinVertical,
         };
 
-        let as_layoutable = element.as_layoutable();
+        let as_has_layout_data = element.as_has_layout_data();
 
         // Save the placement to the element's layout data so we can use it when drawing the element.
-        as_layoutable.layout_data().borrow_mut().placement = Some(element_position);
+        as_has_layout_data.layout_data().borrow_mut().placement = Some(element_position);
 
         let as_element = element.as_element();
 
@@ -112,6 +111,8 @@ pub(super) fn container_layout_override(
                 }
             },
         };
+
+        let as_layoutable = element.as_layoutable();
 
         // Call `layout` on the child element, which returns its node id in the Taffy tree.
         let element_node_id =
@@ -174,7 +175,7 @@ pub(super) fn container_draw_override(
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     child_elements_context: LayoutContext,
-    child_elements: &[Element],
+    child_elements: &[Element<ElementLayoutData>],
 ) -> Result<(), RenderError> {
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
     // where we need to draw ourselves.

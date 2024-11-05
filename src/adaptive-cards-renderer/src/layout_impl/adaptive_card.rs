@@ -1,11 +1,11 @@
 use std::{cell::RefCell, rc::Rc};
 
+use adaptive_cards::AdaptiveCard;
 use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
 use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
-    adaptive_cards::AdaptiveCard,
-    element_layout_data::ElementTaffyData,
+    element_layout_data::{ElementLayoutData, ElementTaffyData},
     errors::RenderError,
     host_config_utils::StringToColor,
     layout_context::LayoutContext,
@@ -16,7 +16,7 @@ use crate::{
 
 use super::container_shared::{container_draw_override, container_layout_override};
 
-impl Layoutable for AdaptiveCard {
+impl Layoutable for AdaptiveCard<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
     // Reference: https://github.com/microsoft/AdaptiveCards/blob/728044c67510871445d23533fb9830ac57fbbf99/source/nodejs/adaptivecards/src/card-elements.ts#L7820-L7888
 

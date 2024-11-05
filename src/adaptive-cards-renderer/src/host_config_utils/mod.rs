@@ -1,10 +1,9 @@
 use adaptive_cards_host_config::{ContainerStyleConfig, ContainerStylesConfig, SpacingsConfig};
 use csscolorparser::ParseColorError;
 
-use crate::{
-    adaptive_cards::ContainerStyle, adaptive_cards::Spacing, element::LayoutableElement,
-    errors::RenderError,
-};
+use adaptive_cards::{ContainerStyle, LayoutableElement, Spacing};
+
+use crate::errors::RenderError;
 
 pub mod default_host_config;
 

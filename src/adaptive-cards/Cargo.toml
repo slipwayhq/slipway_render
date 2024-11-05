@@ -10,3 +10,7 @@ serde_json = { workspace = true }
 
 [build-dependencies]
 adaptive-cards-types-generator = { path = "../adaptive-cards-types-generator" }
+
+[dev-dependencies]
+walkdir = "2.5.0"
+jsonschema = { workspace = true }

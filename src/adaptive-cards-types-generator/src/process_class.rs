@@ -117,19 +117,6 @@ pub(super) fn process_class(
 
         // If this type needs to support layout...
         if is_layoutable {
-            // Generate the standard generic as_* methods.
-            let mut generate_methods = Vec::new();
-            generate_methods.push((
-                format_ident!("as_has_layout_data"),
-                quote! { &dyn crate::HasLayoutData #generic_parameter },
-            ));
-            if metadata.is_element {
-                generate_methods.push((
-                    format_ident!("as_element"),
-                    quote! { &dyn crate::LayoutableElement },
-                ));
-            }
-
             let get_inner_call = |is_abstract: bool, call: TokenStream| {
                 if is_abstract {
                     // If the inner variant is abstract it is an enum, so call the same method on it.
@@ -140,31 +127,46 @@ pub(super) fn process_class(
                 }
             };
 
-            for (as_name, as_type) in generate_methods {
-                // ... we need to generate a method to get the trait for the inner variant type.
-                let match_tokens = variant_infos.iter().map(|v| {
-                    let variant_ident = &v.ident;
-                    let inner_call = get_inner_call(v.is_abstract, quote! { .#as_name() });
-                    quote! {
-                        #struct_name::#variant_ident(inner) => inner #inner_call,
-                    }
-                });
+            // Generate the standard generic as_* methods.
+            {
+                let mut generate_methods = Vec::new();
+                generate_methods.push((
+                    format_ident!("as_has_layout_data"),
+                    quote! { &dyn crate::HasLayoutData #generic_parameter },
+                ));
+                if metadata.is_element {
+                    generate_methods.push((
+                        format_ident!("as_element"),
+                        quote! { &dyn crate::LayoutableElement },
+                    ));
+                }
 
-                // Generate the as_layoutable method.
-                post_struct_tokens.push(quote! {
-                    impl #generic_parameter #struct_name #generic_parameter
-                        #where_clause {
-                        pub fn #as_name(&self) -> #as_type {
-                            match self {
-                                #(#match_tokens)*
+                for (as_name, as_type) in generate_methods {
+                    // ... we need to generate a method to get the trait for the inner variant type.
+                    let match_tokens = variant_infos.iter().map(|v| {
+                        let variant_ident = &v.ident;
+                        let inner_call = get_inner_call(v.is_abstract, quote! { .#as_name() });
+                        quote! {
+                            #struct_name::#variant_ident(inner) => inner #inner_call,
+                        }
+                    });
+
+                    // Generate the as_layoutable method.
+                    post_struct_tokens.push(quote! {
+                        impl #generic_parameter #struct_name #generic_parameter
+                            #where_clause {
+                            pub fn #as_name(&self) -> #as_type {
+                                match self {
+                                    #(#match_tokens)*
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
 
+            // Generate the HasLayoutData implementation.
             {
-                // Generate the as_layoutable method.
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::HasLayoutData #generic_parameter for #struct_name #generic_parameter
                         #where_clause {
@@ -175,8 +177,8 @@ pub(super) fn process_class(
                 });
             }
 
+            // Build the macro to allow users to generate their own `as_*` implementations.
             {
-                // Build the macro to allow users to generate their own `as_*` implementations.
                 let match_tokens = variant_infos.iter().map(|v| {
                     let variant_ident = &v.ident;
                     let inner_call = get_inner_call(v.is_abstract, quote! { .$method_name() });

@@ -66,7 +66,6 @@ struct GeneratedAdditionalType {
 pub fn generate(in_path: PathBuf, out_path: PathBuf) -> anyhow::Result<()> {
     let tokens = generate_inner(in_path)?;
     let output = quote! {
-        #![allow(dead_code)]
         #(#tokens)*
     };
 

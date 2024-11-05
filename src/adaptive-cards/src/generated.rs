@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ActionMode {
     #[serde(rename = "primary", alias = "Primary")]

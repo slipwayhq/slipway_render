@@ -7,8 +7,9 @@ use taffy::{NodeId, Style, TaffyTree};
 use crate::element_layout_data::{ElementLayoutData, ElementTaffyData};
 use crate::errors::TaffyErrorToRenderError;
 use crate::layout_context::LayoutContext;
+use crate::layout_impl::measure::NodeContext;
+use crate::layout_scratch::LayoutScratch;
 use crate::masked_image::MaskedImage;
-use crate::measure::NodeContext;
 use crate::utils::TaffyLayoutUtils;
 use crate::{errors::RenderError, masked_image::SlipwayCanvas};
 
@@ -67,6 +68,7 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
         context: &LayoutContext,
         tree: &TaffyTree<NodeContext>,
         image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         context.print_local_context();
 
@@ -89,7 +91,7 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
             let absolute_rect = node_layout.absolute_rect(context);
 
             if image_rect.intersect(absolute_rect).is_some() {
-                self.draw_override(context, tree, taffy_data, image)?;
+                self.draw_override(context, tree, taffy_data, image, scratch)?;
             }
             absolute_rect
         };
@@ -111,6 +113,7 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
         _tree: &TaffyTree<NodeContext>,
         _taffy_data: &ElementTaffyData,
         _image: Rc<RefCell<MaskedImage>>,
+        _scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         unimplemented!("draw_override not implemented for {}", context.path.clone());
     }
@@ -141,8 +144,9 @@ impl<T: Layoutable> Layoutable for Box<T> {
         context: &LayoutContext,
         tree: &TaffyTree<NodeContext>,
         image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        self.as_ref().draw(context, tree, image)
+        self.as_ref().draw(context, tree, image, scratch)
     }
 
     fn draw_override(
@@ -151,8 +155,9 @@ impl<T: Layoutable> Layoutable for Box<T> {
         tree: &TaffyTree<NodeContext>,
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         self.as_ref()
-            .draw_override(context, tree, taffy_data, image)
+            .draw_override(context, tree, taffy_data, image, scratch)
     }
 }

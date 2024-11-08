@@ -2030,7 +2030,7 @@ impl FontTypeConfigFontWeights {
 #[doc = "        {"]
 #[doc = "          \"properties\": {"]
 #[doc = "            \"fontFamily\": {"]
-#[doc = "              \"default\": \"sans-serif\","]
+#[doc = "              \"default\": \"Open Sans\","]
 #[doc = "              \"type\": \"string\""]
 #[doc = "            }"]
 #[doc = "          }"]
@@ -2120,7 +2120,7 @@ impl FontTypesConfig {
 #[doc = "    {"]
 #[doc = "      \"properties\": {"]
 #[doc = "        \"fontFamily\": {"]
-#[doc = "          \"default\": \"sans-serif\","]
+#[doc = "          \"default\": \"Open Sans\","]
 #[doc = "          \"type\": \"string\""]
 #[doc = "        }"]
 #[doc = "      }"]
@@ -2854,7 +2854,7 @@ impl ForegroundColorsConfig {
 #[doc = "    \"fontTypes\": {"]
 #[doc = "      \"default\": {"]
 #[doc = "        \"default\": {"]
-#[doc = "          \"fontFamily\": \"sans-serif\","]
+#[doc = "          \"fontFamily\": \"Open Sans\","]
 #[doc = "          \"fontSizes\": {"]
 #[doc = "            \"default\": 14,"]
 #[doc = "            \"extraLarge\": 24,"]
@@ -7906,7 +7906,7 @@ pub mod defaults {
         Some("#bf252424".to_string())
     }
     pub(super) fn font_types_config_default_font_family() -> String {
-        "sans-serif".to_string()
+        "Open Sans".to_string()
     }
     pub(super) fn font_types_config_monospace_font_family() -> String {
         "monospace".to_string()
@@ -8224,7 +8224,7 @@ pub mod defaults {
     pub(super) fn host_config_font_types() -> super::FontTypesConfig {
         super::FontTypesConfig {
             default: Some(super::FontTypesConfigDefault {
-                font_family: "sans-serif".to_string(),
+                font_family: "Open Sans".to_string(),
                 font_sizes: Some(super::FontTypesConfigDefaultFontSizes {
                     default: 14_i64,
                     extra_large: 24_i64,

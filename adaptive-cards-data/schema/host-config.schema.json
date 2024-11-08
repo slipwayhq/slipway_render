@@ -803,7 +803,7 @@
 							"properties": {
 								"fontFamily": {
 									"type": "string",
-									"default": "sans-serif"
+									"default": "Open Sans"
 								}
 							}
 						}

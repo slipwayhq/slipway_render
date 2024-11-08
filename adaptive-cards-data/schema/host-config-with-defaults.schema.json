@@ -257,7 +257,7 @@
     },
     "fontTypes": {
       "default": {
-        "fontFamily": "sans-serif",
+        "fontFamily": "Open Sans",
         "fontSizes": {
           "default": 14,
           "extraLarge": 24,
@@ -1015,7 +1015,7 @@
             {
               "properties": {
                 "fontFamily": {
-                  "default": "sans-serif",
+                  "default": "Open Sans",
                   "type": "string"
                 }
               }
@@ -1422,7 +1422,7 @@
           "$ref": "#/definitions/FontTypesConfig",
           "default": {
             "default": {
-              "fontFamily": "sans-serif",
+              "fontFamily": "Open Sans",
               "fontSizes": {
                 "default": 14,
                 "extraLarge": 24,

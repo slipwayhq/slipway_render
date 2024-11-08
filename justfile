@@ -1,7 +1,7 @@
 default:
   just --list
   
-build configuration="debug": (build-src configuration) (build-components configuration)
+build configuration="debug": download-fonts (build-src configuration) (build-components configuration)
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}
@@ -54,7 +54,6 @@ copy-component-files configuration name:
 tar-component-files configuration name:
   tar -cf artifacts/{{configuration}}/slipway_{{name}}.tar -C artifacts/{{configuration}}/slipway_{{name}} .
 
-
 rename-component-tar configuration name:
   # Rename the tarball with a name that includes the publisher, name and version.
   publisher=$(jq -r '.publisher' src-components/slipway-{{name}}-component/slipway_component.json) && \
@@ -62,3 +61,6 @@ rename-component-tar configuration name:
     version=$(jq -r '.version' src-components/slipway-{{name}}-component/slipway_component.json) && \
     new_filename="${publisher}.${name}.${version}.tar" && \
     mv artifacts/{{configuration}}/slipway_{{name}}.tar "artifacts/{{configuration}}/$new_filename"
+
+download-fonts:
+  ./download_fonts.sh

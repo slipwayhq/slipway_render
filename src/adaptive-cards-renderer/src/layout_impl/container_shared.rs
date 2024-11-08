@@ -6,9 +6,10 @@ use crate::{
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::{StringToColor, ValidSpacing},
     layout_context::LayoutContext,
+    layout_impl::measure::NodeContext,
+    layout_scratch::LayoutScratch,
     layoutable::AsLayoutable,
     masked_image::MaskedImage,
-    measure::NodeContext,
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
@@ -172,6 +173,7 @@ pub(super) fn container_draw_override(
     tree: &TaffyTree<NodeContext>,
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
+    scratch: &mut LayoutScratch,
     child_elements_context: LayoutContext,
     child_elements: &[Element<ElementLayoutData>],
 ) -> Result<(), RenderError> {
@@ -266,7 +268,7 @@ pub(super) fn container_draw_override(
         // Call `draw` on the child element.
         element
             .as_layoutable()
-            .draw(&element_context, tree, child_image)?;
+            .draw(&element_context, tree, child_image, scratch)?;
     }
     Ok(())
 }

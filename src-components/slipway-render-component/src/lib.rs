@@ -22,7 +22,7 @@ pub fn step() {
         }),
         width,
         height,
-        adaptive_cards_renderer::DebugMode::none(),
+        adaptive_cards_renderer::DebugMode::full(),
     )
     .expect("should render image");
 

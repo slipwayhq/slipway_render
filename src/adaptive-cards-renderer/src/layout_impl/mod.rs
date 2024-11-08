@@ -3,6 +3,7 @@ use crate::element_layout_data::ElementLayoutData;
 mod adaptive_card;
 mod container;
 mod container_shared;
+pub(crate) mod measure;
 mod text_block;
 mod utils;
 

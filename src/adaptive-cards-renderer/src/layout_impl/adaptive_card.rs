@@ -9,9 +9,10 @@ use crate::{
     errors::RenderError,
     host_config_utils::StringToColor,
     layout_context::LayoutContext,
+    layout_impl::measure::NodeContext,
+    layout_scratch::LayoutScratch,
     layoutable::Layoutable,
     masked_image::{MaskedImage, SlipwayCanvas},
-    measure::NodeContext,
 };
 
 use super::container_shared::{container_draw_override, container_layout_override};
@@ -61,6 +62,7 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
         tree: &TaffyTree<NodeContext>,
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         // Draw the background of the AdaptiveCard.
         draw_background(context, &image)?;
@@ -77,6 +79,7 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
             tree,
             taffy_data,
             image,
+            scratch,
             child_elements_context,
             child_elements,
         )

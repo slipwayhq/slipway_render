@@ -14,7 +14,10 @@ serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 taffy = "0.5.2"
 thiserror = "1.0.63"
-parley = { version = "0.2.0", default-features = false, features = ["libm"] }
+parley = { version = "0.2.0", default-features = false, features = [
+    "libm",
+    "std",
+] }
 skrifa = { version = "0.22.3" }
 peniko = { version = "0.2.0" }
 swash = { version = "0.1.19", default-features = true }

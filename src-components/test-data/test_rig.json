@@ -20,7 +20,7 @@
           {
             "type": "set",
             "path": "containerStyles.accent.backgroundColor",
-            "value": "#ff0000"
+            "value": "#ffeeee"
           }
         ]
       }
@@ -39,7 +39,7 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "1"
+                  "text": "The quick brown dog jumped over the lazy dog. The quick brown dog jumped over the lazy dog. The quick brown fox jumped over the lazy dog."
                 }
               ]
             },

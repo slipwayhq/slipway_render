@@ -9,9 +9,10 @@ use crate::{
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::{ContainerStyleToConfig, StringToColor},
     layout_context::LayoutContext,
+    layout_impl::measure::NodeContext,
+    layout_scratch::LayoutScratch,
     layoutable::Layoutable,
     masked_image::MaskedImage,
-    measure::NodeContext,
     utils::TaffyLayoutUtils,
 };
 
@@ -76,6 +77,7 @@ impl Layoutable for Container<ElementLayoutData> {
         tree: &TaffyTree<NodeContext>,
         taffy_data: &ElementTaffyData,
         image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         // Draw the container background, if necessary.
         draw_background(self, context, tree, taffy_data, &image)?;
@@ -92,6 +94,7 @@ impl Layoutable for Container<ElementLayoutData> {
             tree,
             taffy_data,
             image,
+            scratch,
             child_elements_context,
             child_elements,
         )

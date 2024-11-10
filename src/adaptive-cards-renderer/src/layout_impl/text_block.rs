@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use adaptive_cards::TextBlock;
 use image::Rgba;
-use imageproc::{drawing::Canvas, rect::Rect};
+use imageproc::drawing::Canvas;
 use parley::{
     Alignment, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem, StyleProperty,
 };
@@ -26,6 +26,7 @@ use crate::{
 
 pub(crate) struct TextBlockNodeContext {
     pub text: String,
+    pub offset: RefCell<taffy::Point<i32>>,
 }
 
 impl TextBlockNodeContext {
@@ -35,6 +36,7 @@ impl TextBlockNodeContext {
         available_space: taffy::geometry::Size<taffy::style::AvailableSpace>,
         font_context: &mut parley::FontContext,
         layout_context: &mut parley::LayoutContext,
+        scale_context: &mut swash::scale::ScaleContext,
     ) -> Size<f32> {
         // https://docs.rs/parley/0.2.0/parley/
         // https://github.com/linebender/parley/blob/main/examples/swash_render/src/main.rs
@@ -49,10 +51,56 @@ impl TextBlockNodeContext {
 
         let layout = prepare_layout(layout_context, font_context, text, width_constraint);
 
-        let width = layout.width();
-        let height = layout.height();
+        // Compute our own pixel bounds.
+        // https://github.com/linebender/parley/issues/165
+        let mut bounds: Option<taffy::Rect<i32>> = None;
 
-        Size { width, height }
+        let mut apply_pixel = |x: i32, y: i32, _pixel: &Rgba<u8>| match bounds.as_mut() {
+            None => {
+                bounds = Some(taffy::Rect::<i32> {
+                    left: x,
+                    right: x,
+                    top: y,
+                    bottom: y,
+                });
+            }
+            Some(bounds) => {
+                if x < bounds.left {
+                    bounds.left = x;
+                }
+                if x > bounds.right {
+                    bounds.right = x;
+                }
+                if y < bounds.top {
+                    bounds.top = y;
+                }
+                if y > bounds.bottom {
+                    bounds.bottom = y;
+                }
+            }
+        };
+
+        render_layout(&mut apply_pixel, layout, scale_context);
+
+        let offset = match bounds {
+            None => taffy::Point { x: 0, y: 0 },
+            Some(bounds) => taffy::Point {
+                x: bounds.left,
+                y: bounds.top,
+            },
+        };
+
+        let result = match bounds {
+            None => Default::default(),
+            Some(bounds) => Size {
+                width: (bounds.right - bounds.left + 1) as f32,
+                height: (bounds.bottom - bounds.top + 1) as f32,
+            },
+        };
+
+        *self.offset.borrow_mut() = offset;
+
+        result
     }
 }
 
@@ -82,6 +130,14 @@ impl Layoutable for TextBlock<ElementLayoutData> {
         let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
         let absolute_rect = node_layout.absolute_rect(context);
 
+        let context = tree.get_node_context(taffy_data.node_id).unwrap();
+        let NodeContext::Text(context) = context; /* else {
+                                                      panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
+                                                  };*/
+        let offset = context.offset.borrow();
+        let x_offset = absolute_rect.left() - offset.x;
+        let y_offset = absolute_rect.top() - offset.y;
+
         let (layout_context, font_context, scale_context) = scratch.for_text_mut();
 
         let width_constraint = Some(absolute_rect.width() as f32);
@@ -91,15 +147,18 @@ impl Layoutable for TextBlock<ElementLayoutData> {
 
         let mut image_mut = image.borrow_mut();
 
-        // Iterate over laid out lines
-        for line in layout.lines() {
-            // Iterate over GlyphRun's within each line
-            for item in line.items() {
-                if let PositionedLayoutItem::GlyphRun(glyph_run) = item {
-                    render_glyph_run(scale_context, &glyph_run, &mut image_mut, absolute_rect);
-                }
-            }
-        }
+        let mut apply_pixel = |x: i32, y: i32, pixel: &Rgba<u8>| {
+            let Ok(x) = u32::try_from(x + x_offset) else {
+                return;
+            };
+            let Ok(y) = u32::try_from(y + y_offset) else {
+                return;
+            };
+            image_mut.draw_pixel(x, y, *pixel);
+        };
+
+        render_layout(&mut apply_pixel, layout, scale_context);
+
         Ok(())
     }
 }
@@ -131,19 +190,32 @@ fn prepare_layout(
     layout
 }
 
+fn render_layout(
+    apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
+    layout: parley::Layout<[u8; 4]>,
+    scale_context: &mut swash::scale::ScaleContext,
+) {
+    // Iterate over laid out lines
+    for line in layout.lines() {
+        // Iterate over GlyphRun's within each line
+        for item in line.items() {
+            if let PositionedLayoutItem::GlyphRun(glyph_run) = item {
+                render_glyph_run(apply_pixel, scale_context, &glyph_run);
+            }
+        }
+    }
+}
+
 fn render_glyph_run(
+    apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
     context: &mut ScaleContext,
     glyph_run: &GlyphRun<[u8; 4]>,
-    image: &mut MaskedImage,
-    absolute_rect: Rect,
 ) {
     // Resolve properties of the GlyphRun
-    let mut run_x = glyph_run.offset() + absolute_rect.left() as f32;
-    let run_y = glyph_run.baseline() + absolute_rect.top() as f32;
+    let mut run_x = glyph_run.offset();
+    let run_y = glyph_run.baseline();
     let style = glyph_run.style();
     let color = style.brush;
-
-    println!("Rendering glyph run at {}x{}", run_x, run_y);
 
     // Get the "Run" from the "GlyphRun"
     let run = glyph_run.run();
@@ -167,17 +239,16 @@ fn render_glyph_run(
 
     // Iterates over the glyphs in the GlyphRun
     for glyph in glyph_run.glyphs() {
-        println!("Rendering glyph at relative {}x{}", glyph.x, glyph.y);
         let glyph_x = run_x + glyph.x;
         let glyph_y = run_y - glyph.y;
         run_x += glyph.advance;
 
-        render_glyph(image, &mut scaler, color, glyph, glyph_x, glyph_y);
+        render_glyph(apply_pixel, &mut scaler, color, glyph, glyph_x, glyph_y);
     }
 }
 
 fn render_glyph(
-    image: &mut MaskedImage,
+    apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
     scaler: &mut Scaler,
     color: [u8; 4],
     glyph: Glyph,
@@ -186,7 +257,7 @@ fn render_glyph(
 ) {
     // Compute the fractional offset
     // You'll likely want to quantize this in a real renderer
-    let offset = Vector::new(glyph_x.fract(), glyph_y.fract());
+    let offset = Vector::new(glyph_x.fract().round(), glyph_y.fract().round());
 
     // Render the glyph using swash
     let rendered_glyph = Render::new(
@@ -207,28 +278,19 @@ fn render_glyph(
 
     let glyph_width = rendered_glyph.placement.width;
     let glyph_height = rendered_glyph.placement.height;
-    let Ok(glyph_x) = u32::try_from(glyph_x.floor() as i32 + rendered_glyph.placement.left) else {
-        return;
-    };
-    let Ok(glyph_y) = u32::try_from(glyph_y.floor() as i32 - rendered_glyph.placement.top) else {
-        return;
-    };
-
-    println!(
-        "Rendering glyph at {}x{}: {}x{}",
-        glyph_x, glyph_y, glyph_width, glyph_height
-    );
+    let glyph_x = glyph_x.floor() as i32 + rendered_glyph.placement.left;
+    let glyph_y = glyph_y.floor() as i32 - rendered_glyph.placement.top;
 
     match rendered_glyph.content {
         Content::Mask => {
             let mut i = 0;
             for pixel_y in 0..glyph_height {
                 for pixel_x in 0..glyph_width {
-                    let x = glyph_x + pixel_x;
-                    let y = glyph_y + pixel_y;
+                    let x = glyph_x + pixel_x as i32;
+                    let y = glyph_y + pixel_y as i32;
                     let alpha = rendered_glyph.data[i];
                     let color = Rgba([color[0], color[1], color[2], alpha]);
-                    image.draw_pixel(x, y, color);
+                    apply_pixel(x, y, &color);
                     i += 1;
                 }
             }
@@ -238,10 +300,10 @@ fn render_glyph(
             let row_size = glyph_width as usize * 4;
             for (pixel_y, row) in rendered_glyph.data.chunks_exact(row_size).enumerate() {
                 for (pixel_x, pixel) in row.chunks_exact(4).enumerate() {
-                    let x = glyph_x + pixel_x as u32;
-                    let y = glyph_y + pixel_y as u32;
+                    let x = glyph_x + pixel_x as i32;
+                    let y = glyph_y + pixel_y as i32;
                     let color = Rgba(pixel.try_into().expect("Not RGBA"));
-                    image.draw_pixel(x, y, color);
+                    apply_pixel(x, y, &color);
                 }
             }
         }

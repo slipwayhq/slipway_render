@@ -52,7 +52,7 @@ pub fn render(
     // Layout the root element, which will recursively layout all descendants.
     let root = target.layout(&context, Default::default(), &mut tree)?;
 
-    let swash_scale_context = swash::scale::ScaleContext::new();
+    let mut swash_scale_context = swash::scale::ScaleContext::new();
     let mut parley_layout_context = parley::LayoutContext::new();
     let mut parley_font_context = parley::FontContext::new();
     parley_font_context
@@ -76,6 +76,7 @@ pub fn render(
                 node_context,
                 &mut parley_font_context,
                 &mut parley_layout_context,
+                &mut swash_scale_context,
             )
         },
     )

@@ -9,7 +9,10 @@ pub(crate) enum NodeContext {
 
 impl NodeContext {
     pub fn text(text: String) -> Self {
-        NodeContext::Text(TextBlockNodeContext { text })
+        NodeContext::Text(TextBlockNodeContext {
+            text,
+            offset: Default::default(),
+        })
     }
 }
 
@@ -20,6 +23,7 @@ pub(crate) fn measure(
     node_context: Option<&mut NodeContext>,
     parley_font_context: &mut parley::FontContext,
     parley_layout_context: &mut parley::LayoutContext,
+    swash_scale_context: &mut swash::scale::ScaleContext,
 ) -> Size<f32> {
     if let Size {
         width: Some(width),
@@ -37,6 +41,7 @@ pub(crate) fn measure(
                 available_space,
                 parley_font_context,
                 parley_layout_context,
+                swash_scale_context,
             ),
         },
     }

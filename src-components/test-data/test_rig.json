@@ -39,7 +39,8 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "The quick brown fox jumped over the lazy dog. I repeat, the quick brown fox jumped over the lazy dog. Once more, the quick brown fox jumped over the lazy dog."
+                  "text": "The quick brown fox jumped over the lazy dog. I repeat, the quick brown fox jumped over the lazy dog. Once more, the quick brown fox jumped over the lazy dog.",
+                  "wrap": true
                 }
               ]
             },

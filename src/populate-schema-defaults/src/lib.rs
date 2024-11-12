@@ -25,7 +25,12 @@ fn process_schema_json(schema: &mut Value) {
 }
 
 fn apply_defaults(obj: &mut Map<String, Value>, defs: &Value) {
-    if let Some(Value::String(ref_type)) = obj.get("$ref") {
+    if let Some(Value::Bool(deprecated)) = obj.get("deprecated") {
+        if *deprecated {
+            // Remove "default" if it exists.
+            obj.remove("default");
+        }
+    } else if let Some(Value::String(ref_type)) = obj.get("$ref") {
         if ref_type.starts_with("#/definitions/") {
             if let Some(def_name) = ref_type.strip_prefix("#/definitions/") {
                 if let Some(Value::Object(definition)) = defs.get(def_name) {

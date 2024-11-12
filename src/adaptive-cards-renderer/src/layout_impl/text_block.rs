@@ -1,8 +1,8 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{borrow::Cow, cell::RefCell, rc::Rc};
 
 use adaptive_cards::TextBlock;
 use image::Rgba;
-use imageproc::drawing::Canvas;
+use imageproc::{drawing::Canvas, integral_image::ArrayData};
 use parley::{
     Alignment, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem, StyleProperty,
 };
@@ -16,16 +16,24 @@ use taffy::{AvailableSpace, Size, Style, TaffyTree};
 use crate::{
     element_layout_data::{ElementLayoutData, ElementTaffyData},
     errors::{RenderError, TaffyErrorToRenderError},
+    host_config_utils::*,
     layout_context::LayoutContext,
     layout_impl::measure::NodeContext,
     layout_scratch::LayoutScratch,
     layoutable::Layoutable,
     masked_image::MaskedImage,
-    utils::TaffyLayoutUtils,
+    utils::{ClampToU32, TaffyLayoutUtils},
 };
 
+#[derive(Debug)]
 pub(crate) struct TextBlockNodeContext {
     pub text: String,
+    pub color: Rgba<u8>,
+    pub font_family: String,
+    pub font_size: f32,
+    pub font_weight: f32,
+    pub max_lines: Option<u32>,
+    pub wrap: bool,
     pub offset: RefCell<taffy::Point<i32>>,
 }
 
@@ -34,9 +42,8 @@ impl TextBlockNodeContext {
         &self,
         known_dimensions: taffy::geometry::Size<Option<f32>>,
         available_space: taffy::geometry::Size<taffy::style::AvailableSpace>,
-        font_context: &mut parley::FontContext,
-        layout_context: &mut parley::LayoutContext,
-        scale_context: &mut swash::scale::ScaleContext,
+        context: &LayoutContext,
+        scratch: &mut LayoutScratch,
     ) -> Size<f32> {
         // https://docs.rs/parley/0.2.0/parley/
         // https://github.com/linebender/parley/blob/main/examples/swash_render/src/main.rs
@@ -47,9 +54,16 @@ impl TextBlockNodeContext {
             AvailableSpace::MaxContent => None,
             AvailableSpace::Definite(width) => Some(width),
         });
-        let text = &self.text;
 
-        let layout = prepare_layout(layout_context, font_context, text, width_constraint);
+        let (layout_context, font_context, scale_context) = scratch.for_text_mut();
+
+        let layout = prepare_layout(
+            self,
+            width_constraint,
+            context,
+            layout_context,
+            font_context,
+        );
 
         // Compute our own pixel bounds.
         // https://github.com/linebender/parley/issues/165
@@ -80,7 +94,7 @@ impl TextBlockNodeContext {
             }
         };
 
-        render_layout(&mut apply_pixel, layout, scale_context);
+        render_layout(self, &mut apply_pixel, layout, scale_context);
 
         let offset = match bounds {
             None => taffy::Point { x: 0, y: 0 },
@@ -111,12 +125,95 @@ impl Layoutable for TextBlock<ElementLayoutData> {
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
     ) -> Result<ElementTaffyData, RenderError> {
-        tree.new_leaf_with_context(
-            Style { ..baseline_style },
-            NodeContext::text(self.text.clone()),
-        )
-        .err_context(context)
-        .map(ElementTaffyData::from)
+        let container_style = context
+            .host_config
+            .container_styles
+            .from(context.inherited.style);
+
+        // Text Rendering Context
+        let maybe_text_style = context.host_config.text_styles.from(self.style); // Default or Heading
+
+        let color_config = container_style
+            .foreground_colors
+            .from(self.color.unwrap_or_else(|| maybe_text_style.to_ac_color()));
+
+        let is_subtle = if self.is_subtle {
+            true
+        } else {
+            // If they haven't explicitly made the text block subtle, then see if the style has it set.
+            maybe_text_style
+                .map(|style| style.is_subtle)
+                .unwrap_or(false)
+        };
+
+        let color = if is_subtle {
+            &color_config.subtle
+        } else {
+            &color_config.default
+        }
+        .to_color()?;
+
+        let font_type = context.host_config.font_types.from(
+            self.font_type
+                .unwrap_or_else(|| maybe_text_style.to_ac_type()),
+        );
+
+        let font_family = font_type.font_family.clone();
+
+        // Font size and weight are currently integers in the schema (matching the Adaptive Cards repository).
+        // We can potentially switch them to "number" once this issue is resolved:
+        // https://github.com/oxidecomputer/typify/issues/442
+        let font_size = font_type
+            .font_sizes
+            .from(self.size.unwrap_or_else(|| maybe_text_style.to_ac_size()))
+            .clamp_to_u32() as f32;
+
+        let font_weight = font_type
+            .font_weights
+            .from(
+                self.weight
+                    .unwrap_or_else(|| maybe_text_style.to_ac_weight()),
+            )
+            .clamp_to_u32() as f32;
+
+        let max_lines = self
+            .max_lines
+            .map(|m| m.round().clamp(u32::MIN as f64, u32::MAX as f64) as u32);
+
+        let wrap = self.wrap;
+
+        let node_context = NodeContext::Text(TextBlockNodeContext {
+            text: self.text.clone(),
+            color,
+            font_family,
+            font_size,
+            font_weight,
+            max_lines,
+            wrap,
+            offset: RefCell::new(Default::default()),
+        });
+
+        // Style
+        let mut style = Style { ..baseline_style };
+        if let Some(horizontal_alignment) = self.horizontal_alignment {
+            style.justify_content = Some(match horizontal_alignment {
+                adaptive_cards::HorizontalAlignment::Center => taffy::style::JustifyContent::Center,
+                adaptive_cards::HorizontalAlignment::Right => taffy::style::JustifyContent::FlexEnd,
+                adaptive_cards::HorizontalAlignment::Left => {
+                    taffy::style::JustifyContent::FlexStart
+                }
+            });
+        }
+
+        // Handled by parent
+        // self.is_visible
+        // self.separator
+        // self.spacing
+        // self.height
+
+        tree.new_leaf_with_context(style, node_context)
+            .err_context(context)
+            .map(ElementTaffyData::from)
     }
 
     fn draw_override(
@@ -130,20 +227,26 @@ impl Layoutable for TextBlock<ElementLayoutData> {
         let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
         let absolute_rect = node_layout.absolute_rect(context);
 
-        let context = tree.get_node_context(taffy_data.node_id).unwrap();
-        let NodeContext::Text(context) = context; /* else {
-                                                      panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
-                                                  };*/
-        let offset = context.offset.borrow();
+        let node_context = tree.get_node_context(taffy_data.node_id).unwrap();
+        let NodeContext::Text(text_context) = node_context; /* else {
+                                                                panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
+                                                            };*/
+
+        let offset = text_context.offset.borrow();
         let x_offset = absolute_rect.left() - offset.x;
         let y_offset = absolute_rect.top() - offset.y;
 
         let (layout_context, font_context, scale_context) = scratch.for_text_mut();
 
         let width_constraint = Some(absolute_rect.width() as f32);
-        let text = &self.text;
 
-        let layout = prepare_layout(layout_context, font_context, text, width_constraint);
+        let layout = prepare_layout(
+            text_context,
+            width_constraint,
+            context,
+            layout_context,
+            font_context,
+        );
 
         let mut image_mut = image.borrow_mut();
 
@@ -157,46 +260,61 @@ impl Layoutable for TextBlock<ElementLayoutData> {
             image_mut.draw_pixel(x, y, *pixel);
         };
 
-        render_layout(&mut apply_pixel, layout, scale_context);
+        render_layout(text_context, &mut apply_pixel, layout, scale_context);
 
         Ok(())
     }
 }
 
 fn prepare_layout(
+    text_context: &TextBlockNodeContext,
+    width_constraint: Option<f32>,
+    _context: &LayoutContext,
     layout_context: &mut parley::LayoutContext,
     font_context: &mut parley::FontContext,
-    text: &String,
-    width_constraint: Option<f32>,
 ) -> parley::Layout<[u8; 4]> {
+    println!("TextContext: {:?}", text_context);
+
     const DISPLAY_SCALE: f32 = 1.0;
+
+    let text = &text_context.text;
     let mut builder = layout_context.ranged_builder(font_context, text, DISPLAY_SCALE);
 
-    builder.push_default(FontFamily::Named("Open Sans".into()));
+    // builder.push_default(FontFamily::Named("Open Sans".into()));
+    builder.push_default(FontFamily::Named(Cow::from(&text_context.font_family)));
 
     // Set default styles that apply to the entire layout
     builder.push_default(StyleProperty::LineHeight(1.3));
-    builder.push_default(StyleProperty::FontSize(16.0));
-
-    // Set a style that applies to the first 4 characters
-    builder.push(StyleProperty::FontWeight(FontWeight::new(600.0)), 0..4);
+    builder.push_default(StyleProperty::FontSize(text_context.font_size));
+    builder.push_default(StyleProperty::FontWeight(FontWeight::new(
+        text_context.font_weight,
+    )));
+    builder.push_default(StyleProperty::Brush(text_context.color.data()));
 
     // Build the builder into a Layout
     let mut layout = builder.build(text);
 
     // Run line-breaking and alignment on the Layout
+    let width_constraint = if text_context.wrap {
+        width_constraint
+    } else {
+        None
+    };
     layout.break_all_lines(width_constraint);
     layout.align(width_constraint, Alignment::Start);
     layout
 }
 
 fn render_layout(
+    text_context: &TextBlockNodeContext,
     apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
     layout: parley::Layout<[u8; 4]>,
     scale_context: &mut swash::scale::ScaleContext,
 ) {
+    let max_lines = text_context.max_lines.unwrap_or(u32::MAX) as usize;
+
     // Iterate over laid out lines
-    for line in layout.lines() {
+    for line in layout.lines().take(max_lines) {
         // Iterate over GlyphRun's within each line
         for item in line.items() {
             if let PositionedLayoutItem::GlyphRun(glyph_run) = item {

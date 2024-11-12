@@ -107,6 +107,13 @@ surprise.
 
 How I color the grid lines will be decided when I implement tables. Perhaps using a separate `gridColor` property, or perhaps using the `borderColor` property.
 
+## hostConfig.font[Family|Sizes|Weights]
+
+Deprecated. `hostConfig.fontTypes` should be used instead. These fields are ignored by the renderer.
+https://github.com/microsoft/AdaptiveCards/issues/1078
+
+
+## font weights are consistently "lighter", "default" and "bolder", rather than occasionally "lighter", "normal" and "bolder".
 
 # Not Yet Supported
 

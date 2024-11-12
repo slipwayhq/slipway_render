@@ -228,7 +228,7 @@
 				"value": {
 					"$ref": "#/definitions/FactSetTextConfig",
 					"default": {
-						"weight": "normal",
+						"weight": "default",
 						"size": "default",
 						"color": "default",
 						"fontType": "default",
@@ -645,11 +645,11 @@
 					"type": "string",
 					"description": "Weight of font for fact set text",
 					"enum": [
-						"normal",
+						"default",
 						"lighter",
 						"bolder"
 					],
-					"default": "normal"
+					"default": "default"
 				},
 				"color": {
 					"type": "string",
@@ -712,11 +712,11 @@
 					"type": "string",
 					"description": "Default font weight for text of this style",
 					"enum": [
-						"normal",
+						"default",
 						"lighter",
 						"bolder"
 					],
-					"default": "normal"
+					"default": "default"
 				},
 				"color": {
 					"type": "string",
@@ -795,36 +795,15 @@
 				"default": {
 					"description": "Default font type",
 					"unevaluatedProperties": false,
-					"allOf": [
-						{
-							"$ref": "#/definitions/FontTypeConfig"
-						},
-						{
-							"properties": {
-								"fontFamily": {
-									"type": "string",
-									"default": "Open Sans"
-								}
-							}
-						}
-					]
+					"$ref": "#/definitions/FontTypeConfig"
 				},
 				"monospace": {
 					"description": "Monospace font type",
 					"unevaluatedProperties": false,
-					"allOf": [
-						{
-							"$ref": "#/definitions/FontTypeConfig"
-						},
-						{
-							"properties": {
-								"fontFamily": {
-									"type": "string",
-									"default": "monospace"
-								}
-							}
-						}
-					]
+					"$ref": "#/definitions/FontTypeConfig",
+					"default": {
+						"fontFamily": "monospace"
+					}
 				}
 			}
 		},
@@ -832,49 +811,15 @@
 			"type": "object",
 			"description": "Controls font styles",
 			"properties": {
+				"fontFamily": {
+					"type": "string",
+					"default": "Open Sans"
+				},
 				"fontSizes": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"small": {
-							"type": "integer",
-							"default": 12
-						},
-						"default": {
-							"type": "integer",
-							"default": 14
-						},
-						"medium": {
-							"type": "integer",
-							"default": 14
-						},
-						"large": {
-							"type": "integer",
-							"default": 18
-						},
-						"extraLarge": {
-							"type": "integer",
-							"default": 24
-						}
-					}
+					"$ref": "#/definitions/FontSizesConfig"
 				},
 				"fontWeights": {
-					"type": "object",
-					"additionalProperties": false,
-					"properties": {
-						"lighter": {
-							"type": "integer",
-							"default": 200
-						},
-						"default": {
-							"type": "integer",
-							"default": 400
-						},
-						"bolder": {
-							"type": "integer",
-							"default": 600
-						}
-					}
+					"$ref": "#/definitions/FontWeightsConfig"
 				}
 			}
 		},
@@ -896,7 +841,8 @@
 				"fontFamily": {
 					"type": "string",
 					"description": "Font face to use when rendering text",
-					"default": "sans-serif"
+					"default": "sans-serif",
+					"deprecated": true
 				},
 				"choiceSetInputValueSeparator": {
 					"type": "string",
@@ -922,10 +868,12 @@
 					"$ref": "#/definitions/FactSetConfig"
 				},
 				"fontSizes": {
-					"$ref": "#/definitions/FontSizesConfig"
+					"$ref": "#/definitions/FontSizesConfig",
+					"deprecated": true
 				},
 				"fontWeights": {
-					"$ref": "#/definitions/FontWeightsConfig"
+					"$ref": "#/definitions/FontWeightsConfig",
+					"deprecated": true
 				},
 				"spacing": {
 					"$ref": "#/definitions/SpacingsConfig"

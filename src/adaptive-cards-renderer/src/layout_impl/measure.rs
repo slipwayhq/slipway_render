@@ -1,5 +1,7 @@
 use taffy::Size;
 
+use crate::{layout_context::LayoutContext, layout_scratch::LayoutScratch};
+
 use super::text_block::TextBlockNodeContext;
 
 /// The Taffy node context.
@@ -7,23 +9,13 @@ pub(crate) enum NodeContext {
     Text(TextBlockNodeContext),
 }
 
-impl NodeContext {
-    pub fn text(text: String) -> Self {
-        NodeContext::Text(TextBlockNodeContext {
-            text,
-            offset: Default::default(),
-        })
-    }
-}
-
 /// The Taffy measure function for measuring Adaptive Card elements.
 pub(crate) fn measure(
     known_dimensions: taffy::geometry::Size<Option<f32>>,
     available_space: taffy::geometry::Size<taffy::style::AvailableSpace>,
     node_context: Option<&mut NodeContext>,
-    parley_font_context: &mut parley::FontContext,
-    parley_layout_context: &mut parley::LayoutContext,
-    swash_scale_context: &mut swash::scale::ScaleContext,
+    context: &LayoutContext,
+    scratch: &mut LayoutScratch,
 ) -> Size<f32> {
     if let Size {
         width: Some(width),
@@ -36,13 +28,9 @@ pub(crate) fn measure(
     match node_context {
         None => Size::ZERO,
         Some(node_context) => match node_context {
-            NodeContext::Text(context) => context.measure(
-                known_dimensions,
-                available_space,
-                parley_font_context,
-                parley_layout_context,
-                swash_scale_context,
-            ),
+            NodeContext::Text(text_context) => {
+                text_context.measure(known_dimensions, available_space, context, scratch)
+            }
         },
     }
 }

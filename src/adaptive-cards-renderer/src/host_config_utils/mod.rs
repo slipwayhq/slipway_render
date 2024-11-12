@@ -1,7 +1,15 @@
-use adaptive_cards_host_config::{ContainerStyleConfig, ContainerStylesConfig, SpacingsConfig};
+use adaptive_cards_host_config::{
+    ContainerStyleConfig, ContainerStylesConfig, FontColorConfig, FontSizesConfig, FontTypeConfig,
+    FontTypesConfig, FontWeightsConfig, ForegroundColorsConfig, SpacingsConfig, TextStyleConfig,
+    TextStyleConfigColor, TextStyleConfigFontType, TextStyleConfigSize, TextStyleConfigWeight,
+    TextStylesConfig,
+};
 use csscolorparser::ParseColorError;
 
-use adaptive_cards::{ContainerStyle, LayoutableElement, Spacing};
+use adaptive_cards::{
+    Colors, ContainerStyle, FontSize, FontType, FontWeight, LayoutableElement, Spacing,
+    TextBlockStyle,
+};
 
 use crate::errors::RenderError;
 
@@ -110,6 +118,205 @@ impl ContainerStyleToConfig for ContainerStylesConfig {
             ContainerStyle::Warning => &self.warning,
             ContainerStyle::Attention => &self.attention,
             ContainerStyle::Accent => &self.accent,
+        }
+    }
+}
+
+pub(super) trait ForegroundColorToConfig {
+    fn from(&self, color: Colors) -> &FontColorConfig;
+}
+
+impl ForegroundColorToConfig for ForegroundColorsConfig {
+    fn from(&self, color: Colors) -> &FontColorConfig {
+        match color {
+            Colors::Default => &self.default,
+            Colors::Dark => &self.dark,
+            Colors::Light => &self.light,
+            Colors::Accent => &self.accent,
+            Colors::Good => &self.good,
+            Colors::Warning => &self.warning,
+            Colors::Attention => &self.attention,
+        }
+    }
+}
+
+pub(super) trait FontTypeToConfig {
+    fn from(&self, font_type: FontType) -> &FontTypeConfig;
+}
+
+impl FontTypeToConfig for FontTypesConfig {
+    fn from(&self, font_type: FontType) -> &FontTypeConfig {
+        match font_type {
+            FontType::Default => &self.default,
+            FontType::Monospace => &self.monospace,
+        }
+    }
+}
+
+pub(super) trait FontSizeToNumber {
+    fn from(&self, font_size: FontSize) -> i64;
+}
+
+impl FontSizeToNumber for FontSizesConfig {
+    fn from(&self, font_size: FontSize) -> i64 {
+        match font_size {
+            FontSize::Small => self.small,
+            FontSize::Default => self.default,
+            FontSize::Medium => self.medium,
+            FontSize::Large => self.large,
+            FontSize::ExtraLarge => self.extra_large,
+        }
+    }
+}
+
+pub(super) trait FontWeightToNumber {
+    fn from(&self, font_weight: FontWeight) -> i64;
+}
+
+impl FontWeightToNumber for FontWeightsConfig {
+    fn from(&self, font_weight: FontWeight) -> i64 {
+        match font_weight {
+            FontWeight::Lighter => self.lighter,
+            FontWeight::Default => self.default,
+            FontWeight::Bolder => self.bolder,
+        }
+    }
+}
+
+pub(super) trait TextStyleToConfig {
+    fn from(&self, text_style: TextBlockStyle) -> Option<&TextStyleConfig>;
+}
+
+impl TextStyleToConfig for TextStylesConfig {
+    fn from(&self, text_style: TextBlockStyle) -> Option<&TextStyleConfig> {
+        match text_style {
+            TextBlockStyle::Default => None,
+            TextBlockStyle::Heading => Some(&self.heading),
+        }
+    }
+}
+
+// Converting from the color in the host config "text style" to the one in an adaptive card text block.
+pub(super) trait ToAdaptiveCardsColor {
+    fn to_ac_color(&self) -> Colors;
+}
+
+impl ToAdaptiveCardsColor for Option<&TextStyleConfig> {
+    fn to_ac_color(&self) -> Colors {
+        match self {
+            None => Colors::Default,
+            Some(inner) => inner.to_ac_color(),
+        }
+    }
+}
+
+impl ToAdaptiveCardsColor for TextStyleConfig {
+    fn to_ac_color(&self) -> Colors {
+        self.color.to_ac_color()
+    }
+}
+
+impl ToAdaptiveCardsColor for TextStyleConfigColor {
+    fn to_ac_color(&self) -> Colors {
+        match self {
+            TextStyleConfigColor::Default => Colors::Default,
+            TextStyleConfigColor::Dark => Colors::Dark,
+            TextStyleConfigColor::Light => Colors::Light,
+            TextStyleConfigColor::Accent => Colors::Accent,
+            TextStyleConfigColor::Good => Colors::Good,
+            TextStyleConfigColor::Warning => Colors::Warning,
+            TextStyleConfigColor::Attention => Colors::Attention,
+        }
+    }
+}
+
+// Converting from the font size in the host config "text style" to the one in an adaptive card text block.
+pub(super) trait ToAdaptiveCardsFontSize {
+    fn to_ac_size(&self) -> FontSize;
+}
+
+impl ToAdaptiveCardsFontSize for Option<&TextStyleConfig> {
+    fn to_ac_size(&self) -> FontSize {
+        match self {
+            None => FontSize::Default,
+            Some(inner) => inner.to_ac_size(),
+        }
+    }
+}
+
+impl ToAdaptiveCardsFontSize for TextStyleConfig {
+    fn to_ac_size(&self) -> FontSize {
+        self.size.to_ac_size()
+    }
+}
+
+impl ToAdaptiveCardsFontSize for TextStyleConfigSize {
+    fn to_ac_size(&self) -> FontSize {
+        match self {
+            TextStyleConfigSize::Small => FontSize::Small,
+            TextStyleConfigSize::Default => FontSize::Default,
+            TextStyleConfigSize::Medium => FontSize::Medium,
+            TextStyleConfigSize::Large => FontSize::Large,
+            TextStyleConfigSize::ExtraLarge => FontSize::ExtraLarge,
+        }
+    }
+}
+
+// Converting from the font weight in the host config "text style" to the one in an adaptive card text block.
+pub(super) trait ToAdaptiveCardsFontWeight {
+    fn to_ac_weight(&self) -> FontWeight;
+}
+
+impl ToAdaptiveCardsFontWeight for Option<&TextStyleConfig> {
+    fn to_ac_weight(&self) -> FontWeight {
+        match self {
+            None => FontWeight::Default,
+            Some(inner) => inner.to_ac_weight(),
+        }
+    }
+}
+
+impl ToAdaptiveCardsFontWeight for TextStyleConfig {
+    fn to_ac_weight(&self) -> FontWeight {
+        self.weight.to_ac_weight()
+    }
+}
+
+impl ToAdaptiveCardsFontWeight for TextStyleConfigWeight {
+    fn to_ac_weight(&self) -> FontWeight {
+        match self {
+            TextStyleConfigWeight::Lighter => FontWeight::Lighter,
+            TextStyleConfigWeight::Default => FontWeight::Default,
+            TextStyleConfigWeight::Bolder => FontWeight::Bolder,
+        }
+    }
+}
+
+// Converting from the font type in the host config "text style" to the one in an adaptive card text block.
+pub(super) trait ToAdaptiveCardsFontType {
+    fn to_ac_type(&self) -> FontType;
+}
+
+impl ToAdaptiveCardsFontType for Option<&TextStyleConfig> {
+    fn to_ac_type(&self) -> FontType {
+        match self {
+            None => FontType::Default,
+            Some(inner) => inner.to_ac_type(),
+        }
+    }
+}
+
+impl ToAdaptiveCardsFontType for TextStyleConfig {
+    fn to_ac_type(&self) -> FontType {
+        self.font_type.to_ac_type()
+    }
+}
+
+impl ToAdaptiveCardsFontType for TextStyleConfigFontType {
+    fn to_ac_type(&self) -> FontType {
+        match self {
+            TextStyleConfigFontType::Default => FontType::Default,
+            TextStyleConfigFontType::Monospace => FontType::Monospace,
         }
     }
 }

@@ -43,6 +43,9 @@ pub fn render(
     height: u32,
     debug_mode: DebugMode,
 ) -> Result<RgbaImage, RenderError> {
+    // Check for any host config issues that won't be picked up by deserialization.
+    validate_host_config(host_config)?;
+
     // Create the context for the root element.
     let context = LayoutContext::new(host_config, debug_mode);
 
@@ -52,8 +55,8 @@ pub fn render(
     // Layout the root element, which will recursively layout all descendants.
     let root = target.layout(&context, Default::default(), &mut tree)?;
 
-    let mut swash_scale_context = swash::scale::ScaleContext::new();
-    let mut parley_layout_context = parley::LayoutContext::new();
+    let swash_scale_context = swash::scale::ScaleContext::new();
+    let parley_layout_context = parley::LayoutContext::new();
     let mut parley_font_context = parley::FontContext::new();
     parley_font_context
         .collection
@@ -61,6 +64,12 @@ pub fn render(
     parley_font_context
         .collection
         .register_fonts(OPEN_SANS_ITALIC_TTF.into());
+
+    let mut scratch = LayoutScratch::new(
+        parley_layout_context,
+        parley_font_context,
+        swash_scale_context,
+    );
 
     // Calculate the final layout of the tree.
     tree.compute_layout_with_measure(
@@ -74,9 +83,8 @@ pub fn render(
                 known_dimensions,
                 available_space,
                 node_context,
-                &mut parley_font_context,
-                &mut parley_layout_context,
-                &mut swash_scale_context,
+                &context,
+                &mut scratch,
             )
         },
     )
@@ -88,12 +96,6 @@ pub fn render(
     // Create the image to draw onto.
     let image = Rc::new(RefCell::new(RgbaImage::new(width, height)));
 
-    let mut scratch = LayoutScratch::new(
-        parley_layout_context,
-        parley_font_context,
-        swash_scale_context,
-    );
-
     // Create the masked image for the root element, which will have a mask the size of the image.
     let masked_image = MaskedImage::from_image(image, debug_mode);
 
@@ -104,4 +106,19 @@ pub fn render(
     let image = masked_image.eject()?;
 
     Ok(image)
+}
+
+fn validate_host_config(host_config: &HostConfig) -> Result<(), RenderError> {
+    // https://github.com/microsoft/AdaptiveCards/issues/1078
+    if host_config.font_family.is_some() {
+        println!("Warning: hostConfig.fontFamily is deprecated and not used by this renderer.");
+    }
+    if host_config.font_sizes.is_some() {
+        println!("Warning: hostConfig.fontSizes is deprecated and not used by this renderer.");
+    }
+    if host_config.font_weights.is_some() {
+        println!("Warning: hostConfig.fontWeights is deprecated and not used by this renderer.");
+    }
+
+    Ok(())
 }

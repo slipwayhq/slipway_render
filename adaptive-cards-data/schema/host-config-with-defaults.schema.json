@@ -243,7 +243,7 @@
         "isSubtle": false,
         "maxWidth": 0,
         "size": "default",
-        "weight": "normal",
+        "weight": "default",
         "wrap": true
       }
     },
@@ -811,7 +811,7 @@
             "isSubtle": false,
             "maxWidth": 0,
             "size": "default",
-            "weight": "normal",
+            "weight": "default",
             "wrap": true
           }
         }
@@ -868,10 +868,10 @@
           "type": "string"
         },
         "weight": {
-          "default": "normal",
+          "default": "default",
           "description": "Weight of font for fact set text",
           "enum": [
-            "normal",
+            "default",
             "lighter",
             "bolder"
           ],
@@ -942,49 +942,27 @@
     "FontTypeConfig": {
       "description": "Controls font styles",
       "properties": {
+        "fontFamily": {
+          "default": "Open Sans",
+          "type": "string"
+        },
         "fontSizes": {
-          "additionalProperties": false,
-          "properties": {
-            "default": {
-              "default": 14,
-              "type": "integer"
-            },
-            "extraLarge": {
-              "default": 24,
-              "type": "integer"
-            },
-            "large": {
-              "default": 18,
-              "type": "integer"
-            },
-            "medium": {
-              "default": 14,
-              "type": "integer"
-            },
-            "small": {
-              "default": 12,
-              "type": "integer"
-            }
-          },
-          "type": "object"
+          "$ref": "#/definitions/FontSizesConfig",
+          "default": {
+            "default": 14,
+            "extraLarge": 24,
+            "large": 18,
+            "medium": 14,
+            "small": 12
+          }
         },
         "fontWeights": {
-          "additionalProperties": false,
-          "properties": {
-            "bolder": {
-              "default": 600,
-              "type": "integer"
-            },
-            "default": {
-              "default": 400,
-              "type": "integer"
-            },
-            "lighter": {
-              "default": 200,
-              "type": "integer"
-            }
-          },
-          "type": "object"
+          "$ref": "#/definitions/FontWeightsConfig",
+          "default": {
+            "bolder": 600,
+            "default": 400,
+            "lighter": 200
+          }
         }
       },
       "type": "object"
@@ -994,64 +972,42 @@
       "description": "Controls font styles",
       "properties": {
         "default": {
-          "allOf": [
-            {
-              "$ref": "#/definitions/FontTypeConfig",
-              "default": {
-                "fontSizes": {
-                  "default": 14,
-                  "extraLarge": 24,
-                  "large": 18,
-                  "medium": 14,
-                  "small": 12
-                },
-                "fontWeights": {
-                  "bolder": 600,
-                  "default": 400,
-                  "lighter": 200
-                }
-              }
+          "$ref": "#/definitions/FontTypeConfig",
+          "default": {
+            "fontFamily": "Open Sans",
+            "fontSizes": {
+              "default": 14,
+              "extraLarge": 24,
+              "large": 18,
+              "medium": 14,
+              "small": 12
             },
-            {
-              "properties": {
-                "fontFamily": {
-                  "default": "Open Sans",
-                  "type": "string"
-                }
-              }
+            "fontWeights": {
+              "bolder": 600,
+              "default": 400,
+              "lighter": 200
             }
-          ],
+          },
           "description": "Default font type",
           "unevaluatedProperties": false
         },
         "monospace": {
-          "allOf": [
-            {
-              "$ref": "#/definitions/FontTypeConfig",
-              "default": {
-                "fontSizes": {
-                  "default": 14,
-                  "extraLarge": 24,
-                  "large": 18,
-                  "medium": 14,
-                  "small": 12
-                },
-                "fontWeights": {
-                  "bolder": 600,
-                  "default": 400,
-                  "lighter": 200
-                }
-              }
+          "$ref": "#/definitions/FontTypeConfig",
+          "default": {
+            "fontFamily": "monospace",
+            "fontSizes": {
+              "default": 14,
+              "extraLarge": 24,
+              "large": 18,
+              "medium": 14,
+              "small": 12
             },
-            {
-              "properties": {
-                "fontFamily": {
-                  "default": "monospace",
-                  "type": "string"
-                }
-              }
+            "fontWeights": {
+              "bolder": 600,
+              "default": 400,
+              "lighter": 200
             }
-          ],
+          },
           "description": "Monospace font type",
           "unevaluatedProperties": false
         }
@@ -1398,25 +1354,19 @@
               "isSubtle": false,
               "maxWidth": 0,
               "size": "default",
-              "weight": "normal",
+              "weight": "default",
               "wrap": true
             }
           }
         },
         "fontFamily": {
-          "default": "sans-serif",
+          "deprecated": true,
           "description": "Font face to use when rendering text",
           "type": "string"
         },
         "fontSizes": {
           "$ref": "#/definitions/FontSizesConfig",
-          "default": {
-            "default": 14,
-            "extraLarge": 24,
-            "large": 18,
-            "medium": 14,
-            "small": 12
-          }
+          "deprecated": true
         },
         "fontTypes": {
           "$ref": "#/definitions/FontTypesConfig",
@@ -1455,11 +1405,7 @@
         },
         "fontWeights": {
           "$ref": "#/definitions/FontWeightsConfig",
-          "default": {
-            "bolder": 600,
-            "default": 400,
-            "lighter": 200
-          }
+          "deprecated": true
         },
         "imageBaseUrl": {
           "description": "Base URL to be used when loading resources",
@@ -1904,10 +1850,10 @@
           "type": "string"
         },
         "weight": {
-          "default": "normal",
+          "default": "default",
           "description": "Default font weight for text of this style",
           "enum": [
-            "normal",
+            "default",
             "lighter",
             "bolder"
           ],

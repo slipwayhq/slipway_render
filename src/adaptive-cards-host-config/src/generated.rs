@@ -1238,7 +1238,7 @@ impl Default for ErrorMessageConfigWeight {
 #[doc = "        \"isSubtle\": false,"]
 #[doc = "        \"maxWidth\": 0,"]
 #[doc = "        \"size\": \"default\","]
-#[doc = "        \"weight\": \"normal\","]
+#[doc = "        \"weight\": \"default\","]
 #[doc = "        \"wrap\": true"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/FactSetTextConfig\""]
@@ -1324,10 +1324,10 @@ impl FactSetConfig {
 #[doc = "    },"]
 #[doc = "    \"weight\": {"]
 #[doc = "      \"description\": \"Weight of font for fact set text\","]
-#[doc = "      \"default\": \"normal\","]
+#[doc = "      \"default\": \"default\","]
 #[doc = "      \"type\": \"string\","]
 #[doc = "      \"enum\": ["]
-#[doc = "        \"normal\","]
+#[doc = "        \"default\","]
 #[doc = "        \"lighter\","]
 #[doc = "        \"bolder\""]
 #[doc = "      ]"]
@@ -1634,10 +1634,10 @@ impl Default for FactSetTextConfigSize {
 #[doc = r" ```json"]
 #[doc = "{"]
 #[doc = "  \"description\": \"Weight of font for fact set text\","]
-#[doc = "  \"default\": \"normal\","]
+#[doc = "  \"default\": \"default\","]
 #[doc = "  \"type\": \"string\","]
 #[doc = "  \"enum\": ["]
-#[doc = "    \"normal\","]
+#[doc = "    \"default\","]
 #[doc = "    \"lighter\","]
 #[doc = "    \"bolder\""]
 #[doc = "  ]"]
@@ -1646,8 +1646,8 @@ impl Default for FactSetTextConfigSize {
 #[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum FactSetTextConfigWeight {
-    #[serde(rename = "normal")]
-    Normal,
+    #[serde(rename = "default")]
+    Default,
     #[serde(rename = "lighter")]
     Lighter,
     #[serde(rename = "bolder")]
@@ -1661,7 +1661,7 @@ impl From<&FactSetTextConfigWeight> for FactSetTextConfigWeight {
 impl ToString for FactSetTextConfigWeight {
     fn to_string(&self) -> String {
         match *self {
-            Self::Normal => "normal".to_string(),
+            Self::Default => "default".to_string(),
             Self::Lighter => "lighter".to_string(),
             Self::Bolder => "bolder".to_string(),
         }
@@ -1671,7 +1671,7 @@ impl std::str::FromStr for FactSetTextConfigWeight {
     type Err = self::error::ConversionError;
     fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
-            "normal" => Ok(Self::Normal),
+            "default" => Ok(Self::Default),
             "lighter" => Ok(Self::Lighter),
             "bolder" => Ok(Self::Bolder),
             _ => Err("invalid value".into()),
@@ -1698,7 +1698,7 @@ impl std::convert::TryFrom<String> for FactSetTextConfigWeight {
 }
 impl Default for FactSetTextConfigWeight {
     fn default() -> Self {
-        FactSetTextConfigWeight::Normal
+        FactSetTextConfigWeight::Default
     }
 }
 #[doc = "FontColorConfig"]
@@ -1827,49 +1827,27 @@ impl FontSizesConfig {
 #[doc = "  \"description\": \"Controls font styles\","]
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
+#[doc = "    \"fontFamily\": {"]
+#[doc = "      \"default\": \"Open Sans\","]
+#[doc = "      \"type\": \"string\""]
+#[doc = "    },"]
 #[doc = "    \"fontSizes\": {"]
-#[doc = "      \"type\": \"object\","]
-#[doc = "      \"properties\": {"]
-#[doc = "        \"default\": {"]
-#[doc = "          \"default\": 14,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"extraLarge\": {"]
-#[doc = "          \"default\": 24,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"large\": {"]
-#[doc = "          \"default\": 18,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"medium\": {"]
-#[doc = "          \"default\": 14,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"small\": {"]
-#[doc = "          \"default\": 12,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        }"]
+#[doc = "      \"default\": {"]
+#[doc = "        \"default\": 14,"]
+#[doc = "        \"extraLarge\": 24,"]
+#[doc = "        \"large\": 18,"]
+#[doc = "        \"medium\": 14,"]
+#[doc = "        \"small\": 12"]
 #[doc = "      },"]
-#[doc = "      \"additionalProperties\": false"]
+#[doc = "      \"$ref\": \"#/definitions/FontSizesConfig\""]
 #[doc = "    },"]
 #[doc = "    \"fontWeights\": {"]
-#[doc = "      \"type\": \"object\","]
-#[doc = "      \"properties\": {"]
-#[doc = "        \"bolder\": {"]
-#[doc = "          \"default\": 600,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"default\": {"]
-#[doc = "          \"default\": 400,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        },"]
-#[doc = "        \"lighter\": {"]
-#[doc = "          \"default\": 200,"]
-#[doc = "          \"type\": \"integer\""]
-#[doc = "        }"]
+#[doc = "      \"default\": {"]
+#[doc = "        \"bolder\": 600,"]
+#[doc = "        \"default\": 400,"]
+#[doc = "        \"lighter\": 200"]
 #[doc = "      },"]
-#[doc = "      \"additionalProperties\": false"]
+#[doc = "      \"$ref\": \"#/definitions/FontWeightsConfig\""]
 #[doc = "    }"]
 #[doc = "  }"]
 #[doc = "}"]
@@ -1877,14 +1855,21 @@ impl FontSizesConfig {
 #[doc = r" </details>"]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct FontTypeConfig {
-    #[serde(rename = "fontSizes", default, skip_serializing_if = "Option::is_none")]
-    pub font_sizes: Option<FontTypeConfigFontSizes>,
+    #[serde(
+        rename = "fontFamily",
+        default = "defaults::font_type_config_font_family"
+    )]
+    pub font_family: String,
+    #[serde(
+        rename = "fontSizes",
+        default = "defaults::font_type_config_font_sizes"
+    )]
+    pub font_sizes: FontSizesConfig,
     #[serde(
         rename = "fontWeights",
-        default,
-        skip_serializing_if = "Option::is_none"
+        default = "defaults::font_type_config_font_weights"
     )]
-    pub font_weights: Option<FontTypeConfigFontWeights>,
+    pub font_weights: FontWeightsConfig,
 }
 impl From<&FontTypeConfig> for FontTypeConfig {
     fn from(value: &FontTypeConfig) -> Self {
@@ -1893,108 +1878,6 @@ impl From<&FontTypeConfig> for FontTypeConfig {
 }
 impl FontTypeConfig {
     pub fn builder() -> builder::FontTypeConfig {
-        Default::default()
-    }
-}
-#[doc = "FontTypeConfigFontSizes"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 24,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"large\": {"]
-#[doc = "      \"default\": 18,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"small\": {"]
-#[doc = "      \"default\": 12,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypeConfigFontSizes {
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
-    pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 18>")]
-    pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub medium: i64,
-    #[serde(default = "defaults::default_u64::<i64, 12>")]
-    pub small: i64,
-}
-impl From<&FontTypeConfigFontSizes> for FontTypeConfigFontSizes {
-    fn from(value: &FontTypeConfigFontSizes) -> Self {
-        value.clone()
-    }
-}
-impl FontTypeConfigFontSizes {
-    pub fn builder() -> builder::FontTypeConfigFontSizes {
-        Default::default()
-    }
-}
-#[doc = "FontTypeConfigFontWeights"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"bolder\": {"]
-#[doc = "      \"default\": 600,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 400,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"lighter\": {"]
-#[doc = "      \"default\": 200,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypeConfigFontWeights {
-    #[serde(default = "defaults::default_u64::<i64, 600>")]
-    pub bolder: i64,
-    #[serde(default = "defaults::default_u64::<i64, 400>")]
-    pub default: i64,
-    #[serde(default = "defaults::default_u64::<i64, 200>")]
-    pub lighter: i64,
-}
-impl From<&FontTypeConfigFontWeights> for FontTypeConfigFontWeights {
-    fn from(value: &FontTypeConfigFontWeights) -> Self {
-        value.clone()
-    }
-}
-impl FontTypeConfigFontWeights {
-    pub fn builder() -> builder::FontTypeConfigFontWeights {
         Default::default()
     }
 }
@@ -2009,64 +1892,42 @@ impl FontTypeConfigFontWeights {
 #[doc = "  \"properties\": {"]
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Default font type\","]
-#[doc = "      \"allOf\": ["]
-#[doc = "        {"]
-#[doc = "          \"default\": {"]
-#[doc = "            \"fontSizes\": {"]
-#[doc = "              \"default\": 14,"]
-#[doc = "              \"extraLarge\": 24,"]
-#[doc = "              \"large\": 18,"]
-#[doc = "              \"medium\": 14,"]
-#[doc = "              \"small\": 12"]
-#[doc = "            },"]
-#[doc = "            \"fontWeights\": {"]
-#[doc = "              \"bolder\": 600,"]
-#[doc = "              \"default\": 400,"]
-#[doc = "              \"lighter\": 200"]
-#[doc = "            }"]
-#[doc = "          },"]
-#[doc = "          \"$ref\": \"#/definitions/FontTypeConfig\""]
+#[doc = "      \"default\": {"]
+#[doc = "        \"fontFamily\": \"Open Sans\","]
+#[doc = "        \"fontSizes\": {"]
+#[doc = "          \"default\": 14,"]
+#[doc = "          \"extraLarge\": 24,"]
+#[doc = "          \"large\": 18,"]
+#[doc = "          \"medium\": 14,"]
+#[doc = "          \"small\": 12"]
 #[doc = "        },"]
-#[doc = "        {"]
-#[doc = "          \"properties\": {"]
-#[doc = "            \"fontFamily\": {"]
-#[doc = "              \"default\": \"Open Sans\","]
-#[doc = "              \"type\": \"string\""]
-#[doc = "            }"]
-#[doc = "          }"]
+#[doc = "        \"fontWeights\": {"]
+#[doc = "          \"bolder\": 600,"]
+#[doc = "          \"default\": 400,"]
+#[doc = "          \"lighter\": 200"]
 #[doc = "        }"]
-#[doc = "      ],"]
+#[doc = "      },"]
+#[doc = "      \"$ref\": \"#/definitions/FontTypeConfig\","]
 #[doc = "      \"unevaluatedProperties\": false"]
 #[doc = "    },"]
 #[doc = "    \"monospace\": {"]
 #[doc = "      \"description\": \"Monospace font type\","]
-#[doc = "      \"allOf\": ["]
-#[doc = "        {"]
-#[doc = "          \"default\": {"]
-#[doc = "            \"fontSizes\": {"]
-#[doc = "              \"default\": 14,"]
-#[doc = "              \"extraLarge\": 24,"]
-#[doc = "              \"large\": 18,"]
-#[doc = "              \"medium\": 14,"]
-#[doc = "              \"small\": 12"]
-#[doc = "            },"]
-#[doc = "            \"fontWeights\": {"]
-#[doc = "              \"bolder\": 600,"]
-#[doc = "              \"default\": 400,"]
-#[doc = "              \"lighter\": 200"]
-#[doc = "            }"]
-#[doc = "          },"]
-#[doc = "          \"$ref\": \"#/definitions/FontTypeConfig\""]
+#[doc = "      \"default\": {"]
+#[doc = "        \"fontFamily\": \"monospace\","]
+#[doc = "        \"fontSizes\": {"]
+#[doc = "          \"default\": 14,"]
+#[doc = "          \"extraLarge\": 24,"]
+#[doc = "          \"large\": 18,"]
+#[doc = "          \"medium\": 14,"]
+#[doc = "          \"small\": 12"]
 #[doc = "        },"]
-#[doc = "        {"]
-#[doc = "          \"properties\": {"]
-#[doc = "            \"fontFamily\": {"]
-#[doc = "              \"default\": \"monospace\","]
-#[doc = "              \"type\": \"string\""]
-#[doc = "            }"]
-#[doc = "          }"]
+#[doc = "        \"fontWeights\": {"]
+#[doc = "          \"bolder\": 600,"]
+#[doc = "          \"default\": 400,"]
+#[doc = "          \"lighter\": 200"]
 #[doc = "        }"]
-#[doc = "      ],"]
+#[doc = "      },"]
+#[doc = "      \"$ref\": \"#/definitions/FontTypeConfig\","]
 #[doc = "      \"unevaluatedProperties\": false"]
 #[doc = "    }"]
 #[doc = "  },"]
@@ -2077,10 +1938,12 @@ impl FontTypeConfigFontWeights {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct FontTypesConfig {
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub default: Option<FontTypesConfigDefault>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub monospace: Option<FontTypesConfigMonospace>,
+    #[doc = "Default font type"]
+    #[serde(default = "defaults::font_types_config_default")]
+    pub default: FontTypeConfig,
+    #[doc = "Monospace font type"]
+    #[serde(default = "defaults::font_types_config_monospace")]
+    pub monospace: FontTypeConfig,
 }
 impl From<&FontTypesConfig> for FontTypesConfig {
     fn from(value: &FontTypesConfig) -> Self {
@@ -2089,338 +1952,6 @@ impl From<&FontTypesConfig> for FontTypesConfig {
 }
 impl FontTypesConfig {
     pub fn builder() -> builder::FontTypesConfig {
-        Default::default()
-    }
-}
-#[doc = "Default font type"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Default font type\","]
-#[doc = "  \"allOf\": ["]
-#[doc = "    {"]
-#[doc = "      \"default\": {"]
-#[doc = "        \"fontSizes\": {"]
-#[doc = "          \"default\": 14,"]
-#[doc = "          \"extraLarge\": 24,"]
-#[doc = "          \"large\": 18,"]
-#[doc = "          \"medium\": 14,"]
-#[doc = "          \"small\": 12"]
-#[doc = "        },"]
-#[doc = "        \"fontWeights\": {"]
-#[doc = "          \"bolder\": 600,"]
-#[doc = "          \"default\": 400,"]
-#[doc = "          \"lighter\": 200"]
-#[doc = "        }"]
-#[doc = "      },"]
-#[doc = "      \"$ref\": \"#/definitions/FontTypeConfig\""]
-#[doc = "    },"]
-#[doc = "    {"]
-#[doc = "      \"properties\": {"]
-#[doc = "        \"fontFamily\": {"]
-#[doc = "          \"default\": \"Open Sans\","]
-#[doc = "          \"type\": \"string\""]
-#[doc = "        }"]
-#[doc = "      }"]
-#[doc = "    }"]
-#[doc = "  ],"]
-#[doc = "  \"unevaluatedProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct FontTypesConfigDefault {
-    #[serde(
-        rename = "fontFamily",
-        default = "defaults::font_types_config_default_font_family"
-    )]
-    pub font_family: String,
-    #[serde(rename = "fontSizes", default, skip_serializing_if = "Option::is_none")]
-    pub font_sizes: Option<FontTypesConfigDefaultFontSizes>,
-    #[serde(
-        rename = "fontWeights",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub font_weights: Option<FontTypesConfigDefaultFontWeights>,
-}
-impl From<&FontTypesConfigDefault> for FontTypesConfigDefault {
-    fn from(value: &FontTypesConfigDefault) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigDefault {
-    pub fn builder() -> builder::FontTypesConfigDefault {
-        Default::default()
-    }
-}
-#[doc = "FontTypesConfigDefaultFontSizes"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 24,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"large\": {"]
-#[doc = "      \"default\": 18,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"small\": {"]
-#[doc = "      \"default\": 12,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypesConfigDefaultFontSizes {
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
-    pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 18>")]
-    pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub medium: i64,
-    #[serde(default = "defaults::default_u64::<i64, 12>")]
-    pub small: i64,
-}
-impl From<&FontTypesConfigDefaultFontSizes> for FontTypesConfigDefaultFontSizes {
-    fn from(value: &FontTypesConfigDefaultFontSizes) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigDefaultFontSizes {
-    pub fn builder() -> builder::FontTypesConfigDefaultFontSizes {
-        Default::default()
-    }
-}
-#[doc = "FontTypesConfigDefaultFontWeights"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"bolder\": {"]
-#[doc = "      \"default\": 600,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 400,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"lighter\": {"]
-#[doc = "      \"default\": 200,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypesConfigDefaultFontWeights {
-    #[serde(default = "defaults::default_u64::<i64, 600>")]
-    pub bolder: i64,
-    #[serde(default = "defaults::default_u64::<i64, 400>")]
-    pub default: i64,
-    #[serde(default = "defaults::default_u64::<i64, 200>")]
-    pub lighter: i64,
-}
-impl From<&FontTypesConfigDefaultFontWeights> for FontTypesConfigDefaultFontWeights {
-    fn from(value: &FontTypesConfigDefaultFontWeights) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigDefaultFontWeights {
-    pub fn builder() -> builder::FontTypesConfigDefaultFontWeights {
-        Default::default()
-    }
-}
-#[doc = "Monospace font type"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Monospace font type\","]
-#[doc = "  \"allOf\": ["]
-#[doc = "    {"]
-#[doc = "      \"default\": {"]
-#[doc = "        \"fontSizes\": {"]
-#[doc = "          \"default\": 14,"]
-#[doc = "          \"extraLarge\": 24,"]
-#[doc = "          \"large\": 18,"]
-#[doc = "          \"medium\": 14,"]
-#[doc = "          \"small\": 12"]
-#[doc = "        },"]
-#[doc = "        \"fontWeights\": {"]
-#[doc = "          \"bolder\": 600,"]
-#[doc = "          \"default\": 400,"]
-#[doc = "          \"lighter\": 200"]
-#[doc = "        }"]
-#[doc = "      },"]
-#[doc = "      \"$ref\": \"#/definitions/FontTypeConfig\""]
-#[doc = "    },"]
-#[doc = "    {"]
-#[doc = "      \"properties\": {"]
-#[doc = "        \"fontFamily\": {"]
-#[doc = "          \"default\": \"monospace\","]
-#[doc = "          \"type\": \"string\""]
-#[doc = "        }"]
-#[doc = "      }"]
-#[doc = "    }"]
-#[doc = "  ],"]
-#[doc = "  \"unevaluatedProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct FontTypesConfigMonospace {
-    #[serde(
-        rename = "fontFamily",
-        default = "defaults::font_types_config_monospace_font_family"
-    )]
-    pub font_family: String,
-    #[serde(rename = "fontSizes", default, skip_serializing_if = "Option::is_none")]
-    pub font_sizes: Option<FontTypesConfigMonospaceFontSizes>,
-    #[serde(
-        rename = "fontWeights",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub font_weights: Option<FontTypesConfigMonospaceFontWeights>,
-}
-impl From<&FontTypesConfigMonospace> for FontTypesConfigMonospace {
-    fn from(value: &FontTypesConfigMonospace) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigMonospace {
-    pub fn builder() -> builder::FontTypesConfigMonospace {
-        Default::default()
-    }
-}
-#[doc = "FontTypesConfigMonospaceFontSizes"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"extraLarge\": {"]
-#[doc = "      \"default\": 24,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"large\": {"]
-#[doc = "      \"default\": 18,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"medium\": {"]
-#[doc = "      \"default\": 14,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"small\": {"]
-#[doc = "      \"default\": 12,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypesConfigMonospaceFontSizes {
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub default: i64,
-    #[serde(rename = "extraLarge", default = "defaults::default_u64::<i64, 24>")]
-    pub extra_large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 18>")]
-    pub large: i64,
-    #[serde(default = "defaults::default_u64::<i64, 14>")]
-    pub medium: i64,
-    #[serde(default = "defaults::default_u64::<i64, 12>")]
-    pub small: i64,
-}
-impl From<&FontTypesConfigMonospaceFontSizes> for FontTypesConfigMonospaceFontSizes {
-    fn from(value: &FontTypesConfigMonospaceFontSizes) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigMonospaceFontSizes {
-    pub fn builder() -> builder::FontTypesConfigMonospaceFontSizes {
-        Default::default()
-    }
-}
-#[doc = "FontTypesConfigMonospaceFontWeights"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"type\": \"object\","]
-#[doc = "  \"properties\": {"]
-#[doc = "    \"bolder\": {"]
-#[doc = "      \"default\": 600,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"default\": {"]
-#[doc = "      \"default\": 400,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    },"]
-#[doc = "    \"lighter\": {"]
-#[doc = "      \"default\": 200,"]
-#[doc = "      \"type\": \"integer\""]
-#[doc = "    }"]
-#[doc = "  },"]
-#[doc = "  \"additionalProperties\": false"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct FontTypesConfigMonospaceFontWeights {
-    #[serde(default = "defaults::default_u64::<i64, 600>")]
-    pub bolder: i64,
-    #[serde(default = "defaults::default_u64::<i64, 400>")]
-    pub default: i64,
-    #[serde(default = "defaults::default_u64::<i64, 200>")]
-    pub lighter: i64,
-}
-impl From<&FontTypesConfigMonospaceFontWeights> for FontTypesConfigMonospaceFontWeights {
-    fn from(value: &FontTypesConfigMonospaceFontWeights) -> Self {
-        value.clone()
-    }
-}
-impl FontTypesConfigMonospaceFontWeights {
-    pub fn builder() -> builder::FontTypesConfigMonospaceFontWeights {
         Default::default()
     }
 }
@@ -2830,7 +2361,7 @@ impl ForegroundColorsConfig {
 #[doc = "          \"isSubtle\": false,"]
 #[doc = "          \"maxWidth\": 0,"]
 #[doc = "          \"size\": \"default\","]
-#[doc = "          \"weight\": \"normal\","]
+#[doc = "          \"weight\": \"default\","]
 #[doc = "          \"wrap\": true"]
 #[doc = "        }"]
 #[doc = "      },"]
@@ -2838,17 +2369,11 @@ impl ForegroundColorsConfig {
 #[doc = "    },"]
 #[doc = "    \"fontFamily\": {"]
 #[doc = "      \"description\": \"Font face to use when rendering text\","]
-#[doc = "      \"default\": \"sans-serif\","]
+#[doc = "      \"deprecated\": true,"]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
 #[doc = "    \"fontSizes\": {"]
-#[doc = "      \"default\": {"]
-#[doc = "        \"default\": 14,"]
-#[doc = "        \"extraLarge\": 24,"]
-#[doc = "        \"large\": 18,"]
-#[doc = "        \"medium\": 14,"]
-#[doc = "        \"small\": 12"]
-#[doc = "      },"]
+#[doc = "      \"deprecated\": true,"]
 #[doc = "      \"$ref\": \"#/definitions/FontSizesConfig\""]
 #[doc = "    },"]
 #[doc = "    \"fontTypes\": {"]
@@ -2887,11 +2412,7 @@ impl ForegroundColorsConfig {
 #[doc = "      \"$ref\": \"#/definitions/FontTypesConfig\""]
 #[doc = "    },"]
 #[doc = "    \"fontWeights\": {"]
-#[doc = "      \"default\": {"]
-#[doc = "        \"bolder\": 600,"]
-#[doc = "        \"default\": 400,"]
-#[doc = "        \"lighter\": 200"]
-#[doc = "      },"]
+#[doc = "      \"deprecated\": true,"]
 #[doc = "      \"$ref\": \"#/definitions/FontWeightsConfig\""]
 #[doc = "    },"]
 #[doc = "    \"imageBaseUrl\": {"]
@@ -3022,14 +2543,22 @@ pub struct HostConfig {
     #[serde(rename = "factSet", default = "defaults::host_config_fact_set")]
     pub fact_set: FactSetConfig,
     #[doc = "Font face to use when rendering text"]
-    #[serde(rename = "fontFamily", default = "defaults::host_config_font_family")]
-    pub font_family: String,
-    #[serde(rename = "fontSizes", default = "defaults::host_config_font_sizes")]
-    pub font_sizes: FontSizesConfig,
+    #[serde(
+        rename = "fontFamily",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub font_family: Option<String>,
+    #[serde(rename = "fontSizes", default, skip_serializing_if = "Option::is_none")]
+    pub font_sizes: Option<FontSizesConfig>,
     #[serde(rename = "fontTypes", default = "defaults::host_config_font_types")]
     pub font_types: FontTypesConfig,
-    #[serde(rename = "fontWeights", default = "defaults::host_config_font_weights")]
-    pub font_weights: FontWeightsConfig,
+    #[serde(
+        rename = "fontWeights",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub font_weights: Option<FontWeightsConfig>,
     #[doc = "Base URL to be used when loading resources"]
     #[serde(
         rename = "imageBaseUrl",
@@ -4319,10 +3848,10 @@ impl TextBlockConfig {
 #[doc = "    },"]
 #[doc = "    \"weight\": {"]
 #[doc = "      \"description\": \"Default font weight for text of this style\","]
-#[doc = "      \"default\": \"normal\","]
+#[doc = "      \"default\": \"default\","]
 #[doc = "      \"type\": \"string\","]
 #[doc = "      \"enum\": ["]
-#[doc = "        \"normal\","]
+#[doc = "        \"default\","]
 #[doc = "        \"lighter\","]
 #[doc = "        \"bolder\""]
 #[doc = "      ]"]
@@ -4615,10 +4144,10 @@ impl Default for TextStyleConfigSize {
 #[doc = r" ```json"]
 #[doc = "{"]
 #[doc = "  \"description\": \"Default font weight for text of this style\","]
-#[doc = "  \"default\": \"normal\","]
+#[doc = "  \"default\": \"default\","]
 #[doc = "  \"type\": \"string\","]
 #[doc = "  \"enum\": ["]
-#[doc = "    \"normal\","]
+#[doc = "    \"default\","]
 #[doc = "    \"lighter\","]
 #[doc = "    \"bolder\""]
 #[doc = "  ]"]
@@ -4627,8 +4156,8 @@ impl Default for TextStyleConfigSize {
 #[doc = r" </details>"]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum TextStyleConfigWeight {
-    #[serde(rename = "normal")]
-    Normal,
+    #[serde(rename = "default")]
+    Default,
     #[serde(rename = "lighter")]
     Lighter,
     #[serde(rename = "bolder")]
@@ -4642,7 +4171,7 @@ impl From<&TextStyleConfigWeight> for TextStyleConfigWeight {
 impl ToString for TextStyleConfigWeight {
     fn to_string(&self) -> String {
         match *self {
-            Self::Normal => "normal".to_string(),
+            Self::Default => "default".to_string(),
             Self::Lighter => "lighter".to_string(),
             Self::Bolder => "bolder".to_string(),
         }
@@ -4652,7 +4181,7 @@ impl std::str::FromStr for TextStyleConfigWeight {
     type Err = self::error::ConversionError;
     fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
         match value {
-            "normal" => Ok(Self::Normal),
+            "default" => Ok(Self::Default),
             "lighter" => Ok(Self::Lighter),
             "bolder" => Ok(Self::Bolder),
             _ => Err("invalid value".into()),
@@ -4679,7 +4208,7 @@ impl std::convert::TryFrom<String> for TextStyleConfigWeight {
 }
 impl Default for TextStyleConfigWeight {
     fn default() -> Self {
-        TextStyleConfigWeight::Normal
+        TextStyleConfigWeight::Default
     }
 }
 #[doc = "Sets default properties for text of a given style"]
@@ -5521,21 +5050,33 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct FontTypeConfig {
-        font_sizes: Result<Option<super::FontTypeConfigFontSizes>, String>,
-        font_weights: Result<Option<super::FontTypeConfigFontWeights>, String>,
+        font_family: Result<String, String>,
+        font_sizes: Result<super::FontSizesConfig, String>,
+        font_weights: Result<super::FontWeightsConfig, String>,
     }
     impl Default for FontTypeConfig {
         fn default() -> Self {
             Self {
-                font_sizes: Ok(Default::default()),
-                font_weights: Ok(Default::default()),
+                font_family: Ok(super::defaults::font_type_config_font_family()),
+                font_sizes: Ok(super::defaults::font_type_config_font_sizes()),
+                font_weights: Ok(super::defaults::font_type_config_font_weights()),
             }
         }
     }
     impl FontTypeConfig {
+        pub fn font_family<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<String>,
+            T::Error: std::fmt::Display,
+        {
+            self.font_family = value
+                .try_into()
+                .map_err(|e| format!("error converting supplied value for font_family: {}", e));
+            self
+        }
         pub fn font_sizes<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::FontTypeConfigFontSizes>>,
+            T: std::convert::TryInto<super::FontSizesConfig>,
             T::Error: std::fmt::Display,
         {
             self.font_sizes = value
@@ -5545,7 +5086,7 @@ pub mod builder {
         }
         pub fn font_weights<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::FontTypeConfigFontWeights>>,
+            T: std::convert::TryInto<super::FontWeightsConfig>,
             T::Error: std::fmt::Display,
         {
             self.font_weights = value
@@ -5558,6 +5099,7 @@ pub mod builder {
         type Error = super::error::ConversionError;
         fn try_from(value: FontTypeConfig) -> Result<Self, super::error::ConversionError> {
             Ok(Self {
+                font_family: value.font_family?,
                 font_sizes: value.font_sizes?,
                 font_weights: value.font_weights?,
             })
@@ -5566,190 +5108,29 @@ pub mod builder {
     impl From<super::FontTypeConfig> for FontTypeConfig {
         fn from(value: super::FontTypeConfig) -> Self {
             Self {
+                font_family: Ok(value.font_family),
                 font_sizes: Ok(value.font_sizes),
                 font_weights: Ok(value.font_weights),
             }
         }
     }
     #[derive(Clone, Debug)]
-    pub struct FontTypeConfigFontSizes {
-        default: Result<i64, String>,
-        extra_large: Result<i64, String>,
-        large: Result<i64, String>,
-        medium: Result<i64, String>,
-        small: Result<i64, String>,
-    }
-    impl Default for FontTypeConfigFontSizes {
-        fn default() -> Self {
-            Self {
-                default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
-                large: Ok(super::defaults::default_u64::<i64, 18>()),
-                medium: Ok(super::defaults::default_u64::<i64, 14>()),
-                small: Ok(super::defaults::default_u64::<i64, 12>()),
-            }
-        }
-    }
-    impl FontTypeConfigFontSizes {
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn extra_large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.extra_large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for extra_large: {}", e));
-            self
-        }
-        pub fn large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for large: {}", e));
-            self
-        }
-        pub fn medium<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.medium = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for medium: {}", e));
-            self
-        }
-        pub fn small<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.small = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for small: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypeConfigFontSizes> for super::FontTypeConfigFontSizes {
-        type Error = super::error::ConversionError;
-        fn try_from(value: FontTypeConfigFontSizes) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                default: value.default?,
-                extra_large: value.extra_large?,
-                large: value.large?,
-                medium: value.medium?,
-                small: value.small?,
-            })
-        }
-    }
-    impl From<super::FontTypeConfigFontSizes> for FontTypeConfigFontSizes {
-        fn from(value: super::FontTypeConfigFontSizes) -> Self {
-            Self {
-                default: Ok(value.default),
-                extra_large: Ok(value.extra_large),
-                large: Ok(value.large),
-                medium: Ok(value.medium),
-                small: Ok(value.small),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypeConfigFontWeights {
-        bolder: Result<i64, String>,
-        default: Result<i64, String>,
-        lighter: Result<i64, String>,
-    }
-    impl Default for FontTypeConfigFontWeights {
-        fn default() -> Self {
-            Self {
-                bolder: Ok(super::defaults::default_u64::<i64, 600>()),
-                default: Ok(super::defaults::default_u64::<i64, 400>()),
-                lighter: Ok(super::defaults::default_u64::<i64, 200>()),
-            }
-        }
-    }
-    impl FontTypeConfigFontWeights {
-        pub fn bolder<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.bolder = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for bolder: {}", e));
-            self
-        }
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn lighter<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.lighter = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for lighter: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypeConfigFontWeights> for super::FontTypeConfigFontWeights {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypeConfigFontWeights,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                bolder: value.bolder?,
-                default: value.default?,
-                lighter: value.lighter?,
-            })
-        }
-    }
-    impl From<super::FontTypeConfigFontWeights> for FontTypeConfigFontWeights {
-        fn from(value: super::FontTypeConfigFontWeights) -> Self {
-            Self {
-                bolder: Ok(value.bolder),
-                default: Ok(value.default),
-                lighter: Ok(value.lighter),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
     pub struct FontTypesConfig {
-        default: Result<Option<super::FontTypesConfigDefault>, String>,
-        monospace: Result<Option<super::FontTypesConfigMonospace>, String>,
+        default: Result<super::FontTypeConfig, String>,
+        monospace: Result<super::FontTypeConfig, String>,
     }
     impl Default for FontTypesConfig {
         fn default() -> Self {
             Self {
-                default: Ok(Default::default()),
-                monospace: Ok(Default::default()),
+                default: Ok(super::defaults::font_types_config_default()),
+                monospace: Ok(super::defaults::font_types_config_monospace()),
             }
         }
     }
     impl FontTypesConfig {
         pub fn default<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::FontTypesConfigDefault>>,
+            T: std::convert::TryInto<super::FontTypeConfig>,
             T::Error: std::fmt::Display,
         {
             self.default = value
@@ -5759,7 +5140,7 @@ pub mod builder {
         }
         pub fn monospace<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<super::FontTypesConfigMonospace>>,
+            T: std::convert::TryInto<super::FontTypeConfig>,
             T::Error: std::fmt::Display,
         {
             self.monospace = value
@@ -5782,476 +5163,6 @@ pub mod builder {
             Self {
                 default: Ok(value.default),
                 monospace: Ok(value.monospace),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigDefault {
-        font_family: Result<String, String>,
-        font_sizes: Result<Option<super::FontTypesConfigDefaultFontSizes>, String>,
-        font_weights: Result<Option<super::FontTypesConfigDefaultFontWeights>, String>,
-    }
-    impl Default for FontTypesConfigDefault {
-        fn default() -> Self {
-            Self {
-                font_family: Ok(super::defaults::font_types_config_default_font_family()),
-                font_sizes: Ok(Default::default()),
-                font_weights: Ok(Default::default()),
-            }
-        }
-    }
-    impl FontTypesConfigDefault {
-        pub fn font_family<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_family = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_family: {}", e));
-            self
-        }
-        pub fn font_sizes<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::FontTypesConfigDefaultFontSizes>>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_sizes = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_sizes: {}", e));
-            self
-        }
-        pub fn font_weights<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::FontTypesConfigDefaultFontWeights>>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_weights = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_weights: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigDefault> for super::FontTypesConfigDefault {
-        type Error = super::error::ConversionError;
-        fn try_from(value: FontTypesConfigDefault) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                font_family: value.font_family?,
-                font_sizes: value.font_sizes?,
-                font_weights: value.font_weights?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigDefault> for FontTypesConfigDefault {
-        fn from(value: super::FontTypesConfigDefault) -> Self {
-            Self {
-                font_family: Ok(value.font_family),
-                font_sizes: Ok(value.font_sizes),
-                font_weights: Ok(value.font_weights),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigDefaultFontSizes {
-        default: Result<i64, String>,
-        extra_large: Result<i64, String>,
-        large: Result<i64, String>,
-        medium: Result<i64, String>,
-        small: Result<i64, String>,
-    }
-    impl Default for FontTypesConfigDefaultFontSizes {
-        fn default() -> Self {
-            Self {
-                default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
-                large: Ok(super::defaults::default_u64::<i64, 18>()),
-                medium: Ok(super::defaults::default_u64::<i64, 14>()),
-                small: Ok(super::defaults::default_u64::<i64, 12>()),
-            }
-        }
-    }
-    impl FontTypesConfigDefaultFontSizes {
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn extra_large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.extra_large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for extra_large: {}", e));
-            self
-        }
-        pub fn large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for large: {}", e));
-            self
-        }
-        pub fn medium<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.medium = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for medium: {}", e));
-            self
-        }
-        pub fn small<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.small = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for small: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigDefaultFontSizes>
-        for super::FontTypesConfigDefaultFontSizes
-    {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypesConfigDefaultFontSizes,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                default: value.default?,
-                extra_large: value.extra_large?,
-                large: value.large?,
-                medium: value.medium?,
-                small: value.small?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigDefaultFontSizes> for FontTypesConfigDefaultFontSizes {
-        fn from(value: super::FontTypesConfigDefaultFontSizes) -> Self {
-            Self {
-                default: Ok(value.default),
-                extra_large: Ok(value.extra_large),
-                large: Ok(value.large),
-                medium: Ok(value.medium),
-                small: Ok(value.small),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigDefaultFontWeights {
-        bolder: Result<i64, String>,
-        default: Result<i64, String>,
-        lighter: Result<i64, String>,
-    }
-    impl Default for FontTypesConfigDefaultFontWeights {
-        fn default() -> Self {
-            Self {
-                bolder: Ok(super::defaults::default_u64::<i64, 600>()),
-                default: Ok(super::defaults::default_u64::<i64, 400>()),
-                lighter: Ok(super::defaults::default_u64::<i64, 200>()),
-            }
-        }
-    }
-    impl FontTypesConfigDefaultFontWeights {
-        pub fn bolder<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.bolder = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for bolder: {}", e));
-            self
-        }
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn lighter<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.lighter = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for lighter: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigDefaultFontWeights>
-        for super::FontTypesConfigDefaultFontWeights
-    {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypesConfigDefaultFontWeights,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                bolder: value.bolder?,
-                default: value.default?,
-                lighter: value.lighter?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigDefaultFontWeights> for FontTypesConfigDefaultFontWeights {
-        fn from(value: super::FontTypesConfigDefaultFontWeights) -> Self {
-            Self {
-                bolder: Ok(value.bolder),
-                default: Ok(value.default),
-                lighter: Ok(value.lighter),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigMonospace {
-        font_family: Result<String, String>,
-        font_sizes: Result<Option<super::FontTypesConfigMonospaceFontSizes>, String>,
-        font_weights: Result<Option<super::FontTypesConfigMonospaceFontWeights>, String>,
-    }
-    impl Default for FontTypesConfigMonospace {
-        fn default() -> Self {
-            Self {
-                font_family: Ok(super::defaults::font_types_config_monospace_font_family()),
-                font_sizes: Ok(Default::default()),
-                font_weights: Ok(Default::default()),
-            }
-        }
-    }
-    impl FontTypesConfigMonospace {
-        pub fn font_family<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<String>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_family = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_family: {}", e));
-            self
-        }
-        pub fn font_sizes<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::FontTypesConfigMonospaceFontSizes>>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_sizes = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_sizes: {}", e));
-            self
-        }
-        pub fn font_weights<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<Option<super::FontTypesConfigMonospaceFontWeights>>,
-            T::Error: std::fmt::Display,
-        {
-            self.font_weights = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for font_weights: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigMonospace> for super::FontTypesConfigMonospace {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypesConfigMonospace,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                font_family: value.font_family?,
-                font_sizes: value.font_sizes?,
-                font_weights: value.font_weights?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigMonospace> for FontTypesConfigMonospace {
-        fn from(value: super::FontTypesConfigMonospace) -> Self {
-            Self {
-                font_family: Ok(value.font_family),
-                font_sizes: Ok(value.font_sizes),
-                font_weights: Ok(value.font_weights),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigMonospaceFontSizes {
-        default: Result<i64, String>,
-        extra_large: Result<i64, String>,
-        large: Result<i64, String>,
-        medium: Result<i64, String>,
-        small: Result<i64, String>,
-    }
-    impl Default for FontTypesConfigMonospaceFontSizes {
-        fn default() -> Self {
-            Self {
-                default: Ok(super::defaults::default_u64::<i64, 14>()),
-                extra_large: Ok(super::defaults::default_u64::<i64, 24>()),
-                large: Ok(super::defaults::default_u64::<i64, 18>()),
-                medium: Ok(super::defaults::default_u64::<i64, 14>()),
-                small: Ok(super::defaults::default_u64::<i64, 12>()),
-            }
-        }
-    }
-    impl FontTypesConfigMonospaceFontSizes {
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn extra_large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.extra_large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for extra_large: {}", e));
-            self
-        }
-        pub fn large<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.large = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for large: {}", e));
-            self
-        }
-        pub fn medium<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.medium = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for medium: {}", e));
-            self
-        }
-        pub fn small<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.small = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for small: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigMonospaceFontSizes>
-        for super::FontTypesConfigMonospaceFontSizes
-    {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypesConfigMonospaceFontSizes,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                default: value.default?,
-                extra_large: value.extra_large?,
-                large: value.large?,
-                medium: value.medium?,
-                small: value.small?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigMonospaceFontSizes> for FontTypesConfigMonospaceFontSizes {
-        fn from(value: super::FontTypesConfigMonospaceFontSizes) -> Self {
-            Self {
-                default: Ok(value.default),
-                extra_large: Ok(value.extra_large),
-                large: Ok(value.large),
-                medium: Ok(value.medium),
-                small: Ok(value.small),
-            }
-        }
-    }
-    #[derive(Clone, Debug)]
-    pub struct FontTypesConfigMonospaceFontWeights {
-        bolder: Result<i64, String>,
-        default: Result<i64, String>,
-        lighter: Result<i64, String>,
-    }
-    impl Default for FontTypesConfigMonospaceFontWeights {
-        fn default() -> Self {
-            Self {
-                bolder: Ok(super::defaults::default_u64::<i64, 600>()),
-                default: Ok(super::defaults::default_u64::<i64, 400>()),
-                lighter: Ok(super::defaults::default_u64::<i64, 200>()),
-            }
-        }
-    }
-    impl FontTypesConfigMonospaceFontWeights {
-        pub fn bolder<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.bolder = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for bolder: {}", e));
-            self
-        }
-        pub fn default<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.default = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for default: {}", e));
-            self
-        }
-        pub fn lighter<T>(mut self, value: T) -> Self
-        where
-            T: std::convert::TryInto<i64>,
-            T::Error: std::fmt::Display,
-        {
-            self.lighter = value
-                .try_into()
-                .map_err(|e| format!("error converting supplied value for lighter: {}", e));
-            self
-        }
-    }
-    impl std::convert::TryFrom<FontTypesConfigMonospaceFontWeights>
-        for super::FontTypesConfigMonospaceFontWeights
-    {
-        type Error = super::error::ConversionError;
-        fn try_from(
-            value: FontTypesConfigMonospaceFontWeights,
-        ) -> Result<Self, super::error::ConversionError> {
-            Ok(Self {
-                bolder: value.bolder?,
-                default: value.default?,
-                lighter: value.lighter?,
-            })
-        }
-    }
-    impl From<super::FontTypesConfigMonospaceFontWeights> for FontTypesConfigMonospaceFontWeights {
-        fn from(value: super::FontTypesConfigMonospaceFontWeights) -> Self {
-            Self {
-                bolder: Ok(value.bolder),
-                default: Ok(value.default),
-                lighter: Ok(value.lighter),
             }
         }
     }
@@ -6450,10 +5361,10 @@ pub mod builder {
         choice_set_input_value_separator: Result<String, String>,
         container_styles: Result<super::ContainerStylesConfig, String>,
         fact_set: Result<super::FactSetConfig, String>,
-        font_family: Result<String, String>,
-        font_sizes: Result<super::FontSizesConfig, String>,
+        font_family: Result<Option<String>, String>,
+        font_sizes: Result<Option<super::FontSizesConfig>, String>,
         font_types: Result<super::FontTypesConfig, String>,
-        font_weights: Result<super::FontWeightsConfig, String>,
+        font_weights: Result<Option<super::FontWeightsConfig>, String>,
         image_base_url: Result<Option<String>, String>,
         image_set: Result<super::ImageSetConfig, String>,
         image_sizes: Result<super::ImageSizesConfig, String>,
@@ -6476,10 +5387,10 @@ pub mod builder {
                 ),
                 container_styles: Ok(super::defaults::host_config_container_styles()),
                 fact_set: Ok(super::defaults::host_config_fact_set()),
-                font_family: Ok(super::defaults::host_config_font_family()),
-                font_sizes: Ok(super::defaults::host_config_font_sizes()),
+                font_family: Ok(Default::default()),
+                font_sizes: Ok(Default::default()),
                 font_types: Ok(super::defaults::host_config_font_types()),
-                font_weights: Ok(super::defaults::host_config_font_weights()),
+                font_weights: Ok(Default::default()),
                 image_base_url: Ok(Default::default()),
                 image_set: Ok(super::defaults::host_config_image_set()),
                 image_sizes: Ok(super::defaults::host_config_image_sizes()),
@@ -6553,7 +5464,7 @@ pub mod builder {
         }
         pub fn font_family<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<String>,
+            T: std::convert::TryInto<Option<String>>,
             T::Error: std::fmt::Display,
         {
             self.font_family = value
@@ -6563,7 +5474,7 @@ pub mod builder {
         }
         pub fn font_sizes<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FontSizesConfig>,
+            T: std::convert::TryInto<Option<super::FontSizesConfig>>,
             T::Error: std::fmt::Display,
         {
             self.font_sizes = value
@@ -6583,7 +5494,7 @@ pub mod builder {
         }
         pub fn font_weights<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FontWeightsConfig>,
+            T: std::convert::TryInto<Option<super::FontWeightsConfig>>,
             T::Error: std::fmt::Display,
         {
             self.font_weights = value
@@ -7883,7 +6794,7 @@ pub mod defaults {
             is_subtle: false,
             max_width: 0_i64,
             size: super::FactSetTextConfigSize::Default,
-            weight: super::FactSetTextConfigWeight::Normal,
+            weight: super::FactSetTextConfigWeight::Default,
             wrap: true,
         }
     }
@@ -7897,7 +6808,7 @@ pub mod defaults {
         super::FactSetTextConfigSize::Default
     }
     pub(super) fn fact_set_text_config_weight() -> super::FactSetTextConfigWeight {
-        super::FactSetTextConfigWeight::Normal
+        super::FactSetTextConfigWeight::Default
     }
     pub(super) fn font_color_config_default() -> Option<String> {
         Some("#ff252424".to_string())
@@ -7905,11 +6816,58 @@ pub mod defaults {
     pub(super) fn font_color_config_subtle() -> Option<String> {
         Some("#bf252424".to_string())
     }
-    pub(super) fn font_types_config_default_font_family() -> String {
+    pub(super) fn font_type_config_font_family() -> String {
         "Open Sans".to_string()
     }
-    pub(super) fn font_types_config_monospace_font_family() -> String {
-        "monospace".to_string()
+    pub(super) fn font_type_config_font_sizes() -> super::FontSizesConfig {
+        super::FontSizesConfig {
+            default: 14_i64,
+            extra_large: 24_i64,
+            large: 18_i64,
+            medium: 14_i64,
+            small: 12_i64,
+        }
+    }
+    pub(super) fn font_type_config_font_weights() -> super::FontWeightsConfig {
+        super::FontWeightsConfig {
+            bolder: 600_i64,
+            default: 400_i64,
+            lighter: 200_i64,
+        }
+    }
+    pub(super) fn font_types_config_default() -> super::FontTypeConfig {
+        super::FontTypeConfig {
+            font_family: "Open Sans".to_string(),
+            font_sizes: super::FontSizesConfig {
+                default: 14_i64,
+                extra_large: 24_i64,
+                large: 18_i64,
+                medium: 14_i64,
+                small: 12_i64,
+            },
+            font_weights: super::FontWeightsConfig {
+                bolder: 600_i64,
+                default: 400_i64,
+                lighter: 200_i64,
+            },
+        }
+    }
+    pub(super) fn font_types_config_monospace() -> super::FontTypeConfig {
+        super::FontTypeConfig {
+            font_family: "monospace".to_string(),
+            font_sizes: super::FontSizesConfig {
+                default: 14_i64,
+                extra_large: 24_i64,
+                large: 18_i64,
+                medium: 14_i64,
+                small: 12_i64,
+            },
+            font_weights: super::FontWeightsConfig {
+                bolder: 600_i64,
+                default: 400_i64,
+                lighter: 200_i64,
+            },
+        }
     }
     pub(super) fn foreground_colors_config_accent() -> super::FontColorConfig {
         super::FontColorConfig {
@@ -8204,62 +7162,43 @@ pub mod defaults {
                 is_subtle: false,
                 max_width: 0_i64,
                 size: super::FactSetTextConfigSize::Default,
-                weight: super::FactSetTextConfigWeight::Normal,
+                weight: super::FactSetTextConfigWeight::Default,
                 wrap: true,
             },
         }
     }
-    pub(super) fn host_config_font_family() -> String {
-        "sans-serif".to_string()
-    }
-    pub(super) fn host_config_font_sizes() -> super::FontSizesConfig {
-        super::FontSizesConfig {
-            default: 14_i64,
-            extra_large: 24_i64,
-            large: 18_i64,
-            medium: 14_i64,
-            small: 12_i64,
-        }
-    }
     pub(super) fn host_config_font_types() -> super::FontTypesConfig {
         super::FontTypesConfig {
-            default: Some(super::FontTypesConfigDefault {
+            default: super::FontTypeConfig {
                 font_family: "Open Sans".to_string(),
-                font_sizes: Some(super::FontTypesConfigDefaultFontSizes {
+                font_sizes: super::FontSizesConfig {
                     default: 14_i64,
                     extra_large: 24_i64,
                     large: 18_i64,
                     medium: 14_i64,
                     small: 12_i64,
-                }),
-                font_weights: Some(super::FontTypesConfigDefaultFontWeights {
+                },
+                font_weights: super::FontWeightsConfig {
                     bolder: 600_i64,
                     default: 400_i64,
                     lighter: 200_i64,
-                }),
-            }),
-            monospace: Some(super::FontTypesConfigMonospace {
+                },
+            },
+            monospace: super::FontTypeConfig {
                 font_family: "monospace".to_string(),
-                font_sizes: Some(super::FontTypesConfigMonospaceFontSizes {
+                font_sizes: super::FontSizesConfig {
                     default: 14_i64,
                     extra_large: 24_i64,
                     large: 18_i64,
                     medium: 14_i64,
                     small: 12_i64,
-                }),
-                font_weights: Some(super::FontTypesConfigMonospaceFontWeights {
+                },
+                font_weights: super::FontWeightsConfig {
                     bolder: 600_i64,
                     default: 400_i64,
                     lighter: 200_i64,
-                }),
-            }),
-        }
-    }
-    pub(super) fn host_config_font_weights() -> super::FontWeightsConfig {
-        super::FontWeightsConfig {
-            bolder: 600_i64,
-            default: 400_i64,
-            lighter: 200_i64,
+                },
+            },
         }
     }
     pub(super) fn host_config_image_set() -> super::ImageSetConfig {
@@ -8425,7 +7364,7 @@ pub mod defaults {
         super::TextStyleConfigSize::Default
     }
     pub(super) fn text_style_config_weight() -> super::TextStyleConfigWeight {
-        super::TextStyleConfigWeight::Normal
+        super::TextStyleConfigWeight::Default
     }
     pub(super) fn text_styles_config_column_header() -> super::TextStyleConfig {
         super::TextStyleConfig {

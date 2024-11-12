@@ -16,7 +16,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_mixed_height
             "rect": {
               "x": 24,
               "y": 24,
-              "width": 100,
+              "width": 102,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -45,7 +45,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_mixed_height
             "rect": {
               "x": 24,
               "y": 70,
-              "width": 100,
+              "width": 102,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -74,7 +74,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_mixed_height
             "rect": {
               "x": 24,
               "y": 213,
-              "width": 100,
+              "width": 102,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -103,7 +103,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_mixed_height
             "rect": {
               "x": 24,
               "y": 357,
-              "width": 100,
+              "width": 102,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -132,7 +132,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_mixed_height
             "rect": {
               "x": 24,
               "y": 766,
-              "width": 100,
+              "width": 102,
               "height": 10
             },
             "placement": "SoleVertical"

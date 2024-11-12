@@ -17,7 +17,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_multiple_ite
             "rect": {
               "x": 12,
               "y": 12,
-              "width": 100,
+              "width": 126,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -47,7 +47,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_multiple_ite
             "rect": {
               "x": 12,
               "y": 58,
-              "width": 100,
+              "width": 126,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -76,7 +76,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_multiple_ite
             "rect": {
               "x": 12,
               "y": 302,
-              "width": 100,
+              "width": 126,
               "height": 10
             },
             "placement": "SoleVertical"

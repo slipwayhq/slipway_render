@@ -813,7 +813,7 @@
 			"properties": {
 				"fontFamily": {
 					"type": "string",
-					"default": "Open Sans"
+					"default": "Roboto"
 				},
 				"fontSizes": {
 					"$ref": "#/definitions/FontSizesConfig"

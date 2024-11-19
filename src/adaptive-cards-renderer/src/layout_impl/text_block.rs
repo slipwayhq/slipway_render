@@ -280,7 +280,6 @@ fn prepare_layout(
     let text = &text_context.text;
     let mut builder = layout_context.ranged_builder(font_context, text, DISPLAY_SCALE);
 
-    // builder.push_default(FontFamily::Named("Open Sans".into()));
     builder.push_default(FontFamily::Named(Cow::from(&text_context.font_family)));
 
     // Set default styles that apply to the entire layout

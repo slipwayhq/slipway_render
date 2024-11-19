@@ -1828,7 +1828,7 @@ impl FontSizesConfig {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"fontFamily\": {"]
-#[doc = "      \"default\": \"Open Sans\","]
+#[doc = "      \"default\": \"Roboto\","]
 #[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
 #[doc = "    \"fontSizes\": {"]
@@ -1893,7 +1893,7 @@ impl FontTypeConfig {
 #[doc = "    \"default\": {"]
 #[doc = "      \"description\": \"Default font type\","]
 #[doc = "      \"default\": {"]
-#[doc = "        \"fontFamily\": \"Open Sans\","]
+#[doc = "        \"fontFamily\": \"Roboto\","]
 #[doc = "        \"fontSizes\": {"]
 #[doc = "          \"default\": 14,"]
 #[doc = "          \"extraLarge\": 24,"]
@@ -2379,7 +2379,7 @@ impl ForegroundColorsConfig {
 #[doc = "    \"fontTypes\": {"]
 #[doc = "      \"default\": {"]
 #[doc = "        \"default\": {"]
-#[doc = "          \"fontFamily\": \"Open Sans\","]
+#[doc = "          \"fontFamily\": \"Roboto\","]
 #[doc = "          \"fontSizes\": {"]
 #[doc = "            \"default\": 14,"]
 #[doc = "            \"extraLarge\": 24,"]
@@ -6817,7 +6817,7 @@ pub mod defaults {
         Some("#bf252424".to_string())
     }
     pub(super) fn font_type_config_font_family() -> String {
-        "Open Sans".to_string()
+        "Roboto".to_string()
     }
     pub(super) fn font_type_config_font_sizes() -> super::FontSizesConfig {
         super::FontSizesConfig {
@@ -6837,7 +6837,7 @@ pub mod defaults {
     }
     pub(super) fn font_types_config_default() -> super::FontTypeConfig {
         super::FontTypeConfig {
-            font_family: "Open Sans".to_string(),
+            font_family: "Roboto".to_string(),
             font_sizes: super::FontSizesConfig {
                 default: 14_i64,
                 extra_large: 24_i64,
@@ -7170,7 +7170,7 @@ pub mod defaults {
     pub(super) fn host_config_font_types() -> super::FontTypesConfig {
         super::FontTypesConfig {
             default: super::FontTypeConfig {
-                font_family: "Open Sans".to_string(),
+                font_family: "Roboto".to_string(),
                 font_sizes: super::FontSizesConfig {
                     default: 14_i64,
                     extra_large: 24_i64,

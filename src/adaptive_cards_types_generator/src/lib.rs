@@ -224,7 +224,7 @@ mod tests {
     #[test]
     fn it_should_generate_tokens() {
         let tokens = generate_inner(PathBuf::from(
-            "../../adaptive-cards-data/schema/typed-schema-1.6",
+            "../../adaptive_cards_data/schema/typed-schema-1.6",
         ))
         .unwrap();
 

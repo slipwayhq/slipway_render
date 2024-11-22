@@ -1,10 +1,10 @@
 [workspace]
 members = [
-    "populate-schema-defaults",
-    "adaptive-cards-types-generator",
-    "adaptive-cards-renderer",
-    "adaptive-cards-host-config",
-    "adaptive-cards",
+    "populate_schema_defaults",
+    "adaptive_cards_types_generator",
+    "adaptive_cards_renderer",
+    "adaptive_cards_host_config",
+    "adaptive_cards",
 ]
 resolver = "2"
 

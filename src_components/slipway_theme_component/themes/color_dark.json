@@ -1,5 +1,5 @@
 {
-    "$schema": "../../../adaptive-cards-data/schema/host-config.schema.json",
+    "$schema": "../../../adaptive_cards_data/schema/host-config.schema.json",
     "separator": {
         "lineThickness": 1,
         "lineColor": "#EEEEEE"

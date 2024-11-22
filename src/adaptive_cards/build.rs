@@ -5,7 +5,7 @@ fn main() {
 }
 
 fn generate_adaptive_cards_types() {
-    let src = PathBuf::from("../../adaptive-cards-data/schema/typed-schema-1.6/");
+    let src = PathBuf::from("../../adaptive_cards_data/schema/typed-schema-1.6/");
     let dst = PathBuf::from("./src/generated.rs");
 
     adaptive_cards_types_generator::generate(src.clone(), dst).expect("Failed to generate types");

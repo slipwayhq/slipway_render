@@ -1,12 +1,12 @@
 [package]
-name = "adaptive-cards-renderer"
+name = "adaptive_cards_renderer"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-adaptive-cards = { path = "../adaptive-cards" }
-adaptive-cards-host-config = { path = "../adaptive-cards-host-config" }
+adaptive_cards = { path = "../adaptive_cards" }
+adaptive_cards_host_config = { path = "../adaptive_cards_host_config" }
 csscolorparser = "0.7.0"
 image.workspace = true
 imageproc = "0.25.0"
@@ -23,8 +23,8 @@ peniko = { version = "0.2.0" }
 swash = { version = "0.1.19", default-features = true }
 
 [build-dependencies]
-adaptive-cards-types-generator = { path = "../adaptive-cards-types-generator" }
-populate-schema-defaults = { path = "../populate-schema-defaults" }
+adaptive_cards_types_generator = { path = "../adaptive_cards_types_generator" }
+populate_schema_defaults = { path = "../populate_schema_defaults" }
 
 [dev-dependencies]
 walkdir = "2.5.0"

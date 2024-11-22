@@ -11,9 +11,9 @@ fn main() {
 }
 
 fn generate_host_config_schema_with_defaults() {
-    let src = PathBuf::from("../../adaptive-cards-data/schema/host-config.schema.json");
+    let src = PathBuf::from("../../adaptive_cards_data/schema/host-config.schema.json");
     let dst =
-        PathBuf::from("../../adaptive-cards-data/schema/host-config-with-defaults.schema.json");
+        PathBuf::from("../../adaptive_cards_data/schema/host-config-with-defaults.schema.json");
 
     populate_schema_defaults::process_schema_path(src.clone(), dst);
 
@@ -22,7 +22,7 @@ fn generate_host_config_schema_with_defaults() {
 
 fn generate_host_config_types() {
     // Run the `cargo typify` command
-    let json_src = "../../adaptive-cards-data/schema/host-config-with-defaults.schema.json";
+    let json_src = "../../adaptive_cards_data/schema/host-config-with-defaults.schema.json";
     let output = Command::new("cargo")
         .arg("typify")
         .arg(json_src)
@@ -38,7 +38,7 @@ fn generate_host_config_types() {
 
 fn copy_host_config_types() {
     // Copy the generated typed schema types to the src directory
-    let src = Path::new("../../adaptive-cards-data/schema/host-config-with-defaults.schema.rs");
+    let src = Path::new("../../adaptive_cards_data/schema/host-config-with-defaults.schema.rs");
     let dst = Path::new("./src/generated.rs");
 
     if let Err(e) = fs::rename(src, dst) {

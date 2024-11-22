@@ -1,11 +1,12 @@
 [package]
-name = "adaptive-cards-host-config"
+name = "populate_schema_defaults"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
 [dependencies]
 serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 
-[build-dependencies]
-populate-schema-defaults = { path = "../populate-schema-defaults" }
+[dev-dependencies]
+insta = { workspace = true, features = ["json", "glob"] }

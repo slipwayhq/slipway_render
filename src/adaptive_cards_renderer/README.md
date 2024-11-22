@@ -3,7 +3,7 @@
 ## Type Generation
 
 We generate custom types from the Adaptive Cards typed schema files located in
-`adaptive-cards-data/schema/typed-schema-1.6`.
+`adaptive_cards_data/schema/typed-schema-1.6`.
 
 Every Adaptive Cards type must implement the `Layoutable` trait. The code generator adds the
 default trait implementation to any types marked as not explicitly implemented (see the

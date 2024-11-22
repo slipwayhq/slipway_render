@@ -1,5 +1,5 @@
 [package]
-name = "adaptive-cards"
+name = "adaptive_cards"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -9,7 +9,7 @@ serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 
 [build-dependencies]
-adaptive-cards-types-generator = { path = "../adaptive-cards-types-generator" }
+adaptive_cards_types_generator = { path = "../adaptive_cards_types_generator" }
 
 [dev-dependencies]
 walkdir = "2.5.0"

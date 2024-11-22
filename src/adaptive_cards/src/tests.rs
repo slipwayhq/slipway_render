@@ -18,7 +18,7 @@ fn it_should_parse_samples() {
     // adaptive cards schema and expect them to fail to parse if the fail to validate.
     let compiled_schema = load_adaptive_cards_schema();
 
-    let sample_dir_root = PathBuf::from("../../adaptive-cards-data/samples");
+    let sample_dir_root = PathBuf::from("../../adaptive_cards_data/samples");
     let ignore_folders = vec!["HostConfig", "Templates", "v1.6"];
 
     let mut fail_count = 0;
@@ -32,7 +32,7 @@ fn it_should_parse_samples() {
 fn load_adaptive_cards_schema() -> JSONSchema {
     // Read the JSON Schema file
     let mut schema_file =
-        File::open("../../adaptive-cards-data/schema/adaptive-card.schema.json").unwrap();
+        File::open("../../adaptive_cards_data/schema/adaptive-card.schema.json").unwrap();
     let mut schema_data = String::new();
     schema_file.read_to_string(&mut schema_data).unwrap();
     let schema: Value = serde_json::from_str(&schema_data).unwrap();

@@ -8,4 +8,4 @@
 *.png
 *.new
 
-/adaptive-cards-data/schema/typed-schema.schema.rs
+/adaptive_cards_data/schema/typed-schema.schema.rs

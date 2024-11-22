@@ -1,5 +1,5 @@
 [package]
-name = "adaptive-cards-types-generator"
+name = "adaptive_cards_types_generator"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

@@ -1,0 +1,26 @@
+[package]
+name = "slipway_theme_component"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+wit-bindgen-rt = { version = "0.35.0", features = ["bitflags"] }
+serde_json = "1.0.104"
+serde = { version = "1.0.180", features = ["derive"] }
+adaptive-cards-host-config = { path = "../../src/adaptive-cards-host-config" }
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true
+lto = true
+
+[package.metadata.component]
+package = "component:slipway-theme-component"
+
+[package.metadata.component.dependencies]

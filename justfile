@@ -5,7 +5,7 @@ build configuration="debug": download-fonts (build-src configuration) (build-com
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}
-  cd src-components && cargo nextest run {{FLAGS}}
+  cd src_components && cargo nextest run {{FLAGS}}
 
 clean: clean-src clean-components (clean-artifacts "")
 
@@ -13,13 +13,16 @@ build-src configuration="debug":
   cd src && cargo build {{ if configuration == "release" { "--release" } else { "" } }}
 
 build-components configuration="debug": && (assemble-components configuration)
-  cd src-components && cargo build --target "wasm32-wasi" {{ if configuration == "release" { "--release" } else { "" } }}
+  slipway wit > src_components/slipway_modify_component/wit/world.wit
+  slipway wit > src_components/slipway_render_component/wit/world.wit
+  slipway wit > src_components/slipway_theme_component/wit/world.wit
+  cd src_components && cargo component build {{ if configuration == "release" { "--release" } else { "" } }}
 
 clean-src:
   cd src && cargo clean
 
 clean-components:
-  cd src-components && cargo clean
+  cd src_components && cargo clean
 
 assemble-components configuration: \
   (clean-artifacts configuration) \
@@ -48,17 +51,17 @@ copy-theme-component-additional-files configuration:
 
 copy-component-files configuration name:
   mkdir -p artifacts/{{configuration}}/slipway_{{name}}
-  cp src-components/target/wasm32-wasi/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{configuration}}/slipway_{{name}}/slipway_component.wasm
-  cp src-components/slipway-{{name}}-component/slipway_component.json artifacts/{{configuration}}/slipway_{{name}}/slipway_component.json
+  cp src_components/target/wasm32-wasip1/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{configuration}}/slipway_{{name}}/slipway_component.wasm
+  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/{{configuration}}/slipway_{{name}}/slipway_component.json
 
 tar-component-files configuration name:
   tar -cf artifacts/{{configuration}}/slipway_{{name}}.tar -C artifacts/{{configuration}}/slipway_{{name}} .
 
 rename-component-tar configuration name:
   # Rename the tarball with a name that includes the publisher, name and version.
-  publisher=$(jq -r '.publisher' src-components/slipway-{{name}}-component/slipway_component.json) && \
-    name=$(jq -r '.name' src-components/slipway-{{name}}-component/slipway_component.json) && \
-    version=$(jq -r '.version' src-components/slipway-{{name}}-component/slipway_component.json) && \
+  publisher=$(jq -r '.publisher' src_components/slipway_{{name}}_component/slipway_component.json) && \
+    name=$(jq -r '.name' src_components/slipway_{{name}}_component/slipway_component.json) && \
+    version=$(jq -r '.version' src_components/slipway_{{name}}_component/slipway_component.json) && \
     new_filename="${publisher}.${name}.${version}.tar" && \
     mv artifacts/{{configuration}}/slipway_{{name}}.tar "artifacts/{{configuration}}/$new_filename"
 

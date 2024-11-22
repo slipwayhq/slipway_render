@@ -1,46 +1,50 @@
-use std::io::Write;
-
 use adaptive_cards_host_config::HostConfig;
 use adaptive_cards_renderer::ElementLayoutData;
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
 
-#[no_mangle]
-pub fn step() {
-    let input: Input =
-        serde_json::from_reader(std::io::stdin()).expect("should parse JSON from stdin");
+#[allow(warnings)]
+mod bindings;
 
-    let (width, height) = get_render_image_size(&input.canvas);
+use bindings::Guest;
 
-    let image = adaptive_cards_renderer::render::render(
-        &input.card,
-        &input.host_config.unwrap_or_else(|| {
-            HostConfig::builder()
-                .try_into()
-                .expect("Default host config should be valid")
-        }),
-        width,
-        height,
-        adaptive_cards_renderer::DebugMode::none(),
-    )
-    .expect("should render image");
+struct Component;
 
-    let output_image = get_output_image(&input.canvas, image);
+impl Guest for Component {
+    fn run(input: String) -> Result<String, String> {
+        let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
 
-    let output = Output {
-        canvas: CanvasResult {
-            width: output_image.width(),
-            height: output_image.height(),
-            data: BASE64_STANDARD.encode(output_image.to_vec()),
-        },
-    };
+        let (width, height) = get_render_image_size(&input.canvas);
 
-    let stdout = std::io::stdout();
-    let mut handle = stdout.lock();
-    serde_json::to_writer(&mut handle, &output).expect("should serialize JSON to stdout");
-    handle.flush().expect("should flush stdout");
+        let image = adaptive_cards_renderer::render::render(
+            &input.card,
+            &input.host_config.unwrap_or_else(|| {
+                HostConfig::builder()
+                    .try_into()
+                    .expect("Default host config should be valid")
+            }),
+            width,
+            height,
+            adaptive_cards_renderer::DebugMode::none(),
+        )
+        .expect("should render image");
+
+        let output_image = get_output_image(&input.canvas, image);
+
+        let output = Output {
+            canvas: CanvasResult {
+                width: output_image.width(),
+                height: output_image.height(),
+                data: BASE64_STANDARD.encode(output_image.to_vec()),
+            },
+        };
+
+        Ok(serde_json::to_string(&output).expect("should serialize output to JSON"))
+    }
 }
+
+bindings::export!(Component with_types_in bindings);
 
 fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {
     if let Some(rect) = canvas.rect {

@@ -1,13 +1,11 @@
 [package]
-name = "slipway-render-component"
-version = "0.1.0"
+name = "slipway_render_component"
+version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
-[lib]
-crate-type = ["cdylib"]
-
 [dependencies]
+wit-bindgen-rt = { version = "0.35.0", features = ["bitflags"] }
 image = "0.25.2"
 serde_json = "1.0.104"
 serde = { version = "1.0.180", features = ["derive"] }
@@ -15,3 +13,18 @@ adaptive-cards-host-config = { path = "../../src/adaptive-cards-host-config" }
 adaptive-cards = { path = "../../src/adaptive-cards" }
 adaptive-cards-renderer = { path = "../../src/adaptive-cards-renderer" }
 base64 = "0.22.1"
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true
+lto = true
+
+[package.metadata.component]
+package = "component:slipway-render-component"
+
+[package.metadata.component.dependencies]

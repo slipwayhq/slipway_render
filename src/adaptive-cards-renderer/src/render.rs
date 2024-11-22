@@ -16,8 +16,8 @@ use crate::{
     DebugMode,
 };
 
-const OPEN_SANS_TTF: &[u8] = include_bytes!("../../../fonts/OpenSansVariable.ttf");
-const OPEN_SANS_ITALIC_TTF: &[u8] = include_bytes!("../../../fonts/OpenSansItalicVariable.ttf");
+const ROBOTO_TTF: &[u8] = include_bytes!("../../../fonts/Roboto.ttf");
+const ROBOTO_MONO_TTF: &[u8] = include_bytes!("../../../fonts/RobotoMono.ttf");
 
 pub fn render_from_str(
     target: &str,
@@ -60,10 +60,10 @@ pub fn render(
     let mut parley_font_context = parley::FontContext::new();
     parley_font_context
         .collection
-        .register_fonts(OPEN_SANS_TTF.into());
+        .register_fonts(ROBOTO_TTF.into());
     parley_font_context
         .collection
-        .register_fonts(OPEN_SANS_ITALIC_TTF.into());
+        .register_fonts(ROBOTO_MONO_TTF.into());
 
     let mut scratch = LayoutScratch::new(
         parley_layout_context,

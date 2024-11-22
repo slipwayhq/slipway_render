@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "slipway-render-component",
-    "slipway-theme-component",
-    "slipway-modify-component",
+    "slipway_modify_component",
+    "slipway_render_component",
+    "slipway_theme_component",
 ]
 resolver = "2"
 

@@ -14,6 +14,7 @@ mod print_tree;
 mod rect;
 pub mod render;
 mod utils;
+pub mod host_context;
 
 pub use debug_mode::DebugMode;
 pub use element_layout_data::ElementLayoutData;

@@ -1,15 +1,15 @@
 use core::fmt;
-use std::rc::Rc;
+use std::{collections::HashMap, rc::Rc};
 
 use adaptive_cards_host_config::HostConfig;
 use taffy::Point;
 
-use crate::DebugMode;
+use crate::{errors::RenderError, DebugMode};
 use adaptive_cards::{ContainerStyle, VerticalContentAlignment};
 
 /// The context for the layout and draw passes of a single element.
 #[derive(Clone)]
-pub(super) struct LayoutContext<'hc> {
+pub(super) struct LayoutContext<'hc, 'fm> {
     /// The host configuration for the layout.
     pub host_config: &'hc HostConfig,
 
@@ -26,11 +26,18 @@ pub(super) struct LayoutContext<'hc> {
 
     /// The inherited context for the current element, passed down from the parent element.
     pub inherited: InheritedContext,
+
+    // A map from the font stack in the host config to the font family resolved by the host.
+    font_stack_to_resolved_family_map: &'fm HashMap<String, String>,
 }
 
-impl<'hc> LayoutContext<'hc> {
+impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
     #[must_use]
-    pub fn new(host_config: &'hc HostConfig, debug_mode: DebugMode) -> Self {
+    pub fn new(
+        host_config: &'hc HostConfig,
+        debug_mode: DebugMode,
+        font_stack_to_resolved_family_map: &'fm HashMap<String, String>,
+    ) -> Self {
         LayoutContext {
             host_config,
             debug_mode,
@@ -40,6 +47,7 @@ impl<'hc> LayoutContext<'hc> {
             }),
             current_origin: Point { x: 0., y: 0. },
             inherited: InheritedContext::default(),
+            font_stack_to_resolved_family_map,
         }
     }
 
@@ -77,6 +85,7 @@ impl<'hc> LayoutContext<'hc> {
             }),
             current_origin: self.current_origin + relative_location,
             inherited: self.inherited,
+            font_stack_to_resolved_family_map: self.font_stack_to_resolved_family_map,
         }
     }
 
@@ -105,6 +114,17 @@ impl<'hc> LayoutContext<'hc> {
     /// Prints the current context to the console.
     pub fn print_local_context(&self) {
         println!("debug: {}: {:?}", self.path, self.current_origin);
+    }
+
+    /// Gets the resolved font family for the given font stack.
+    pub fn get_resolved_font_family(&self, font_stack: &str) -> Result<String, RenderError> {
+        self.font_stack_to_resolved_family_map
+            .get(font_stack)
+            .cloned()
+            .ok_or(RenderError::Other {
+                path: self.path.clone(),
+                message: format!("Font stack '{}' has not been resolved.", font_stack),
+            })
     }
 }
 

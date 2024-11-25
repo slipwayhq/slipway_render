@@ -158,7 +158,9 @@ impl Layoutable for TextBlock<ElementLayoutData> {
                 .unwrap_or_else(|| maybe_text_style.to_ac_type()),
         );
 
-        let font_family = font_type.font_family.clone();
+        // We need to get the resolved family, otherwise we might end up with a
+        // generic name like "sans-serif" or a font stack like "Arial, sans-serif".
+        let font_family = context.get_resolved_font_family(&font_type.font_family)?;
 
         // Font size and weight are currently integers in the schema (matching the Adaptive Cards repository).
         // We can potentially switch them to "number" once this issue is resolved:

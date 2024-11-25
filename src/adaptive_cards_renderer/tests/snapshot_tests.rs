@@ -1,7 +1,12 @@
 use std::path::Path;
 
 use adaptive_cards_host_config::HostConfig;
-use adaptive_cards_renderer::{default_host_config, render::render_from_str, DebugMode};
+use adaptive_cards_renderer::{
+    default_host_config,
+    host_context::{HostContext, ResolvedFont},
+    render::render_from_str,
+    DebugMode,
+};
 use image::RgbaImage;
 
 const CARD_EXTENSION: &str = ".card.json";
@@ -21,6 +26,7 @@ fn snapshots() {
             let (image, card) = render_from_str(
                 &json_data,
                 &spec.host_config.unwrap_or_else(default_host_config),
+                &MockHostContext {},
                 spec.width,
                 spec.height,
                 DebugMode::none(),
@@ -59,4 +65,24 @@ struct SnapshotTestSpec {
     width: u32,
     height: u32,
     host_config: Option<HostConfig>,
+}
+
+// For our tests we're always going to use Roboto, so the results are consistent across platforms.
+const ROBOTO_TTF: &[u8] = include_bytes!("../../../fonts/Roboto.ttf");
+const ROBOTO_MONO_TTF: &[u8] = include_bytes!("../../../fonts/RobotoMono.ttf");
+struct MockHostContext {}
+impl HostContext for MockHostContext {
+    fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
+        if family.to_lowercase().contains("mono") {
+            Some(ResolvedFont {
+                family: "Roboto Mono".to_string(),
+                data: ROBOTO_MONO_TTF.to_vec(),
+            })
+        } else {
+            Some(ResolvedFont {
+                family: "Roboto".to_string(),
+                data: ROBOTO_TTF.to_vec(),
+            })
+        }
+    }
 }

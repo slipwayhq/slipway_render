@@ -813,7 +813,7 @@
 			"properties": {
 				"fontFamily": {
 					"type": "string",
-					"default": "Roboto"
+					"default": "sans-serif"
 				},
 				"fontSizes": {
 					"$ref": "#/definitions/FontSizesConfig"

@@ -12,3 +12,12 @@ pub fn default() -> HostConfig {
         .try_into()
         .expect("default host config should be valid")
 }
+
+impl HostConfig {
+    pub fn get_all_font_family_stacks(&self) -> Vec<&str> {
+        vec![
+            &self.font_types.default.font_family,
+            &self.font_types.monospace.font_family,
+        ]
+    }
+}

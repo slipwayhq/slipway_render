@@ -1,4 +1,4 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use adaptive_cards::AdaptiveCard;
 use adaptive_cards_host_config::HostConfig;
@@ -8,6 +8,7 @@ use taffy::{AvailableSpace, TaffyTree};
 use crate::{
     element_layout_data::ElementLayoutData,
     errors::{RenderError, TaffyErrorToRenderError},
+    host_context::HostContext,
     layout_context::LayoutContext,
     layout_impl::measure::{measure, NodeContext},
     layout_scratch::LayoutScratch,
@@ -16,18 +17,23 @@ use crate::{
     DebugMode,
 };
 
-const ROBOTO_TTF: &[u8] = include_bytes!("../../../fonts/Roboto.ttf");
-const ROBOTO_MONO_TTF: &[u8] = include_bytes!("../../../fonts/RobotoMono.ttf");
-
 pub fn render_from_str(
     target: &str,
     host_config: &HostConfig,
+    host_context: &impl HostContext,
     width: u32,
     height: u32,
     debug_mode: DebugMode,
 ) -> Result<(RgbaImage, AdaptiveCard<ElementLayoutData>), RenderError> {
     let target = serde_json::from_str::<AdaptiveCard<ElementLayoutData>>(target).unwrap();
-    let image = render(&target, host_config, width, height, debug_mode)?;
+    let image = render(
+        &target,
+        host_config,
+        host_context,
+        width,
+        height,
+        debug_mode,
+    )?;
     Ok((image, target))
 }
 
@@ -39,6 +45,7 @@ pub fn render_from_str(
 pub fn render(
     target: &AdaptiveCard<ElementLayoutData>,
     host_config: &HostConfig,
+    host_context: &impl HostContext,
     width: u32,
     height: u32,
     debug_mode: DebugMode,
@@ -46,8 +53,27 @@ pub fn render(
     // Check for any host config issues that won't be picked up by deserialization.
     validate_host_config(host_config)?;
 
+    // Resolve the font data through the host context.
+    let all_font_stacks = host_config.get_all_font_family_stacks();
+    let mut resolved_fonts = Vec::new();
+    let mut font_stack_to_resolved_family_map = HashMap::new();
+    for font_stack in all_font_stacks {
+        if let Some(resolved_font) = host_context.try_resolve_font(font_stack) {
+            font_stack_to_resolved_family_map
+                .insert(font_stack.to_string(), resolved_font.family.clone());
+            resolved_fonts.push(resolved_font);
+        } else {
+            return Err(RenderError::HostConfig {
+                message: format!(
+                    "Font stack '{}' in host config could not be resolved.",
+                    font_stack
+                ),
+            });
+        }
+    }
+
     // Create the context for the root element.
-    let context = LayoutContext::new(host_config, debug_mode);
+    let context = LayoutContext::new(host_config, debug_mode, &font_stack_to_resolved_family_map);
 
     // Create the Taffy tree, which will be populated in the layout pass.
     let mut tree: TaffyTree<NodeContext> = TaffyTree::new();
@@ -58,12 +84,13 @@ pub fn render(
     let swash_scale_context = swash::scale::ScaleContext::new();
     let parley_layout_context = parley::LayoutContext::new();
     let mut parley_font_context = parley::FontContext::new();
-    parley_font_context
-        .collection
-        .register_fonts(ROBOTO_TTF.into());
-    parley_font_context
-        .collection
-        .register_fonts(ROBOTO_MONO_TTF.into());
+
+    // Register fonts with parley.
+    for resolved_font in resolved_fonts {
+        parley_font_context
+            .collection
+            .register_fonts(resolved_font.data);
+    }
 
     let mut scratch = LayoutScratch::new(
         parley_layout_context,

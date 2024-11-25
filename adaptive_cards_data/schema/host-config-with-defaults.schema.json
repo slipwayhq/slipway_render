@@ -257,7 +257,7 @@
     },
     "fontTypes": {
       "default": {
-        "fontFamily": "Roboto",
+        "fontFamily": "sans-serif",
         "fontSizes": {
           "default": 14,
           "extraLarge": 24,
@@ -943,7 +943,7 @@
       "description": "Controls font styles",
       "properties": {
         "fontFamily": {
-          "default": "Roboto",
+          "default": "sans-serif",
           "type": "string"
         },
         "fontSizes": {
@@ -974,7 +974,7 @@
         "default": {
           "$ref": "#/definitions/FontTypeConfig",
           "default": {
-            "fontFamily": "Roboto",
+            "fontFamily": "sans-serif",
             "fontSizes": {
               "default": 14,
               "extraLarge": 24,
@@ -1372,7 +1372,7 @@
           "$ref": "#/definitions/FontTypesConfig",
           "default": {
             "default": {
-              "fontFamily": "Roboto",
+              "fontFamily": "sans-serif",
               "fontSizes": {
                 "default": 14,
                 "extraLarge": 24,

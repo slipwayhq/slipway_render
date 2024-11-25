@@ -1,5 +1,8 @@
 use adaptive_cards_host_config::HostConfig;
-use adaptive_cards_renderer::ElementLayoutData;
+use adaptive_cards_renderer::{
+    host_context::{HostContext, ResolvedFont},
+    ElementLayoutData,
+};
 use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
@@ -8,6 +11,16 @@ use serde::{Deserialize, Serialize};
 mod bindings;
 
 use bindings::Guest;
+
+struct SlipwayHostContext;
+impl HostContext for SlipwayHostContext {
+    fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
+        bindings::font::try_resolve(family).map(|resolved_font| ResolvedFont {
+            family: resolved_font.family,
+            data: resolved_font.data,
+        })
+    }
+}
 
 struct Component;
 
@@ -24,6 +37,7 @@ impl Guest for Component {
                     .try_into()
                     .expect("Default host config should be valid")
             }),
+            &SlipwayHostContext {},
             width,
             height,
             adaptive_cards_renderer::DebugMode::none(),

@@ -1,7 +1,7 @@
 ---
-source: adaptive-cards-renderer/tests/snapshot_tests.rs
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
 expression: card
-input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_vertical_content_alignment.card.json
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_content_alignment.card.json
 ---
 {
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -77,7 +77,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_vertical_con
               ".layout": {
                 "rect": {
                   "x": 36,
-                  "y": 482,
+                  "y": 483,
                   "width": 128,
                   "height": 11
                 },
@@ -91,7 +91,7 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_vertical_con
               "x": 24,
               "y": 374,
               "width": 152,
-              "height": 131
+              "height": 132
             },
             "placement": "Top"
           }
@@ -106,9 +106,9 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_vertical_con
               ".layout": {
                 "rect": {
                   "x": 36,
-                  "y": 529,
+                  "y": 530,
                   "width": 128,
-                  "height": 13
+                  "height": 12
                 },
                 "placement": "SoleVertical"
               }
@@ -119,9 +119,9 @@ input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_vertical_con
           ".layout": {
             "rect": {
               "x": 24,
-              "y": 517,
+              "y": 518,
               "width": 152,
-              "height": 133
+              "height": 132
             },
             "placement": "Bottom"
           }

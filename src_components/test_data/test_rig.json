@@ -19,8 +19,8 @@
         "instructions": [
           {
             "type": "set",
-            "path": "containerStyles.accent.backgroundColor",
-            "value": "#ffeeee"
+            "path": "fontTypes.monospace.fontFamily",
+            "value": "Departure Mono"
           }
         ]
       }

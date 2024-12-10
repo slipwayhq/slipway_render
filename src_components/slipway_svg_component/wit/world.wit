@@ -1,0 +1,37 @@
+package slipway:component@0.1.0;
+
+interface types {
+    record component-error {
+        message: string,
+    }
+}
+
+world slipway-component {
+
+    import font: interface {
+
+        record resolved-font {
+            family: string,
+            data: list<u8>,
+        }
+
+        try-resolve: func(font-stack: string) -> option<resolved-font>;
+    }
+
+    import callout: interface {
+        use types.{component-error};
+        run: func(handle: string, input: string) -> result<string, component-error>;
+    }
+
+    import log: interface {
+        trace: func(message: string);
+        debug: func(message: string);
+        info: func(message: string);
+        warn: func(message: string);
+        error: func(message: string);
+    }
+
+    use types.{component-error};
+
+    export run: func(input: string) -> result<string, component-error>;
+}

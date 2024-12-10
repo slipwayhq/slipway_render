@@ -59,10 +59,10 @@
       "canvas": {
         "properties": {
           "width": {
-            "type": "int32"
+            "type": "uint32"
           },
           "height": {
-            "type": "int32"
+            "type": "uint32"
           },
           "data": {
             "type": "string",

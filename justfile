@@ -16,6 +16,7 @@ build-components configuration="debug": && (assemble-components configuration)
   slipway wit > src_components/slipway_modify_component/wit/world.wit
   slipway wit > src_components/slipway_render_component/wit/world.wit
   slipway wit > src_components/slipway_theme_component/wit/world.wit
+  slipway wit > src_components/slipway_svg_component/wit/world.wit
   cd src_components && cargo component build {{ if configuration == "release" { "--release" } else { "" } }}
 
 clean-src:
@@ -30,6 +31,9 @@ assemble-components configuration: \
   (copy-render-component-additional-files configuration) \
   (tar-component-files configuration "render") \
   (rename-component-tar configuration "render") \
+  (copy-component-files configuration "svg") \
+  (tar-component-files configuration "svg") \
+  (rename-component-tar configuration "svg") \
   (copy-component-files configuration "modify") \
   (tar-component-files configuration "modify") \
   (rename-component-tar configuration "modify") \

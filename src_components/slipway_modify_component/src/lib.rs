@@ -6,12 +6,12 @@ mod apply;
 #[allow(warnings)]
 mod bindings;
 
-use bindings::Guest;
+use bindings::{ComponentError, Guest};
 
 struct Component;
 
 impl Guest for Component {
-    fn run(input: String) -> Result<String, String> {
+    fn run(input: String) -> Result<String, ComponentError> {
         let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
 
         let mut data = input.data;

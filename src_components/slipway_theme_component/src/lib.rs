@@ -7,12 +7,12 @@ const COLOR_LIGHT_STR: &str = include_str!("../themes/color_light.json");
 #[allow(warnings)]
 mod bindings;
 
-use bindings::Guest;
+use bindings::{ComponentError, Guest};
 
 struct Component;
 
 impl Guest for Component {
-    fn run(input: String) -> Result<String, String> {
+    fn run(input: String) -> Result<String, ComponentError> {
         let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
 
         // Get the input host config. If the input doesn't have a host config, use the default host config.

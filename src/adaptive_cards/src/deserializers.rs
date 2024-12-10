@@ -118,8 +118,8 @@ where
         marker: std::marker::PhantomData<(TString, TStruct, TResult)>,
     }
 
-    impl<'de, 'expecting, TString, TStruct, TResult> Visitor<'de>
-        for StringOrStructVisitor<'expecting, TString, TStruct, TResult>
+    impl<'de, TString, TStruct, TResult> Visitor<'de>
+        for StringOrStructVisitor<'_, TString, TStruct, TResult>
     where
         TString: Deserialize<'de> + Into<TResult>,
         TStruct: Deserialize<'de> + Into<TResult>,
@@ -161,7 +161,7 @@ impl<'de> Deserialize<'de> for StringOrNumber {
     {
         struct StringOrNumberVisitor;
 
-        impl<'de> de::Visitor<'de> for StringOrNumberVisitor {
+        impl de::Visitor<'_> for StringOrNumberVisitor {
             type Value = StringOrNumber;
 
             fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
@@ -215,8 +215,7 @@ where
         marker: std::marker::PhantomData<(TEnum, TResult)>,
     }
 
-    impl<'de, 'expecting, TEnum, TResult> Visitor<'de>
-        for StringOrEnumVisitor<'expecting, TEnum, TResult>
+    impl<'de, TEnum, TResult> Visitor<'de> for StringOrEnumVisitor<'_, TEnum, TResult>
     where
         TEnum: Deserialize<'de> + Into<TResult>,
         TResult: From<String>,

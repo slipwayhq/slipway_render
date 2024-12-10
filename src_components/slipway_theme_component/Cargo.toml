@@ -13,13 +13,6 @@ adaptive_cards_host_config = { path = "../../src/adaptive_cards_host_config" }
 [lib]
 crate-type = ["cdylib"]
 
-[profile.release]
-codegen-units = 1
-opt-level = "s"
-debug = false
-strip = true
-lto = true
-
 [package.metadata.component]
 package = "component:slipway-theme-component"
 

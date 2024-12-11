@@ -69,6 +69,10 @@ const CURSIVE_STR: &str = "cursive";
 const FANTASY_STR: &str = "fantasy";
 const MONOSPACE_STR: &str = "monospace";
 
+// Create a static mutable hash set of strings to store requested fonts.
+static REQUESTED_FONTS: std::sync::LazyLock<std::sync::Mutex<std::collections::HashSet<String>>> =
+    std::sync::LazyLock::new(|| std::sync::Mutex::new(std::collections::HashSet::new()));
+
 pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
     Box::new(move |font, fontdb| {
         let mut name_list = Vec::new();
@@ -91,6 +95,18 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
 
             name_list.push(family);
 
+            {
+                let mut requested_fonts = REQUESTED_FONTS
+                    .lock()
+                    .expect("should be able to acquire lock");
+
+                if requested_fonts.contains(family_str) {
+                    continue;
+                }
+
+                requested_fonts.insert(family_str.to_string());
+            }
+
             let query = fontdb::Query {
                 families: &[family],
                 weight: fontdb::Weight::default(),
@@ -102,14 +118,14 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
 
             if id.is_none() {
                 bindings::log::debug(&format!(
-                    "No match for '{}' font-family in local fontdb. Requesting from host.",
+                    "No match for \"{}\" font-family. Requesting from host.",
                     family_str,
                 ));
                 let maybe_resolved_font = bindings::font::try_resolve(family_str);
                 if let Some(resolved_font) = maybe_resolved_font {
                     bindings::log::debug(&format!(
-                        "Found '{}' font-family in host: {}",
-                        family_str, resolved_font.family
+                        "Host resolved as \"{}\".",
+                        resolved_font.family
                     ));
                     let fontdb_mut = Arc::make_mut(fontdb);
                     fontdb_mut.load_font_data(resolved_font.data);
@@ -130,6 +146,11 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
                         }
                         fontdb::Family::Name(_) => {}
                     }
+                } else {
+                    bindings::log::warn(&format!(
+                        "No host match for \"{}\" font-family.",
+                        family_str,
+                    ));
                 }
             }
         }
@@ -163,7 +184,7 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
 
         if id.is_none() {
             bindings::log::warn(&format!(
-                "No match for '{}' font-family.",
+                "No match for \"{}\" font-family.",
                 font.families()
                     .iter()
                     .map(|f| f.to_string())

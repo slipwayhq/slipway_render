@@ -14,6 +14,11 @@
         "width": "$.constants.width",
         "height": "$.constants.height",
         "chart": {
+          "textStyle": {
+            "fontFamily": "Made Up Font, Hack Nerd Font, sans-serif",
+            "fontSize": 14,
+            "fontWeight": "normal"
+          },
           "title": {
             "text": "Rainfall and Flow Relationship",
             "left": "center"
@@ -9778,7 +9783,7 @@
       }
     },
     "svg": {
-      "component": "file:artifacts/release/slipway.svg.0.0.1.tar",
+      "component": "file:artifacts/debug/slipway.svg.0.0.1.tar",
       "input": {
         "width": "$.constants.width",
         "height": "$.constants.height",

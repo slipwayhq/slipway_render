@@ -18,7 +18,10 @@ impl Guest for Component {
         let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
 
         let mut pixels = Pixmap::new(input.width, input.height).ok_or(ComponentError {
-            message: "Rendered image cannot be greater than i32::MAX/4".to_string(),
+            message: format!(
+                "Failed to create pixmap with dimensions {}x{}",
+                input.width, input.height
+            ),
         })?;
 
         let options = usvg::Options {
@@ -60,17 +63,30 @@ pub fn create_font_resolver<'a>() -> usvg::FontResolver<'a> {
     }
 }
 
+const SERIF_STR: &str = "serif";
+const SANS_SERIF_STR: &str = "sans-serif";
+const CURSIVE_STR: &str = "cursive";
+const FANTASY_STR: &str = "fantasy";
+const MONOSPACE_STR: &str = "monospace";
+
 pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
     Box::new(move |font, fontdb| {
         let mut name_list = Vec::new();
         for family in font.families() {
             let (family_str, family) = match family {
-                usvg::FontFamily::Serif => ("serif", fontdb::Family::Serif),
-                usvg::FontFamily::SansSerif => ("sans-serif", fontdb::Family::SansSerif),
-                usvg::FontFamily::Cursive => ("cursive", fontdb::Family::Cursive),
-                usvg::FontFamily::Fantasy => ("fantasy", fontdb::Family::Fantasy),
-                usvg::FontFamily::Monospace => ("monospace", fontdb::Family::Monospace),
-                usvg::FontFamily::Named(s) => (s.as_str(), fontdb::Family::Name(s)),
+                usvg::FontFamily::Serif => (SERIF_STR, fontdb::Family::Serif),
+                usvg::FontFamily::SansSerif => (SANS_SERIF_STR, fontdb::Family::SansSerif),
+                usvg::FontFamily::Cursive => (CURSIVE_STR, fontdb::Family::Cursive),
+                usvg::FontFamily::Fantasy => (FANTASY_STR, fontdb::Family::Fantasy),
+                usvg::FontFamily::Monospace => (MONOSPACE_STR, fontdb::Family::Monospace),
+                usvg::FontFamily::Named(s) => match s.as_ref() {
+                    SERIF_STR => (SERIF_STR, fontdb::Family::Serif),
+                    SANS_SERIF_STR => (SANS_SERIF_STR, fontdb::Family::SansSerif),
+                    CURSIVE_STR => (CURSIVE_STR, fontdb::Family::Cursive),
+                    FANTASY_STR => (FANTASY_STR, fontdb::Family::Fantasy),
+                    MONOSPACE_STR => (MONOSPACE_STR, fontdb::Family::Monospace),
+                    _ => (s.as_str(), fontdb::Family::Name(s)),
+                },
             };
 
             name_list.push(family);
@@ -85,28 +101,34 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
             let id = fontdb.query(&query);
 
             if id.is_none() {
-                bindings::log::warn(&format!(
-                    "No match for '{}' font-family. Requesting from host.",
+                bindings::log::debug(&format!(
+                    "No match for '{}' font-family in local fontdb. Requesting from host.",
                     family_str,
                 ));
                 let maybe_resolved_font = bindings::font::try_resolve(family_str);
                 if let Some(resolved_font) = maybe_resolved_font {
-                    bindings::log::warn(&format!(
+                    bindings::log::debug(&format!(
                         "Found '{}' font-family in host: {}",
                         family_str, resolved_font.family
                     ));
-                    Arc::make_mut(fontdb).load_font_data(resolved_font.data);
-                    let id = fontdb.query(&query);
-                    if id.is_some() {
-                        bindings::log::warn(&format!(
-                            "Re-querying found '{}' font-family.",
-                            family_str
-                        ));
-                    } else {
-                        bindings::log::warn(&format!(
-                            "Re-querying didn't find '{}' font-family",
-                            family_str
-                        ));
+                    let fontdb_mut = Arc::make_mut(fontdb);
+                    fontdb_mut.load_font_data(resolved_font.data);
+
+                    match family {
+                        fontdb::Family::Serif => fontdb_mut.set_serif_family(&resolved_font.family),
+                        fontdb::Family::SansSerif => {
+                            fontdb_mut.set_sans_serif_family(&resolved_font.family)
+                        }
+                        fontdb::Family::Cursive => {
+                            fontdb_mut.set_cursive_family(&resolved_font.family)
+                        }
+                        fontdb::Family::Fantasy => {
+                            fontdb_mut.set_fantasy_family(&resolved_font.family)
+                        }
+                        fontdb::Family::Monospace => {
+                            fontdb_mut.set_monospace_family(&resolved_font.family)
+                        }
+                        fontdb::Family::Name(_) => {}
                     }
                 }
             }
@@ -138,6 +160,7 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
         };
 
         let id = fontdb.query(&query);
+
         if id.is_none() {
             bindings::log::warn(&format!(
                 "No match for '{}' font-family.",

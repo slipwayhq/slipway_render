@@ -43,6 +43,7 @@ assemble-components configuration: \
   (rename-component-tar configuration "theme") \
   (assemble-simple-component configuration "echarts") \
   (assemble-simple-component configuration "echarts_svg") \
+  (assemble-simple-component configuration "echarts_demo") \
 
 assemble-simple-component configuration name: \
   (copy-all-component-files configuration name) \
@@ -51,26 +52,26 @@ assemble-simple-component configuration name: \
 
 clean-artifacts configuration:
   mkdir -p artifacts
-  rm -rf artifacts/{{configuration}}
+  rm -rf artifacts
 
 copy-render-component-additional-files configuration:
-  cp adaptive_cards_data/schema/adaptive-card.schema.json artifacts/{{configuration}}/slipway_render/adaptive-card.schema.json
-  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_render/host-config-with-defaults.schema.json
+  cp adaptive_cards_data/schema/adaptive-card.schema.json artifacts/slipway_render/adaptive-card.schema.json
+  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/slipway_render/host-config-with-defaults.schema.json
 
 copy-theme-component-additional-files configuration:
-  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_theme/host-config-with-defaults.schema.json
+  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/slipway_theme/host-config-with-defaults.schema.json
 
 copy-all-component-files configuration name:
-  mkdir -p artifacts/{{configuration}}/slipway_{{name}}
-  cp src_components/slipway_{{name}}_component/* artifacts/{{configuration}}/slipway_{{name}}
+  mkdir -p artifacts/slipway_{{name}}
+  cp src_components/slipway_{{name}}_component/* artifacts/slipway_{{name}}
 
 copy-component-files configuration name:
-  mkdir -p artifacts/{{configuration}}/slipway_{{name}}
-  cp src_components/target/wasm32-wasip1/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{configuration}}/slipway_{{name}}/slipway_component.wasm
-  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/{{configuration}}/slipway_{{name}}/slipway_component.json
+  mkdir -p artifacts/slipway_{{name}}
+  cp src_components/target/wasm32-wasip1/{{configuration}}/slipway_{{name}}_component.wasm artifacts/slipway_{{name}}/slipway_component.wasm
+  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/slipway_{{name}}/slipway_component.json
 
 tar-component-files configuration name:
-  tar -cf artifacts/{{configuration}}/slipway_{{name}}.tar -C artifacts/{{configuration}}/slipway_{{name}} .
+  tar -cf artifacts/slipway_{{name}}.tar -C artifacts/slipway_{{name}} .
 
 rename-component-tar configuration name:
   # Rename the tarball with a name that includes the publisher, name and version.
@@ -78,7 +79,7 @@ rename-component-tar configuration name:
     name=$(jq -r '.name' src_components/slipway_{{name}}_component/slipway_component.json) && \
     version=$(jq -r '.version' src_components/slipway_{{name}}_component/slipway_component.json) && \
     new_filename="${publisher}.${name}.${version}.tar" && \
-    mv artifacts/{{configuration}}/slipway_{{name}}.tar "artifacts/{{configuration}}/$new_filename"
+    mv artifacts/slipway_{{name}}.tar "artifacts/$new_filename"
 
 download-fonts:
   ./download_fonts.sh

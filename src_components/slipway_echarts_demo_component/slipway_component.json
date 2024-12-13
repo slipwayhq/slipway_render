@@ -1,18 +1,40 @@
 {
   "publisher": "slipway",
-  "name": "echarts_rig",
+  "name": "echarts_demo",
+  "description": "A decent looking echarts chart.",
   "version": "0.0.1",
-  "description": "A slipway rig which renders a chart.",
-  "constants": {
-    "width": 1000,
-    "height": 800
+  "input": {
+    "properties": {
+      "width": { "type": "uint32" },
+      "height": { "type": "uint32" }
+    }
+  },
+  "output": {
+    "properties": {
+      "canvas": {
+        "properties": {
+          "width": {
+            "type": "uint32"
+          },
+          "height": {
+            "type": "uint32"
+          },
+          "data": {
+            "type": "string",
+            "metadata": {
+              "description": "Base64 encoded vector of RGBA unsigned bytes."
+            }
+          }
+        }
+      }
+    }
   },
   "rigging": {
-    "echarts": {
+    "output": {
       "component": "file:artifacts/slipway.echarts.0.0.1.tar",
       "input": {
-        "width": "$.constants.width",
-        "height": "$.constants.height",
+        "width": "$$.input.width",
+        "height": "$$.input.height",
         "chart": {
           "textStyle": {
             "fontFamily": "Made Up Font, Hack Nerd Font, sans-serif",

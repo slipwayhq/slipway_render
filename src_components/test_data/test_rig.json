@@ -4,18 +4,18 @@
   "version": "0.0.1",
   "description": "A slipway rig which renders some UI",
   "constants": {
-    "width": 600,
-    "height": 400
+    "width": 800,
+    "height": 600
   },
   "rigging": {
     "theme": {
-      "component": "file:artifacts/debug/slipway.theme.0.0.1.tar",
+      "component": "file:artifacts/slipway.theme.0.0.1.tar",
       "input": {
         "name": "color_light"
       }
     },
     "modify_theme": {
-      "component": "file:artifacts/debug/slipway.modify.0.0.1.tar",
+      "component": "file:artifacts/slipway.modify.0.0.1.tar",
       "input": {
         "data": "$$.theme.hostConfig",
         "instructions": [
@@ -28,9 +28,9 @@
       }
     },
     "render": {
-      "component": "file:artifacts/debug/slipway.render.0.0.1.tar",
+      "component": "file:artifacts/slipway.render.0.0.1.tar",
       "callouts": {
-        "echarts": "file:artifacts/debug/slipway.echarts.0.0.1.tar"
+        "echarts_demo": "file:artifacts/slipway.echarts_demo.0.0.1.tar"
       },
       "input": {
         "card": {
@@ -70,48 +70,8 @@
                   "type": "Image",
                   "height": "stretch",
                   "callout": {
-                    "handle": "echarts",
-                    "input": {
-                      "width": 0,
-                      "height": 0,
-                      "chart": {
-                        "grid": {
-                          "top": "10%",
-                          "bottom": "10%",
-                          "left": "5%",
-                          "right": "5%"
-                        },
-                        "xAxis": {
-                          "type": "category",
-                          "data": [
-                            "Mon",
-                            "Tue",
-                            "Wed",
-                            "Thu",
-                            "Fri",
-                            "Sat",
-                            "Sun"
-                          ]
-                        },
-                        "yAxis": {
-                          "type": "value"
-                        },
-                        "series": [
-                          {
-                            "data": [
-                              150,
-                              230,
-                              224,
-                              218,
-                              135,
-                              147,
-                              260
-                            ],
-                            "type": "line"
-                          }
-                        ]
-                      }
-                    }
+                    "handle": "echarts_demo",
+                    "input": {}
                   }
                 }
               ]

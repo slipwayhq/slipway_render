@@ -134,10 +134,22 @@ pub(super) fn process_class(
                     format_ident!("as_has_layout_data"),
                     quote! { &dyn crate::HasLayoutData #generic_parameter },
                 ));
+                if metadata.is_toggleable {
+                    generate_methods.push((
+                        format_ident!("as_toggleable"),
+                        quote! { &dyn crate::ToggleableItemMethods },
+                    ));
+                }
+                if metadata.is_stackable {
+                    generate_methods.push((
+                        format_ident!("as_stackable"),
+                        quote! { &dyn crate::StackableItemMethods },
+                    ));
+                }
                 if metadata.is_element {
                     generate_methods.push((
                         format_ident!("as_element"),
-                        quote! { &dyn crate::LayoutableElement },
+                        quote! { &dyn crate::ElementMethods },
                     ));
                 }
 
@@ -151,7 +163,7 @@ pub(super) fn process_class(
                         }
                     });
 
-                    // Generate the as_layoutable method.
+                    // Generate the as_* method.
                     post_struct_tokens.push(quote! {
                         impl #generic_parameter #struct_name #generic_parameter
                             #where_clause {
@@ -197,6 +209,46 @@ pub(super) fn process_class(
                         }
                     }
                 });
+            }
+
+            // If we're derived from ToggleableItem.
+            if metadata.is_toggleable {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::ToggleableItemMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_is_visible(&self) -> bool {
+                            self.as_toggleable().get_is_visible()
+                        }
+                    }
+
+                })
+            }
+
+            // If we're a stackable item (Element, Column).
+            if metadata.is_stackable {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::StackableItemMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_separator(&self) -> bool {
+                            self.as_stackable().get_separator()
+                        }
+                        fn get_spacing(&self) -> Spacing {
+                            self.as_stackable().get_spacing()
+                        }
+                    }
+                })
+            }
+
+            // If we're derived from Element.
+            if metadata.is_element {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::ElementMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_height(&self) -> StringOrBlockElementHeight {
+                            self.as_element().get_height()
+                        }
+                    }
+                })
             }
         }
 
@@ -379,8 +431,35 @@ pub(super) fn process_class(
                 }
             });
 
-            // If we're layoutable and not an adaptive card, implement the
-            // LayoutableElement trait for this type.
+            // If we're derived from ToggleableItem.
+            if metadata.is_toggleable {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::ToggleableItemMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_is_visible(&self) -> bool {
+                            self.is_visible
+                        }
+                    }
+
+                })
+            }
+
+            // If we're a stackable item (Element, Column).
+            if metadata.is_stackable {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::StackableItemMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_separator(&self) -> bool {
+                            self.separator.unwrap_or(false)
+                        }
+                        fn get_spacing(&self) -> Spacing {
+                            self.spacing.unwrap_or(Spacing::Default)
+                        }
+                    }
+                })
+            }
+
+            // If we're derived from Element.
             if metadata.is_element {
                 // If we're an image, we need to handle the height field differently
                 // as it is overridden and a different type to other elements.
@@ -395,22 +474,12 @@ pub(super) fn process_class(
                 };
 
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::LayoutableElement for #struct_name #generic_parameter
+                    impl #generic_parameter crate::ElementMethods for #struct_name #generic_parameter
                         #where_clause {
                         fn get_height(&self) -> StringOrBlockElementHeight {
                             #height_impl
                         }
-                        fn get_separator(&self) -> bool {
-                            self.separator.unwrap_or(false)
-                        }
-                        fn get_spacing(&self) -> Spacing {
-                            self.spacing.unwrap_or(Spacing::Default)
-                        }
-                        fn get_is_visible(&self) -> bool {
-                            self.is_visible
-                        }
                     }
-
                 })
             }
         }

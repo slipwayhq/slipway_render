@@ -853,7 +853,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for ActionSet<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for ActionSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for ActionSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -863,15 +882,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Serialize, Clone)]
@@ -1110,6 +1120,25 @@ where
         &self.layout_data
     }
 }
+impl<TLayoutData> crate::ToggleableItemMethods for Column<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Column<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet<TLayoutData>
@@ -1170,7 +1199,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for ColumnSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for ColumnSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1180,15 +1228,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1258,7 +1297,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for Container<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for Container<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Container<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1268,15 +1326,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1362,7 +1411,59 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::LayoutableElement {
+    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+        match self {
+            Element::ActionSet(inner) => inner,
+            Element::ColumnSet(inner) => inner,
+            Element::Container(inner) => inner,
+            Element::FactSet(inner) => inner,
+            Element::Image(inner) => inner,
+            Element::ImageSet(inner) => inner,
+            Element::InputChoiceSet(inner) => inner,
+            Element::InputDate(inner) => inner,
+            Element::InputNumber(inner) => inner,
+            Element::InputText(inner) => inner,
+            Element::InputTime(inner) => inner,
+            Element::InputToggle(inner) => inner,
+            Element::Input(inner) => inner.as_toggleable(),
+            Element::Media(inner) => inner,
+            Element::RichTextBlock(inner) => inner,
+            Element::Table(inner) => inner,
+            Element::TextBlock(inner) => inner,
+        }
+    }
+}
+impl<TLayoutData> Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    pub fn as_stackable(&self) -> &dyn crate::StackableItemMethods {
+        match self {
+            Element::ActionSet(inner) => inner,
+            Element::ColumnSet(inner) => inner,
+            Element::Container(inner) => inner,
+            Element::FactSet(inner) => inner,
+            Element::Image(inner) => inner,
+            Element::ImageSet(inner) => inner,
+            Element::InputChoiceSet(inner) => inner,
+            Element::InputDate(inner) => inner,
+            Element::InputNumber(inner) => inner,
+            Element::InputText(inner) => inner,
+            Element::InputTime(inner) => inner,
+            Element::InputToggle(inner) => inner,
+            Element::Input(inner) => inner.as_stackable(),
+            Element::Media(inner) => inner,
+            Element::RichTextBlock(inner) => inner,
+            Element::Table(inner) => inner,
+            Element::TextBlock(inner) => inner,
+        }
+    }
+}
+impl<TLayoutData> Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    pub fn as_element(&self) -> &dyn crate::ElementMethods {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1390,6 +1491,33 @@ where
 {
     fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
         self.as_has_layout_data().layout_data()
+    }
+}
+impl<TLayoutData> crate::ToggleableItemMethods for Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.as_toggleable().get_is_visible()
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.as_stackable().get_separator()
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.as_stackable().get_spacing()
+    }
+}
+impl<TLayoutData> crate::ElementMethods for Element<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.as_element().get_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1452,7 +1580,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for FactSet<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for FactSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for FactSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1462,15 +1609,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1608,21 +1746,31 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for Image<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height.clone()
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
     }
+}
+impl<TLayoutData> crate::StackableItemMethods for Image<TLayoutData>
+where
+    TLayoutData: Default,
+{
     fn get_separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
     fn get_spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
+}
+impl<TLayoutData> crate::ElementMethods for Image<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.height.clone()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1694,7 +1842,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for ImageSet<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for ImageSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for ImageSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1704,15 +1871,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1841,7 +1999,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputChoiceSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputChoiceSet<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1851,15 +2028,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1930,7 +2098,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputDate<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputDate<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputDate<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1940,15 +2127,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2019,7 +2197,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputNumber<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputNumber<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputNumber<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2029,15 +2226,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2129,7 +2317,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputText<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputText<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputText<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2139,15 +2346,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2218,7 +2416,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputTime<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputTime<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputTime<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2228,15 +2445,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2354,7 +2562,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for InputToggle<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for InputToggle<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for InputToggle<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2364,15 +2591,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2413,7 +2631,37 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::LayoutableElement {
+    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+        match self {
+            Input::ChoiceSet(inner) => inner,
+            Input::Date(inner) => inner,
+            Input::Number(inner) => inner,
+            Input::Text(inner) => inner,
+            Input::Time(inner) => inner,
+            Input::Toggle(inner) => inner,
+        }
+    }
+}
+impl<TLayoutData> Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    pub fn as_stackable(&self) -> &dyn crate::StackableItemMethods {
+        match self {
+            Input::ChoiceSet(inner) => inner,
+            Input::Date(inner) => inner,
+            Input::Number(inner) => inner,
+            Input::Text(inner) => inner,
+            Input::Time(inner) => inner,
+            Input::Toggle(inner) => inner,
+        }
+    }
+}
+impl<TLayoutData> Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    pub fn as_element(&self) -> &dyn crate::ElementMethods {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2430,6 +2678,33 @@ where
 {
     fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
         self.as_has_layout_data().layout_data()
+    }
+}
+impl<TLayoutData> crate::ToggleableItemMethods for Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.as_toggleable().get_is_visible()
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.as_stackable().get_separator()
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.as_stackable().get_spacing()
+    }
+}
+impl<TLayoutData> crate::ElementMethods for Input<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_height(&self) -> StringOrBlockElementHeight {
+        self.as_element().get_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2590,7 +2865,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for Media<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for Media<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Media<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2600,15 +2894,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2731,7 +3016,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for RichTextBlock<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for RichTextBlock<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2741,15 +3045,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2865,7 +3160,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for Table<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for Table<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for Table<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2875,15 +3189,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3110,7 +3415,26 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::LayoutableElement for TextBlock<TLayoutData>
+impl<TLayoutData> crate::ToggleableItemMethods for TextBlock<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.is_visible
+    }
+}
+impl<TLayoutData> crate::StackableItemMethods for TextBlock<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        self.separator.unwrap_or(false)
+    }
+    fn get_spacing(&self) -> Spacing {
+        self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::ElementMethods for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3120,15 +3444,6 @@ where
             .unwrap_or(
                 StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
             )
-    }
-    fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-    fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
-    fn get_is_visible(&self) -> bool {
-        self.is_visible
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3260,12 +3575,48 @@ where
         }
     }
 }
+impl<TLayoutData> ToggleableItem<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+        match self {
+            ToggleableItem::ActionSet(inner) => inner,
+            ToggleableItem::Column(inner) => inner,
+            ToggleableItem::ColumnSet(inner) => inner,
+            ToggleableItem::Container(inner) => inner,
+            ToggleableItem::Element(inner) => inner.as_toggleable(),
+            ToggleableItem::FactSet(inner) => inner,
+            ToggleableItem::Image(inner) => inner,
+            ToggleableItem::ImageSet(inner) => inner,
+            ToggleableItem::InputChoiceSet(inner) => inner,
+            ToggleableItem::InputDate(inner) => inner,
+            ToggleableItem::InputNumber(inner) => inner,
+            ToggleableItem::InputText(inner) => inner,
+            ToggleableItem::InputTime(inner) => inner,
+            ToggleableItem::InputToggle(inner) => inner,
+            ToggleableItem::Input(inner) => inner.as_toggleable(),
+            ToggleableItem::Media(inner) => inner,
+            ToggleableItem::RichTextBlock(inner) => inner,
+            ToggleableItem::Table(inner) => inner,
+            ToggleableItem::TextBlock(inner) => inner,
+        }
+    }
+}
 impl<TLayoutData> crate::HasLayoutData<TLayoutData> for ToggleableItem<TLayoutData>
 where
     TLayoutData: Default,
 {
     fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
         self.as_has_layout_data().layout_data()
+    }
+}
+impl<TLayoutData> crate::ToggleableItemMethods for ToggleableItem<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        self.as_toggleable().get_is_visible()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]

@@ -8,21 +8,17 @@ use crate::{
     layout_context::LayoutContext,
     layout_impl::measure::NodeContext,
     layout_scratch::LayoutScratch,
-    layoutable::AsLayoutable,
+    layoutable::{AsLayoutable, Layoutable},
     masked_image::MaskedImage,
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
-    BlockElementHeight, Element, HasLayoutData, LayoutableElement, StringOrBlockElementHeight,
-    VerticalContentAlignment,
+    BlockElementHeight, Element, HasLayoutData, StackableItemMethods, StringOrBlockElementHeight,
 };
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
-use taffy::{
-    prelude::length, Dimension, Display, FlexDirection, JustifyContent, Rect, Size, Style,
-    TaffyTree,
-};
+use taffy::{prelude::length, Dimension, Display, FlexDirection, Rect, Size, Style, TaffyTree};
 
-use super::utils::parse_dimension;
+use super::utils::{parse_dimension, vertical_content_alignment_to_justify_content};
 
 // The shared container layout logic for AdaptiveCard and Container.
 pub(super) fn container_layout_override(
@@ -58,11 +54,12 @@ pub(super) fn container_layout_override(
         element.layout_data().borrow_mut().placement = Some(element_position);
 
         let as_element = element.as_element();
+        let as_stackable = element.as_stackable();
 
         // If the element has a separator, we need to add some spacing as defined by
         // the host config, plus additional spacing for the separator line thickness.
-        let has_separator = as_element.get_separator();
-        let spacing = context.host_config.spacing.from(as_element)
+        let has_separator = as_stackable.get_separator();
+        let spacing = context.host_config.spacing.from(as_stackable)
             + match has_separator {
                 true => separator_line_thickness,
                 false => 0,
@@ -155,27 +152,15 @@ pub(super) fn container_layout_override(
         })
 }
 
-// Converts the VerticalContentAlignment as set on the container element to a JustifyContent property
-// as required by the layout flexbox.
-fn vertical_content_alignment_to_justify_content(
-    vertical_content_alignment: VerticalContentAlignment,
-) -> JustifyContent {
-    match vertical_content_alignment {
-        VerticalContentAlignment::Top => JustifyContent::FlexStart,
-        VerticalContentAlignment::Center => JustifyContent::Center,
-        VerticalContentAlignment::Bottom => JustifyContent::FlexEnd,
-    }
-}
-
 // The shared container draw logic for AdaptiveCard and Container.
-pub(super) fn container_draw_override(
+pub(super) fn container_draw_override<TElement: StackableItemMethods + Layoutable>(
     context: &LayoutContext,
     tree: &TaffyTree<NodeContext>,
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     scratch: &mut LayoutScratch,
     child_elements_context: LayoutContext,
-    child_elements: &[Element<ElementLayoutData>],
+    child_elements: &[TElement],
 ) -> Result<(), RenderError> {
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
     // where we need to draw ourselves.
@@ -202,10 +187,8 @@ pub(super) fn container_draw_override(
     for (i, element) in child_elements
         .iter()
         .enumerate() // Important: We call enumerate before filtering, so the index is correct.
-        .filter(|(_, e)| e.as_element().get_is_visible())
+        .filter(|(_, e)| e.get_is_visible())
     {
-        let as_element = element.as_element();
-
         // Get the element's calculated layout data from the Taffy tree.
         let element_layout = tree
             .layout(child_element_node_ids[i])
@@ -218,16 +201,43 @@ pub(super) fn container_draw_override(
         // And get the element's absolute rectangle.
         let element_rect = element_layout.absolute_rect(&element_context);
 
+        let element_placement = element
+            .layout_data()
+            .borrow()
+            .placement
+            .expect("Element placement not set");
+
         // Draw the separator, if necessary.
-        draw_child_separator(
-            context,
-            i,
-            element_rect,
-            as_element,
-            separator_line_thickness,
-            separator_color,
-            &image,
-        );
+        match element_placement {
+            Placement::Top
+            | Placement::Bottom
+            | Placement::SoleVertical
+            | Placement::WithinVertical => {
+                draw_horizontal_separator(
+                    context,
+                    i,
+                    element_rect,
+                    element,
+                    separator_line_thickness,
+                    separator_color,
+                    &image,
+                );
+            }
+            Placement::Left
+            | Placement::Right
+            | Placement::SoleHorizontal
+            | Placement::WithinHorizontal => {
+                draw_vertical_separator(
+                    context,
+                    i,
+                    element_rect,
+                    element,
+                    separator_line_thickness,
+                    separator_color,
+                    &image,
+                );
+            }
+        }
 
         // Calculate the intersection of the element's rectangle with the container's rectangle.
         let maybe_intersection = absolute_rect.intersect(element_rect);
@@ -266,27 +276,25 @@ pub(super) fn container_draw_override(
         let child_image = MaskedImage::from_mask(image.clone(), intersection);
 
         // Call `draw` on the child element.
-        element
-            .as_layoutable()
-            .draw(&element_context, tree, child_image, scratch)?;
+        element.draw(&element_context, tree, child_image, scratch)?;
     }
     Ok(())
 }
 
-/// Draws a separator line between child elements, if the child element has
+/// Draws a horizontal separator line between child elements, if the child element has
 /// its separator property set to true.
-fn draw_child_separator(
+fn draw_horizontal_separator<TElement: StackableItemMethods + Layoutable>(
     context: &LayoutContext,
     element_index: usize,
     element_rect: imageproc::rect::Rect,
-    as_element: &dyn LayoutableElement,
+    element: &TElement,
     separator_line_thickness: u32,
     separator_color: image::Rgba<u8>,
     image: &Rc<RefCell<MaskedImage>>,
 ) {
-    let has_separator = as_element.get_separator();
+    let has_separator = element.get_separator();
     if has_separator && element_index > 0 {
-        let spacing = context.host_config.spacing.from(as_element);
+        let spacing = context.host_config.spacing.from(element);
         let half_spacing = (spacing / 2) as f32;
 
         // The bottom of the horizontal line will be half the separator spacing above the top of the element,
@@ -326,6 +334,66 @@ fn draw_child_separator(
                     &mut *image_mut,
                     (x_start, y as f32),
                     (x_end, y as f32),
+                    separator_color,
+                );
+            }
+        }
+    }
+}
+
+/// Draws a vertical separator line between child elements, if the child element has
+/// its separator property set to true.
+fn draw_vertical_separator<TElement: StackableItemMethods + Layoutable>(
+    context: &LayoutContext,
+    element_index: usize,
+    element_rect: imageproc::rect::Rect,
+    element: &TElement,
+    separator_line_thickness: u32,
+    separator_color: image::Rgba<u8>,
+    image: &Rc<RefCell<MaskedImage>>,
+) {
+    let has_separator = element.get_separator();
+    if has_separator && element_index > 0 {
+        let spacing = context.host_config.spacing.from(element);
+        let half_spacing = (spacing / 2) as f32;
+
+        // The right of the horizontal line will be half the separator spacing above the left of the element,
+        // minus an additional pixel.
+        let x_right_float = element_rect.left() as f32 - half_spacing - 1.;
+
+        // The left of the horizontal line is going to be half the spacing above the left of the element,
+        // minus the line thickness.
+        let x_left_float = x_right_float - separator_line_thickness as f32 + 1.;
+
+        let y_start = element_rect.top() as f32;
+        let y_end = element_rect.bottom() as f32;
+
+        let mut image_mut = image.borrow_mut();
+
+        // Draw the left and right lines, which max be between pixels.
+        draw_line_segment_mut(
+            &mut *image_mut,
+            (y_start, x_left_float),
+            (y_end, x_left_float),
+            separator_color,
+        );
+
+        if separator_line_thickness > 1 {
+            draw_line_segment_mut(
+                &mut *image_mut,
+                (y_start, x_right_float),
+                (y_end, x_right_float),
+                separator_color,
+            );
+
+            // Now draw lines for all the pixels in between the left and right.
+            let x_right = x_right_float.ceil() as u32;
+            let yop_t = x_left_float.floor() as u32;
+            for x in yop_t..=x_right {
+                draw_line_segment_mut(
+                    &mut *image_mut,
+                    (y_start, x as f32),
+                    (y_end, x as f32),
                     separator_color,
                 );
             }

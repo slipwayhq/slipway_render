@@ -1,6 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
-use adaptive_cards::HasLayoutData;
+use adaptive_cards::{Element, HasLayoutData};
 use imageproc::rect::Rect;
 use taffy::{NodeId, Style, TaffyTree};
 
@@ -159,5 +159,26 @@ impl<T: Layoutable> Layoutable for Box<T> {
     ) -> Result<(), RenderError> {
         self.as_ref()
             .draw_override(context, tree, taffy_data, image, scratch)
+    }
+}
+
+impl Layoutable for Element<ElementLayoutData> {
+    fn layout(
+        &self,
+        context: &LayoutContext,
+        baseline_style: Style,
+        tree: &mut TaffyTree<NodeContext>,
+    ) -> Result<NodeId, RenderError> {
+        self.as_layoutable().layout(context, baseline_style, tree)
+    }
+
+    fn draw(
+        &self,
+        context: &LayoutContext,
+        tree: &TaffyTree<NodeContext>,
+        image: Rc<RefCell<MaskedImage>>,
+        scratch: &mut LayoutScratch,
+    ) -> Result<(), RenderError> {
+        self.as_layoutable().draw(context, tree, image, scratch)
     }
 }

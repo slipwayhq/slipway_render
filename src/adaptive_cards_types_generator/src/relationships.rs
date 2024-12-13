@@ -17,6 +17,8 @@ const LAYOUTABLE_TYPES: [&str; 7] = [
     "Refresh",
 ];
 const ELEMENT_TYPE: &str = "Element";
+const TOGGLEABLE_ITEM_TYPE: &str = "ToggleableItem";
+const STACKABLE_TYPES: [&str; 2] = ["Element", "Column"];
 
 pub(super) struct Relationships<'c> {
     pub classes: &'c HashMap<String, Loaded<Class>>,
@@ -41,6 +43,8 @@ pub(super) struct ClassMetadata {
 
     pub is_image: bool,
     pub is_element: bool,
+    pub is_toggleable: bool,
+    pub is_stackable: bool,
 }
 
 impl<'c> Relationships<'c> {
@@ -115,6 +119,16 @@ pub(super) fn get_relationships(classes: &HashMap<String, Loaded<Class>>) -> Rel
             let is_element = ELEMENT_TYPE == class.type_name
                 || ancestors.iter().any(|a| ELEMENT_TYPE == a.type_name);
 
+            let is_toggleable = TOGGLEABLE_ITEM_TYPE == class.type_name
+                || ancestors
+                    .iter()
+                    .any(|a| TOGGLEABLE_ITEM_TYPE == a.type_name);
+
+            let is_stackable = STACKABLE_TYPES.contains(&class.type_name.as_str())
+                || ancestors
+                    .iter()
+                    .any(|a| STACKABLE_TYPES.contains(&a.type_name.as_str()));
+
             (
                 id.clone(),
                 ClassMetadata {
@@ -122,6 +136,8 @@ pub(super) fn get_relationships(classes: &HashMap<String, Loaded<Class>>) -> Rel
                     is_layoutable,
                     is_image,
                     is_element,
+                    is_toggleable,
+                    is_stackable,
                 },
             )
         })

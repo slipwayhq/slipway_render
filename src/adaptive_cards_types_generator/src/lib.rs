@@ -119,7 +119,7 @@ fn generate_inner(ac_schema_folder_path: PathBuf) -> anyhow::Result<Vec<proc_mac
     tokens.push(quote! {
         #[macro_export]
         macro_rules! impl_as_trait {
-            ($trait_name:path, $as_trait_name:ident, $method_name:ident, $layout_data: ident) => {
+            ($trait_name:path, $as_trait_name:ident, $method_name:ident, $layout_data:ident) => {
 
                 pub(crate) trait $as_trait_name {
                     fn $method_name(&self) -> &dyn $trait_name;

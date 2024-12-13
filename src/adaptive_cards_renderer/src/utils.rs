@@ -42,6 +42,34 @@ where
     }
 }
 
+pub(super) trait ClampToI32 {
+    fn clamp_to_i32(self) -> i32;
+}
+
+// impl<T> ClampToI32 for T
+// where
+//     T: PartialOrd + From<i32> + TryInto<i32>,
+// {
+//     fn clamp_to_i32(self) -> i32 {
+//         let lower_bound: T = i32::MIN.into();
+//         let upper_bound: T = i32::MAX.into();
+
+//         if self < lower_bound {
+//             i32::MIN
+//         } else if self > upper_bound {
+//             i32::MAX
+//         } else {
+//             self.try_into().unwrap_or(i32::MAX)
+//         }
+//     }
+// }
+
+impl ClampToI32 for u32 {
+    fn clamp_to_i32(self) -> i32 {
+        self.min(i32::MAX as u32) as i32
+    }
+}
+
 /// A trait for easily getting the absolute rect of an element from the Taffy
 /// Layout data using the element's context data.
 pub(super) trait TaffyLayoutUtils {

@@ -25,6 +25,8 @@ use crate::{
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 
+use super::utils::apply_horizontal_alignment;
+
 #[derive(Debug)]
 pub(crate) struct TextBlockNodeContext {
     pub text: String,
@@ -197,15 +199,7 @@ impl Layoutable for TextBlock<ElementLayoutData> {
 
         // Style
         let mut style = Style { ..baseline_style };
-        if let Some(horizontal_alignment) = self.horizontal_alignment {
-            style.justify_content = Some(match horizontal_alignment {
-                adaptive_cards::HorizontalAlignment::Center => taffy::style::JustifyContent::Center,
-                adaptive_cards::HorizontalAlignment::Right => taffy::style::JustifyContent::FlexEnd,
-                adaptive_cards::HorizontalAlignment::Left => {
-                    taffy::style::JustifyContent::FlexStart
-                }
-            });
-        }
+        apply_horizontal_alignment(self.horizontal_alignment, &mut style, context);
 
         // Handled by parent
         // self.is_visible

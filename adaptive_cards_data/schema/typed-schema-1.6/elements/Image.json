@@ -5,8 +5,10 @@
 	"properties": {
 		"url": {
 			"type": "uri-reference",
-			"description": "The URL to the image. Supports data URI in version 1.2+",
-			"required": true
+			"description": "The URL to the image. Supports data URI in version 1.2+"
+		},
+		"callout": {
+			"type": "Callout"
 		},
 		"altText": {
 			"type": "string",

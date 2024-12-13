@@ -1,6 +1,6 @@
 use std::num::ParseFloatError;
 
-use taffy::{prelude::length, Dimension, LengthPercentageAuto, Rect};
+use taffy::{prelude::length, Dimension, LengthPercentageAuto, Rect, Style};
 
 use crate::{
     element_layout_data::Placement, errors::RenderError, host_config_utils::ValidSpacing,
@@ -92,4 +92,19 @@ pub(super) fn get_margins_for_bleed(
             bottom: length(negative_padding),
         },
     }
+}
+
+pub(super) fn apply_horizontal_alignment(
+    horizontal_alignment: Option<adaptive_cards::HorizontalAlignment>,
+    style: &mut Style,
+    context: &LayoutContext,
+) {
+    let horizontal_alignment =
+        horizontal_alignment.unwrap_or(context.inherited.horizontal_alignment);
+
+    style.justify_content = Some(match horizontal_alignment {
+        adaptive_cards::HorizontalAlignment::Center => taffy::style::JustifyContent::Center,
+        adaptive_cards::HorizontalAlignment::Right => taffy::style::JustifyContent::FlexEnd,
+        adaptive_cards::HorizontalAlignment::Left => taffy::style::JustifyContent::FlexStart,
+    });
 }

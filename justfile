@@ -41,9 +41,13 @@ assemble-components configuration: \
   (copy-theme-component-additional-files configuration) \
   (tar-component-files configuration "theme") \
   (rename-component-tar configuration "theme") \
-  (copy-echarts-component-files configuration) \
-  (tar-component-files configuration "echarts") \
-  (rename-component-tar configuration "echarts") \
+  (assemble-simple-component configuration "echarts") \
+  (assemble-simple-component configuration "echarts_svg") \
+
+assemble-simple-component configuration name: \
+  (copy-all-component-files configuration name) \
+  (tar-component-files configuration name) \
+  (rename-component-tar configuration name) \
 
 clean-artifacts configuration:
   mkdir -p artifacts
@@ -56,9 +60,9 @@ copy-render-component-additional-files configuration:
 copy-theme-component-additional-files configuration:
   cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/{{configuration}}/slipway_theme/host-config-with-defaults.schema.json
 
-copy-echarts-component-files configuration:
-  mkdir -p artifacts/{{configuration}}/slipway_echarts
-  cp src_components/slipway_echarts_component/* artifacts/{{configuration}}/slipway_echarts
+copy-all-component-files configuration name:
+  mkdir -p artifacts/{{configuration}}/slipway_{{name}}
+  cp src_components/slipway_{{name}}_component/* artifacts/{{configuration}}/slipway_{{name}}
 
 copy-component-files configuration name:
   mkdir -p artifacts/{{configuration}}/slipway_{{name}}

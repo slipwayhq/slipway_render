@@ -9393,7 +9393,7 @@
             "#724e58",
             "#4b565b"
           ],
-          "backgroundColor": "rgba(254,248,239,1)",
+          "backgroundColor": "rgba(254,248,239,0)",
           "textStyle": {},
           "title": {
             "textStyle": {
@@ -9780,14 +9780,6 @@
             }
           }
         }
-      }
-    },
-    "svg": {
-      "component": "file:artifacts/debug/slipway.svg.0.0.1.tar",
-      "input": {
-        "width": "$.constants.width",
-        "height": "$.constants.height",
-        "svg": "$$.echarts.svg"
       }
     }
   }

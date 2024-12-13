@@ -1,0 +1,50 @@
+{
+  "publisher": "slipway",
+  "name": "echarts_rig",
+  "version": "0.0.1",
+  "description": "A slipway rig which renders a chart.",
+  "constants": {
+    "width": 1000,
+    "height": 800
+  },
+  "rigging": {
+    "echarts": {
+      "component": "file:artifacts/debug/slipway.echarts.0.0.1.tar",
+      "input": {
+        "width": "$.constants.width",
+        "height": "$.constants.height",
+        "chart": {
+          "xAxis": {
+            "type": "category",
+            "data": [
+              "Mon",
+              "Tue",
+              "Wed",
+              "Thu",
+              "Fri",
+              "Sat",
+              "Sun"
+            ]
+          },
+          "yAxis": {
+            "type": "value"
+          },
+          "series": [
+            {
+              "data": [
+                150,
+                230,
+                224,
+                218,
+                135,
+                147,
+                260
+              ],
+              "type": "line"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

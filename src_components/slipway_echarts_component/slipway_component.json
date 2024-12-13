@@ -1,7 +1,7 @@
 {
   "publisher": "slipway",
   "name": "echarts",
-  "description": "Takes an echart definition and returns an SVG string.",
+  "description": "Takes an echart definition and returns a canvas.",
   "version": "0.0.1",
   "input": {
     "properties": {
@@ -15,7 +15,41 @@
   },
   "output": {
     "properties": {
-      "svg": { "type": "string" }
+      "canvas": {
+        "properties": {
+          "width": {
+            "type": "uint32"
+          },
+          "height": {
+            "type": "uint32"
+          },
+          "data": {
+            "type": "string",
+            "metadata": {
+              "description": "Base64 encoded vector of RGBA unsigned bytes."
+            }
+          }
+        }
+      }
+    }
+  },
+  "rigging": {
+    "echarts": {
+      "component": "file:artifacts/debug/slipway.echarts_svg.0.0.1.tar",
+      "input": {
+        "width": "$$.input.width",
+        "height": "$$.input.height",
+        "chart": "$$.input.chart",
+        "theme": "$$?input.theme"
+      }
+    },
+    "output": {
+      "component": "file:artifacts/debug/slipway.svg.0.0.1.tar",
+      "input": {
+        "width": "$$.input.width",
+        "height": "$$.input.height",
+        "svg": "$$.echarts.svg"
+      }
     }
   }
 }

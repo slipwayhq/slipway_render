@@ -45,7 +45,7 @@ pub fn render_from_str(
 pub fn render(
     target: &AdaptiveCard<ElementLayoutData>,
     host_config: &HostConfig,
-    host_context: &impl HostContext,
+    host_context: &dyn HostContext,
     width: u32,
     height: u32,
     debug_mode: DebugMode,
@@ -72,8 +72,16 @@ pub fn render(
         }
     }
 
+    let image_cache = HashMap::new();
+
     // Create the context for the root element.
-    let context = LayoutContext::new(host_config, debug_mode, &font_stack_to_resolved_family_map);
+    let context = LayoutContext::new(
+        host_config,
+        host_context,
+        debug_mode,
+        &font_stack_to_resolved_family_map,
+        &image_cache,
+    );
 
     // Create the Taffy tree, which will be populated in the layout pass.
     let mut tree: TaffyTree<NodeContext> = TaffyTree::new();

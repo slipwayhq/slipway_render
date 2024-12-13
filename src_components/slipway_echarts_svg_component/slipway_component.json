@@ -1,0 +1,21 @@
+{
+  "publisher": "slipway",
+  "name": "echarts_svg",
+  "description": "Takes an echart definition and returns an SVG string.",
+  "version": "0.0.1",
+  "input": {
+    "properties": {
+      "width": { "type": "uint32" },
+      "height": { "type": "uint32" },
+      "chart": {}
+    },
+    "optionalProperties": {
+      "theme": {}
+    }
+  },
+  "output": {
+    "properties": {
+      "svg": { "type": "string" }
+    }
+  }
+}

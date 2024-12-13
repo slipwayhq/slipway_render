@@ -2,16 +2,19 @@ use core::fmt;
 use std::{collections::HashMap, rc::Rc};
 
 use adaptive_cards_host_config::HostConfig;
+use image::RgbaImage;
 use taffy::Point;
 
-use crate::{errors::RenderError, DebugMode};
-use adaptive_cards::{ContainerStyle, VerticalContentAlignment};
+use crate::{errors::RenderError, host_context::HostContext, DebugMode};
+use adaptive_cards::{ContainerStyle, HorizontalAlignment, VerticalContentAlignment};
 
 /// The context for the layout and draw passes of a single element.
 #[derive(Clone)]
-pub(super) struct LayoutContext<'hc, 'fm> {
+pub(super) struct LayoutContext<'cfg, 'ctx, 'render> {
     /// The host configuration for the layout.
-    pub host_config: &'hc HostConfig,
+    pub host_config: &'cfg HostConfig,
+
+    pub host_context: &'ctx dyn HostContext,
 
     /// The debug mode for the layout (whether we should draw additional debug information).
     pub debug_mode: DebugMode,
@@ -28,18 +31,24 @@ pub(super) struct LayoutContext<'hc, 'fm> {
     pub inherited: InheritedContext,
 
     // A map from the font stack in the host config to the font family resolved by the host.
-    font_stack_to_resolved_family_map: &'fm HashMap<String, String>,
+    font_stack_to_resolved_family_map: &'render HashMap<String, String>,
+
+    // A cache of resolved images, so we don't resolve them multiple times.
+    image_cache: &'render HashMap<String, RgbaImage>,
 }
 
-impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
+impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
     #[must_use]
     pub fn new(
-        host_config: &'hc HostConfig,
+        host_config: &'cfg HostConfig,
+        host_context: &'ctx dyn HostContext,
         debug_mode: DebugMode,
-        font_stack_to_resolved_family_map: &'fm HashMap<String, String>,
+        font_stack_to_resolved_family_map: &'render HashMap<String, String>,
+        image_cache: &'render HashMap<String, RgbaImage>,
     ) -> Self {
         LayoutContext {
             host_config,
+            host_context,
             debug_mode,
             path: Rc::new(LayoutPath {
                 current: "root".to_string(),
@@ -48,6 +57,7 @@ impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
             current_origin: Point { x: 0., y: 0. },
             inherited: InheritedContext::default(),
             font_stack_to_resolved_family_map,
+            image_cache,
         }
     }
 
@@ -78,6 +88,7 @@ impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
     pub fn for_child_origin(&self, child_name: String, relative_location: Point<f32>) -> Self {
         LayoutContext {
             host_config: self.host_config,
+            host_context: self.host_context,
             debug_mode: self.debug_mode,
             path: Rc::new(LayoutPath {
                 current: child_name,
@@ -86,6 +97,7 @@ impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
             current_origin: self.current_origin + relative_location,
             inherited: self.inherited,
             font_stack_to_resolved_family_map: self.font_stack_to_resolved_family_map,
+            image_cache: self.image_cache,
         }
     }
 
@@ -111,6 +123,15 @@ impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
         self
     }
 
+    /// Creates a new LayoutContext based on the current context but with the given horizontal alignment.
+    #[must_use]
+    pub fn with_horizontal_alignment(mut self, value: &Option<HorizontalAlignment>) -> Self {
+        if let Some(value) = value {
+            self.inherited.horizontal_alignment = *value;
+        }
+        self
+    }
+
     /// Prints the current context to the console.
     pub fn print_local_context(&self) {
         println!("debug: {}: {:?}", self.path, self.current_origin);
@@ -129,7 +150,7 @@ impl<'hc, 'fm> LayoutContext<'hc, 'fm> {
 }
 
 /// The path of an element in the element tree.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash)]
 pub struct LayoutPath {
     /// The name of the current element.
     pub current: String,
@@ -150,8 +171,19 @@ impl fmt::Display for LayoutPath {
 
 /// The inherited context for an element. This is context which affects
 /// layout and drawing but is not directly controlled by the element itself.
-#[derive(Default, Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug)]
 pub(super) struct InheritedContext {
     pub style: ContainerStyle,
     pub vertical_content_alignment: VerticalContentAlignment,
+    pub horizontal_alignment: HorizontalAlignment,
+}
+
+impl Default for InheritedContext {
+    fn default() -> Self {
+        InheritedContext {
+            style: ContainerStyle::default(),
+            vertical_content_alignment: VerticalContentAlignment::default(),
+            horizontal_alignment: HorizontalAlignment::Left,
+        }
+    }
 }

@@ -85,4 +85,12 @@ impl HostContext for MockHostContext {
             })
         }
     }
+
+    fn run_callout(
+        &self,
+        _handle: &str,
+        _input: &serde_json::Value,
+    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
+        unimplemented!()
+    }
 }

@@ -1,3 +1,4 @@
+use serde_json::Value;
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ActionMode {
     #[serde(rename = "primary", alias = "Primary")]
@@ -982,6 +983,16 @@ pub struct BackgroundImage {
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
+pub struct Callout {
+    #[serde(rename = "handle")]
+    pub handle: String,
+    #[serde(rename = "input")]
+    pub input: Value,
+    #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
+}
+#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[serde(deny_unknown_fields)]
 pub struct CaptionSource {
     #[serde(rename = "label")]
     pub label: String,
@@ -1523,6 +1534,8 @@ where
     pub alt_text: Option<String>,
     #[serde(rename = "backgroundColor", skip_serializing_if = "Option::is_none")]
     pub background_color: Option<String>,
+    #[serde(rename = "callout", skip_serializing_if = "Option::is_none")]
+    pub callout: Option<Callout>,
     #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption<TLayoutData>>,
     #[serde(
@@ -1553,8 +1566,8 @@ where
     pub spacing: Option<Spacing>,
     #[serde(rename = "style", skip_serializing_if = "Option::is_none")]
     pub style: Option<ImageStyle>,
-    #[serde(rename = "url")]
-    pub url: String,
+    #[serde(rename = "url", skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     #[serde(rename = "width", skip_serializing_if = "Option::is_none")]
     pub width: Option<String>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]

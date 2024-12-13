@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "description": "A slipway rig which renders some UI",
   "constants": {
+    "width": 600,
+    "height": 400
   },
   "rigging": {
     "theme": {
@@ -27,6 +29,9 @@
     },
     "render": {
       "component": "file:artifacts/debug/slipway.render.0.0.1.tar",
+      "callouts": {
+        "echarts": "file:artifacts/debug/slipway.echarts.0.0.1.tar"
+      },
       "input": {
         "card": {
           "type": "AdaptiveCard",
@@ -62,8 +67,52 @@
               "separator": true,
               "items": [
                 {
-                  "type": "TextBlock",
-                  "text": "3"
+                  "type": "Image",
+                  "height": "stretch",
+                  "callout": {
+                    "handle": "echarts",
+                    "input": {
+                      "width": 0,
+                      "height": 0,
+                      "chart": {
+                        "grid": {
+                          "top": "10%",
+                          "bottom": "10%",
+                          "left": "5%",
+                          "right": "5%"
+                        },
+                        "xAxis": {
+                          "type": "category",
+                          "data": [
+                            "Mon",
+                            "Tue",
+                            "Wed",
+                            "Thu",
+                            "Fri",
+                            "Sat",
+                            "Sun"
+                          ]
+                        },
+                        "yAxis": {
+                          "type": "value"
+                        },
+                        "series": [
+                          {
+                            "data": [
+                              150,
+                              230,
+                              224,
+                              218,
+                              135,
+                              147,
+                              260
+                            ],
+                            "type": "line"
+                          }
+                        ]
+                      }
+                    }
+                  }
                 }
               ]
             }
@@ -71,10 +120,10 @@
         },
         "hostConfig": "$$.modify_theme.data",
         "canvas": {
-          "width": 400,
-          "height": 300
+          "width": "$.constants.width",
+          "height": "$.constants.height"
         }
       }
     }
   }
-}  
+}

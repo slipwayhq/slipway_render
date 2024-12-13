@@ -20,6 +20,28 @@ impl HostContext for SlipwayHostContext {
             data: resolved_font.data,
         })
     }
+
+    fn run_callout(
+        &self,
+        handle: &str,
+        input: &serde_json::Value,
+    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
+        let result = bindings::callout::run(
+            handle,
+            &serde_json::to_string(input).expect("Callout input should serialize."),
+        )
+        .map_err(|e| adaptive_cards_renderer::host_context::ComponentError {
+            message: e.message,
+        })?;
+
+        let canvas_result: CanvasResultContainer = serde_json::from_str(&result).map_err(|e| {
+            adaptive_cards_renderer::host_context::ComponentError {
+                message: format!("Failed to parse canvas from callout result\n{}", e),
+            }
+        })?;
+
+        Ok(canvas_result_to_image(&canvas_result.canvas))
+    }
 }
 
 struct Component;
@@ -93,6 +115,15 @@ fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
     }
 }
 
+fn canvas_result_to_image(canvas: &CanvasResult) -> RgbaImage {
+    let rgba_bytes = BASE64_STANDARD
+        .decode(&canvas.data)
+        .expect("canvas data should be valid base64");
+    let image: RgbaImage = ImageBuffer::from_raw(canvas.width, canvas.height, rgba_bytes)
+        .expect("canvas data should be valid image data");
+    image
+}
+
 #[derive(Deserialize)]
 struct Input {
     card: adaptive_cards::AdaptiveCard<ElementLayoutData>,
@@ -124,9 +155,14 @@ struct Output {
     canvas: CanvasResult,
 }
 
-#[derive(Serialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 struct CanvasResult {
     width: u32,
     height: u32,
     data: String,
+}
+
+#[derive(Deserialize, Clone, Debug)]
+struct CanvasResultContainer {
+    canvas: CanvasResult,
 }

@@ -3,6 +3,7 @@ use crate::element_layout_data::ElementLayoutData;
 mod adaptive_card;
 mod container;
 mod container_shared;
+mod image;
 pub(crate) mod measure;
 mod text_block;
 mod utils;
@@ -18,7 +19,6 @@ impl crate::layoutable::Layoutable for adaptive_cards::ActionToggleVisibility<El
 impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::FactSet<ElementLayoutData> {}
-impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ImageSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputChoiceSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputDate<ElementLayoutData> {}

@@ -13,7 +13,9 @@ use crate::{
     masked_image::MaskedImage,
 };
 
-use super::container_shared::{container_draw_override, vertical_container_layout_override};
+use super::container_shared::{
+    container_draw_override, vertical_container_layout_override, PaddingBehavior,
+};
 
 impl Layoutable for Container<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -26,7 +28,13 @@ impl Layoutable for Container<ElementLayoutData> {
         tree: &mut TaffyTree<NodeContext>,
     ) -> Result<ElementTaffyData, RenderError> {
         baseline_style.min_size.width = Dimension::Percent(1.);
-        vertical_container_layout_override(self, context, baseline_style, tree)
+        vertical_container_layout_override(
+            self,
+            context,
+            baseline_style,
+            tree,
+            PaddingBehavior::ForStyle(self.style),
+        )
     }
 
     fn draw_override(
@@ -39,14 +47,7 @@ impl Layoutable for Container<ElementLayoutData> {
     ) -> Result<(), RenderError> {
         // Delegate to the shared container draw function.
         container_draw_override(
-            self,
-            context,
-            tree,
-            taffy_data,
-            image,
-            scratch,
-            self.style.as_ref(),
-            "items",
+            self, context, tree, taffy_data, image, scratch, self.style, "items",
         )
     }
 }

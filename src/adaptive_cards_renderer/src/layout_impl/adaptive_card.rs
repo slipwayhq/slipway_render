@@ -15,7 +15,9 @@ use crate::{
     masked_image::{MaskedImage, SlipwayCanvas},
 };
 
-use super::container_shared::{container_draw_override, container_layout_override_inner};
+use super::container_shared::{
+    container_draw_override, container_layout_override_inner, PaddingBehavior,
+};
 
 impl Layoutable for AdaptiveCard<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -53,6 +55,7 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
             tree,
             child_elements_context,
             child_elements,
+            PaddingBehavior::Always,
         )
     }
 

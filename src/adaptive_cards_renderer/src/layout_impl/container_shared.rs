@@ -16,6 +16,7 @@ use adaptive_cards::{
     BlockElementHeight, ContainerStyle, ElementMethods, StackableItemMethods,
     StringOrBlockElementHeight,
 };
+use adaptive_cards_host_config::HostConfig;
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
 use taffy::{prelude::length, Dimension, Display, FlexDirection, Rect, Size, Style, TaffyTree};
 
@@ -35,6 +36,7 @@ pub(super) fn vertical_container_layout_override<
     context: &LayoutContext,
     mut baseline_style: taffy::Style,
     tree: &mut TaffyTree<NodeContext>,
+    padding_behavior: PaddingBehavior,
 ) -> Result<ElementTaffyData, RenderError> {
     // Parse the min height, if specified.
     if let Some(min_height) = parent.get_min_height() {
@@ -63,16 +65,18 @@ pub(super) fn vertical_container_layout_override<
         tree,
         child_elements_context,
         child_elements,
+        padding_behavior,
     )
 }
 
 // The shared container layout logic for AdaptiveCard and Container.
 pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layoutable>(
     context: &LayoutContext,
-    baseline_style: Style,
+    mut baseline_style: Style,
     tree: &mut TaffyTree<NodeContext>,
     child_elements_context: LayoutContext,
     child_elements: &[TElement],
+    padding_behavior: PaddingBehavior,
 ) -> Result<ElementTaffyData, RenderError> {
     // This will contain one node id for each child element, in the same order as the child_elements array.
     let mut child_element_node_ids = Vec::new();
@@ -162,7 +166,7 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
     }
 
     // Next we build up the container style based on the host config and element properties.
-    let padding = context.host_config.spacing.padding() as f32;
+    apply_container_style_padding(padding_behavior, context.host_config, &mut baseline_style);
 
     // Use the vertical content alignment (which was populated by the caller of this function)
     // to determine the flexbox justify content property.
@@ -170,26 +174,47 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
         child_elements_context.inherited.vertical_content_alignment,
     );
 
-    let container_style = Style {
-        display: Display::Flex,
-        flex_direction: FlexDirection::Column,
-        justify_content: Some(justify_content),
-        padding: Rect {
-            top: length(padding),
-            left: length(padding),
-            right: length(padding),
-            bottom: length(padding),
-        },
-        ..baseline_style
-    };
+    baseline_style.display = Display::Flex;
+    baseline_style.flex_direction = FlexDirection::Column;
+    baseline_style.justify_content = Some(justify_content);
 
     // Finally add ourself to the taffy tree and return the node id other metadata.
-    tree.new_with_children(container_style, &child_node_ids)
+    tree.new_with_children(baseline_style, &child_node_ids)
         .err_context(context)
         .map(|node_id| ElementTaffyData {
             node_id,
             child_element_node_ids,
         })
+}
+
+pub(super) enum PaddingBehavior {
+    Always,
+    ForStyle(Option<ContainerStyle>),
+}
+
+/// Containers only have padding if they are not the default style (and so have a background color).
+pub(super) fn apply_container_style_padding(
+    padding_behavior: PaddingBehavior,
+    host_config: &HostConfig,
+    baseline_style: &mut Style,
+) {
+    let apply_padding = match padding_behavior {
+        PaddingBehavior::Always => true,
+        PaddingBehavior::ForStyle(style) => match style {
+            None => false,
+            Some(style) => style != ContainerStyle::Default,
+        },
+    };
+
+    if apply_padding {
+        let padding = host_config.spacing.padding() as f32;
+        baseline_style.padding = Rect {
+            top: length(padding),
+            left: length(padding),
+            right: length(padding),
+            bottom: length(padding),
+        };
+    }
 }
 
 // The shared container draw logic for AdaptiveCard and Container.
@@ -204,11 +229,11 @@ pub(super) fn container_draw_override<
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     scratch: &mut LayoutScratch,
-    style: Option<&ContainerStyle>,
+    container_style: Option<ContainerStyle>,
     child_elements_context_name: &str,
 ) -> Result<(), RenderError> {
     // Draw the container background, if necessary.
-    if let Some(&style) = style {
+    if let Some(style) = container_style {
         draw_background(style, context, tree, taffy_data, &image)?;
     }
 

@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
 use adaptive_cards::{Column, HasLayoutData, StringOrNumber};
-use taffy::{prelude::length, Dimension, Display, FlexDirection, Rect, Size, Style, TaffyTree};
+use taffy::{prelude::length, Dimension, Display, FlexDirection, Size, Style, TaffyTree};
 
 use crate::{
     element_layout_data::{ElementLayoutData, ElementTaffyData, Placement},
@@ -16,7 +16,7 @@ use crate::{
 };
 
 use super::{
-    container_shared::container_draw_override,
+    container_shared::{apply_container_style_padding, container_draw_override, PaddingBehavior},
     utils::{
         get_margins_for_bleed, parse_dimension, vertical_content_alignment_to_justify_content,
     },
@@ -179,7 +179,11 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
         }
 
         // Next we build up the container style based on the host config and element properties.
-        let padding = context.host_config.spacing.padding() as f32;
+        apply_container_style_padding(
+            PaddingBehavior::ForStyle(self.style),
+            context.host_config,
+            &mut baseline_style,
+        );
 
         // Use the vertical content alignment (which was populated by the caller of this function)
         // to determine the flexbox justify content property.
@@ -187,21 +191,12 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
             child_elements_context.inherited.vertical_content_alignment,
         );
 
-        let container_style = Style {
-            display: Display::Flex,
-            flex_direction: FlexDirection::Row,
-            justify_content: Some(justify_content),
-            padding: Rect {
-                top: length(padding),
-                left: length(padding),
-                right: length(padding),
-                bottom: length(padding),
-            },
-            ..baseline_style
-        };
+        baseline_style.display = Display::Flex;
+        baseline_style.flex_direction = FlexDirection::Row;
+        baseline_style.justify_content = Some(justify_content);
 
         // Finally add ourself to the taffy tree and return the node id other metadata.
-        tree.new_with_children(container_style, &child_node_ids)
+        tree.new_with_children(baseline_style, &child_node_ids)
             .err_context(context)
             .map(|node_id| ElementTaffyData {
                 node_id,
@@ -219,14 +214,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
     ) -> Result<(), RenderError> {
         // Delegate to the shared container draw function.
         container_draw_override(
-            self,
-            context,
-            tree,
-            taffy_data,
-            image,
-            scratch,
-            self.style.as_ref(),
-            "columns",
+            self, context, tree, taffy_data, image, scratch, self.style, "columns",
         )
     }
 }

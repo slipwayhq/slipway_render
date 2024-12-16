@@ -1,7 +1,8 @@
 use adaptive_cards::{
-    AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, StackableItemMethods,
-    VerticalContentAlignment,
+    AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HorizontalAlignment,
+    StackableItemMethods, VerticalContentAlignment,
 };
+use container_shared::PaddingBehavior;
 
 use crate::{
     element_layout_data::{ElementLayoutData, Placement},
@@ -45,14 +46,9 @@ where
     fn get_child_elements(&self) -> &[TElement];
 }
 
-impl HasChildElements<Element<ElementLayoutData>> for Column<ElementLayoutData> {
+impl HasChildElements<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
     fn get_child_elements(&self) -> &[Element<ElementLayoutData>] {
-        self.items.as_deref().unwrap_or_default()
-    }
-}
-impl HasChildElements<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
-    fn get_child_elements(&self) -> &[Column<ElementLayoutData>] {
-        self.columns.as_deref().unwrap_or_default()
+        self.body.as_deref().unwrap_or_default()
     }
 }
 
@@ -62,13 +58,24 @@ impl HasChildElements<Element<ElementLayoutData>> for Container<ElementLayoutDat
     }
 }
 
-impl HasChildElements<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
+impl HasChildElements<Element<ElementLayoutData>> for Column<ElementLayoutData> {
     fn get_child_elements(&self) -> &[Element<ElementLayoutData>] {
-        self.body.as_deref().unwrap_or_default()
+        self.items.as_deref().unwrap_or_default()
     }
 }
 
-trait VerticalContainer<TElement>: HasChildElements<TElement>
+impl HasChildElements<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
+    fn get_child_elements(&self) -> &[Column<ElementLayoutData>] {
+        self.columns.as_deref().unwrap_or_default()
+    }
+}
+
+enum ItemsContainerOrientation {
+    Vertical,
+    Horizontal,
+}
+
+trait ItemsContainer<TElement>
 where
     TElement: StackableItemMethods + Layoutable,
 {
@@ -80,10 +87,58 @@ where
 
     fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment>;
 
+    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment>;
+
     fn get_style(&self) -> Option<ContainerStyle>;
+
+    fn get_padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::ForStyle(self.get_style())
+    }
+
+    fn get_children_collection_name(&self) -> &'static str {
+        "items"
+    }
+
+    fn get_orientation(&self) -> ItemsContainerOrientation {
+        ItemsContainerOrientation::Vertical
+    }
 }
 
-impl VerticalContainer<Element<ElementLayoutData>> for Container<ElementLayoutData> {
+impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
+    fn get_min_height(&self) -> Option<&str> {
+        None
+    }
+
+    fn get_bleed(&self) -> bool {
+        false
+    }
+
+    fn get_placement(&self) -> Placement {
+        Placement::SoleVertical
+    }
+
+    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+        self.vertical_content_alignment
+    }
+
+    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_alignment
+    }
+
+    fn get_style(&self) -> Option<ContainerStyle> {
+        None
+    }
+
+    fn get_padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::Always
+    }
+
+    fn get_children_collection_name(&self) -> &'static str {
+        "body"
+    }
+}
+
+impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData> {
     fn get_min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
@@ -100,12 +155,16 @@ impl VerticalContainer<Element<ElementLayoutData>> for Container<ElementLayoutDa
         self.vertical_content_alignment
     }
 
+    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_alignment
+    }
+
     fn get_style(&self) -> Option<ContainerStyle> {
         self.style
     }
 }
 
-impl VerticalContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
+impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
     fn get_min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
@@ -122,7 +181,45 @@ impl VerticalContainer<Element<ElementLayoutData>> for Column<ElementLayoutData>
         self.vertical_content_alignment
     }
 
+    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_alignment
+    }
+
     fn get_style(&self) -> Option<ContainerStyle> {
         self.style
+    }
+}
+
+impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
+    fn get_min_height(&self) -> Option<&str> {
+        self.min_height.as_deref()
+    }
+
+    fn get_bleed(&self) -> bool {
+        self.bleed.unwrap_or(false)
+    }
+
+    fn get_placement(&self) -> Placement {
+        self.layout_data.borrow().placement()
+    }
+
+    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+        None
+    }
+
+    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_alignment
+    }
+
+    fn get_style(&self) -> Option<ContainerStyle> {
+        self.style
+    }
+
+    fn get_children_collection_name(&self) -> &'static str {
+        "columns"
+    }
+
+    fn get_orientation(&self) -> ItemsContainerOrientation {
+        ItemsContainerOrientation::Horizontal
     }
 }

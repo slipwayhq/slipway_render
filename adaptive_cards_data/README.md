@@ -96,6 +96,20 @@ to adopt their mistakes.
 
 I'll list here any deviations from what Adaptive Cards does here.
 
+## Horizontal Alignment on Containers and root AdaptiveCard.
+
+This is not supported, which seems surprising to me. Other people have also queried this:
+
+https://github.com/microsoft/AdaptiveCards/issues/8535
+
+I've added support in Container, Column and AdaptiveCard.
+
+## BlockElementWidth
+
+Previously element heights were `string|BlockElementHeight` but column widths were `string|number` where number could be `auto` or `stretch` or something else.
+
+Now column widths are `string|BlockElementWidth|number` for consistency with element heights.
+
 ## hostConfig.containerStyles.[styleName].borderColor
 
 In the official Adaptive Cards implementation the `borderColor` property of a container style is not used for

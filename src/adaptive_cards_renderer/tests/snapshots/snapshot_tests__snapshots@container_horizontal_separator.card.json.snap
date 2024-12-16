@@ -1,10 +1,10 @@
 ---
-source: adaptive-cards-renderer/tests/snapshot_tests.rs
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
 expression: card
-input_file: adaptive-cards-renderer/tests/snapshot_inputs/container_horizontal_separator.card.json
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_separator.card.json
 ---
 {
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
   "body": [
     {
       "type": "Container",

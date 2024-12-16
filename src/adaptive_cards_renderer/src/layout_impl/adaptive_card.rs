@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc};
 
 use adaptive_cards::AdaptiveCard;
 use imageproc::{drawing::draw_filled_rect_mut, rect::Rect};
-use taffy::{Dimension, Size, Style, TaffyTree};
+use taffy::{Dimension, Size, TaffyTree};
 
 use crate::{
     element_layout_data::{ElementLayoutData, ElementTaffyData},
@@ -15,9 +15,7 @@ use crate::{
     masked_image::{MaskedImage, SlipwayCanvas},
 };
 
-use super::container_shared::{
-    container_draw_override, container_layout_override_inner, PaddingBehavior,
-};
+use super::container_shared::{container_draw_override, vertical_container_layout_override};
 
 impl Layoutable for AdaptiveCard<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -26,37 +24,16 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
     fn layout_override(
         &self,
         context: &LayoutContext,
-        baseline_style: taffy::Style,
+        mut baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
     ) -> Result<ElementTaffyData, RenderError> {
         // The root AdaptiveCard element always has a size of 100% width and height.
-        let baseline_style = Style {
-            size: Size {
-                width: Dimension::Percent(1.),
-                height: Dimension::Percent(1.),
-            },
-            ..baseline_style
+        baseline_style.size = Size {
+            width: Dimension::Percent(1.),
+            height: Dimension::Percent(1.),
         };
 
-        // An AdaptiveCard element behaves like a vertical container, with the child
-        // elements stored in the `body` field.
-        // Create the child context.
-        let child_elements_context = context
-            .for_child_str("body")
-            .with_vertical_content_alignment(self.vertical_content_alignment);
-
-        // Get the child elements.
-        let child_elements = self.body.as_deref().unwrap_or(&[]);
-
-        // Delegate to the shared container layout function.
-        container_layout_override_inner(
-            context,
-            baseline_style,
-            tree,
-            child_elements_context,
-            child_elements,
-            PaddingBehavior::Always,
-        )
+        vertical_container_layout_override(self, context, baseline_style, tree)
     }
 
     fn draw_override(
@@ -71,9 +48,7 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
         draw_background(context, &image)?;
 
         // Delegate to the shared container draw function.
-        container_draw_override(
-            self, context, tree, taffy_data, image, scratch, None, "body",
-        )
+        container_draw_override(self, context, tree, taffy_data, image, scratch)
     }
 }
 

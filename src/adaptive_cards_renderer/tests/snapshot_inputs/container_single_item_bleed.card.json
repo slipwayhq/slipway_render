@@ -1,6 +1,6 @@
 {
   "type": "AdaptiveCard",
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
   "version": "1.5",
   "body": [
       {

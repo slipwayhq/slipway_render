@@ -45,6 +45,18 @@ impl Default for BlockElementHeight {
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
+pub enum BlockElementWidth {
+    #[serde(rename = "auto", alias = "Auto")]
+    Auto,
+    #[serde(rename = "stretch", alias = "Stretch")]
+    Stretch,
+}
+impl Default for BlockElementWidth {
+    fn default() -> Self {
+        BlockElementWidth::Auto
+    }
+}
+#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
 pub enum ChoiceInputStyle {
     #[serde(rename = "compact", alias = "Compact")]
     Compact,
@@ -872,16 +884,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for ActionSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Serialize, Clone)]
@@ -917,6 +934,8 @@ where
     pub body: Option<Vec<Element<TLayoutData>>>,
     #[serde(rename = "fallbackText", skip_serializing_if = "Option::is_none")]
     pub fallback_text: Option<String>,
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "lang", skip_serializing_if = "Option::is_none")]
     pub lang: Option<String>,
     #[serde(rename = "metadata", skip_serializing_if = "Option::is_none")]
@@ -1039,18 +1058,24 @@ where
     }
 }
 #[derive(serde::Serialize, Clone)]
-pub enum StringOrNumber {
+pub enum StringOrBlockElementWidthOrNumber {
     String(String),
+    BlockElementWidth(BlockElementWidth),
     Number(f64),
 }
-impl From<String> for StringOrNumber {
+impl From<String> for StringOrBlockElementWidthOrNumber {
     fn from(value: String) -> Self {
-        StringOrNumber::String(value)
+        StringOrBlockElementWidthOrNumber::String(value)
     }
 }
-impl From<f64> for StringOrNumber {
+impl From<BlockElementWidth> for StringOrBlockElementWidthOrNumber {
+    fn from(value: BlockElementWidth) -> Self {
+        StringOrBlockElementWidthOrNumber::BlockElementWidth(value)
+    }
+}
+impl From<f64> for StringOrBlockElementWidthOrNumber {
     fn from(value: f64) -> Self {
-        StringOrNumber::Number(value)
+        StringOrBlockElementWidthOrNumber::Number(value)
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1065,6 +1090,8 @@ where
     pub bleed: Option<bool>,
     #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ColumnOrFallbackOption<TLayoutData>>,
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
@@ -1095,7 +1122,7 @@ where
     )]
     pub vertical_content_alignment: Option<VerticalContentAlignment>,
     #[serde(rename = "width", skip_serializing_if = "Option::is_none")]
-    pub width: Option<StringOrNumber>,
+    pub width: Option<StringOrBlockElementWidthOrNumber>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
@@ -1137,6 +1164,23 @@ where
     }
     fn get_spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
+    }
+}
+impl<TLayoutData> crate::SizedStackableItemMethods for Column<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Width(
+            self
+                .width
+                .clone()
+                .unwrap_or(
+                    StringOrBlockElementWidthOrNumber::BlockElementWidth(
+                        BlockElementWidth::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1218,16 +1262,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1244,6 +1293,8 @@ where
     pub fallback: Option<ElementOrFallbackOption<TLayoutData>>,
     #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
+    #[serde(rename = "horizontalAlignment", skip_serializing_if = "Option::is_none")]
+    pub horizontal_alignment: Option<HorizontalAlignment>,
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     #[serde(
@@ -1316,16 +1367,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for Container<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1463,7 +1519,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::ElementMethods {
+    pub fn as_element(&self) -> &dyn crate::SizedStackableItemMethods {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1512,12 +1568,12 @@ where
         self.as_stackable().get_spacing()
     }
 }
-impl<TLayoutData> crate::ElementMethods for Element<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.as_element().get_height()
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        self.as_element().get_width_or_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1599,16 +1655,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for FactSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1765,12 +1826,12 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for Image<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height.clone()
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(self.height.clone())
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1861,16 +1922,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for ImageSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -1909,6 +1975,21 @@ pub struct InputChoice {
     pub value: String,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+}
+#[derive(serde::Serialize, Clone)]
+pub enum StringOrNumber {
+    String(String),
+    Number(f64),
+}
+impl From<String> for StringOrNumber {
+    fn from(value: String) -> Self {
+        StringOrNumber::String(value)
+    }
+}
+impl From<f64> for StringOrNumber {
+    fn from(value: f64) -> Self {
+        StringOrNumber::Number(value)
+    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
 #[serde(deny_unknown_fields)]
@@ -2018,16 +2099,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2117,16 +2203,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputDate<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2216,16 +2307,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputNumber<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2336,16 +2432,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputText<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2435,16 +2536,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputTime<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2581,16 +2687,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for InputToggle<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2661,7 +2772,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::ElementMethods {
+    pub fn as_element(&self) -> &dyn crate::SizedStackableItemMethods {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2699,12 +2810,12 @@ where
         self.as_stackable().get_spacing()
     }
 }
-impl<TLayoutData> crate::ElementMethods for Input<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.as_element().get_height()
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        self.as_element().get_width_or_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -2884,16 +2995,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for Media<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3035,16 +3151,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3179,16 +3300,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for Table<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]
@@ -3434,16 +3560,21 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::ElementMethods for TextBlock<TLayoutData>
+impl<TLayoutData> crate::SizedStackableItemMethods for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.height
-            .map(StringOrBlockElementHeight::BlockElementHeight)
-            .unwrap_or(
-                StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto),
-            )
+    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+        crate::WidthOrHeight::Height(
+            self
+                .height
+                .map(StringOrBlockElementHeight::BlockElementHeight)
+                .unwrap_or(
+                    StringOrBlockElementHeight::BlockElementHeight(
+                        BlockElementHeight::Auto,
+                    ),
+                ),
+        )
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Clone)]

@@ -81,30 +81,18 @@ impl<T: StackableItemMethods> StackableItemMethods for Box<T> {
     }
 }
 
-/// A trait for getting the properties common to all layoutable Adaptive Cards elements.
-/// These are the properties which appear in the `Element` and `ToggleableItem` (which
-/// `Element` extends) schema items from the Adaptive Cards typed schema.
-/// This trait is implemented for all Adaptive Cards elements automatically by the
-/// Adaptive Cards types generator.
-pub trait ElementMethods: StackableItemMethods {
-    fn get_height(&self) -> StringOrBlockElementHeight;
+// Implemented by all elements, and Column.
+pub trait SizedStackableItemMethods: StackableItemMethods {
+    fn get_width_or_height(&self) -> WidthOrHeight;
 }
 
-impl<T: ElementMethods> ElementMethods for Box<T> {
-    fn get_height(&self) -> StringOrBlockElementHeight {
-        self.as_ref().get_height()
+impl<T: SizedStackableItemMethods> SizedStackableItemMethods for Box<T> {
+    fn get_width_or_height(&self) -> WidthOrHeight {
+        self.as_ref().get_width_or_height()
     }
 }
 
-impl<T> Column<T>
-where
-    T: Default,
-{
-    pub fn get_separator(&self) -> bool {
-        self.separator.unwrap_or(false)
-    }
-
-    pub fn get_spacing(&self) -> Spacing {
-        self.spacing.unwrap_or(Spacing::Default)
-    }
+pub enum WidthOrHeight {
+    Width(StringOrBlockElementWidthOrNumber),
+    Height(StringOrBlockElementHeight),
 }

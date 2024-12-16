@@ -1,3 +1,5 @@
+use crate::{BlockElementWidth, StringOrBlockElementWidthOrNumber};
+
 use super::generated::{
     Action, ActionOrFallbackOption, BackgroundImage, BackgroundImageOrString, BlockElementHeight,
     Column, ColumnOrFallbackOption, Element, ElementOrFallbackOption, FallbackOption, Inline,
@@ -20,6 +22,19 @@ impl<'de> Deserialize<'de> for StringOrBlockElementHeight {
             deserializer,
             "a string or a BlockElementHeight",
         )
+    }
+}
+
+impl<'de> Deserialize<'de> for StringOrBlockElementWidthOrNumber {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserialize_string_or_enum_or_number::<
+            BlockElementWidth,
+            StringOrBlockElementWidthOrNumber,
+            D,
+        >(deserializer, "a string or a BlockElementWidth or a number")
     }
 }
 
@@ -244,6 +259,79 @@ where
             E: de::Error,
         {
             self.visit_str(&value)
+        }
+    }
+
+    deserializer.deserialize_any(StringOrEnumVisitor::<TEnum, TResult> {
+        expecting,
+        marker: std::marker::PhantomData,
+    })
+}
+
+fn deserialize_string_or_enum_or_number<'de, 'expecting, TEnum, TResult, D>(
+    deserializer: D,
+    expecting: &'expecting str,
+) -> Result<TResult, D::Error>
+where
+    TEnum: Deserialize<'de> + Into<TResult>,
+    TResult: From<String> + From<f64>,
+    D: Deserializer<'de>,
+{
+    struct StringOrEnumVisitor<'expecting, TEnum, TResult> {
+        expecting: &'expecting str,
+        marker: std::marker::PhantomData<(TEnum, TResult)>,
+    }
+
+    impl<'de, TEnum, TResult> Visitor<'de> for StringOrEnumVisitor<'_, TEnum, TResult>
+    where
+        TEnum: Deserialize<'de> + Into<TResult>,
+        TResult: From<String> + From<f64>,
+    {
+        type Value = TResult;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            formatter.write_str(self.expecting)
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            let maybe_enum_value: Result<TEnum, E> =
+                Deserialize::deserialize(value.into_deserializer());
+
+            match maybe_enum_value {
+                Ok(enum_value) => Ok(enum_value.into()),
+                Err(_) => Ok(value.to_owned().into()),
+            }
+        }
+
+        fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            self.visit_str(&value)
+        }
+
+        fn visit_f64<E>(self, value: f64) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(value.into())
+        }
+
+        fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok((value as f64).into())
+        }
+
+        fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok((value as f64).into())
         }
     }
 

@@ -13,8 +13,9 @@ use crate::{
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
-    BlockElementHeight, ContainerStyle, ElementMethods, StackableItemMethods,
-    StringOrBlockElementHeight,
+    BlockElementHeight, BlockElementWidth, ContainerStyle, SizedStackableItemMethods,
+    StackableItemMethods, StringOrBlockElementHeight, StringOrBlockElementWidthOrNumber,
+    WidthOrHeight,
 };
 use adaptive_cards_host_config::HostConfig;
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
@@ -25,18 +26,17 @@ use super::{
         draw_background, get_margins_for_bleed, parse_dimension,
         vertical_content_alignment_to_justify_content,
     },
-    HasChildElements, VerticalContainer,
+    HasChildElements, ItemsContainer, ItemsContainerOrientation,
 };
 
 pub(super) fn vertical_container_layout_override<
-    TParent: VerticalContainer<TElement>,
-    TElement: ElementMethods + Layoutable,
+    TParent: ItemsContainer<TElement> + HasChildElements<TElement>,
+    TElement: StackableItemMethods + Layoutable + SizedItemLayout,
 >(
     parent: &TParent,
     context: &LayoutContext,
     mut baseline_style: taffy::Style,
     tree: &mut TaffyTree<NodeContext>,
-    padding_behavior: PaddingBehavior,
 ) -> Result<ElementTaffyData, RenderError> {
     // Parse the min height, if specified.
     if let Some(min_height) = parent.get_min_height() {
@@ -51,33 +51,14 @@ pub(super) fn vertical_container_layout_override<
 
     // Create the child context.
     let child_elements_context = context
-        .for_child_str("items")
+        .for_child_str(parent.get_children_collection_name())
         .with_vertical_content_alignment(parent.get_vertical_content_alignment())
+        .with_horizontal_alignment(parent.get_horizontal_alignment())
         .with_style(parent.get_style());
 
     // Get the child elements.
     let child_elements = parent.get_child_elements();
 
-    // Delegate to the shared container layout function.
-    container_layout_override_inner(
-        context,
-        baseline_style,
-        tree,
-        child_elements_context,
-        child_elements,
-        padding_behavior,
-    )
-}
-
-// The shared container layout logic for AdaptiveCard and Container.
-pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layoutable>(
-    context: &LayoutContext,
-    mut baseline_style: Style,
-    tree: &mut TaffyTree<NodeContext>,
-    child_elements_context: LayoutContext,
-    child_elements: &[TElement],
-    padding_behavior: PaddingBehavior,
-) -> Result<ElementTaffyData, RenderError> {
     // This will contain one node id for each child element, in the same order as the child_elements array.
     let mut child_element_node_ids = Vec::new();
 
@@ -90,14 +71,27 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
     // Used to determine if we're drawing the first or last child item.
     let element_count = child_elements.len();
 
+    // Get the sum of all the weighted sizes of the child elements.
+    let sum_of_weighted = child_elements
+        .iter()
+        .fold(0., |acc, element| acc + element.get_weighted_size());
+
     // For each child element...
     for (index, element) in child_elements.iter().enumerate() {
         // Determine the placement of the element within the container relative to any siblings.
-        let element_position = match index {
-            0 if element_count == 1 => Placement::SoleVertical,
-            0 => Placement::Top,
-            i if i == element_count - 1 => Placement::Bottom,
-            _ => Placement::WithinVertical,
+        let element_position = match parent.get_orientation() {
+            ItemsContainerOrientation::Vertical => match index {
+                0 if element_count == 1 => Placement::SoleVertical,
+                0 => Placement::Top,
+                i if i == element_count - 1 => Placement::Bottom,
+                _ => Placement::WithinVertical,
+            },
+            ItemsContainerOrientation::Horizontal => match index {
+                0 if element_count == 1 => Placement::SoleHorizontal,
+                0 => Placement::Left,
+                i if i == element_count - 1 => Placement::Right,
+                _ => Placement::WithinHorizontal,
+            },
         };
 
         // Save the placement to the element's layout data so we can use it when drawing the element.
@@ -126,6 +120,17 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
                     let spacer_node_id = tree.new_leaf(spacer_style).err_context(context)?;
                     child_node_ids.push(spacer_node_id);
                 }
+                Placement::Right | Placement::WithinHorizontal => {
+                    let spacer_style = Style {
+                        size: Size {
+                            height: Dimension::Auto,
+                            width: length(spacing as f32),
+                        },
+                        ..Style::default()
+                    };
+                    let spacer_node_id = tree.new_leaf(spacer_style).err_context(context)?;
+                    child_node_ids.push(spacer_node_id);
+                }
                 _ => {}
             }
         }
@@ -137,23 +142,11 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
         let mut element_baseline_style = Style::default();
 
         // Apply the height of the element to the style.
-        match element.get_height() {
-            StringOrBlockElementHeight::String(height) => {
-                element_baseline_style.size.height = parse_dimension(&height, &element_context)?;
-            }
-            StringOrBlockElementHeight::BlockElementHeight(height) => match height {
-                BlockElementHeight::Auto => {
-                    element_baseline_style.flex_basis = Dimension::Auto;
-                    element_baseline_style.flex_grow = 0.;
-                    element_baseline_style.flex_shrink = 0.;
-                }
-                BlockElementHeight::Stretch => {
-                    element_baseline_style.flex_basis = Dimension::Auto;
-                    element_baseline_style.flex_grow = 1.;
-                    element_baseline_style.flex_shrink = 1.;
-                }
-            },
-        };
+        element.apply_size_to_style(
+            &mut element_baseline_style,
+            &element_context,
+            sum_of_weighted,
+        )?;
 
         // Call `layout` on the child element, which returns its node id in the Taffy tree.
         let element_node_id = element.layout(&element_context, element_baseline_style, tree)?;
@@ -166,7 +159,11 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
     }
 
     // Next we build up the container style based on the host config and element properties.
-    apply_container_style_padding(padding_behavior, context.host_config, &mut baseline_style);
+    apply_container_style_padding(
+        parent.get_padding_behavior(),
+        context.host_config,
+        &mut baseline_style,
+    );
 
     // Use the vertical content alignment (which was populated by the caller of this function)
     // to determine the flexbox justify content property.
@@ -175,7 +172,12 @@ pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layouta
     );
 
     baseline_style.display = Display::Flex;
-    baseline_style.flex_direction = FlexDirection::Column;
+
+    baseline_style.flex_direction = match parent.get_orientation() {
+        ItemsContainerOrientation::Horizontal => FlexDirection::Row,
+        ItemsContainerOrientation::Vertical => FlexDirection::Column,
+    };
+
     baseline_style.justify_content = Some(justify_content);
 
     // Finally add ourself to the taffy tree and return the node id other metadata.
@@ -217,10 +219,84 @@ pub(super) fn apply_container_style_padding(
     }
 }
 
+pub(super) trait SizedItemLayout {
+    fn get_weighted_size(&self) -> f64;
+
+    fn apply_size_to_style(
+        &self,
+        style: &mut Style,
+        context: &LayoutContext,
+        sum_of_weighted: f64,
+    ) -> Result<(), RenderError>;
+}
+
+impl<T: SizedStackableItemMethods> SizedItemLayout for T {
+    fn get_weighted_size(&self) -> f64 {
+        match self.get_width_or_height() {
+            WidthOrHeight::Width(width) => match width {
+                StringOrBlockElementWidthOrNumber::Number(width) => width,
+                _ => 0.,
+            },
+            WidthOrHeight::Height(_) => 0.,
+        }
+    }
+
+    fn apply_size_to_style(
+        &self,
+        style: &mut Style,
+        context: &LayoutContext,
+        sum_of_weighted: f64,
+    ) -> Result<(), RenderError> {
+        match self.get_width_or_height() {
+            WidthOrHeight::Width(width) => match width {
+                StringOrBlockElementWidthOrNumber::BlockElementWidth(width) => match width {
+                    BlockElementWidth::Auto => {
+                        style.flex_basis = Dimension::Auto;
+                        style.flex_grow = 0.;
+                        style.flex_shrink = 0.;
+                    }
+                    BlockElementWidth::Stretch => {
+                        style.flex_basis = Dimension::Auto;
+                        style.flex_grow = 1.;
+                        style.flex_shrink = 1.;
+                    }
+                },
+                StringOrBlockElementWidthOrNumber::String(width) => {
+                    style.size.width = parse_dimension(&width, context)?;
+                }
+                StringOrBlockElementWidthOrNumber::Number(width) => {
+                    style.flex_basis = Dimension::Percent((width / sum_of_weighted) as f32);
+                    style.flex_grow = 1.;
+                    style.flex_shrink = 1.;
+                }
+            },
+
+            WidthOrHeight::Height(height) => match height {
+                StringOrBlockElementHeight::String(height) => {
+                    style.size.height = parse_dimension(&height, context)?;
+                }
+                StringOrBlockElementHeight::BlockElementHeight(height) => match height {
+                    BlockElementHeight::Auto => {
+                        style.flex_basis = Dimension::Auto;
+                        style.flex_grow = 0.;
+                        style.flex_shrink = 0.;
+                    }
+                    BlockElementHeight::Stretch => {
+                        style.flex_basis = Dimension::Auto;
+                        style.flex_grow = 1.;
+                        style.flex_shrink = 1.;
+                    }
+                },
+            },
+        };
+
+        Ok(())
+    }
+}
+
 // The shared container draw logic for AdaptiveCard and Container.
-#[allow(clippy::too_many_arguments)] // Fine for now.
 pub(super) fn container_draw_override<
-    TParent: HasChildElements<TElement>,
+    TParent: ItemsContainer<TElement> + HasChildElements<TElement>,
     TElement: StackableItemMethods + Layoutable,
 >(
     parent: &TParent,
@@ -229,16 +305,14 @@ pub(super) fn container_draw_override<
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     scratch: &mut LayoutScratch,
-    container_style: Option<ContainerStyle>,
-    child_elements_context_name: &str,
 ) -> Result<(), RenderError> {
     // Draw the container background, if necessary.
-    if let Some(style) = container_style {
+    if let Some(style) = parent.get_style() {
         draw_background(style, context, tree, taffy_data, &image)?;
     }
 
     // Create the child context.
-    let child_elements_context = context.for_child_str(child_elements_context_name);
+    let child_elements_context = context.for_child_str(parent.get_children_collection_name());
 
     // Get the child elements.
     let child_elements = parent.get_child_elements();

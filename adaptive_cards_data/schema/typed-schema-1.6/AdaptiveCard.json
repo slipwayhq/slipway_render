@@ -89,6 +89,10 @@
 			"description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
 			"version": "1.1"
 		},
+		"horizontalAlignment": {
+			"type": "HorizontalAlignment?",
+			"description": "Controls the horizontal alignment of the content. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
+		},
 		"$schema": {
 			"type": "uri",
 			"description": "The Adaptive Card schema."

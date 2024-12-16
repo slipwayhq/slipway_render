@@ -1,0 +1,349 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
+---
+{
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "New TextBlock",
+      "wrap": true,
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 376,
+          "height": 11
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 47,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 70,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 35,
+          "width": 376,
+          "height": 58
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 12,
+              "y": 105,
+              "width": 376,
+              "height": 11
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 12,
+              "y": 128,
+              "width": 376,
+              "height": 11
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 105,
+          "width": 376,
+          "height": 34
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 12,
+                  "y": 151,
+                  "width": 182,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 12,
+              "y": 151,
+              "width": 182,
+              "height": 11
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 151,
+                  "width": 182,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 206,
+              "y": 151,
+              "width": 182,
+              "height": 11
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 151,
+          "width": 376,
+          "height": 11
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 24,
+                  "y": 186,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 186,
+              "width": 170,
+              "height": 11
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 186,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 206,
+              "y": 186,
+              "width": 170,
+              "height": 11
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 174,
+          "width": 376,
+          "height": 35
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 12,
+                  "y": 221,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 12,
+              "y": 221,
+              "width": 170,
+              "height": 35
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 233,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "style": "good",
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 194,
+              "y": 221,
+              "width": 194,
+              "height": 35
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 221,
+          "width": 376,
+          "height": 35
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "version": "1.5",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 400
+    }
+  }
+}

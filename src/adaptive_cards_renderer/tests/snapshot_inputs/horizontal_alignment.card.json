@@ -1,14 +1,9 @@
 {
     "type": "AdaptiveCard",
     "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-    "version": "1.5",
+    "version": "1.6",
     "body": [
         {
-            "type": "TextBlock",
-            "text": "New TextBlock",
-            "wrap": true
-        },
-        {
             "type": "Container",
             "items": [
                 {
@@ -20,9 +15,30 @@
                     "type": "TextBlock",
                     "text": "New TextBlock",
                     "wrap": true
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "New TextBlock",
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
-            "style": "good"
+            "style": "good",
+            "horizontalAlignment": "Center"
         },
         {
             "type": "Container",
@@ -36,58 +52,31 @@
                     "type": "TextBlock",
                     "text": "New TextBlock",
                     "wrap": true
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": "stretch",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "New TextBlock",
-                            "wrap": true
-                        }
-                    ]
                 },
                 {
-                    "type": "Column",
-                    "width": "stretch",
-                    "items": [
+                    "type": "ColumnSet",
+                    "columns": [
                         {
-                            "type": "TextBlock",
-                            "text": "New TextBlock",
-                            "wrap": true
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": "stretch",
-                    "items": [
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "New TextBlock",
+                                    "wrap": true
+                                }
+                            ]
+                        },
                         {
-                            "type": "TextBlock",
-                            "text": "New TextBlock",
-                            "wrap": true
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "width": "stretch",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "New TextBlock",
-                            "wrap": true
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "New TextBlock",
+                                    "wrap": true
+                                }
+                            ]
                         }
                     ]
                 }
@@ -111,7 +100,6 @@
                 {
                     "type": "Column",
                     "width": "stretch",
-                    "style": "good",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -120,7 +108,10 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "style": "good",
+            "horizontalAlignment": "Center"
         }
-    ]
+    ],
+    "horizontalAlignment": "Right"
 }

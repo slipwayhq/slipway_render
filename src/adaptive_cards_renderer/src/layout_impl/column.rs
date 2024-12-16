@@ -11,9 +11,7 @@ use crate::{
     masked_image::MaskedImage,
 };
 
-use super::container_shared::{
-    container_draw_override, vertical_container_layout_override, PaddingBehavior,
-};
+use super::container_shared::{container_draw_override, vertical_container_layout_override};
 
 impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData> {
     fn layout_override(
@@ -22,13 +20,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData>
         baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
     ) -> Result<ElementTaffyData, RenderError> {
-        vertical_container_layout_override(
-            self,
-            context,
-            baseline_style,
-            tree,
-            PaddingBehavior::ForStyle(self.style),
-        )
+        vertical_container_layout_override(self, context, baseline_style, tree)
     }
 
     fn draw_override(
@@ -40,8 +32,6 @@ impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData>
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         // Delegate to the shared container draw function.
-        container_draw_override(
-            self, context, tree, taffy_data, image, scratch, self.style, "items",
-        )
+        container_draw_override(self, context, tree, taffy_data, image, scratch)
     }
 }

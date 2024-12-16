@@ -4,7 +4,7 @@ expression: card
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_content_alignment.card.json
 ---
 {
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
   "body": [
     {
       "type": "Container",

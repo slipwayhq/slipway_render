@@ -149,7 +149,7 @@ pub(super) fn process_class(
                 if metadata.is_element {
                     generate_methods.push((
                         format_ident!("as_element"),
-                        quote! { &dyn crate::ElementMethods },
+                        quote! { &dyn crate::SizedStackableItemMethods },
                     ));
                 }
 
@@ -242,10 +242,10 @@ pub(super) fn process_class(
             // If we're derived from Element.
             if metadata.is_element {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::ElementMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_height(&self) -> StringOrBlockElementHeight {
-                            self.as_element().get_height()
+                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
+                            self.as_element().get_width_or_height()
                         }
                     }
                 })
@@ -474,10 +474,19 @@ pub(super) fn process_class(
                 };
 
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::ElementMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_height(&self) -> StringOrBlockElementHeight {
-                            #height_impl
+                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
+                            crate::WidthOrHeight::Height(#height_impl)
+                        }
+                    }
+                })
+            } else if metadata.is_stackable {
+                post_struct_tokens.push(quote! {
+                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
+                        #where_clause {
+                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
+                            crate::WidthOrHeight::Width(self.width.clone().unwrap_or(StringOrBlockElementWidthOrNumber::BlockElementWidth(BlockElementWidth::Auto)))
                         }
                     }
                 })

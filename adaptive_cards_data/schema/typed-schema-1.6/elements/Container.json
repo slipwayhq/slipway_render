@@ -56,6 +56,10 @@
 			"type": "boolean?",
 			"description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
 			"version": "1.5"
+		},
+		"horizontalAlignment": {
+			"type": "HorizontalAlignment?",
+			"description": "Controls the horizontal alignment of the content. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
 		}
 	}
 }

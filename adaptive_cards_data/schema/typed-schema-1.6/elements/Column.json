@@ -70,8 +70,12 @@
 			"version": "1.1"
 		},
 		"width": {
-			"type": "string|number",
+			"type": "string|BlockElementWidth|number",
 			"description": "`\"auto\"`, `\"stretch\"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `\"50px\"`."
+		},
+		"horizontalAlignment": {
+			"type": "HorizontalAlignment?",
+			"description": "Controls the horizontal alignment of the content. When not specified, the value of horizontalAlignment is inherited from the parent container. If no parent container has horizontalAlignment set, it defaults to Left."
 		}
 	}
 }

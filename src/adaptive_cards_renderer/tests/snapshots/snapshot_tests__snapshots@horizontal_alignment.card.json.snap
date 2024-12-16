@@ -1,0 +1,322 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.card.json
+---
+{
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "body": [
+    {
+      "type": "Container",
+      "horizontalAlignment": "center",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 24,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 47,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "WithinVertical"
+          }
+        },
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "width": {
+                "BlockElementWidth": "stretch"
+              },
+              "type": "Column",
+              ".layout": {
+                "rect": {
+                  "x": 24,
+                  "y": 70,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "New TextBlock",
+                  "wrap": true,
+                  ".layout": {
+                    "rect": {
+                      "x": 206,
+                      "y": 70,
+                      "width": 170,
+                      "height": 11
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "width": {
+                "BlockElementWidth": "stretch"
+              },
+              "type": "Column",
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 70,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 70,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 376,
+          "height": 81
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 117,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "New TextBlock",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 140,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "WithinVertical"
+          }
+        },
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "New TextBlock",
+                  "wrap": true,
+                  ".layout": {
+                    "rect": {
+                      "x": 24,
+                      "y": 163,
+                      "width": 170,
+                      "height": 11
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "width": {
+                "BlockElementWidth": "stretch"
+              },
+              "type": "Column",
+              ".layout": {
+                "rect": {
+                  "x": 24,
+                  "y": 163,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "New TextBlock",
+                  "wrap": true,
+                  ".layout": {
+                    "rect": {
+                      "x": 206,
+                      "y": 163,
+                      "width": 170,
+                      "height": 11
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "width": {
+                "BlockElementWidth": "stretch"
+              },
+              "type": "Column",
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 163,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 163,
+              "width": 352,
+              "height": 11
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 105,
+          "width": 376,
+          "height": 81
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 24,
+                  "y": 210,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 210,
+              "width": 170,
+              "height": 11
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "New TextBlock",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 206,
+                  "y": 210,
+                  "width": 170,
+                  "height": 11
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 206,
+              "y": 210,
+              "width": 170,
+              "height": 11
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      "horizontalAlignment": "center",
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 198,
+          "width": 376,
+          "height": 35
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "horizontalAlignment": "right",
+  "version": "1.6",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 400
+    }
+  }
+}

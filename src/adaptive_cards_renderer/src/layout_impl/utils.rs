@@ -108,7 +108,7 @@ pub(super) fn apply_horizontal_alignment(
     horizontal_alignment: Option<adaptive_cards::HorizontalAlignment>,
     style: &mut Style,
     context: &LayoutContext,
-) {
+) -> adaptive_cards::HorizontalAlignment {
     let horizontal_alignment =
         horizontal_alignment.unwrap_or(context.inherited.horizontal_alignment);
 
@@ -117,6 +117,8 @@ pub(super) fn apply_horizontal_alignment(
         adaptive_cards::HorizontalAlignment::Right => taffy::style::JustifyContent::FlexEnd,
         adaptive_cards::HorizontalAlignment::Left => taffy::style::JustifyContent::FlexStart,
     });
+
+    horizontal_alignment
 }
 
 // Converts the VerticalContentAlignment as set on the container element to a JustifyContent property

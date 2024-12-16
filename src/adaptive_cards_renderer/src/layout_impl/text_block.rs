@@ -1,6 +1,6 @@
 use std::{borrow::Cow, cell::RefCell, rc::Rc};
 
-use adaptive_cards::TextBlock;
+use adaptive_cards::{HorizontalAlignment, TextBlock};
 use image::Rgba;
 use imageproc::{drawing::Canvas, integral_image::ArrayData};
 use parley::{
@@ -37,6 +37,7 @@ pub(crate) struct TextBlockNodeContext {
     pub max_lines: Option<u32>,
     pub wrap: bool,
     pub offset: RefCell<taffy::Point<i32>>,
+    pub horizontal_alignment: HorizontalAlignment,
 }
 
 impl TextBlockNodeContext {
@@ -101,7 +102,7 @@ impl TextBlockNodeContext {
         let offset = match bounds {
             None => taffy::Point { x: 0, y: 0 },
             Some(bounds) => taffy::Point {
-                x: bounds.left,
+                x: bounds.left.min(0), // We don't want to offset centered or right-aligned text back to the left.
                 y: bounds.top,
             },
         };
@@ -186,6 +187,11 @@ impl Layoutable for TextBlock<ElementLayoutData> {
 
         let wrap = self.wrap;
 
+        // Style
+        let mut style = baseline_style;
+        let horizontal_alignment =
+            apply_horizontal_alignment(self.horizontal_alignment, &mut style, context);
+
         let node_context = NodeContext::Text(TextBlockNodeContext {
             text: self.text.clone(),
             color,
@@ -195,11 +201,8 @@ impl Layoutable for TextBlock<ElementLayoutData> {
             max_lines,
             wrap,
             offset: RefCell::new(Default::default()),
+            horizontal_alignment,
         });
-
-        // Style
-        let mut style = Style { ..baseline_style };
-        apply_horizontal_alignment(self.horizontal_alignment, &mut style, context);
 
         // Handled by parent
         // self.is_visible
@@ -296,7 +299,18 @@ fn prepare_layout(
         None
     };
     layout.break_all_lines(width_constraint);
-    layout.align(width_constraint, Alignment::Start);
+    println!(
+        "*** Align: {:?}, Width Constraint: {:?}",
+        text_context.horizontal_alignment, width_constraint
+    );
+    layout.align(
+        width_constraint,
+        match text_context.horizontal_alignment {
+            HorizontalAlignment::Center => Alignment::Middle,
+            HorizontalAlignment::Right => Alignment::End,
+            HorizontalAlignment::Left => Alignment::Start,
+        },
+    );
     layout
 }
 

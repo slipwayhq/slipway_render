@@ -251,12 +251,14 @@ impl<T: SizedStackableItemMethods> SizedItemLayout for T {
             WidthOrHeight::Width(width) => match width {
                 StringOrBlockElementWidthOrNumber::BlockElementWidth(width) => match width {
                     BlockElementWidth::Auto => {
+                        // Matches AC's web auto behavior.
                         style.flex_basis = Dimension::Auto;
                         style.flex_grow = 0.;
-                        style.flex_shrink = 0.;
+                        style.flex_shrink = 1.;
                     }
                     BlockElementWidth::Stretch => {
-                        style.flex_basis = Dimension::Auto;
+                        // Matches AC's web stretch behavior. Ensures they distribute evenly.
+                        style.flex_basis = Dimension::Length(50.);
                         style.flex_grow = 1.;
                         style.flex_shrink = 1.;
                     }
@@ -265,6 +267,7 @@ impl<T: SizedStackableItemMethods> SizedItemLayout for T {
                     style.size.width = parse_dimension(&width, context)?;
                 }
                 StringOrBlockElementWidthOrNumber::Number(width) => {
+                    // Matches AC's web weighted behavior.
                     style.flex_basis = Dimension::Percent((width / sum_of_weighted) as f32);
                     style.flex_grow = 1.;
                     style.flex_shrink = 1.;
@@ -277,11 +280,13 @@ impl<T: SizedStackableItemMethods> SizedItemLayout for T {
                 }
                 StringOrBlockElementHeight::BlockElementHeight(height) => match height {
                     BlockElementHeight::Auto => {
+                        // Matches AC's web auto behavior.
                         style.flex_basis = Dimension::Auto;
                         style.flex_grow = 0.;
                         style.flex_shrink = 0.;
                     }
                     BlockElementHeight::Stretch => {
+                        // Matches AC's web stretch behavior.
                         style.flex_basis = Dimension::Auto;
                         style.flex_grow = 1.;
                         style.flex_shrink = 1.;

@@ -18,8 +18,7 @@ use crate::{
 use super::{
     container_shared::container_draw_override,
     utils::{
-        draw_background, get_margins_for_bleed, parse_dimension,
-        vertical_content_alignment_to_justify_content,
+        get_margins_for_bleed, parse_dimension, vertical_content_alignment_to_justify_content,
     },
 };
 
@@ -60,8 +59,8 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
         // Create the child context.
         let child_elements_context = context
             .for_child_str("columns")
-            .with_horizontal_alignment(&self.horizontal_alignment)
-            .with_style(&self.style);
+            .with_horizontal_alignment(self.horizontal_alignment)
+            .with_style(self.style);
 
         // Get the child elements.
         let child_elements = self.columns.as_deref().unwrap_or_default();
@@ -145,7 +144,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
                     element_baseline_style.flex_grow = 0.;
                     element_baseline_style.flex_shrink = 0.;
                 }
-                Some(StringOrNumber::String(height)) => match height.as_ref() {
+                Some(StringOrNumber::String(width)) => match width.as_ref() {
                     AUTO_STR => {
                         element_baseline_style.flex_basis = Dimension::Auto;
                         element_baseline_style.flex_grow = 0.;
@@ -158,12 +157,12 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
                     }
                     _ => {
                         element_baseline_style.size.width =
-                            parse_dimension(height, &element_context)?;
+                            parse_dimension(width, &element_context)?;
                     }
                 },
-                Some(StringOrNumber::Number(height)) => {
+                Some(StringOrNumber::Number(width)) => {
                     element_baseline_style.flex_basis =
-                        Dimension::Percent((height / sum_of_weighted_widths) as f32);
+                        Dimension::Percent((width / sum_of_weighted_widths) as f32);
                     element_baseline_style.flex_grow = 1.;
                     element_baseline_style.flex_shrink = 1.;
                 }
@@ -218,26 +217,16 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        // Draw the container background, if necessary.
-        if let Some(style) = self.style {
-            draw_background(style, context, tree, taffy_data, &image)?;
-        }
-
-        // Create the child context.
-        let child_elements_context = context.for_child_str("columns");
-
-        // Get the child elements.
-        let child_elements = self.columns.as_deref().unwrap_or_default();
-
         // Delegate to the shared container draw function.
         container_draw_override(
+            self,
             context,
             tree,
             taffy_data,
             image,
             scratch,
-            child_elements_context,
-            child_elements,
+            self.style.as_ref(),
+            "columns",
         )
     }
 }

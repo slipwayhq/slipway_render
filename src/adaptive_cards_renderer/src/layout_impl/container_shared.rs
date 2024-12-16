@@ -2,31 +2,77 @@ use std::{cell::RefCell, rc::Rc};
 
 use crate::{
     debug_mode::next_color,
-    element_layout_data::{ElementLayoutData, ElementTaffyData, Placement},
+    element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::{StringToColor, ValidSpacing},
     layout_context::LayoutContext,
     layout_impl::measure::NodeContext,
     layout_scratch::LayoutScratch,
-    layoutable::{AsLayoutable, Layoutable},
+    layoutable::Layoutable,
     masked_image::MaskedImage,
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
-    BlockElementHeight, Element, HasLayoutData, StackableItemMethods, StringOrBlockElementHeight,
+    BlockElementHeight, ContainerStyle, ElementMethods, StackableItemMethods,
+    StringOrBlockElementHeight,
 };
 use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
 use taffy::{prelude::length, Dimension, Display, FlexDirection, Rect, Size, Style, TaffyTree};
 
-use super::utils::{parse_dimension, vertical_content_alignment_to_justify_content};
+use super::{
+    utils::{
+        draw_background, get_margins_for_bleed, parse_dimension,
+        vertical_content_alignment_to_justify_content,
+    },
+    HasChildElements, VerticalContainer,
+};
+
+pub(super) fn vertical_container_layout_override<
+    TParent: VerticalContainer<TElement>,
+    TElement: ElementMethods + Layoutable,
+>(
+    parent: &TParent,
+    context: &LayoutContext,
+    mut baseline_style: taffy::Style,
+    tree: &mut TaffyTree<NodeContext>,
+) -> Result<ElementTaffyData, RenderError> {
+    // Parse the min height, if specified.
+    if let Some(min_height) = parent.get_min_height() {
+        baseline_style.min_size.height = parse_dimension(min_height, context)?
+    };
+
+    // If the container is set to bleed, we need to add appropriate margins to the baseline style.
+    if parent.get_bleed() {
+        let placement = parent.get_placement(); //parent.layout_data.borrow().placement();
+        baseline_style.margin = get_margins_for_bleed(&placement, context.host_config);
+    }
+
+    // Create the child context.
+    let child_elements_context = context
+        .for_child_str("items")
+        .with_vertical_content_alignment(parent.get_vertical_content_alignment())
+        .with_style(parent.get_style());
+
+    // Get the child elements.
+    let child_elements = parent.get_child_elements();
+
+    // Delegate to the shared container layout function.
+    container_layout_override_inner(
+        context,
+        baseline_style,
+        tree,
+        child_elements_context,
+        child_elements,
+    )
+}
 
 // The shared container layout logic for AdaptiveCard and Container.
-pub(super) fn container_layout_override(
+pub(super) fn container_layout_override_inner<TElement: ElementMethods + Layoutable>(
     context: &LayoutContext,
     baseline_style: Style,
     tree: &mut TaffyTree<NodeContext>,
     child_elements_context: LayoutContext,
-    child_elements: &[Element<ElementLayoutData>],
+    child_elements: &[TElement],
 ) -> Result<ElementTaffyData, RenderError> {
     // This will contain one node id for each child element, in the same order as the child_elements array.
     let mut child_element_node_ids = Vec::new();
@@ -53,13 +99,10 @@ pub(super) fn container_layout_override(
         // Save the placement to the element's layout data so we can use it when drawing the element.
         element.layout_data().borrow_mut().placement = Some(element_position);
 
-        let as_element = element.as_element();
-        let as_stackable = element.as_stackable();
-
         // If the element has a separator, we need to add some spacing as defined by
         // the host config, plus additional spacing for the separator line thickness.
-        let has_separator = as_stackable.get_separator();
-        let spacing = context.host_config.spacing.from(as_stackable)
+        let has_separator = element.get_separator();
+        let spacing = context.host_config.spacing.from(element)
             + match has_separator {
                 true => separator_line_thickness,
                 false => 0,
@@ -90,7 +133,7 @@ pub(super) fn container_layout_override(
         let mut element_baseline_style = Style::default();
 
         // Apply the height of the element to the style.
-        match as_element.get_height() {
+        match element.get_height() {
             StringOrBlockElementHeight::String(height) => {
                 element_baseline_style.size.height = parse_dimension(&height, &element_context)?;
             }
@@ -108,11 +151,8 @@ pub(super) fn container_layout_override(
             },
         };
 
-        let as_layoutable = element.as_layoutable();
-
         // Call `layout` on the child element, which returns its node id in the Taffy tree.
-        let element_node_id =
-            as_layoutable.layout(&element_context, element_baseline_style, tree)?;
+        let element_node_id = element.layout(&element_context, element_baseline_style, tree)?;
 
         // Add the node id to the child_element_node_ids array so it can be used in the
         // draw pass to fetch the child element's final position.
@@ -153,15 +193,31 @@ pub(super) fn container_layout_override(
 }
 
 // The shared container draw logic for AdaptiveCard and Container.
-pub(super) fn container_draw_override<TElement: StackableItemMethods + Layoutable>(
+#[allow(clippy::too_many_arguments)] // Fine for now.
+pub(super) fn container_draw_override<
+    TParent: HasChildElements<TElement>,
+    TElement: StackableItemMethods + Layoutable,
+>(
+    parent: &TParent,
     context: &LayoutContext,
     tree: &TaffyTree<NodeContext>,
     taffy_data: &ElementTaffyData,
     image: Rc<RefCell<MaskedImage>>,
     scratch: &mut LayoutScratch,
-    child_elements_context: LayoutContext,
-    child_elements: &[TElement],
+    style: Option<&ContainerStyle>,
+    child_elements_context_name: &str,
 ) -> Result<(), RenderError> {
+    // Draw the container background, if necessary.
+    if let Some(&style) = style {
+        draw_background(style, context, tree, taffy_data, &image)?;
+    }
+
+    // Create the child context.
+    let child_elements_context = context.for_child_str(child_elements_context_name);
+
+    // Get the child elements.
+    let child_elements = parent.get_child_elements();
+
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
     // where we need to draw ourselves.
     let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
@@ -357,11 +413,11 @@ fn draw_vertical_separator<TElement: StackableItemMethods + Layoutable>(
         let spacing = context.host_config.spacing.from(element);
         let half_spacing = (spacing / 2) as f32;
 
-        // The right of the horizontal line will be half the separator spacing above the left of the element,
+        // The right of the horizontal line will be half the separator spacing to the left of the element,
         // minus an additional pixel.
         let x_right_float = element_rect.left() as f32 - half_spacing - 1.;
 
-        // The left of the horizontal line is going to be half the spacing above the left of the element,
+        // The left of the horizontal line is going to be half the spacing to the left of the element,
         // minus the line thickness.
         let x_left_float = x_right_float - separator_line_thickness as f32 + 1.;
 
@@ -373,27 +429,27 @@ fn draw_vertical_separator<TElement: StackableItemMethods + Layoutable>(
         // Draw the left and right lines, which max be between pixels.
         draw_line_segment_mut(
             &mut *image_mut,
-            (y_start, x_left_float),
-            (y_end, x_left_float),
+            (x_left_float, y_start),
+            (x_left_float, y_end),
             separator_color,
         );
 
         if separator_line_thickness > 1 {
             draw_line_segment_mut(
                 &mut *image_mut,
-                (y_start, x_right_float),
-                (y_end, x_right_float),
+                (x_right_float, y_start),
+                (x_right_float, y_end),
                 separator_color,
             );
 
             // Now draw lines for all the pixels in between the left and right.
             let x_right = x_right_float.ceil() as u32;
-            let yop_t = x_left_float.floor() as u32;
-            for x in yop_t..=x_right {
+            let x_left = x_left_float.floor() as u32;
+            for x in x_left..=x_right {
                 draw_line_segment_mut(
                     &mut *image_mut,
-                    (y_start, x as f32),
-                    (y_end, x as f32),
+                    (x as f32, y_start),
+                    (x as f32, y_end),
                     separator_color,
                 );
             }

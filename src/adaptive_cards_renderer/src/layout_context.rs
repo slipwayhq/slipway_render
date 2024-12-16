@@ -103,9 +103,9 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
 
     /// Creates a new LayoutContext based on the current context but with the given container style.
     #[must_use]
-    pub fn with_style(mut self, value: &Option<ContainerStyle>) -> Self {
+    pub fn with_style(mut self, value: Option<ContainerStyle>) -> Self {
         if let Some(value) = value {
-            self.inherited.style = *value;
+            self.inherited.style = value;
         }
 
         self
@@ -115,19 +115,19 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
     #[must_use]
     pub fn with_vertical_content_alignment(
         mut self,
-        value: &Option<VerticalContentAlignment>,
+        value: Option<VerticalContentAlignment>,
     ) -> Self {
         if let Some(value) = value {
-            self.inherited.vertical_content_alignment = *value;
+            self.inherited.vertical_content_alignment = value;
         }
         self
     }
 
     /// Creates a new LayoutContext based on the current context but with the given horizontal alignment.
     #[must_use]
-    pub fn with_horizontal_alignment(mut self, value: &Option<HorizontalAlignment>) -> Self {
+    pub fn with_horizontal_alignment(mut self, value: Option<HorizontalAlignment>) -> Self {
         if let Some(value) = value {
-            self.inherited.horizontal_alignment = *value;
+            self.inherited.horizontal_alignment = value;
         }
         self
     }

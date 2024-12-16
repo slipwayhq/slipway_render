@@ -1,0 +1,124 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_separator.card.json
+---
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "1",
+              ".layout": {
+                "rect": {
+                  "x": 36,
+                  "y": 36,
+                  "width": 6,
+                  "height": 10
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "separator": true,
+          "style": "accent",
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 24,
+              "y": 24,
+              "width": 30,
+              "height": 34
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "2",
+              ".layout": {
+                "rect": {
+                  "x": 78,
+                  "y": 36,
+                  "width": 10,
+                  "height": 10
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "separator": false,
+          "style": "accent",
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 66,
+              "y": 24,
+              "width": 34,
+              "height": 34
+            },
+            "placement": "WithinHorizontal"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "3",
+              ".layout": {
+                "rect": {
+                  "x": 125,
+                  "y": 36,
+                  "width": 239,
+                  "height": 10
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "separator": true,
+          "style": "accent",
+          "width": {
+            "String": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 113,
+              "y": 24,
+              "width": 263,
+              "height": 34
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 12,
+          "y": 12,
+          "width": 376,
+          "height": 58
+        },
+        "placement": "SoleVertical"
+      }
+    }
+  ],
+  "version": "1.5",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 100
+    }
+  }
+}

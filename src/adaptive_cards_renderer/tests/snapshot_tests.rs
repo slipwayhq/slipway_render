@@ -22,6 +22,8 @@ fn snapshots() {
 
             let spec = load_spec_file_for(card_prefix);
 
+            println!("Running snapshot test for {}", card_prefix);
+
             let json_data = std::fs::read_to_string(path).unwrap();
             let (image, card) = render_from_str(
                 &json_data,

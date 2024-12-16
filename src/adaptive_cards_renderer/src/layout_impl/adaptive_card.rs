@@ -15,7 +15,7 @@ use crate::{
     masked_image::{MaskedImage, SlipwayCanvas},
 };
 
-use super::container_shared::{container_draw_override, container_layout_override};
+use super::container_shared::{container_draw_override, container_layout_override_inner};
 
 impl Layoutable for AdaptiveCard<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -41,13 +41,13 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
         // Create the child context.
         let child_elements_context = context
             .for_child_str("body")
-            .with_vertical_content_alignment(&self.vertical_content_alignment);
+            .with_vertical_content_alignment(self.vertical_content_alignment);
 
         // Get the child elements.
         let child_elements = self.body.as_deref().unwrap_or(&[]);
 
         // Delegate to the shared container layout function.
-        container_layout_override(
+        container_layout_override_inner(
             context,
             baseline_style,
             tree,
@@ -67,21 +67,9 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
         // Draw the background of the AdaptiveCard.
         draw_background(context, &image)?;
 
-        // Create the child context.
-        let child_elements_context = context.for_child_str("body");
-
-        // Get the child elements.
-        let child_elements = self.body.as_deref().unwrap_or(&[]);
-
         // Delegate to the shared container draw function.
         container_draw_override(
-            context,
-            tree,
-            taffy_data,
-            image,
-            scratch,
-            child_elements_context,
-            child_elements,
+            self, context, tree, taffy_data, image, scratch, None, "body",
         )
     }
 }

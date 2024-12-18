@@ -865,7 +865,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for ActionSet<TLayoutData>
+impl<TLayoutData> crate::Toggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -873,7 +873,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for ActionSet<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -884,7 +884,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for ActionSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1147,7 +1147,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Column<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1155,7 +1155,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Column<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1166,7 +1166,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Column<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1243,7 +1243,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::Toggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1251,7 +1251,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1262,7 +1262,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for ColumnSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1348,7 +1348,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Container<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1356,7 +1356,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Container<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1367,7 +1367,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Container<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1467,7 +1467,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+    pub fn as_toggleable(&self) -> &dyn crate::Toggleable {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1493,7 +1493,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_stackable(&self) -> &dyn crate::StackableItemMethods {
+    pub fn as_stackable(&self) -> &dyn crate::StackableToggleable {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1519,7 +1519,7 @@ impl<TLayoutData> Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::SizedStackableItemMethods {
+    pub fn as_element(&self) -> &dyn crate::SizedStackableToggleable {
         match self {
             Element::ActionSet(inner) => inner,
             Element::ColumnSet(inner) => inner,
@@ -1549,7 +1549,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Element<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1557,7 +1557,7 @@ where
         self.as_toggleable().get_is_visible()
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Element<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1568,7 +1568,7 @@ where
         self.as_stackable().get_spacing()
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Element<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1636,7 +1636,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for FactSet<TLayoutData>
+impl<TLayoutData> crate::Toggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1644,7 +1644,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for FactSet<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1655,7 +1655,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for FactSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1807,7 +1807,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Image<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1815,7 +1815,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Image<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1826,7 +1826,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Image<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1903,7 +1903,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for ImageSet<TLayoutData>
+impl<TLayoutData> crate::Toggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1911,7 +1911,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for ImageSet<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -1922,7 +1922,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for ImageSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2080,7 +2080,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2088,7 +2088,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2099,7 +2099,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputChoiceSet<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2184,7 +2184,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputDate<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2192,7 +2192,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputDate<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2203,7 +2203,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputDate<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2288,7 +2288,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputNumber<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2296,7 +2296,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputNumber<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2307,7 +2307,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputNumber<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2413,7 +2413,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputText<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2421,7 +2421,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputText<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2432,7 +2432,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputText<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2517,7 +2517,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputTime<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2525,7 +2525,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputTime<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2536,7 +2536,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputTime<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2668,7 +2668,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for InputToggle<TLayoutData>
+impl<TLayoutData> crate::Toggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2676,7 +2676,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for InputToggle<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2687,7 +2687,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for InputToggle<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2742,7 +2742,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+    pub fn as_toggleable(&self) -> &dyn crate::Toggleable {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2757,7 +2757,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_stackable(&self) -> &dyn crate::StackableItemMethods {
+    pub fn as_stackable(&self) -> &dyn crate::StackableToggleable {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2772,7 +2772,7 @@ impl<TLayoutData> Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_element(&self) -> &dyn crate::SizedStackableItemMethods {
+    pub fn as_element(&self) -> &dyn crate::SizedStackableToggleable {
         match self {
             Input::ChoiceSet(inner) => inner,
             Input::Date(inner) => inner,
@@ -2791,7 +2791,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Input<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2799,7 +2799,7 @@ where
         self.as_toggleable().get_is_visible()
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Input<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2810,7 +2810,7 @@ where
         self.as_stackable().get_spacing()
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Input<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2976,7 +2976,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Media<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2984,7 +2984,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Media<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -2995,7 +2995,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Media<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3132,7 +3132,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::Toggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3140,7 +3140,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3151,7 +3151,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for RichTextBlock<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3281,7 +3281,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for Table<TLayoutData>
+impl<TLayoutData> crate::Toggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3289,7 +3289,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for Table<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3300,7 +3300,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for Table<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3541,7 +3541,7 @@ where
         &self.layout_data
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for TextBlock<TLayoutData>
+impl<TLayoutData> crate::Toggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3549,7 +3549,7 @@ where
         self.is_visible
     }
 }
-impl<TLayoutData> crate::StackableItemMethods for TextBlock<TLayoutData>
+impl<TLayoutData> crate::StackableToggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3560,7 +3560,7 @@ where
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
-impl<TLayoutData> crate::SizedStackableItemMethods for TextBlock<TLayoutData>
+impl<TLayoutData> crate::SizedStackableToggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
@@ -3710,7 +3710,7 @@ impl<TLayoutData> ToggleableItem<TLayoutData>
 where
     TLayoutData: Default,
 {
-    pub fn as_toggleable(&self) -> &dyn crate::ToggleableItemMethods {
+    pub fn as_toggleable(&self) -> &dyn crate::Toggleable {
         match self {
             ToggleableItem::ActionSet(inner) => inner,
             ToggleableItem::Column(inner) => inner,
@@ -3742,7 +3742,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-impl<TLayoutData> crate::ToggleableItemMethods for ToggleableItem<TLayoutData>
+impl<TLayoutData> crate::Toggleable for ToggleableItem<TLayoutData>
 where
     TLayoutData: Default,
 {

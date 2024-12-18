@@ -137,19 +137,19 @@ pub(super) fn process_class(
                 if metadata.is_toggleable {
                     generate_methods.push((
                         format_ident!("as_toggleable"),
-                        quote! { &dyn crate::ToggleableItemMethods },
+                        quote! { &dyn crate::Toggleable },
                     ));
                 }
                 if metadata.is_stackable {
                     generate_methods.push((
                         format_ident!("as_stackable"),
-                        quote! { &dyn crate::StackableItemMethods },
+                        quote! { &dyn crate::StackableToggleable },
                     ));
                 }
                 if metadata.is_element {
                     generate_methods.push((
                         format_ident!("as_element"),
-                        quote! { &dyn crate::SizedStackableItemMethods },
+                        quote! { &dyn crate::SizedStackableToggleable },
                     ));
                 }
 
@@ -214,7 +214,7 @@ pub(super) fn process_class(
             // If we're derived from ToggleableItem.
             if metadata.is_toggleable {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::ToggleableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::Toggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_is_visible(&self) -> bool {
                             self.as_toggleable().get_is_visible()
@@ -227,7 +227,7 @@ pub(super) fn process_class(
             // If we're a stackable item (Element, Column).
             if metadata.is_stackable {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::StackableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::StackableToggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_separator(&self) -> bool {
                             self.as_stackable().get_separator()
@@ -242,7 +242,7 @@ pub(super) fn process_class(
             // If we're derived from Element.
             if metadata.is_element {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_width_or_height(&self) -> crate::WidthOrHeight {
                             self.as_element().get_width_or_height()
@@ -434,7 +434,7 @@ pub(super) fn process_class(
             // If we're derived from ToggleableItem.
             if metadata.is_toggleable {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::ToggleableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::Toggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_is_visible(&self) -> bool {
                             self.is_visible
@@ -447,7 +447,7 @@ pub(super) fn process_class(
             // If we're a stackable item (Element, Column).
             if metadata.is_stackable {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::StackableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::StackableToggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_separator(&self) -> bool {
                             self.separator.unwrap_or(false)
@@ -474,7 +474,7 @@ pub(super) fn process_class(
                 };
 
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_width_or_height(&self) -> crate::WidthOrHeight {
                             crate::WidthOrHeight::Height(#height_impl)
@@ -483,7 +483,7 @@ pub(super) fn process_class(
                 })
             } else if metadata.is_stackable {
                 post_struct_tokens.push(quote! {
-                    impl #generic_parameter crate::SizedStackableItemMethods for #struct_name #generic_parameter
+                    impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
                         fn get_width_or_height(&self) -> crate::WidthOrHeight {
                             crate::WidthOrHeight::Width(self.width.clone().unwrap_or(StringOrBlockElementWidthOrNumber::BlockElementWidth(BlockElementWidth::Auto)))

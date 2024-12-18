@@ -1,6 +1,6 @@
 use adaptive_cards::{
     AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HorizontalAlignment,
-    StackableItemMethods, VerticalContentAlignment,
+    StackableToggleable, VerticalContentAlignment,
 };
 use container_shared::PaddingBehavior;
 
@@ -46,7 +46,7 @@ enum ItemsContainerOrientation {
 
 trait ItemsContainer<TItem>
 where
-    TItem: StackableItemMethods + Layoutable,
+    TItem: StackableToggleable + Layoutable,
 {
     fn get_children(&self) -> &[TItem];
 

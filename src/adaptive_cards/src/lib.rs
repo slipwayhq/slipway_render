@@ -55,23 +55,23 @@ impl<T: HasLayoutData<TLayoutData>, TLayoutData> HasLayoutData<TLayoutData> for 
 }
 
 // Implemented by everything deriving from ToggleableItem.
-pub trait ToggleableItemMethods {
+pub trait Toggleable {
     fn get_is_visible(&self) -> bool;
 }
 
-impl<T: ToggleableItemMethods> ToggleableItemMethods for Box<T> {
+impl<T: Toggleable> Toggleable for Box<T> {
     fn get_is_visible(&self) -> bool {
         self.as_ref().get_is_visible()
     }
 }
 
 // Implemented by all elements, and Column.
-pub trait StackableItemMethods: ToggleableItemMethods {
+pub trait StackableToggleable: Toggleable {
     fn get_separator(&self) -> bool;
     fn get_spacing(&self) -> Spacing;
 }
 
-impl<T: StackableItemMethods> StackableItemMethods for Box<T> {
+impl<T: StackableToggleable> StackableToggleable for Box<T> {
     fn get_separator(&self) -> bool {
         self.as_ref().get_separator()
     }
@@ -82,11 +82,11 @@ impl<T: StackableItemMethods> StackableItemMethods for Box<T> {
 }
 
 // Implemented by all elements, and Column.
-pub trait SizedStackableItemMethods: StackableItemMethods {
+pub trait SizedStackableToggleable: StackableToggleable {
     fn get_width_or_height(&self) -> WidthOrHeight;
 }
 
-impl<T: SizedStackableItemMethods> SizedStackableItemMethods for Box<T> {
+impl<T: SizedStackableToggleable> SizedStackableToggleable for Box<T> {
     fn get_width_or_height(&self) -> WidthOrHeight {
         self.as_ref().get_width_or_height()
     }

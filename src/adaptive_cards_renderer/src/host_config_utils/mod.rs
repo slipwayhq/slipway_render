@@ -7,7 +7,7 @@ use adaptive_cards_host_config::{
 use csscolorparser::ParseColorError;
 
 use adaptive_cards::{
-    Colors, ContainerStyle, FontSize, FontType, FontWeight, Spacing, StackableItemMethods,
+    Colors, ContainerStyle, FontSize, FontType, FontWeight, Spacing, StackableToggleable,
     TextBlockStyle,
 };
 
@@ -16,7 +16,7 @@ use crate::errors::RenderError;
 pub mod default_host_config;
 
 pub(super) trait ValidSpacing {
-    fn from(&self, element: &dyn StackableItemMethods) -> u32;
+    fn from(&self, element: &dyn StackableToggleable) -> u32;
 
     #[allow(clippy::wrong_self_convention)]
     fn from_spacing(&self, spacing: Spacing) -> u32;
@@ -25,7 +25,7 @@ pub(super) trait ValidSpacing {
 }
 
 impl ValidSpacing for SpacingsConfig {
-    fn from(&self, element: &dyn StackableItemMethods) -> u32 {
+    fn from(&self, element: &dyn StackableToggleable) -> u32 {
         self.from_spacing(element.get_spacing())
     }
     fn from_spacing(&self, spacing: Spacing) -> u32 {

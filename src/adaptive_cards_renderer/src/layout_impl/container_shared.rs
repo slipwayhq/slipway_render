@@ -13,8 +13,8 @@ use crate::{
     utils::{ClampToU32, TaffyLayoutUtils},
 };
 use adaptive_cards::{
-    BlockElementHeight, BlockElementWidth, ContainerStyle, SizedStackableItemMethods,
-    StackableItemMethods, StringOrBlockElementHeight, StringOrBlockElementWidthOrNumber,
+    BlockElementHeight, BlockElementWidth, ContainerStyle, SizedStackableToggleable,
+    StackableToggleable, StringOrBlockElementHeight, StringOrBlockElementWidthOrNumber,
     WidthOrHeight,
 };
 use adaptive_cards_host_config::HostConfig;
@@ -31,7 +31,7 @@ use super::{
 
 pub(super) fn vertical_container_layout_override<
     TParent: ItemsContainer<TElement>,
-    TElement: StackableItemMethods + Layoutable + SizedContainerItem,
+    TElement: StackableToggleable + Layoutable + SizedContainerItem,
 >(
     parent: &TParent,
     context: &LayoutContext,
@@ -230,7 +230,7 @@ pub(super) trait SizedContainerItem {
     ) -> Result<(), RenderError>;
 }
 
-impl<T: SizedStackableItemMethods> SizedContainerItem for T {
+impl<T: SizedStackableToggleable> SizedContainerItem for T {
     fn get_weighted_size(&self) -> f64 {
         match self.get_width_or_height() {
             WidthOrHeight::Width(width) => match width {
@@ -302,7 +302,7 @@ impl<T: SizedStackableItemMethods> SizedContainerItem for T {
 // The shared container draw logic for AdaptiveCard and Container.
 pub(super) fn container_draw_override<
     TParent: ItemsContainer<TElement>,
-    TElement: StackableItemMethods + Layoutable,
+    TElement: StackableToggleable + Layoutable,
 >(
     parent: &TParent,
     context: &LayoutContext,
@@ -443,7 +443,7 @@ pub(super) fn container_draw_override<
 
 /// Draws a horizontal separator line between child elements, if the child element has
 /// its separator property set to true.
-fn draw_horizontal_separator<TElement: StackableItemMethods + Layoutable>(
+fn draw_horizontal_separator<TElement: StackableToggleable + Layoutable>(
     context: &LayoutContext,
     element_index: usize,
     element_rect: imageproc::rect::Rect,
@@ -503,7 +503,7 @@ fn draw_horizontal_separator<TElement: StackableItemMethods + Layoutable>(
 
 /// Draws a vertical separator line between child elements, if the child element has
 /// its separator property set to true.
-fn draw_vertical_separator<TElement: StackableItemMethods + Layoutable>(
+fn draw_vertical_separator<TElement: StackableToggleable + Layoutable>(
     context: &LayoutContext,
     element_index: usize,
     element_rect: imageproc::rect::Rect,

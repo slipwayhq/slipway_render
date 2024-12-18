@@ -14,9 +14,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
           "text": "1",
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 24,
-              "width": 102,
+              "x": 32,
+              "y": 32,
+              "width": 86,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -27,10 +27,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 12,
-          "width": 126,
-          "height": 34
+          "x": 16,
+          "y": 16,
+          "width": 118,
+          "height": 42
         },
         "placement": "Top"
       }
@@ -43,9 +43,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
           "text": "2",
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 70,
-              "width": 102,
+              "x": 32,
+              "y": 86,
+              "width": 86,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -56,10 +56,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 58,
-          "width": 126,
-          "height": 34
+          "x": 16,
+          "y": 70,
+          "width": 118,
+          "height": 42
         },
         "placement": "WithinVertical"
       }
@@ -73,9 +73,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
           "text": "3",
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 117,
-              "width": 102,
+              "x": 32,
+              "y": 141,
+              "width": 86,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -86,10 +86,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_s
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 105,
-          "width": 126,
-          "height": 83
+          "x": 16,
+          "y": 125,
+          "width": 118,
+          "height": 59
         },
         "placement": "Bottom"
       }

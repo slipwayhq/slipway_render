@@ -8,13 +8,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
   "body": [
     {
       "type": "TextBlock",
-      "text": "New TextBlock",
+      "text": "Blah Blah",
       "wrap": true,
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 12,
-          "width": 376,
+          "x": 16,
+          "y": 16,
+          "width": 368,
           "height": 11
         },
         "placement": "Top"
@@ -25,13 +25,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       "items": [
         {
           "type": "TextBlock",
-          "text": "New TextBlock",
+          "text": "Blah Blah",
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 47,
-              "width": 352,
+              "x": 32,
+              "y": 55,
+              "width": 336,
               "height": 11
             },
             "placement": "Top"
@@ -39,13 +39,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         },
         {
           "type": "TextBlock",
-          "text": "New TextBlock",
+          "text": "Blah Blah",
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 70,
-              "width": 352,
+              "x": 32,
+              "y": 78,
+              "width": 336,
               "height": 11
             },
             "placement": "Bottom"
@@ -55,10 +55,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       "style": "good",
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 35,
-          "width": 376,
-          "height": 58
+          "x": 16,
+          "y": 39,
+          "width": 368,
+          "height": 66
         },
         "placement": "WithinVertical"
       }
@@ -68,13 +68,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       "items": [
         {
           "type": "TextBlock",
-          "text": "New TextBlock",
+          "text": "Blah Blah",
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 12,
-              "y": 105,
-              "width": 376,
+              "x": 16,
+              "y": 117,
+              "width": 368,
               "height": 11
             },
             "placement": "Top"
@@ -82,13 +82,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         },
         {
           "type": "TextBlock",
-          "text": "New TextBlock",
+          "text": "Blah Blah",
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 12,
-              "y": 128,
-              "width": 376,
+              "x": 16,
+              "y": 140,
+              "width": 368,
               "height": 11
             },
             "placement": "Bottom"
@@ -97,9 +97,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       ],
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 105,
-          "width": 376,
+          "x": 16,
+          "y": 117,
+          "width": 368,
           "height": 34
         },
         "placement": "WithinVertical"
@@ -112,13 +112,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 12,
-                  "y": 151,
-                  "width": 182,
+                  "x": 16,
+                  "y": 163,
+                  "width": 178,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -131,9 +131,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 12,
-              "y": 151,
-              "width": 182,
+              "x": 16,
+              "y": 163,
+              "width": 178,
               "height": 11
             },
             "placement": "Left"
@@ -143,13 +143,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
                   "x": 206,
-                  "y": 151,
-                  "width": 182,
+                  "y": 163,
+                  "width": 178,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -163,8 +163,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           ".layout": {
             "rect": {
               "x": 206,
-              "y": 151,
-              "width": 182,
+              "y": 163,
+              "width": 178,
               "height": 11
             },
             "placement": "Right"
@@ -173,9 +173,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       ],
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 151,
-          "width": 376,
+          "x": 16,
+          "y": 163,
+          "width": 368,
           "height": 11
         },
         "placement": "WithinVertical"
@@ -188,13 +188,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 24,
-                  "y": 186,
-                  "width": 170,
+                  "x": 32,
+                  "y": 202,
+                  "width": 162,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -207,9 +207,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 186,
-              "width": 170,
+              "x": 32,
+              "y": 202,
+              "width": 162,
               "height": 11
             },
             "placement": "Left"
@@ -219,13 +219,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
                   "x": 206,
-                  "y": 186,
-                  "width": 170,
+                  "y": 202,
+                  "width": 162,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -239,8 +239,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           ".layout": {
             "rect": {
               "x": 206,
-              "y": 186,
-              "width": 170,
+              "y": 202,
+              "width": 162,
               "height": 11
             },
             "placement": "Right"
@@ -250,10 +250,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       "style": "good",
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 174,
-          "width": 376,
-          "height": 35
+          "x": 16,
+          "y": 186,
+          "width": 368,
+          "height": 43
         },
         "placement": "WithinVertical"
       }
@@ -265,13 +265,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 12,
-                  "y": 221,
-                  "width": 182,
+                  "x": 16,
+                  "y": 241,
+                  "width": 178,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -284,10 +284,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 12,
-              "y": 221,
-              "width": 182,
-              "height": 35
+              "x": 16,
+              "y": 241,
+              "width": 178,
+              "height": 43
             },
             "placement": "Left"
           }
@@ -296,13 +296,13 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "items": [
             {
               "type": "TextBlock",
-              "text": "New TextBlock",
+              "text": "Blah Blah",
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 218,
-                  "y": 233,
-                  "width": 158,
+                  "x": 222,
+                  "y": 257,
+                  "width": 146,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -317,9 +317,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           ".layout": {
             "rect": {
               "x": 206,
-              "y": 221,
-              "width": 182,
-              "height": 35
+              "y": 241,
+              "width": 178,
+              "height": 43
             },
             "placement": "Right"
           }
@@ -327,10 +327,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
       ],
       ".layout": {
         "rect": {
-          "x": 12,
-          "y": 221,
-          "width": 376,
-          "height": 35
+          "x": 16,
+          "y": 241,
+          "width": 368,
+          "height": 43
         },
         "placement": "Bottom"
       }

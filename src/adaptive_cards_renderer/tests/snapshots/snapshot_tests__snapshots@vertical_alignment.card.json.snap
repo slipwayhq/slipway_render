@@ -1,7 +1,7 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
 expression: card
-input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_content_alignment.card.json
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.card.json
 ---
 {
   "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
@@ -14,9 +14,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
           "text": "inherit-center",
           ".layout": {
             "rect": {
-              "x": 24,
+              "x": 32,
               "y": 183,
-              "width": 152,
+              "width": 136,
               "height": 11
             },
             "placement": "SoleVertical"
@@ -27,9 +27,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 12,
+          "x": 16,
           "y": 138,
-          "width": 176,
+          "width": 168,
           "height": 100
         },
         "placement": "Top"
@@ -43,9 +43,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
           "text": "inherit-center",
           ".layout": {
             "rect": {
-              "x": 24,
+              "x": 32,
               "y": 295,
-              "width": 152,
+              "width": 136,
               "height": 11
             },
             "placement": "SoleVertical"
@@ -56,9 +56,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
       "style": "accent",
       ".layout": {
         "rect": {
-          "x": 12,
+          "x": 16,
           "y": 250,
-          "width": 176,
+          "width": 168,
           "height": 100
         },
         "placement": "WithinVertical"
@@ -76,9 +76,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
               "text": "inherit-bottom",
               ".layout": {
                 "rect": {
-                  "x": 36,
-                  "y": 483,
-                  "width": 128,
+                  "x": 48,
+                  "y": 479,
+                  "width": 104,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -88,10 +88,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
           "style": "warning",
           ".layout": {
             "rect": {
-              "x": 24,
-              "y": 374,
-              "width": 152,
-              "height": 132
+              "x": 32,
+              "y": 378,
+              "width": 136,
+              "height": 128
             },
             "placement": "Top"
           }
@@ -105,9 +105,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
               "text": "top",
               ".layout": {
                 "rect": {
-                  "x": 36,
-                  "y": 530,
-                  "width": 128,
+                  "x": 48,
+                  "y": 534,
+                  "width": 104,
                   "height": 12
                 },
                 "placement": "SoleVertical"
@@ -118,10 +118,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
           "verticalContentAlignment": "top",
           ".layout": {
             "rect": {
-              "x": 24,
+              "x": 32,
               "y": 518,
-              "width": 152,
-              "height": 132
+              "width": 136,
+              "height": 128
             },
             "placement": "Bottom"
           }
@@ -132,9 +132,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_vertical_con
       "verticalContentAlignment": "bottom",
       ".layout": {
         "rect": {
-          "x": 12,
+          "x": 16,
           "y": 362,
-          "width": 176,
+          "width": 168,
           "height": 300
         },
         "placement": "Bottom"

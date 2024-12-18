@@ -1,19 +1,20 @@
 use std::{cell::RefCell, rc::Rc};
 
+use adaptive_cards::TableCell;
 use taffy::TaffyTree;
 
 use crate::{
-    element_layout_data::{ElementLayoutData, ElementTaffyData},
-    errors::RenderError,
-    layout_context::LayoutContext,
-    layout_impl::measure::NodeContext,
-    layout_scratch::LayoutScratch,
-    masked_image::MaskedImage,
+    element_layout_data::ElementTaffyData, errors::RenderError, layout_context::LayoutContext,
+    layout_scratch::LayoutScratch, masked_image::MaskedImage, ElementLayoutData,
 };
 
-use super::container_shared::{container_draw_override, container_layout_override};
+use super::{
+    container_shared::{container_draw_override, container_layout_override},
+    measure::NodeContext,
+    Layoutable,
+};
 
-impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData> {
+impl Layoutable for TableCell<ElementLayoutData> {
     fn layout_override(
         &self,
         context: &LayoutContext,
@@ -31,7 +32,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData>
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        // Delegate to the shared container draw function.
+        println!("Cell draw_override");
         container_draw_override(self, context, tree, taffy_data, image, scratch)
     }
 }

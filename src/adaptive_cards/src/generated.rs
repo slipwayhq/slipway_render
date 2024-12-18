@@ -300,7 +300,7 @@ impl Default for VerticalAlignment {
         VerticalAlignment::Top
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum StringOrObject {
     String(String),
     Object(serde_json::Value),
@@ -315,7 +315,7 @@ impl From<serde_json::Value> for StringOrObject {
         StringOrObject::Object(value)
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum ActionOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -340,7 +340,7 @@ where
         ActionOrFallbackOption::<TLayoutData>::FallbackOption(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionExecute<TLayoutData>
 where
@@ -428,7 +428,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionOpenUrl<TLayoutData>
 where
@@ -497,7 +497,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionShowCard<TLayoutData>
 where
@@ -566,7 +566,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionSubmit<TLayoutData>
 where
@@ -652,7 +652,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum TargetElementOrString {
     TargetElement(TargetElement),
     String(String),
@@ -667,7 +667,7 @@ impl From<String> for TargetElementOrString {
         TargetElementOrString::String(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionToggleVisibility<TLayoutData>
 where
@@ -737,7 +737,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Action<TLayoutData>
 where
@@ -776,7 +776,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum ElementOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -801,7 +801,7 @@ where
         ElementOrFallbackOption::<TLayoutData>::FallbackOption(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ActionSet<TLayoutData>
 where
@@ -887,7 +887,7 @@ where
         )
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum BackgroundImageOrString {
     BackgroundImage(BackgroundImage),
     String(String),
@@ -902,7 +902,7 @@ impl From<String> for BackgroundImageOrString {
         BackgroundImageOrString::String(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AdaptiveCard<TLayoutData>
 where
@@ -956,7 +956,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct AuthCardButton {
     #[serde(rename = "image", skip_serializing_if = "Option::is_none")]
@@ -968,7 +968,7 @@ pub struct AuthCardButton {
     #[serde(rename = "value")]
     pub value: String,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Authentication {
     #[serde(rename = "buttons", skip_serializing_if = "Option::is_none")]
@@ -982,7 +982,7 @@ pub struct Authentication {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct BackgroundImage {
     #[serde(rename = "fillMode", skip_serializing_if = "Option::is_none")]
@@ -996,7 +996,7 @@ pub struct BackgroundImage {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Callout {
     #[serde(rename = "handle")]
@@ -1006,7 +1006,7 @@ pub struct Callout {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct CaptionSource {
     #[serde(rename = "label")]
@@ -1018,7 +1018,7 @@ pub struct CaptionSource {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum ColumnOrFallbackOption<TLayoutData>
 where
     TLayoutData: Default,
@@ -1043,7 +1043,7 @@ where
         ColumnOrFallbackOption::<TLayoutData>::FallbackOption(value)
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum StringOrBlockElementWidthOrNumber {
     String(String),
     BlockElementWidth(BlockElementWidth),
@@ -1064,7 +1064,7 @@ impl From<f64> for StringOrBlockElementWidthOrNumber {
         StringOrBlockElementWidthOrNumber::Number(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Column<TLayoutData>
 where
@@ -1169,7 +1169,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ColumnSet<TLayoutData>
 where
@@ -1265,7 +1265,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Container<TLayoutData>
 where
@@ -1370,7 +1370,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct DataQuery {
     #[serde(rename = "count", skip_serializing_if = "Option::is_none")]
@@ -1382,7 +1382,7 @@ pub struct DataQuery {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Element<TLayoutData>
 where
@@ -1562,7 +1562,7 @@ where
         self.as_element().get_width_or_height()
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Fact {
     #[serde(rename = "title")]
@@ -1572,7 +1572,7 @@ pub struct Fact {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct FactSet<TLayoutData>
 where
@@ -1658,7 +1658,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum ISelectAction<TLayoutData>
 where
@@ -1694,7 +1694,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum StringOrBlockElementHeight {
     String(String),
     BlockElementHeight(BlockElementHeight),
@@ -1709,7 +1709,7 @@ impl From<BlockElementHeight> for StringOrBlockElementHeight {
         StringOrBlockElementHeight::BlockElementHeight(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Image<TLayoutData>
 where
@@ -1820,7 +1820,7 @@ where
         crate::WidthOrHeight::Height(self.height.clone())
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct ImageSet<TLayoutData>
 where
@@ -1925,7 +1925,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Inline<TLayoutData>
 where
@@ -1952,7 +1952,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputChoice {
     #[serde(rename = "title")]
@@ -1962,7 +1962,7 @@ pub struct InputChoice {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum StringOrNumber {
     String(String),
     Number(f64),
@@ -1977,7 +1977,7 @@ impl From<f64> for StringOrNumber {
         StringOrNumber::Number(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputChoiceSet<TLayoutData>
 where
@@ -2102,7 +2102,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputDate<TLayoutData>
 where
@@ -2206,7 +2206,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputNumber<TLayoutData>
 where
@@ -2310,7 +2310,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputText<TLayoutData>
 where
@@ -2435,7 +2435,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputTime<TLayoutData>
 where
@@ -2539,7 +2539,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct InputToggle<TLayoutData>
 where
@@ -2690,7 +2690,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Input<TLayoutData>
 where
@@ -2804,7 +2804,7 @@ where
         self.as_element().get_width_or_height()
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum Item<TLayoutData>
 where
@@ -2906,7 +2906,7 @@ where
         self.as_has_layout_data().layout_data()
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Media<TLayoutData>
 where
@@ -2998,7 +2998,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct MediaSource {
     #[serde(rename = "mimeType", skip_serializing_if = "Option::is_none")]
@@ -3008,7 +3008,7 @@ pub struct MediaSource {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Metadata {
     #[serde(rename = "webUrl", skip_serializing_if = "Option::is_none")]
@@ -3016,7 +3016,7 @@ pub struct Metadata {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Refresh<TLayoutData>
 where
@@ -3041,7 +3041,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Serialize, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub enum InlineOrString<TLayoutData>
 where
     TLayoutData: Default,
@@ -3066,7 +3066,7 @@ where
         InlineOrString::<TLayoutData>::String(value)
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct RichTextBlock<TLayoutData>
 where
@@ -3154,7 +3154,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct Table<TLayoutData>
 where
@@ -3303,7 +3303,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableCell<TLayoutData>
 where
@@ -3341,7 +3341,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableColumnDefinition {
     #[serde(
@@ -3371,7 +3371,7 @@ impl TableColumnDefinition {
         matches!(* value, StringOrNumber::Number(1f64))
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TableRow<TLayoutData>
 where
@@ -3404,7 +3404,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TargetElement {
     #[serde(rename = "elementId")]
@@ -3414,7 +3414,7 @@ pub struct TargetElement {
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextBlock<TLayoutData>
 where
@@ -3563,7 +3563,7 @@ where
         )
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TextRun<TLayoutData>
 where
@@ -3619,7 +3619,7 @@ where
         &self.layout_data
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(tag = "type")]
 pub enum ToggleableItem<TLayoutData>
 where
@@ -3736,7 +3736,7 @@ where
         self.as_toggleable().get_is_visible()
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
 pub struct TokenExchangeResource {
     #[serde(rename = "id")]

@@ -29,9 +29,9 @@ use super::{
     ItemsContainer, ItemsContainerOrientation,
 };
 
-pub(super) fn vertical_container_layout_override<
-    TParent: ItemsContainer<TElement>,
-    TElement: StackableToggleable + Layoutable + SizedContainerItem,
+pub(super) fn container_layout_override<
+    TParent: ItemsContainer<TItem>,
+    TItem: StackableToggleable + Layoutable + SizedContainerItem,
 >(
     parent: &TParent,
     context: &LayoutContext,
@@ -50,65 +50,69 @@ pub(super) fn vertical_container_layout_override<
     }
 
     // Create the child context.
-    let child_elements_context = context
+    let child_items_context = context
         .for_child_str(parent.get_children_collection_name())
         .with_vertical_content_alignment(parent.get_vertical_content_alignment())
-        .with_horizontal_alignment(parent.get_horizontal_alignment())
+        .with_horizontal_content_alignment(parent.get_horizontal_content_alignment())
         .with_style(parent.get_style());
 
-    // Get the child elements.
-    let child_elements = parent.get_children();
+    // Get the children.
+    let child_items = parent
+        .get_children()
+        .iter()
+        .filter(|c| c.get_is_visible())
+        .collect::<Vec<_>>();
 
-    // This will contain one node id for each child element, in the same order as the child_elements array.
-    let mut child_element_node_ids = Vec::new();
+    // This will contain one node id for each child, in the same order as the children array.
+    let mut child_item_node_ids = Vec::new();
 
     // This will contain the complete set of child node ids, including decorative items like separators.
     let mut child_node_ids = Vec::new();
 
-    // If any of the child elements have a separator, we need to know the line thickness we should draw.
+    // If any of the child items have a separator, we need to know the line thickness we should draw.
     let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
 
     // Used to determine if we're drawing the first or last child item.
-    let element_count = child_elements.len();
+    let item_count = child_items.len();
 
-    // Get the sum of all the weighted sizes of the child elements.
-    let sum_of_weighted = child_elements
+    // Get the sum of all the weighted sizes of the child items.
+    let sum_of_weighted = child_items
         .iter()
-        .fold(0., |acc, element| acc + element.get_weighted_size());
+        .fold(0., |acc, item| acc + item.get_weighted_size());
 
-    // For each child element...
-    for (index, element) in child_elements.iter().enumerate() {
-        // Determine the placement of the element within the container relative to any siblings.
-        let element_position = match parent.get_orientation() {
+    // For each child item...
+    for (index, &child) in child_items.iter().enumerate() {
+        // Determine the placement of the item within the container relative to any siblings.
+        let item_position = match parent.get_orientation() {
             ItemsContainerOrientation::Vertical => match index {
-                0 if element_count == 1 => Placement::SoleVertical,
+                0 if item_count == 1 => Placement::SoleVertical,
                 0 => Placement::Top,
-                i if i == element_count - 1 => Placement::Bottom,
+                i if i == item_count - 1 => Placement::Bottom,
                 _ => Placement::WithinVertical,
             },
             ItemsContainerOrientation::Horizontal => match index {
-                0 if element_count == 1 => Placement::SoleHorizontal,
+                0 if item_count == 1 => Placement::SoleHorizontal,
                 0 => Placement::Left,
-                i if i == element_count - 1 => Placement::Right,
+                i if i == item_count - 1 => Placement::Right,
                 _ => Placement::WithinHorizontal,
             },
         };
 
-        // Save the placement to the element's layout data so we can use it when drawing the element.
-        element.layout_data().borrow_mut().placement = Some(element_position);
+        // Save the placement to the item's layout data so we can use it when drawing the item.
+        child.layout_data().borrow_mut().placement = Some(item_position);
 
-        // If the element has a separator, we need to add some spacing as defined by
+        // If the item has a separator, we need to add some spacing as defined by
         // the host config, plus additional spacing for the separator line thickness.
-        let has_separator = element.get_separator();
-        let spacing = context.host_config.spacing.from(element)
+        let has_separator = child.get_separator();
+        let spacing = context.host_config.spacing.from(child)
             + match has_separator {
                 true => separator_line_thickness,
                 false => 0,
             };
 
-        // If the element has any spacing, add a node to the Taffy tree to represent it.
+        // If the item has any spacing, add a node to the Taffy tree to represent it.
         if spacing > 0 {
-            match element_position {
+            match item_position {
                 Placement::Bottom | Placement::WithinVertical => {
                     let spacer_style = Style {
                         size: Size {
@@ -135,30 +139,26 @@ pub(super) fn vertical_container_layout_override<
             }
         }
 
-        // Create a context for the child element.
-        let element_context = child_elements_context.for_child(index.to_string());
+        // Create a context for the child item.
+        let item_context = child_items_context.for_child(index.to_string());
 
-        // Create a baseline style for the child element, which we will build upon.
-        let mut element_baseline_style = Style::default();
+        // Create a baseline style for the child item, which we will build upon.
+        let mut item_baseline_style = Style::default();
 
-        // Apply the height of the element to the style.
-        element.apply_size_to_style(
-            &mut element_baseline_style,
-            &element_context,
-            sum_of_weighted,
-        )?;
+        // Apply the height of the item to the style.
+        child.apply_size_to_style(&mut item_baseline_style, &item_context, sum_of_weighted)?;
 
-        // Call `layout` on the child element, which returns its node id in the Taffy tree.
-        let element_node_id = element.layout(&element_context, element_baseline_style, tree)?;
+        // Call `layout` on the child item, which returns its node id in the Taffy tree.
+        let item_node_id = child.layout(&item_context, item_baseline_style, tree)?;
 
-        // Add the node id to the child_element_node_ids array so it can be used in the
-        // draw pass to fetch the child element's final position.
-        child_element_node_ids.push(element_node_id);
+        // Add the node id to the child_item_node_ids array so it can be used in the
+        // draw pass to fetch the child item's final position.
+        child_item_node_ids.push(item_node_id);
 
-        child_node_ids.push(element_node_id);
+        child_node_ids.push(item_node_id);
     }
 
-    // Next we build up the container style based on the host config and element properties.
+    // Next we build up the container style based on the host config and item properties.
     apply_container_style_padding(
         parent.get_padding_behavior(),
         context.host_config,
@@ -168,7 +168,7 @@ pub(super) fn vertical_container_layout_override<
     // Use the vertical content alignment (which was populated by the caller of this function)
     // to determine the flexbox justify content property.
     let justify_content = vertical_content_alignment_to_justify_content(
-        child_elements_context.inherited.vertical_content_alignment,
+        child_items_context.inherited.vertical_content_alignment,
     );
 
     baseline_style.display = Display::Flex;
@@ -185,7 +185,7 @@ pub(super) fn vertical_container_layout_override<
         .err_context(context)
         .map(|node_id| ElementTaffyData {
             node_id,
-            child_element_node_ids,
+            child_item_node_ids,
         })
 }
 
@@ -301,8 +301,8 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
 
 // The shared container draw logic for AdaptiveCard and Container.
 pub(super) fn container_draw_override<
-    TParent: ItemsContainer<TElement>,
-    TElement: StackableToggleable + Layoutable,
+    TParent: ItemsContainer<TItem>,
+    TItem: StackableToggleable + Layoutable,
 >(
     parent: &TParent,
     context: &LayoutContext,
@@ -317,10 +317,14 @@ pub(super) fn container_draw_override<
     }
 
     // Create the child context.
-    let child_elements_context = context.for_child_str(parent.get_children_collection_name());
+    let child_items_context = context.for_child_str(parent.get_children_collection_name());
 
-    // Get the child elements.
-    let child_elements = parent.get_children();
+    // Get the child items.
+    let child_items = parent
+        .get_children()
+        .iter()
+        .filter(|c| c.get_is_visible())
+        .collect::<Vec<_>>();
 
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
     // where we need to draw ourselves.
@@ -339,36 +343,32 @@ pub(super) fn container_draw_override<
     let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
     let separator_color = context.host_config.separator.line_color.to_color()?;
 
-    // Fetch the child element node ids from the layout data, so we can match them
-    // to the child elements array.
-    let child_element_node_ids = &taffy_data.child_element_node_ids;
+    // Fetch the child item node ids from the layout data, so we can match them
+    // to the child items array.
+    let child_item_node_ids = &taffy_data.child_item_node_ids;
 
-    // For each visible child element...
-    for (i, element) in child_elements
-        .iter()
-        .enumerate() // Important: We call enumerate before filtering, so the index is correct.
-        .filter(|(_, e)| e.get_is_visible())
-    {
-        // Get the element's calculated layout data from the Taffy tree.
-        let element_layout = tree
-            .layout(child_element_node_ids[i])
-            .err_context(&child_elements_context)?;
+    // For each visible child item...
+    for (i, &child) in child_items.iter().enumerate() {
+        // Get the item's calculated layout data from the Taffy tree.
+        let item_layout = tree
+            .layout(child_item_node_ids[i])
+            .err_context(&child_items_context)?;
 
-        // Create a context for the child element.
-        let element_context =
-            child_elements_context.for_child_origin(i.to_string(), element_layout.location);
+        // Create a context for the child item.
+        let item_context =
+            child_items_context.for_child_origin(i.to_string(), item_layout.location);
 
-        // And get the element's absolute rectangle.
-        let element_rect = element_layout.absolute_rect(&element_context);
+        // And get the item's absolute rectangle.
+        let item_rect = item_layout.absolute_rect(&item_context);
 
-        let element_placement = element
+        let item_placement = child
             .layout_data()
             .borrow()
             .placement
             .expect("Element placement not set");
 
         // Draw the separator, if necessary.
-        match element_placement {
+        match item_placement {
             Placement::Top
             | Placement::Bottom
             | Placement::SoleVertical
@@ -376,8 +376,8 @@ pub(super) fn container_draw_override<
                 draw_horizontal_separator(
                     context,
                     i,
-                    element_rect,
-                    element,
+                    item_rect,
+                    child,
                     separator_line_thickness,
                     separator_color,
                     &image,
@@ -390,8 +390,8 @@ pub(super) fn container_draw_override<
                 draw_vertical_separator(
                     context,
                     i,
-                    element_rect,
-                    element,
+                    item_rect,
+                    child,
                     separator_line_thickness,
                     separator_color,
                     &image,
@@ -399,12 +399,12 @@ pub(super) fn container_draw_override<
             }
         }
 
-        // Calculate the intersection of the element's rectangle with the container's rectangle.
-        let maybe_intersection = absolute_rect.intersect(element_rect);
+        // Calculate the intersection of the item's rectangle with the container's rectangle.
+        let maybe_intersection = absolute_rect.intersect(item_rect);
 
-        // If there is no overlap we can technically skip drawing the element
+        // If there is no overlap we can technically skip drawing the item
         // unless we're in the debug mode which specifies transparent masks, in
-        // which case we just create a dummy 1 pixel sized intersection so the element
+        // which case we just create a dummy 1 pixel sized intersection so the item
         // is still drawn but completely masked out.
         let maybe_intersection = match maybe_intersection {
             Some(intersection) => Some(intersection),
@@ -418,55 +418,55 @@ pub(super) fn container_draw_override<
         };
 
         let Some(intersection) = maybe_intersection else {
-            // If there is no overlap, we can skip drawing the element.
+            // If there is no overlap, we can skip drawing the item.
             // We already account for the `transparent_masks` debug mode above.
             continue;
         };
 
         // If we're in the debug mode which specifies we should draw outlines, draw an outline
-        // for the child element.
+        // for the child item.
         if context.debug_mode.outlines {
             let color = next_color();
             let mut image_mut = image.borrow_mut();
 
-            draw_hollow_rect_mut(&mut *image_mut, element_rect, color);
+            draw_hollow_rect_mut(&mut *image_mut, item_rect, color);
         }
 
         // Create the masked child image.
         let child_image = MaskedImage::from_mask(image.clone(), intersection);
 
-        // Call `draw` on the child element.
-        element.draw(&element_context, tree, child_image, scratch)?;
+        // Call `draw` on the child item.
+        child.draw(&item_context, tree, child_image, scratch)?;
     }
     Ok(())
 }
 
-/// Draws a horizontal separator line between child elements, if the child element has
+/// Draws a horizontal separator line between child items, if the child item has
 /// its separator property set to true.
-fn draw_horizontal_separator<TElement: StackableToggleable + Layoutable>(
+fn draw_horizontal_separator<TItem: StackableToggleable + Layoutable>(
     context: &LayoutContext,
-    element_index: usize,
-    element_rect: imageproc::rect::Rect,
-    element: &TElement,
+    item_index: usize,
+    item_rect: imageproc::rect::Rect,
+    item: &TItem,
     separator_line_thickness: u32,
     separator_color: image::Rgba<u8>,
     image: &Rc<RefCell<MaskedImage>>,
 ) {
-    let has_separator = element.get_separator();
-    if has_separator && element_index > 0 {
-        let spacing = context.host_config.spacing.from(element);
+    let has_separator = item.get_separator();
+    if has_separator && item_index > 0 {
+        let spacing = context.host_config.spacing.from(item);
         let half_spacing = (spacing / 2) as f32;
 
-        // The bottom of the horizontal line will be half the separator spacing above the top of the element,
+        // The bottom of the horizontal line will be half the separator spacing above the top of the item,
         // minus an additional pixel.
-        let y_bottom_float = element_rect.top() as f32 - half_spacing - 1.;
+        let y_bottom_float = item_rect.top() as f32 - half_spacing - 1.;
 
-        // The top of the horizontal line is going to be half the spacing above the top of the element,
+        // The top of the horizontal line is going to be half the spacing above the top of the item,
         // minus the line thickness.
         let y_top_float = y_bottom_float - separator_line_thickness as f32 + 1.;
 
-        let x_start = element_rect.left() as f32;
-        let x_end = element_rect.right() as f32;
+        let x_start = item_rect.left() as f32;
+        let x_end = item_rect.right() as f32;
 
         let mut image_mut = image.borrow_mut();
 
@@ -501,32 +501,32 @@ fn draw_horizontal_separator<TElement: StackableToggleable + Layoutable>(
     }
 }
 
-/// Draws a vertical separator line between child elements, if the child element has
+/// Draws a vertical separator line between child items, if the child item has
 /// its separator property set to true.
-fn draw_vertical_separator<TElement: StackableToggleable + Layoutable>(
+fn draw_vertical_separator<TItem: StackableToggleable + Layoutable>(
     context: &LayoutContext,
-    element_index: usize,
-    element_rect: imageproc::rect::Rect,
-    element: &TElement,
+    item_index: usize,
+    item_rect: imageproc::rect::Rect,
+    item: &TItem,
     separator_line_thickness: u32,
     separator_color: image::Rgba<u8>,
     image: &Rc<RefCell<MaskedImage>>,
 ) {
-    let has_separator = element.get_separator();
-    if has_separator && element_index > 0 {
-        let spacing = context.host_config.spacing.from(element);
+    let has_separator = item.get_separator();
+    if has_separator && item_index > 0 {
+        let spacing = context.host_config.spacing.from(item);
         let half_spacing = (spacing / 2) as f32;
 
-        // The right of the horizontal line will be half the separator spacing to the left of the element,
+        // The right of the horizontal line will be half the separator spacing to the left of the item,
         // minus an additional pixel.
-        let x_right_float = element_rect.left() as f32 - half_spacing - 1.;
+        let x_right_float = item_rect.left() as f32 - half_spacing - 1.;
 
-        // The left of the horizontal line is going to be half the spacing to the left of the element,
+        // The left of the horizontal line is going to be half the spacing to the left of the item,
         // minus the line thickness.
         let x_left_float = x_right_float - separator_line_thickness as f32 + 1.;
 
-        let y_start = element_rect.top() as f32;
-        let y_end = element_rect.bottom() as f32;
+        let y_start = item_rect.top() as f32;
+        let y_end = item_rect.bottom() as f32;
 
         let mut image_mut = image.borrow_mut();
 

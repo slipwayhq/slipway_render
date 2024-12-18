@@ -1,6 +1,6 @@
 use adaptive_cards::{
     AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HorizontalAlignment,
-    StackableToggleable, VerticalAlignment,
+    StackableToggleable, Table, TableCell, TableRow, VerticalAlignment,
 };
 use container_shared::PaddingBehavior;
 
@@ -17,6 +17,8 @@ mod container_shared;
 mod image;
 pub(crate) mod measure;
 mod table;
+mod table_cell;
+mod table_row;
 mod text_block;
 mod utils;
 
@@ -58,7 +60,7 @@ where
 
     fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment>;
 
-    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment>;
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment>;
 
     fn get_style(&self) -> Option<ContainerStyle>;
 
@@ -96,7 +98,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutDa
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
@@ -134,7 +136,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData>
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
@@ -164,7 +166,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
@@ -194,7 +196,7 @@ impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> 
         None
     }
 
-    fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment> {
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
@@ -208,5 +210,123 @@ impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> 
 
     fn get_orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Horizontal
+    }
+}
+
+impl ItemsContainer<TableRow<ElementLayoutData>> for Table<ElementLayoutData> {
+    fn get_children(&self) -> &[TableRow<ElementLayoutData>] {
+        self.rows.as_deref().unwrap_or_default()
+    }
+
+    fn get_min_height(&self) -> Option<&str> {
+        None
+    }
+
+    fn get_bleed(&self) -> bool {
+        false
+    }
+
+    fn get_placement(&self) -> Placement {
+        self.layout_data.borrow().placement()
+    }
+
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+        self.vertical_cell_content_alignment
+    }
+
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_cell_content_alignment
+    }
+
+    fn get_style(&self) -> Option<ContainerStyle> {
+        None
+    }
+
+    fn get_padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::Always
+    }
+
+    fn get_children_collection_name(&self) -> &'static str {
+        "rows"
+    }
+
+    fn get_orientation(&self) -> ItemsContainerOrientation {
+        ItemsContainerOrientation::Vertical
+    }
+}
+
+impl ItemsContainer<TableCell<ElementLayoutData>> for TableRow<ElementLayoutData> {
+    fn get_children(&self) -> &[TableCell<ElementLayoutData>] {
+        self.cells.as_deref().unwrap_or_default()
+    }
+
+    fn get_min_height(&self) -> Option<&str> {
+        None
+    }
+
+    fn get_bleed(&self) -> bool {
+        false
+    }
+
+    fn get_placement(&self) -> Placement {
+        self.layout_data.borrow().placement()
+    }
+
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+        self.vertical_cell_content_alignment
+    }
+
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+        self.horizontal_cell_content_alignment
+    }
+
+    fn get_style(&self) -> Option<ContainerStyle> {
+        self.style
+    }
+
+    fn get_children_collection_name(&self) -> &'static str {
+        "cells"
+    }
+
+    fn get_orientation(&self) -> ItemsContainerOrientation {
+        ItemsContainerOrientation::Horizontal
+    }
+}
+
+impl ItemsContainer<Element<ElementLayoutData>> for TableCell<ElementLayoutData> {
+    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+        self.items.as_slice()
+    }
+
+    fn get_min_height(&self) -> Option<&str> {
+        self.min_height.as_deref()
+    }
+
+    fn get_bleed(&self) -> bool {
+        self.bleed.unwrap_or(false)
+    }
+
+    fn get_placement(&self) -> Placement {
+        self.layout_data.borrow().placement()
+    }
+
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+        self.vertical_content_alignment.or_else(|| {
+            self.layout_data
+                .borrow()
+                .table_column_definition()
+                .vertical_cell_content_alignment
+        })
+    }
+
+    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+        self.layout_data
+            .borrow()
+            .table_column_definition()
+            .horizontal_cell_content_alignment
+    }
+
+    fn get_style(&self) -> Option<ContainerStyle> {
+        self.style
     }
 }

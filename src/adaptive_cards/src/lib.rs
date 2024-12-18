@@ -92,7 +92,76 @@ impl<T: SizedStackableToggleable> SizedStackableToggleable for Box<T> {
     }
 }
 
+#[derive(serde::Serialize, serde::Deserialize, Debug, Clone)]
 pub enum WidthOrHeight {
     Width(StringOrBlockElementWidthOrNumber),
     Height(StringOrBlockElementHeight),
+}
+
+impl<T> Toggleable for TableRow<T>
+where
+    T: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        true
+    }
+}
+
+impl<TLayoutData> StackableToggleable for TableRow<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        true
+    }
+
+    fn get_spacing(&self) -> Spacing {
+        Spacing::Default
+    }
+}
+
+impl<TLayoutData> SizedStackableToggleable for TableRow<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_width_or_height(&self) -> WidthOrHeight {
+        WidthOrHeight::Height(StringOrBlockElementHeight::BlockElementHeight(
+            BlockElementHeight::Auto,
+        ))
+    }
+}
+
+impl<TLayoutData> Toggleable for TableCell<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_is_visible(&self) -> bool {
+        true
+    }
+}
+
+impl<TLayoutData> StackableToggleable for TableCell<TLayoutData>
+where
+    TLayoutData: Default,
+{
+    fn get_separator(&self) -> bool {
+        true
+    }
+
+    fn get_spacing(&self) -> Spacing {
+        Spacing::Default
+    }
+}
+
+pub trait SizedLayoutData {
+    fn get_width_or_height(&self) -> WidthOrHeight;
+}
+
+impl<TLayoutData> SizedStackableToggleable for TableCell<TLayoutData>
+where
+    TLayoutData: Default + SizedLayoutData,
+{
+    fn get_width_or_height(&self) -> WidthOrHeight {
+        self.layout_data().borrow().get_width_or_height()
+    }
 }

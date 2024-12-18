@@ -1,3 +1,7 @@
+use adaptive_cards::{
+    SizedLayoutData, StringOrBlockElementWidthOrNumber, StringOrNumber, TableColumnDefinition,
+    WidthOrHeight,
+};
 use taffy::NodeId;
 
 use crate::rect::FinalRect;
@@ -17,6 +21,10 @@ pub struct ElementLayoutData {
     /// The placement of the element relative to its sibling elements.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub placement: Option<Placement>,
+
+    // For cells, we set the table column definition on each cell.
+    #[serde(skip)]
+    pub table_column_definition: Option<TableColumnDefinition>,
 }
 
 impl ElementLayoutData {
@@ -24,6 +32,25 @@ impl ElementLayoutData {
     /// or panics if the placement is not set.
     pub fn placement(&self) -> Placement {
         self.placement.expect("Element placement should be set")
+    }
+
+    pub fn table_column_definition(&self) -> &TableColumnDefinition {
+        self.table_column_definition
+            .as_ref()
+            .expect("Table column definition should be set")
+    }
+}
+
+impl SizedLayoutData for ElementLayoutData {
+    fn get_width_or_height(&self) -> WidthOrHeight {
+        let width = &self.table_column_definition().width;
+
+        WidthOrHeight::Width(match width {
+            StringOrNumber::String(width) => {
+                StringOrBlockElementWidthOrNumber::String(width.clone())
+            }
+            StringOrNumber::Number(width) => StringOrBlockElementWidthOrNumber::Number(*width),
+        })
     }
 }
 
@@ -39,14 +66,14 @@ pub struct ElementTaffyData {
     /// such as spacers or separators.
     /// By using this field the draw pass can find the child nodes representing child elements and
     /// ignore the decorative children.
-    pub child_element_node_ids: Vec<NodeId>,
+    pub child_item_node_ids: Vec<NodeId>,
 }
 
 impl From<NodeId> for ElementTaffyData {
     fn from(value: NodeId) -> Self {
         ElementTaffyData {
             node_id: value,
-            child_element_node_ids: Vec::new(),
+            child_item_node_ids: Vec::new(),
         }
     }
 }

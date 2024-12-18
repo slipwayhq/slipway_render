@@ -254,7 +254,7 @@ pub(super) fn process_class(
 
         // Generate the enum.
         quote! {
-            #[derive(serde::Deserialize, serde::Serialize, Clone)]
+            #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
             #[serde(tag = "type")]
             pub enum #struct_name #generic_parameter
                 #where_clause {
@@ -495,7 +495,7 @@ pub(super) fn process_class(
 
         // Generate the struct.
         quote! {
-            #[derive(serde::Deserialize, serde::Serialize, Clone)]
+            #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
             #[serde(deny_unknown_fields)]
             pub struct #struct_name #generic_parameter
                 #where_clause {

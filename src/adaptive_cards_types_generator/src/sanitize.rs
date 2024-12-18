@@ -160,7 +160,7 @@ fn generate_enum_type_selector(
     };
 
     quote! {
-        #[derive(serde::Serialize, Clone)]
+        #[derive(serde::Serialize, Debug, Clone)]
         pub enum #type_name #generic_parameter #where_clause {
             #(#variants)*
             #phantom_data

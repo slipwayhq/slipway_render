@@ -15,7 +15,7 @@ use crate::{
     masked_image::{MaskedImage, SlipwayCanvas},
 };
 
-use super::container_shared::{container_draw_override, vertical_container_layout_override};
+use super::container_shared::{container_draw_override, container_layout_override};
 
 impl Layoutable for AdaptiveCard<ElementLayoutData> {
     // Reference: https://github.com/AvaloniaUI/Avalonia/blob/3deddbe3050f67d2819d1710b2f1062b7b15868e/src/Avalonia.Controls/StackPanel.cs#L233
@@ -33,7 +33,7 @@ impl Layoutable for AdaptiveCard<ElementLayoutData> {
             height: Dimension::Percent(1.),
         };
 
-        vertical_container_layout_override(self, context, baseline_style, tree)
+        container_layout_override(self, context, baseline_style, tree)
     }
 
     fn draw_override(

@@ -272,8 +272,6 @@ fn prepare_layout(
     layout_context: &mut parley::LayoutContext,
     font_context: &mut parley::FontContext,
 ) -> parley::Layout<[u8; 4]> {
-    println!("TextContext: {:?}", text_context);
-
     const DISPLAY_SCALE: f32 = 1.0;
 
     let text = &text_context.text;
@@ -299,10 +297,6 @@ fn prepare_layout(
         None
     };
     layout.break_all_lines(width_constraint);
-    println!(
-        "*** Align: {:?}, Width Constraint: {:?}",
-        text_context.horizontal_alignment, width_constraint
-    );
     layout.align(
         width_constraint,
         match text_context.horizontal_alignment {

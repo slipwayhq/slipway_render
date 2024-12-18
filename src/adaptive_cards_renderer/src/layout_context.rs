@@ -122,7 +122,7 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
 
     /// Creates a new LayoutContext based on the current context but with the given horizontal alignment.
     #[must_use]
-    pub fn with_horizontal_alignment(mut self, value: Option<HorizontalAlignment>) -> Self {
+    pub fn with_horizontal_content_alignment(mut self, value: Option<HorizontalAlignment>) -> Self {
         if let Some(value) = value {
             self.inherited.horizontal_alignment = value;
         }

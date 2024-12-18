@@ -18,7 +18,7 @@
 			"description": "Style hint for `TableCell`."
 		},
 		"verticalContentAlignment": {
-			"type": "VerticalContentAlignment?",
+			"type": "VerticalAlignment?",
 			"description": "Defines how the content should be aligned vertically within the container. When not specified, the value of verticalContentAlignment is inherited from the parent container. If no parent container has verticalContentAlignment set, it defaults to Top.",
 			"version": "1.1"
 		},

@@ -6,7 +6,7 @@ use image::RgbaImage;
 use taffy::Point;
 
 use crate::{errors::RenderError, host_context::HostContext, DebugMode};
-use adaptive_cards::{ContainerStyle, HorizontalAlignment, VerticalContentAlignment};
+use adaptive_cards::{ContainerStyle, HorizontalAlignment, VerticalAlignment};
 
 /// The context for the layout and draw passes of a single element.
 #[derive(Clone)]
@@ -113,10 +113,7 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
 
     /// Creates a new LayoutContext based on the current context but with the given vertical content alignment.
     #[must_use]
-    pub fn with_vertical_content_alignment(
-        mut self,
-        value: Option<VerticalContentAlignment>,
-    ) -> Self {
+    pub fn with_vertical_content_alignment(mut self, value: Option<VerticalAlignment>) -> Self {
         if let Some(value) = value {
             self.inherited.vertical_content_alignment = value;
         }
@@ -174,7 +171,7 @@ impl fmt::Display for LayoutPath {
 #[derive(Copy, Clone, Debug)]
 pub(super) struct InheritedContext {
     pub style: ContainerStyle,
-    pub vertical_content_alignment: VerticalContentAlignment,
+    pub vertical_content_alignment: VerticalAlignment,
     pub horizontal_alignment: HorizontalAlignment,
 }
 
@@ -182,7 +179,7 @@ impl Default for InheritedContext {
     fn default() -> Self {
         InheritedContext {
             style: ContainerStyle::default(),
-            vertical_content_alignment: VerticalContentAlignment::default(),
+            vertical_content_alignment: VerticalAlignment::default(),
             horizontal_alignment: HorizontalAlignment::Left,
         }
     }

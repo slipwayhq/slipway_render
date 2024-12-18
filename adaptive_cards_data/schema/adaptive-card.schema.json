@@ -340,7 +340,7 @@
           ]
         },
         "verticalContentAlignment": {
-          "$ref": "#/definitions/VerticalContentAlignment",
+          "$ref": "#/definitions/VerticalAlignment",
           "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
           "version": "1.1"
         },
@@ -500,7 +500,7 @@
         "verticalContentAlignment": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VerticalContentAlignment"
+              "$ref": "#/definitions/VerticalAlignment"
             },
             {
               "type": "null"
@@ -657,7 +657,7 @@
         "verticalContentAlignment": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VerticalContentAlignment"
+              "$ref": "#/definitions/VerticalAlignment"
             },
             {
               "type": "null"
@@ -1651,7 +1651,7 @@
         "verticalContentAlignment": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VerticalContentAlignment"
+              "$ref": "#/definitions/VerticalAlignment"
             },
             {
               "type": "null"
@@ -2216,20 +2216,6 @@
       ]
     },
     "VerticalAlignment": {
-      "anyOf": [
-        {
-          "enum": [
-            "top",
-            "center",
-            "bottom"
-          ]
-        },
-        {
-          "pattern": "^([t|T][o|O][p|P])|([c|C][e|E][n|N][t|T][e|E][r|R])|([b|B][o|O][t|T][t|T][o|O][m|M])$"
-        }
-      ]
-    },
-    "VerticalContentAlignment": {
       "anyOf": [
         {
           "enum": [

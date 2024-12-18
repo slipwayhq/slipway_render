@@ -1,6 +1,6 @@
 use std::{cell::RefCell, num::ParseFloatError, rc::Rc};
 
-use adaptive_cards::{ContainerStyle, VerticalContentAlignment};
+use adaptive_cards::{ContainerStyle, VerticalAlignment};
 use imageproc::drawing::{draw_filled_rect_mut, draw_hollow_rect_mut};
 use taffy::{
     prelude::length, Dimension, JustifyContent, LengthPercentageAuto, Rect, Style, TaffyTree,
@@ -121,15 +121,15 @@ pub(super) fn apply_horizontal_alignment(
     horizontal_alignment
 }
 
-// Converts the VerticalContentAlignment as set on the container element to a JustifyContent property
+// Converts the VerticalAlignment as set on the container element to a JustifyContent property
 // as required by the layout flexbox.
 pub(super) fn vertical_content_alignment_to_justify_content(
-    vertical_content_alignment: VerticalContentAlignment,
+    vertical_content_alignment: VerticalAlignment,
 ) -> JustifyContent {
     match vertical_content_alignment {
-        VerticalContentAlignment::Top => JustifyContent::FlexStart,
-        VerticalContentAlignment::Center => JustifyContent::Center,
-        VerticalContentAlignment::Bottom => JustifyContent::FlexEnd,
+        VerticalAlignment::Top => JustifyContent::FlexStart,
+        VerticalAlignment::Center => JustifyContent::Center,
+        VerticalAlignment::Bottom => JustifyContent::FlexEnd,
     }
 }
 

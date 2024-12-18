@@ -1,6 +1,6 @@
 use adaptive_cards::{
     AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HorizontalAlignment,
-    StackableToggleable, VerticalContentAlignment,
+    StackableToggleable, VerticalAlignment,
 };
 use container_shared::PaddingBehavior;
 
@@ -16,6 +16,7 @@ mod container;
 mod container_shared;
 mod image;
 pub(crate) mod measure;
+mod table;
 mod text_block;
 mod utils;
 
@@ -37,7 +38,6 @@ impl crate::layoutable::Layoutable for adaptive_cards::InputTime<ElementLayoutDa
 impl crate::layoutable::Layoutable for adaptive_cards::InputToggle<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::Media<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::RichTextBlock<ElementLayoutData> {}
-impl crate::layoutable::Layoutable for adaptive_cards::Table<ElementLayoutData> {}
 
 enum ItemsContainerOrientation {
     Vertical,
@@ -56,7 +56,7 @@ where
 
     fn get_placement(&self) -> Placement;
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment>;
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment>;
 
     fn get_horizontal_alignment(&self) -> Option<HorizontalAlignment>;
 
@@ -92,7 +92,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutDa
         Placement::SoleVertical
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
@@ -130,7 +130,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData>
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
@@ -160,7 +160,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
@@ -190,7 +190,7 @@ impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> 
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalContentAlignment> {
+    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         None
     }
 

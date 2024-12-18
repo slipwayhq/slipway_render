@@ -110,6 +110,14 @@ Previously element heights were `string|BlockElementHeight` but column widths we
 
 Now column widths are `string|BlockElementWidth|number` for consistency with element heights.
 
+## VerticalContentAlignment removed, use VerticalAlignment instead.
+
+These two have identical definitions, and are used interchangeably (see Table, TableRow, TableCell).
+
+It seems like Table, TableRow, TableColumn should technically have used VerticalContentAlignment, but because there
+wasn't an equivalent HorizontalContentAlignment they used HorizontalAlignment and VerticalAlignment for consistency
+between the properties, even though it created an inconsistency with TableCell.
+
 ## hostConfig.containerStyles.[styleName].borderColor
 
 In the official Adaptive Cards implementation the `borderColor` property of a container style is not used for

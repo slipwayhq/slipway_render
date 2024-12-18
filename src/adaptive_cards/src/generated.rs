@@ -300,20 +300,6 @@ impl Default for VerticalAlignment {
         VerticalAlignment::Top
     }
 }
-#[derive(serde::Deserialize, serde::Serialize, Copy, Clone, Debug, PartialEq, Eq)]
-pub enum VerticalContentAlignment {
-    #[serde(rename = "top", alias = "Top")]
-    Top,
-    #[serde(rename = "center", alias = "Center")]
-    Center,
-    #[serde(rename = "bottom", alias = "Bottom")]
-    Bottom,
-}
-impl Default for VerticalContentAlignment {
-    fn default() -> Self {
-        VerticalContentAlignment::Top
-    }
-}
 #[derive(serde::Serialize, Clone)]
 pub enum StringOrObject {
     String(String),
@@ -956,7 +942,7 @@ where
         rename = "verticalContentAlignment",
         skip_serializing_if = "Option::is_none"
     )]
-    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    pub vertical_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
@@ -1120,7 +1106,7 @@ where
         rename = "verticalContentAlignment",
         skip_serializing_if = "Option::is_none"
     )]
-    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    pub vertical_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "width", skip_serializing_if = "Option::is_none")]
     pub width: Option<StringOrBlockElementWidthOrNumber>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
@@ -1323,7 +1309,7 @@ where
         rename = "verticalContentAlignment",
         skip_serializing_if = "Option::is_none"
     )]
-    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    pub vertical_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]
@@ -3341,7 +3327,7 @@ where
         rename = "verticalContentAlignment",
         skip_serializing_if = "Option::is_none"
     )]
-    pub vertical_content_alignment: Option<VerticalContentAlignment>,
+    pub vertical_content_alignment: Option<VerticalAlignment>,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     #[serde(rename = ".layout", skip_deserializing)]

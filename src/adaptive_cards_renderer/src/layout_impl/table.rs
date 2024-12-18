@@ -4,8 +4,12 @@ use adaptive_cards::{StringOrNumber, Table, TableColumnDefinition};
 use taffy::{Dimension, TaffyTree};
 
 use crate::{
-    element_layout_data::ElementTaffyData, errors::RenderError, layout_context::LayoutContext,
-    layout_scratch::LayoutScratch, masked_image::MaskedImage, ElementLayoutData,
+    element_layout_data::{ElementTaffyData, TableLayoutData},
+    errors::RenderError,
+    layout_context::LayoutContext,
+    layout_scratch::LayoutScratch,
+    masked_image::MaskedImage,
+    ElementLayoutData,
 };
 
 use super::{
@@ -33,10 +37,17 @@ impl Layoutable for Table<ElementLayoutData> {
 
         // Set the column definition on all the cells.
         for row in rows.iter() {
+            row.layout_data.borrow_mut().table_data = Some(TableLayoutData {
+                no_border: true,
+                table_column_definition: None,
+            });
             if let Some(cells) = &row.cells {
                 for (cell_index, cell) in cells.iter().enumerate() {
                     let column = columns.get(cell_index).unwrap_or(&default_column);
-                    cell.layout_data.borrow_mut().table_column_definition = Some(column.clone())
+                    cell.layout_data.borrow_mut().table_data = Some(TableLayoutData {
+                        no_border: true,
+                        table_column_definition: Some(column.clone()),
+                    });
                 }
             }
         }

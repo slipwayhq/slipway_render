@@ -24,6 +24,12 @@ pub struct ElementLayoutData {
 
     // For cells, we set the table column definition on each cell.
     #[serde(skip)]
+    pub table_data: Option<TableLayoutData>,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug, Clone)]
+pub struct TableLayoutData {
+    pub no_border: bool,
     pub table_column_definition: Option<TableColumnDefinition>,
 }
 
@@ -35,7 +41,10 @@ impl ElementLayoutData {
     }
 
     pub fn table_column_definition(&self) -> &TableColumnDefinition {
-        self.table_column_definition
+        self.table_data
+            .as_ref()
+            .expect("Table layout data should be set")
+            .table_column_definition
             .as_ref()
             .expect("Table column definition should be set")
     }

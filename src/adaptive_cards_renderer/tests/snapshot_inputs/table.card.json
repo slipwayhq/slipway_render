@@ -46,7 +46,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "Fixed",
+                                    "text": "A",
                                     "wrap": true
                                 }
                             ]
@@ -68,6 +68,7 @@
                         },
                         {
                             "type": "TableCell",
+                            "style": "accent",
                             "items": [
                                 {
                                     "type": "TextBlock",
@@ -78,6 +79,7 @@
                         },
                         {
                             "type": "TableCell",
+                            "style": "accent",
                             "items": [
                                 {
                                     "type": "TextBlock",
@@ -90,6 +92,7 @@
                 },
                 {
                     "type": "TableRow",
+                    "style": "accent",
                     "cells": [
                         {
                             "type": "TableCell",

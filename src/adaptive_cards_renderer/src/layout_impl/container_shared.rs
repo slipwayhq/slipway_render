@@ -11,9 +11,10 @@ use crate::{
     layoutable::Layoutable,
     masked_image::MaskedImage,
     utils::{ClampToU32, TaffyLayoutUtils},
+    ElementLayoutData,
 };
 use adaptive_cards::{
-    BlockElementHeight, BlockElementWidth, ContainerStyle, SizedStackableToggleable,
+    BlockElementHeight, BlockElementWidth, ContainerStyle, HasLayoutData, SizedStackableToggleable,
     StackableToggleable, StringOrBlockElementHeight, StringOrBlockElementWidthOrNumber,
     WidthOrHeight,
 };
@@ -190,7 +191,9 @@ pub(super) fn container_layout_override<
 }
 
 pub(super) enum PaddingBehavior {
+    None,
     Always,
+    AlwaysNarrow,
     ForStyle(Option<ContainerStyle>),
 }
 
@@ -200,16 +203,23 @@ pub(super) fn apply_container_style_padding(
     host_config: &HostConfig,
     baseline_style: &mut Style,
 ) {
-    let apply_padding = match padding_behavior {
-        PaddingBehavior::Always => true,
+    let maybe_padding = match padding_behavior {
+        PaddingBehavior::None => None,
+        PaddingBehavior::Always => Some(host_config.spacing.padding() as f32),
+        PaddingBehavior::AlwaysNarrow => Some(host_config.spacing.small as f32),
         PaddingBehavior::ForStyle(style) => match style {
-            None => false,
-            Some(style) => style != ContainerStyle::Default,
+            None => None,
+            Some(style) => {
+                if style == ContainerStyle::Default {
+                    None
+                } else {
+                    Some(host_config.spacing.padding() as f32)
+                }
+            }
         },
     };
 
-    if apply_padding {
-        let padding = host_config.spacing.padding() as f32;
+    if let Some(padding) = maybe_padding {
         baseline_style.padding = Rect {
             top: length(padding),
             left: length(padding),
@@ -265,6 +275,7 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
                 },
                 StringOrBlockElementWidthOrNumber::String(width) => {
                     style.size.width = parse_dimension(&width, context)?;
+                    style.min_size.width = style.size.width; // Set as otherwise width can be smaller than set width.
                 }
                 StringOrBlockElementWidthOrNumber::Number(width) => {
                     // Matches AC's web weighted behavior.
@@ -277,6 +288,7 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
             WidthOrHeight::Height(height) => match height {
                 StringOrBlockElementHeight::String(height) => {
                     style.size.height = parse_dimension(&height, context)?;
+                    style.min_size.height = style.size.height;
                 }
                 StringOrBlockElementHeight::BlockElementHeight(height) => match height {
                     BlockElementHeight::Auto => {
@@ -301,7 +313,7 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
 
 // The shared container draw logic for AdaptiveCard and Container.
 pub(super) fn container_draw_override<
-    TParent: ItemsContainer<TItem>,
+    TParent: ItemsContainer<TItem> + HasLayoutData<ElementLayoutData>,
     TItem: StackableToggleable + Layoutable,
 >(
     parent: &TParent,
@@ -313,7 +325,14 @@ pub(super) fn container_draw_override<
 ) -> Result<(), RenderError> {
     // Draw the container background, if necessary.
     if let Some(style) = parent.style() {
-        draw_background(style, context, tree, taffy_data, &image)?;
+        let no_border = parent
+            .layout_data()
+            .borrow()
+            .table_data
+            .as_ref()
+            .map(|table_data| table_data.no_border)
+            .unwrap_or(false);
+        draw_background(style, context, tree, taffy_data, &image, no_border)?;
     }
 
     // Create the child context.

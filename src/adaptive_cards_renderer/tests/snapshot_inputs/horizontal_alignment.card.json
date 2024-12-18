@@ -2,18 +2,19 @@
     "type": "AdaptiveCard",
     "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
     "version": "1.6",
+    "horizontalAlignment": "right",
     "body": [
         {
             "type": "Container",
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "New TextBlock",
+                    "text": "Center",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "New TextBlock",
+                    "text": "Center",
                     "wrap": true
                 },
                 {
@@ -29,7 +30,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "New TextBlock",
+                                    "text": "Center",
                                     "wrap": true
                                 }
                             ]
@@ -45,12 +46,12 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "New TextBlock",
+                    "text": "Right",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "New TextBlock",
+                    "text": "Right",
                     "wrap": true
                 },
                 {
@@ -62,7 +63,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "New TextBlock",
+                                    "text": "Right",
                                     "wrap": true
                                 }
                             ]
@@ -73,7 +74,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "New TextBlock",
+                                    "text": "Right",
                                     "wrap": true
                                 }
                             ]
@@ -92,7 +93,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "New TextBlock",
+                            "text": "Center",
                             "wrap": true
                         }
                     ]
@@ -103,15 +104,14 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "New TextBlock",
+                            "text": "Center",
                             "wrap": true
                         }
                     ]
                 }
             ],
             "style": "good",
-            "horizontalAlignment": "Center"
+            "horizontalAlignment": "center"
         }
-    ],
-    "horizontalAlignment": "Right"
+    ]
 }

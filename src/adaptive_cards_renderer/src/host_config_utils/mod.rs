@@ -41,7 +41,7 @@ impl ValidSpacing for SpacingsConfig {
     }
 
     fn padding(&self) -> u32 {
-        valid_spacing(self.default)
+        valid_spacing(self.padding)
     }
 }
 

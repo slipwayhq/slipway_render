@@ -139,6 +139,7 @@ pub(super) fn draw_background(
     tree: &TaffyTree<NodeContext>,
     taffy_data: &ElementTaffyData,
     image: &Rc<RefCell<MaskedImage>>,
+    no_border: bool,
 ) -> Result<(), RenderError> {
     // Get the config for the style specified on the container.
     let style_config = context.host_config.container_styles.from(style);
@@ -162,9 +163,11 @@ pub(super) fn draw_background(
     // with the "gridStyle" property on a table to color the table grid lines.
     // We're going to deviate from the official Adaptive Cards behavior here to do the
     // intuitive thing and use the border color to draw borders.
-    if let Some(border_color_str) = style_config.border_color.as_ref() {
-        let border_color = border_color_str.to_color()?;
-        draw_hollow_rect_mut(&mut *image_mut, rect, border_color);
+    if !no_border {
+        if let Some(border_color_str) = style_config.border_color.as_ref() {
+            let border_color = border_color_str.to_color()?;
+            draw_hollow_rect_mut(&mut *image_mut, rect, border_color);
+        }
     }
 
     Ok(())

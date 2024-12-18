@@ -116,7 +116,7 @@ where
     }
 
     fn spacing(&self) -> Spacing {
-        Spacing::Default
+        Spacing::None
     }
 }
 
@@ -149,7 +149,7 @@ where
     }
 
     fn spacing(&self) -> Spacing {
-        Spacing::Default
+        Spacing::None
     }
 }
 

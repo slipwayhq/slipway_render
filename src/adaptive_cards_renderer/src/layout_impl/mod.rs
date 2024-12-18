@@ -243,7 +243,7 @@ impl ItemsContainer<TableRow<ElementLayoutData>> for Table<ElementLayoutData> {
     }
 
     fn padding_behavior(&self) -> PaddingBehavior {
-        PaddingBehavior::Always
+        PaddingBehavior::None
     }
 
     fn children_collection_name(&self) -> &'static str {
@@ -282,6 +282,10 @@ impl ItemsContainer<TableCell<ElementLayoutData>> for TableRow<ElementLayoutData
 
     fn style(&self) -> Option<ContainerStyle> {
         self.style
+    }
+
+    fn padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::None
     }
 
     fn children_collection_name(&self) -> &'static str {
@@ -328,5 +332,9 @@ impl ItemsContainer<Element<ElementLayoutData>> for TableCell<ElementLayoutData>
 
     fn style(&self) -> Option<ContainerStyle> {
         self.style
+    }
+
+    fn padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::AlwaysNarrow
     }
 }

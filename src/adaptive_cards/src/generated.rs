@@ -855,7 +855,7 @@ impl<TLayoutData> crate::Toggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -863,10 +863,10 @@ impl<TLayoutData> crate::StackableToggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -874,7 +874,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for ActionSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -1137,7 +1137,7 @@ impl<TLayoutData> crate::Toggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1145,10 +1145,10 @@ impl<TLayoutData> crate::StackableToggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1156,7 +1156,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for Column<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Width(
             self
                 .width
@@ -1233,7 +1233,7 @@ impl<TLayoutData> crate::Toggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1241,10 +1241,10 @@ impl<TLayoutData> crate::StackableToggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1252,7 +1252,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for ColumnSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -1338,7 +1338,7 @@ impl<TLayoutData> crate::Toggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1346,10 +1346,10 @@ impl<TLayoutData> crate::StackableToggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1357,7 +1357,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for Container<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -1539,27 +1539,27 @@ impl<TLayoutData> crate::Toggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
-        self.as_toggleable().get_is_visible()
+    fn is_visible(&self) -> bool {
+        self.as_toggleable().is_visible()
     }
 }
 impl<TLayoutData> crate::StackableToggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
-        self.as_stackable().get_separator()
+    fn separator(&self) -> bool {
+        self.as_stackable().separator()
     }
-    fn get_spacing(&self) -> Spacing {
-        self.as_stackable().get_spacing()
+    fn spacing(&self) -> Spacing {
+        self.as_stackable().spacing()
     }
 }
 impl<TLayoutData> crate::SizedStackableToggleable for Element<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
-        self.as_element().get_width_or_height()
+    fn width_or_height(&self) -> crate::WidthOrHeight {
+        self.as_element().width_or_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -1626,7 +1626,7 @@ impl<TLayoutData> crate::Toggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1634,10 +1634,10 @@ impl<TLayoutData> crate::StackableToggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1645,7 +1645,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for FactSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -1797,7 +1797,7 @@ impl<TLayoutData> crate::Toggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1805,10 +1805,10 @@ impl<TLayoutData> crate::StackableToggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1816,7 +1816,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for Image<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(self.height.clone())
     }
 }
@@ -1893,7 +1893,7 @@ impl<TLayoutData> crate::Toggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -1901,10 +1901,10 @@ impl<TLayoutData> crate::StackableToggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -1912,7 +1912,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for ImageSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2070,7 +2070,7 @@ impl<TLayoutData> crate::Toggleable for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2078,10 +2078,10 @@ impl<TLayoutData> crate::StackableToggleable for InputChoiceSet<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2089,7 +2089,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputChoiceSet<TLayoutData
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2174,7 +2174,7 @@ impl<TLayoutData> crate::Toggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2182,10 +2182,10 @@ impl<TLayoutData> crate::StackableToggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2193,7 +2193,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputDate<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2278,7 +2278,7 @@ impl<TLayoutData> crate::Toggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2286,10 +2286,10 @@ impl<TLayoutData> crate::StackableToggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2297,7 +2297,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputNumber<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2403,7 +2403,7 @@ impl<TLayoutData> crate::Toggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2411,10 +2411,10 @@ impl<TLayoutData> crate::StackableToggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2422,7 +2422,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputText<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2507,7 +2507,7 @@ impl<TLayoutData> crate::Toggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2515,10 +2515,10 @@ impl<TLayoutData> crate::StackableToggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2526,7 +2526,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputTime<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2658,7 +2658,7 @@ impl<TLayoutData> crate::Toggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2666,10 +2666,10 @@ impl<TLayoutData> crate::StackableToggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2677,7 +2677,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for InputToggle<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -2781,27 +2781,27 @@ impl<TLayoutData> crate::Toggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
-        self.as_toggleable().get_is_visible()
+    fn is_visible(&self) -> bool {
+        self.as_toggleable().is_visible()
     }
 }
 impl<TLayoutData> crate::StackableToggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
-        self.as_stackable().get_separator()
+    fn separator(&self) -> bool {
+        self.as_stackable().separator()
     }
-    fn get_spacing(&self) -> Spacing {
-        self.as_stackable().get_spacing()
+    fn spacing(&self) -> Spacing {
+        self.as_stackable().spacing()
     }
 }
 impl<TLayoutData> crate::SizedStackableToggleable for Input<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
-        self.as_element().get_width_or_height()
+    fn width_or_height(&self) -> crate::WidthOrHeight {
+        self.as_element().width_or_height()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
@@ -2966,7 +2966,7 @@ impl<TLayoutData> crate::Toggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -2974,10 +2974,10 @@ impl<TLayoutData> crate::StackableToggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -2985,7 +2985,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for Media<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -3122,7 +3122,7 @@ impl<TLayoutData> crate::Toggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -3130,10 +3130,10 @@ impl<TLayoutData> crate::StackableToggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -3141,7 +3141,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for RichTextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -3271,7 +3271,7 @@ impl<TLayoutData> crate::Toggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -3279,10 +3279,10 @@ impl<TLayoutData> crate::StackableToggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -3290,7 +3290,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for Table<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -3531,7 +3531,7 @@ impl<TLayoutData> crate::Toggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         self.is_visible
     }
 }
@@ -3539,10 +3539,10 @@ impl<TLayoutData> crate::StackableToggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         self.separator.unwrap_or(false)
     }
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         self.spacing.unwrap_or(Spacing::Default)
     }
 }
@@ -3550,7 +3550,7 @@ impl<TLayoutData> crate::SizedStackableToggleable for TextBlock<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> crate::WidthOrHeight {
+    fn width_or_height(&self) -> crate::WidthOrHeight {
         crate::WidthOrHeight::Height(
             self
                 .height
@@ -3732,8 +3732,8 @@ impl<TLayoutData> crate::Toggleable for ToggleableItem<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
-        self.as_toggleable().get_is_visible()
+    fn is_visible(&self) -> bool {
+        self.as_toggleable().is_visible()
     }
 }
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]

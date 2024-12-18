@@ -42,7 +42,7 @@ impl ElementLayoutData {
 }
 
 impl SizedLayoutData for ElementLayoutData {
-    fn get_width_or_height(&self) -> WidthOrHeight {
+    fn width_or_height(&self) -> WidthOrHeight {
         let width = &self.table_column_definition().width;
 
         WidthOrHeight::Width(match width {

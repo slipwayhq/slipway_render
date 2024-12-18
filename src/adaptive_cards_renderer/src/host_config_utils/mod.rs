@@ -26,7 +26,7 @@ pub(super) trait ValidSpacing {
 
 impl ValidSpacing for SpacingsConfig {
     fn from(&self, element: &dyn StackableToggleable) -> u32 {
-        self.from_spacing(element.get_spacing())
+        self.from_spacing(element.spacing())
     }
     fn from_spacing(&self, spacing: Spacing) -> u32 {
         match spacing {

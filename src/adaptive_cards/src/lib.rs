@@ -56,39 +56,39 @@ impl<T: HasLayoutData<TLayoutData>, TLayoutData> HasLayoutData<TLayoutData> for 
 
 // Implemented by everything deriving from ToggleableItem.
 pub trait Toggleable {
-    fn get_is_visible(&self) -> bool;
+    fn is_visible(&self) -> bool;
 }
 
 impl<T: Toggleable> Toggleable for Box<T> {
-    fn get_is_visible(&self) -> bool {
-        self.as_ref().get_is_visible()
+    fn is_visible(&self) -> bool {
+        self.as_ref().is_visible()
     }
 }
 
 // Implemented by all elements, and Column.
 pub trait StackableToggleable: Toggleable {
-    fn get_separator(&self) -> bool;
-    fn get_spacing(&self) -> Spacing;
+    fn separator(&self) -> bool;
+    fn spacing(&self) -> Spacing;
 }
 
 impl<T: StackableToggleable> StackableToggleable for Box<T> {
-    fn get_separator(&self) -> bool {
-        self.as_ref().get_separator()
+    fn separator(&self) -> bool {
+        self.as_ref().separator()
     }
 
-    fn get_spacing(&self) -> Spacing {
-        self.as_ref().get_spacing()
+    fn spacing(&self) -> Spacing {
+        self.as_ref().spacing()
     }
 }
 
 // Implemented by all elements, and Column.
 pub trait SizedStackableToggleable: StackableToggleable {
-    fn get_width_or_height(&self) -> WidthOrHeight;
+    fn width_or_height(&self) -> WidthOrHeight;
 }
 
 impl<T: SizedStackableToggleable> SizedStackableToggleable for Box<T> {
-    fn get_width_or_height(&self) -> WidthOrHeight {
-        self.as_ref().get_width_or_height()
+    fn width_or_height(&self) -> WidthOrHeight {
+        self.as_ref().width_or_height()
     }
 }
 
@@ -102,7 +102,7 @@ impl<T> Toggleable for TableRow<T>
 where
     T: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         true
     }
 }
@@ -111,11 +111,11 @@ impl<TLayoutData> StackableToggleable for TableRow<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         true
     }
 
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         Spacing::Default
     }
 }
@@ -124,7 +124,7 @@ impl<TLayoutData> SizedStackableToggleable for TableRow<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_width_or_height(&self) -> WidthOrHeight {
+    fn width_or_height(&self) -> WidthOrHeight {
         WidthOrHeight::Height(StringOrBlockElementHeight::BlockElementHeight(
             BlockElementHeight::Auto,
         ))
@@ -135,7 +135,7 @@ impl<TLayoutData> Toggleable for TableCell<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_is_visible(&self) -> bool {
+    fn is_visible(&self) -> bool {
         true
     }
 }
@@ -144,24 +144,24 @@ impl<TLayoutData> StackableToggleable for TableCell<TLayoutData>
 where
     TLayoutData: Default,
 {
-    fn get_separator(&self) -> bool {
+    fn separator(&self) -> bool {
         true
     }
 
-    fn get_spacing(&self) -> Spacing {
+    fn spacing(&self) -> Spacing {
         Spacing::Default
     }
 }
 
 pub trait SizedLayoutData {
-    fn get_width_or_height(&self) -> WidthOrHeight;
+    fn width_or_height(&self) -> WidthOrHeight;
 }
 
 impl<TLayoutData> SizedStackableToggleable for TableCell<TLayoutData>
 where
     TLayoutData: Default + SizedLayoutData,
 {
-    fn get_width_or_height(&self) -> WidthOrHeight {
-        self.layout_data().borrow().get_width_or_height()
+    fn width_or_height(&self) -> WidthOrHeight {
+        self.layout_data().borrow().width_or_height()
     }
 }

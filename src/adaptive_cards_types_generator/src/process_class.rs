@@ -216,8 +216,8 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::Toggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_is_visible(&self) -> bool {
-                            self.as_toggleable().get_is_visible()
+                        fn is_visible(&self) -> bool {
+                            self.as_toggleable().is_visible()
                         }
                     }
 
@@ -229,11 +229,11 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::StackableToggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_separator(&self) -> bool {
-                            self.as_stackable().get_separator()
+                        fn separator(&self) -> bool {
+                            self.as_stackable().separator()
                         }
-                        fn get_spacing(&self) -> Spacing {
-                            self.as_stackable().get_spacing()
+                        fn spacing(&self) -> Spacing {
+                            self.as_stackable().spacing()
                         }
                     }
                 })
@@ -244,8 +244,8 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
-                            self.as_element().get_width_or_height()
+                        fn width_or_height(&self) -> crate::WidthOrHeight {
+                            self.as_element().width_or_height()
                         }
                     }
                 })
@@ -436,7 +436,7 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::Toggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_is_visible(&self) -> bool {
+                        fn is_visible(&self) -> bool {
                             self.is_visible
                         }
                     }
@@ -449,10 +449,10 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::StackableToggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_separator(&self) -> bool {
+                        fn separator(&self) -> bool {
                             self.separator.unwrap_or(false)
                         }
-                        fn get_spacing(&self) -> Spacing {
+                        fn spacing(&self) -> Spacing {
                             self.spacing.unwrap_or(Spacing::Default)
                         }
                     }
@@ -476,7 +476,7 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
+                        fn width_or_height(&self) -> crate::WidthOrHeight {
                             crate::WidthOrHeight::Height(#height_impl)
                         }
                     }
@@ -485,7 +485,7 @@ pub(super) fn process_class(
                 post_struct_tokens.push(quote! {
                     impl #generic_parameter crate::SizedStackableToggleable for #struct_name #generic_parameter
                         #where_clause {
-                        fn get_width_or_height(&self) -> crate::WidthOrHeight {
+                        fn width_or_height(&self) -> crate::WidthOrHeight {
                             crate::WidthOrHeight::Width(self.width.clone().unwrap_or(StringOrBlockElementWidthOrNumber::BlockElementWidth(BlockElementWidth::Auto)))
                         }
                     }

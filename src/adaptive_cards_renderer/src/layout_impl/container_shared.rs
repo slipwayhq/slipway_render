@@ -39,28 +39,28 @@ pub(super) fn container_layout_override<
     tree: &mut TaffyTree<NodeContext>,
 ) -> Result<ElementTaffyData, RenderError> {
     // Parse the min height, if specified.
-    if let Some(min_height) = parent.get_min_height() {
+    if let Some(min_height) = parent.min_height() {
         baseline_style.min_size.height = parse_dimension(min_height, context)?
     };
 
     // If the container is set to bleed, we need to add appropriate margins to the baseline style.
-    if parent.get_bleed() {
-        let placement = parent.get_placement(); //parent.layout_data.borrow().placement();
+    if parent.bleed() {
+        let placement = parent.placement(); //parent.layout_data.borrow().placement();
         baseline_style.margin = get_margins_for_bleed(&placement, context.host_config);
     }
 
     // Create the child context.
     let child_items_context = context
-        .for_child_str(parent.get_children_collection_name())
-        .with_vertical_content_alignment(parent.get_vertical_content_alignment())
-        .with_horizontal_content_alignment(parent.get_horizontal_content_alignment())
-        .with_style(parent.get_style());
+        .for_child_str(parent.children_collection_name())
+        .with_vertical_content_alignment(parent.vertical_content_alignment())
+        .with_horizontal_content_alignment(parent.horizontal_content_alignment())
+        .with_style(parent.style());
 
     // Get the children.
     let child_items = parent
-        .get_children()
+        .children()
         .iter()
-        .filter(|c| c.get_is_visible())
+        .filter(|c| c.is_visible())
         .collect::<Vec<_>>();
 
     // This will contain one node id for each child, in the same order as the children array.
@@ -78,12 +78,12 @@ pub(super) fn container_layout_override<
     // Get the sum of all the weighted sizes of the child items.
     let sum_of_weighted = child_items
         .iter()
-        .fold(0., |acc, item| acc + item.get_weighted_size());
+        .fold(0., |acc, item| acc + item.weighted_size());
 
     // For each child item...
     for (index, &child) in child_items.iter().enumerate() {
         // Determine the placement of the item within the container relative to any siblings.
-        let item_position = match parent.get_orientation() {
+        let item_position = match parent.orientation() {
             ItemsContainerOrientation::Vertical => match index {
                 0 if item_count == 1 => Placement::SoleVertical,
                 0 => Placement::Top,
@@ -103,7 +103,7 @@ pub(super) fn container_layout_override<
 
         // If the item has a separator, we need to add some spacing as defined by
         // the host config, plus additional spacing for the separator line thickness.
-        let has_separator = child.get_separator();
+        let has_separator = child.separator();
         let spacing = context.host_config.spacing.from(child)
             + match has_separator {
                 true => separator_line_thickness,
@@ -160,7 +160,7 @@ pub(super) fn container_layout_override<
 
     // Next we build up the container style based on the host config and item properties.
     apply_container_style_padding(
-        parent.get_padding_behavior(),
+        parent.padding_behavior(),
         context.host_config,
         &mut baseline_style,
     );
@@ -173,7 +173,7 @@ pub(super) fn container_layout_override<
 
     baseline_style.display = Display::Flex;
 
-    baseline_style.flex_direction = match parent.get_orientation() {
+    baseline_style.flex_direction = match parent.orientation() {
         ItemsContainerOrientation::Horizontal => FlexDirection::Row,
         ItemsContainerOrientation::Vertical => FlexDirection::Column,
     };
@@ -220,7 +220,7 @@ pub(super) fn apply_container_style_padding(
 }
 
 pub(super) trait SizedContainerItem {
-    fn get_weighted_size(&self) -> f64;
+    fn weighted_size(&self) -> f64;
 
     fn apply_size_to_style(
         &self,
@@ -231,8 +231,8 @@ pub(super) trait SizedContainerItem {
 }
 
 impl<T: SizedStackableToggleable> SizedContainerItem for T {
-    fn get_weighted_size(&self) -> f64 {
-        match self.get_width_or_height() {
+    fn weighted_size(&self) -> f64 {
+        match self.width_or_height() {
             WidthOrHeight::Width(width) => match width {
                 StringOrBlockElementWidthOrNumber::Number(width) => width,
                 _ => 0.,
@@ -247,7 +247,7 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
         context: &LayoutContext,
         sum_of_weighted: f64,
     ) -> Result<(), RenderError> {
-        match self.get_width_or_height() {
+        match self.width_or_height() {
             WidthOrHeight::Width(width) => match width {
                 StringOrBlockElementWidthOrNumber::BlockElementWidth(width) => match width {
                     BlockElementWidth::Auto => {
@@ -312,18 +312,18 @@ pub(super) fn container_draw_override<
     scratch: &mut LayoutScratch,
 ) -> Result<(), RenderError> {
     // Draw the container background, if necessary.
-    if let Some(style) = parent.get_style() {
+    if let Some(style) = parent.style() {
         draw_background(style, context, tree, taffy_data, &image)?;
     }
 
     // Create the child context.
-    let child_items_context = context.for_child_str(parent.get_children_collection_name());
+    let child_items_context = context.for_child_str(parent.children_collection_name());
 
     // Get the child items.
     let child_items = parent
-        .get_children()
+        .children()
         .iter()
-        .filter(|c| c.get_is_visible())
+        .filter(|c| c.is_visible())
         .collect::<Vec<_>>();
 
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
@@ -452,7 +452,7 @@ fn draw_horizontal_separator<TItem: StackableToggleable + Layoutable>(
     separator_color: image::Rgba<u8>,
     image: &Rc<RefCell<MaskedImage>>,
 ) {
-    let has_separator = item.get_separator();
+    let has_separator = item.separator();
     if has_separator && item_index > 0 {
         let spacing = context.host_config.spacing.from(item);
         let half_spacing = (spacing / 2) as f32;
@@ -512,7 +512,7 @@ fn draw_vertical_separator<TItem: StackableToggleable + Layoutable>(
     separator_color: image::Rgba<u8>,
     image: &Rc<RefCell<MaskedImage>>,
 ) {
-    let has_separator = item.get_separator();
+    let has_separator = item.separator();
     if has_separator && item_index > 0 {
         let spacing = context.host_config.spacing.from(item);
         let half_spacing = (spacing / 2) as f32;

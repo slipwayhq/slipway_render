@@ -50,267 +50,267 @@ trait ItemsContainer<TItem>
 where
     TItem: StackableToggleable + Layoutable,
 {
-    fn get_children(&self) -> &[TItem];
+    fn children(&self) -> &[TItem];
 
-    fn get_min_height(&self) -> Option<&str>;
+    fn min_height(&self) -> Option<&str>;
 
-    fn get_bleed(&self) -> bool;
+    fn bleed(&self) -> bool;
 
-    fn get_placement(&self) -> Placement;
+    fn placement(&self) -> Placement;
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment>;
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment>;
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment>;
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment>;
 
-    fn get_style(&self) -> Option<ContainerStyle>;
+    fn style(&self) -> Option<ContainerStyle>;
 
-    fn get_padding_behavior(&self) -> PaddingBehavior {
-        PaddingBehavior::ForStyle(self.get_style())
+    fn padding_behavior(&self) -> PaddingBehavior {
+        PaddingBehavior::ForStyle(self.style())
     }
 
-    fn get_children_collection_name(&self) -> &'static str {
+    fn children_collection_name(&self) -> &'static str {
         "items"
     }
 
-    fn get_orientation(&self) -> ItemsContainerOrientation {
+    fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Vertical
     }
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
-    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+    fn children(&self) -> &[Element<ElementLayoutData>] {
         self.body.as_deref().unwrap_or_default()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         None
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         false
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         Placement::SoleVertical
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         None
     }
 
-    fn get_padding_behavior(&self) -> PaddingBehavior {
+    fn padding_behavior(&self) -> PaddingBehavior {
         PaddingBehavior::Always
     }
 
-    fn get_children_collection_name(&self) -> &'static str {
+    fn children_collection_name(&self) -> &'static str {
         "body"
     }
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData> {
-    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+    fn children(&self) -> &[Element<ElementLayoutData>] {
         self.items.as_slice()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         self.bleed.unwrap_or(false)
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         self.style
     }
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
-    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+    fn children(&self) -> &[Element<ElementLayoutData>] {
         self.items.as_deref().unwrap_or_default()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         self.bleed.unwrap_or(false)
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         self.style
     }
 }
 
 impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
-    fn get_children(&self) -> &[Column<ElementLayoutData>] {
+    fn children(&self) -> &[Column<ElementLayoutData>] {
         self.columns.as_deref().unwrap_or_default()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         self.bleed.unwrap_or(false)
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         None
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         self.style
     }
 
-    fn get_children_collection_name(&self) -> &'static str {
+    fn children_collection_name(&self) -> &'static str {
         "columns"
     }
 
-    fn get_orientation(&self) -> ItemsContainerOrientation {
+    fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Horizontal
     }
 }
 
 impl ItemsContainer<TableRow<ElementLayoutData>> for Table<ElementLayoutData> {
-    fn get_children(&self) -> &[TableRow<ElementLayoutData>] {
+    fn children(&self) -> &[TableRow<ElementLayoutData>] {
         self.rows.as_deref().unwrap_or_default()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         None
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         false
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_cell_content_alignment
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_cell_content_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         None
     }
 
-    fn get_padding_behavior(&self) -> PaddingBehavior {
+    fn padding_behavior(&self) -> PaddingBehavior {
         PaddingBehavior::Always
     }
 
-    fn get_children_collection_name(&self) -> &'static str {
+    fn children_collection_name(&self) -> &'static str {
         "rows"
     }
 
-    fn get_orientation(&self) -> ItemsContainerOrientation {
+    fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Vertical
     }
 }
 
 impl ItemsContainer<TableCell<ElementLayoutData>> for TableRow<ElementLayoutData> {
-    fn get_children(&self) -> &[TableCell<ElementLayoutData>] {
+    fn children(&self) -> &[TableCell<ElementLayoutData>] {
         self.cells.as_deref().unwrap_or_default()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         None
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         false
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_cell_content_alignment
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.horizontal_cell_content_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         self.style
     }
 
-    fn get_children_collection_name(&self) -> &'static str {
+    fn children_collection_name(&self) -> &'static str {
         "cells"
     }
 
-    fn get_orientation(&self) -> ItemsContainerOrientation {
+    fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Horizontal
     }
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for TableCell<ElementLayoutData> {
-    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+    fn children(&self) -> &[Element<ElementLayoutData>] {
         self.items.as_slice()
     }
 
-    fn get_min_height(&self) -> Option<&str> {
+    fn min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
 
-    fn get_bleed(&self) -> bool {
+    fn bleed(&self) -> bool {
         self.bleed.unwrap_or(false)
     }
 
-    fn get_placement(&self) -> Placement {
+    fn placement(&self) -> Placement {
         self.layout_data.borrow().placement()
     }
 
-    fn get_vertical_content_alignment(&self) -> Option<VerticalAlignment> {
+    fn vertical_content_alignment(&self) -> Option<VerticalAlignment> {
         self.vertical_content_alignment.or_else(|| {
             self.layout_data
                 .borrow()
@@ -319,14 +319,14 @@ impl ItemsContainer<Element<ElementLayoutData>> for TableCell<ElementLayoutData>
         })
     }
 
-    fn get_horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
+    fn horizontal_content_alignment(&self) -> Option<HorizontalAlignment> {
         self.layout_data
             .borrow()
             .table_column_definition()
             .horizontal_cell_content_alignment
     }
 
-    fn get_style(&self) -> Option<ContainerStyle> {
+    fn style(&self) -> Option<ContainerStyle> {
         self.style
     }
 }

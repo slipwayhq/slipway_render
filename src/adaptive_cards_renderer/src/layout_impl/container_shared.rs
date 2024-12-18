@@ -26,12 +26,12 @@ use super::{
         draw_background, get_margins_for_bleed, parse_dimension,
         vertical_content_alignment_to_justify_content,
     },
-    HasChildElements, ItemsContainer, ItemsContainerOrientation,
+    ItemsContainer, ItemsContainerOrientation,
 };
 
 pub(super) fn vertical_container_layout_override<
-    TParent: ItemsContainer<TElement> + HasChildElements<TElement>,
-    TElement: StackableItemMethods + Layoutable + SizedItemLayout,
+    TParent: ItemsContainer<TElement>,
+    TElement: StackableItemMethods + Layoutable + SizedContainerItem,
 >(
     parent: &TParent,
     context: &LayoutContext,
@@ -57,7 +57,7 @@ pub(super) fn vertical_container_layout_override<
         .with_style(parent.get_style());
 
     // Get the child elements.
-    let child_elements = parent.get_child_elements();
+    let child_elements = parent.get_children();
 
     // This will contain one node id for each child element, in the same order as the child_elements array.
     let mut child_element_node_ids = Vec::new();
@@ -219,7 +219,7 @@ pub(super) fn apply_container_style_padding(
     }
 }
 
-pub(super) trait SizedItemLayout {
+pub(super) trait SizedContainerItem {
     fn get_weighted_size(&self) -> f64;
 
     fn apply_size_to_style(
@@ -230,7 +230,7 @@ pub(super) trait SizedItemLayout {
     ) -> Result<(), RenderError>;
 }
 
-impl<T: SizedStackableItemMethods> SizedItemLayout for T {
+impl<T: SizedStackableItemMethods> SizedContainerItem for T {
     fn get_weighted_size(&self) -> f64 {
         match self.get_width_or_height() {
             WidthOrHeight::Width(width) => match width {
@@ -301,7 +301,7 @@ impl<T: SizedStackableItemMethods> SizedItemLayout for T {
 
 // The shared container draw logic for AdaptiveCard and Container.
 pub(super) fn container_draw_override<
-    TParent: ItemsContainer<TElement> + HasChildElements<TElement>,
+    TParent: ItemsContainer<TElement>,
     TElement: StackableItemMethods + Layoutable,
 >(
     parent: &TParent,
@@ -320,7 +320,7 @@ pub(super) fn container_draw_override<
     let child_elements_context = context.for_child_str(parent.get_children_collection_name());
 
     // Get the child elements.
-    let child_elements = parent.get_child_elements();
+    let child_elements = parent.get_children();
 
     // Fetch our calculated layout data from the Taffy tree, and find our absolute rectangle
     // where we need to draw ourselves.

@@ -39,46 +39,17 @@ impl crate::layoutable::Layoutable for adaptive_cards::Media<ElementLayoutData> 
 impl crate::layoutable::Layoutable for adaptive_cards::RichTextBlock<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::Table<ElementLayoutData> {}
 
-trait HasChildElements<TElement>
-where
-    TElement: StackableItemMethods + Layoutable,
-{
-    fn get_child_elements(&self) -> &[TElement];
-}
-
-impl HasChildElements<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
-    fn get_child_elements(&self) -> &[Element<ElementLayoutData>] {
-        self.body.as_deref().unwrap_or_default()
-    }
-}
-
-impl HasChildElements<Element<ElementLayoutData>> for Container<ElementLayoutData> {
-    fn get_child_elements(&self) -> &[Element<ElementLayoutData>] {
-        self.items.as_slice()
-    }
-}
-
-impl HasChildElements<Element<ElementLayoutData>> for Column<ElementLayoutData> {
-    fn get_child_elements(&self) -> &[Element<ElementLayoutData>] {
-        self.items.as_deref().unwrap_or_default()
-    }
-}
-
-impl HasChildElements<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
-    fn get_child_elements(&self) -> &[Column<ElementLayoutData>] {
-        self.columns.as_deref().unwrap_or_default()
-    }
-}
-
 enum ItemsContainerOrientation {
     Vertical,
     Horizontal,
 }
 
-trait ItemsContainer<TElement>
+trait ItemsContainer<TItem>
 where
-    TElement: StackableItemMethods + Layoutable,
+    TItem: StackableItemMethods + Layoutable,
 {
+    fn get_children(&self) -> &[TItem];
+
     fn get_min_height(&self) -> Option<&str>;
 
     fn get_bleed(&self) -> bool;
@@ -105,6 +76,10 @@ where
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutData> {
+    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+        self.body.as_deref().unwrap_or_default()
+    }
+
     fn get_min_height(&self) -> Option<&str> {
         None
     }
@@ -139,6 +114,10 @@ impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutDa
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData> {
+    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+        self.items.as_slice()
+    }
+
     fn get_min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
@@ -165,6 +144,10 @@ impl ItemsContainer<Element<ElementLayoutData>> for Container<ElementLayoutData>
 }
 
 impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
+    fn get_children(&self) -> &[Element<ElementLayoutData>] {
+        self.items.as_deref().unwrap_or_default()
+    }
+
     fn get_min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }
@@ -191,6 +174,10 @@ impl ItemsContainer<Element<ElementLayoutData>> for Column<ElementLayoutData> {
 }
 
 impl ItemsContainer<Column<ElementLayoutData>> for ColumnSet<ElementLayoutData> {
+    fn get_children(&self) -> &[Column<ElementLayoutData>] {
+        self.columns.as_deref().unwrap_or_default()
+    }
+
     fn get_min_height(&self) -> Option<&str> {
         self.min_height.as_deref()
     }

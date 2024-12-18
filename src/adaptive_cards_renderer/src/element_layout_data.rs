@@ -2,6 +2,7 @@ use adaptive_cards::{
     SizedLayoutData, StringOrBlockElementWidthOrNumber, StringOrNumber, TableColumnDefinition,
     WidthOrHeight,
 };
+use image::Rgba;
 use taffy::NodeId;
 
 use crate::rect::FinalRect;
@@ -27,9 +28,13 @@ pub struct ElementLayoutData {
     pub table_data: Option<TableLayoutData>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Default, Debug, Clone)]
+#[derive(serde::Serialize, Debug, Clone)]
 pub struct TableLayoutData {
     pub no_border: bool,
+
+    #[serde(skip)]
+    pub grid_lines_color: Rgba<u8>,
+
     pub table_column_definition: Option<TableColumnDefinition>,
 }
 

@@ -53,7 +53,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       },
       "attention": {
         "backgroundColor": "#FFC5B2",
@@ -87,7 +88,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       },
       "default": {
         "backgroundColor": "#ffffff",
@@ -121,7 +123,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       },
       "emphasis": {
         "backgroundColor": "#fff9f8f7",
@@ -155,7 +158,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       },
       "good": {
         "backgroundColor": "#CCFFCC",
@@ -189,7 +193,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       },
       "warning": {
         "backgroundColor": "#FFE2B2",
@@ -223,7 +228,8 @@
             "default": "#f8d22a",
             "subtle": "#e5f8d22a"
           }
-        }
+        },
+        "tableGridLinesColor": null
       }
     },
     "factSet": {
@@ -500,6 +506,13 @@
               "subtle": "#e5f8d22a"
             }
           }
+        },
+        "tableGridLinesColor": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": "object"
@@ -542,7 +555,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Container style to use for accent"
         },
@@ -580,7 +594,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Container style to use for attention"
         },
@@ -618,7 +633,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Default container style"
         },
@@ -656,7 +672,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Container style to use for emphasis"
         },
@@ -694,7 +711,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Container style to use for good"
         },
@@ -732,7 +750,8 @@
                 "default": "#f8d22a",
                 "subtle": "#e5f8d22a"
               }
-            }
+            },
+            "tableGridLinesColor": null
           },
           "description": "Container style to use for warning"
         }
@@ -1161,7 +1180,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             },
             "attention": {
               "backgroundColor": "#FFC5B2",
@@ -1195,7 +1215,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             },
             "default": {
               "backgroundColor": "#ffffff",
@@ -1229,7 +1250,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             },
             "emphasis": {
               "backgroundColor": "#fff9f8f7",
@@ -1263,7 +1285,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             },
             "good": {
               "backgroundColor": "#CCFFCC",
@@ -1297,7 +1320,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             },
             "warning": {
               "backgroundColor": "#FFE2B2",
@@ -1331,7 +1355,8 @@
                   "default": "#f8d22a",
                   "subtle": "#e5f8d22a"
                 }
-              }
+              },
+              "tableGridLinesColor": null
             }
           }
         },

@@ -104,6 +104,13 @@
 					],
 					"default": null
 				},
+				"tableGridLinesColor": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null
+				},
 				"foregroundColors": {
 					"$ref": "#/definitions/ForegroundColorsConfig"
 				}

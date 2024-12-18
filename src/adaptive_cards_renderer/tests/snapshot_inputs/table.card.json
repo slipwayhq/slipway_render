@@ -5,6 +5,8 @@
     "body": [
         {
             "type": "Table",
+            "showGridLines": true,
+            "gridStyle": "accent",
             "columns": [
                 {
                     "width": 1

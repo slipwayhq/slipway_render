@@ -360,7 +360,13 @@ pub(super) fn container_draw_override<
 
     // Fetch the separator properties from the host config, in case we need to draw any.
     let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
-    let separator_color = context.host_config.separator.line_color.to_color()?;
+    let separator_color = parent
+        .layout_data()
+        .borrow()
+        .table_data
+        .as_ref()
+        .map(|d| d.grid_lines_color)
+        .unwrap_or(context.host_config.separator.line_color.to_color()?);
 
     // Fetch the child item node ids from the layout data, so we can match them
     // to the child items array.

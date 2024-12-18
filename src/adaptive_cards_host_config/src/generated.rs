@@ -570,6 +570,13 @@ impl AdaptiveCardConfig {
 #[doc = "        }"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ForegroundColorsConfig\""]
+#[doc = "    },"]
+#[doc = "    \"tableGridLinesColor\": {"]
+#[doc = "      \"default\": null,"]
+#[doc = "      \"type\": ["]
+#[doc = "        \"string\","]
+#[doc = "        \"null\""]
+#[doc = "      ]"]
 #[doc = "    }"]
 #[doc = "  },"]
 #[doc = "  \"additionalProperties\": false"]
@@ -595,6 +602,12 @@ pub struct ContainerStyleConfig {
         default = "defaults::container_style_config_foreground_colors"
     )]
     pub foreground_colors: ForegroundColorsConfig,
+    #[serde(
+        rename = "tableGridLinesColor",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub table_grid_lines_color: Option<String>,
 }
 impl From<&ContainerStyleConfig> for ContainerStyleConfig {
     fn from(value: &ContainerStyleConfig) -> Self {
@@ -649,7 +662,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    },"]
@@ -687,7 +701,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    },"]
@@ -725,7 +740,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    },"]
@@ -763,7 +779,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    },"]
@@ -801,7 +818,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    },"]
@@ -839,7 +857,8 @@ impl ContainerStyleConfig {
 #[doc = "            \"default\": \"#f8d22a\","]
 #[doc = "            \"subtle\": \"#e5f8d22a\""]
 #[doc = "          }"]
-#[doc = "        }"]
+#[doc = "        },"]
+#[doc = "        \"tableGridLinesColor\": null"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStyleConfig\""]
 #[doc = "    }"]
@@ -2168,7 +2187,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        },"]
 #[doc = "        \"attention\": {"]
 #[doc = "          \"backgroundColor\": \"#FFC5B2\","]
@@ -2202,7 +2222,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        },"]
 #[doc = "        \"default\": {"]
 #[doc = "          \"backgroundColor\": \"#ffffff\","]
@@ -2236,7 +2257,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        },"]
 #[doc = "        \"emphasis\": {"]
 #[doc = "          \"backgroundColor\": \"#fff9f8f7\","]
@@ -2270,7 +2292,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        },"]
 #[doc = "        \"good\": {"]
 #[doc = "          \"backgroundColor\": \"#CCFFCC\","]
@@ -2304,7 +2327,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        },"]
 #[doc = "        \"warning\": {"]
 #[doc = "          \"backgroundColor\": \"#FFE2B2\","]
@@ -2338,7 +2362,8 @@ impl ForegroundColorsConfig {
 #[doc = "              \"default\": \"#f8d22a\","]
 #[doc = "              \"subtle\": \"#e5f8d22a\""]
 #[doc = "            }"]
-#[doc = "          }"]
+#[doc = "          },"]
+#[doc = "          \"tableGridLinesColor\": null"]
 #[doc = "        }"]
 #[doc = "      },"]
 #[doc = "      \"$ref\": \"#/definitions/ContainerStylesConfig\""]
@@ -4473,6 +4498,7 @@ pub mod builder {
         background_color: Result<Option<String>, String>,
         border_color: Result<Option<String>, String>,
         foreground_colors: Result<super::ForegroundColorsConfig, String>,
+        table_grid_lines_color: Result<Option<String>, String>,
     }
     impl Default for ContainerStyleConfig {
         fn default() -> Self {
@@ -4480,6 +4506,7 @@ pub mod builder {
                 background_color: Ok(super::defaults::container_style_config_background_color()),
                 border_color: Ok(Default::default()),
                 foreground_colors: Ok(super::defaults::container_style_config_foreground_colors()),
+                table_grid_lines_color: Ok(Default::default()),
             }
         }
     }
@@ -4520,6 +4547,19 @@ pub mod builder {
             });
             self
         }
+        pub fn table_grid_lines_color<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<String>>,
+            T::Error: std::fmt::Display,
+        {
+            self.table_grid_lines_color = value.try_into().map_err(|e| {
+                format!(
+                    "error converting supplied value for table_grid_lines_color: {}",
+                    e
+                )
+            });
+            self
+        }
     }
     impl std::convert::TryFrom<ContainerStyleConfig> for super::ContainerStyleConfig {
         type Error = super::error::ConversionError;
@@ -4528,6 +4568,7 @@ pub mod builder {
                 background_color: value.background_color?,
                 border_color: value.border_color?,
                 foreground_colors: value.foreground_colors?,
+                table_grid_lines_color: value.table_grid_lines_color?,
             })
         }
     }
@@ -4537,6 +4578,7 @@ pub mod builder {
                 background_color: Ok(value.background_color),
                 border_color: Ok(value.border_color),
                 foreground_colors: Ok(value.foreground_colors),
+                table_grid_lines_color: Ok(value.table_grid_lines_color),
             }
         }
     }
@@ -6585,6 +6627,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn container_styles_config_attention() -> super::ContainerStyleConfig {
@@ -6621,6 +6664,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn container_styles_config_default() -> super::ContainerStyleConfig {
@@ -6657,6 +6701,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn container_styles_config_emphasis() -> super::ContainerStyleConfig {
@@ -6693,6 +6738,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn container_styles_config_good() -> super::ContainerStyleConfig {
@@ -6729,6 +6775,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn container_styles_config_warning() -> super::ContainerStyleConfig {
@@ -6765,6 +6812,7 @@ pub mod defaults {
                     subtle: Some("#e5f8d22a".to_string()),
                 },
             },
+            table_grid_lines_color: None,
         }
     }
     pub(super) fn error_message_config_size() -> super::ErrorMessageConfigSize {
@@ -6971,6 +7019,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
             attention: super::ContainerStyleConfig {
                 background_color: Some("#FFC5B2".to_string()),
@@ -7005,6 +7054,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
             default: super::ContainerStyleConfig {
                 background_color: Some("#ffffff".to_string()),
@@ -7039,6 +7089,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
             emphasis: super::ContainerStyleConfig {
                 background_color: Some("#fff9f8f7".to_string()),
@@ -7073,6 +7124,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
             good: super::ContainerStyleConfig {
                 background_color: Some("#CCFFCC".to_string()),
@@ -7107,6 +7159,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
             warning: super::ContainerStyleConfig {
                 background_color: Some("#FFE2B2".to_string()),
@@ -7141,6 +7194,7 @@ pub mod defaults {
                         subtle: Some("#e5f8d22a".to_string()),
                     },
                 },
+                table_grid_lines_color: None,
             },
         }
     }

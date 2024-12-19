@@ -1,0 +1,323 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_header.card.json
+---
+{
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "body": [
+    {
+      "type": "Table",
+      "rows": [
+        {
+          "cells": [
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "A",
+                  ".layout": {
+                    "rect": {
+                      "x": 25,
+                      "y": 25,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 17,
+                  "y": 17,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "B",
+                  ".layout": {
+                    "rect": {
+                      "x": 83,
+                      "y": 25,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 75,
+                  "y": 17,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          "type": "TableRow",
+          ".layout": {
+            "rect": {
+              "x": 17,
+              "y": 17,
+              "width": 116,
+              "height": 26
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "cells": [
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "C",
+                  ".layout": {
+                    "rect": {
+                      "x": 25,
+                      "y": 52,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 17,
+                  "y": 44,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "D",
+                  ".layout": {
+                    "rect": {
+                      "x": 83,
+                      "y": 52,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "style": "accent",
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 75,
+                  "y": 44,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          "type": "TableRow",
+          ".layout": {
+            "rect": {
+              "x": 17,
+              "y": 44,
+              "width": 116,
+              "height": 26
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 16,
+          "width": 118,
+          "height": 55
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Table",
+      "firstRowAsHeader": false,
+      "rows": [
+        {
+          "cells": [
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "A",
+                  ".layout": {
+                    "rect": {
+                      "x": 25,
+                      "y": 88,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 17,
+                  "y": 80,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "B",
+                  ".layout": {
+                    "rect": {
+                      "x": 83,
+                      "y": 88,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 75,
+                  "y": 80,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          "type": "TableRow",
+          ".layout": {
+            "rect": {
+              "x": 17,
+              "y": 80,
+              "width": 116,
+              "height": 26
+            },
+            "placement": "Top"
+          }
+        },
+        {
+          "cells": [
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "C",
+                  ".layout": {
+                    "rect": {
+                      "x": 25,
+                      "y": 115,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 17,
+                  "y": 107,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Left"
+              }
+            },
+            {
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "D",
+                  ".layout": {
+                    "rect": {
+                      "x": 83,
+                      "y": 115,
+                      "width": 42,
+                      "height": 10
+                    },
+                    "placement": "SoleVertical"
+                  }
+                }
+              ],
+              "style": "accent",
+              "type": "TableCell",
+              ".layout": {
+                "rect": {
+                  "x": 75,
+                  "y": 107,
+                  "width": 58,
+                  "height": 26
+                },
+                "placement": "Right"
+              }
+            }
+          ],
+          "type": "TableRow",
+          ".layout": {
+            "rect": {
+              "x": 17,
+              "y": 107,
+              "width": 116,
+              "height": 26
+            },
+            "placement": "Bottom"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 79,
+          "width": 118,
+          "height": 55
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "version": "1.6",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 150,
+      "height": 150
+    }
+  }
+}

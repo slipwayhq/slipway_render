@@ -40,15 +40,17 @@ impl Layoutable for Table<ElementLayoutData> {
         self.layout_data.borrow_mut().table_data = Some(TableLayoutData {
             part: TablePart::Table,
             show_grid_lines: self.show_grid_lines,
+            is_header: false,
             grid_style,
             table_column_definition: None,
         });
 
         // Set the column definition on all the cells.
-        for row in rows.iter() {
+        for (i, row) in rows.iter().enumerate() {
             row.layout_data.borrow_mut().table_data = Some(TableLayoutData {
                 part: TablePart::Row,
                 show_grid_lines: self.show_grid_lines,
+                is_header: self.first_row_as_header && i == 0,
                 grid_style,
                 table_column_definition: None,
             });
@@ -59,6 +61,7 @@ impl Layoutable for Table<ElementLayoutData> {
                     cell.layout_data.borrow_mut().table_data = Some(TableLayoutData {
                         part: TablePart::Row,
                         show_grid_lines: self.show_grid_lines,
+                        is_header: false,
                         grid_style,
                         table_column_definition: Some(column.clone()),
                     });
@@ -79,8 +82,6 @@ impl Layoutable for Table<ElementLayoutData> {
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
         container_draw_override(self, context, tree, taffy_data, image.clone(), scratch)?;
-
         Ok(())
-        // TODO: first_row_as_header
     }
 }

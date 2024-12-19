@@ -173,12 +173,16 @@ impl Layoutable for TextBlock<ElementLayoutData> {
             .from(self.size.unwrap_or_else(|| maybe_text_style.to_ac_size()))
             .clamp_to_u32() as f32;
 
+        let weight_identifier = if context.inherited.within_header {
+            adaptive_cards::FontWeight::Bolder
+        } else {
+            self.weight
+                .unwrap_or_else(|| maybe_text_style.to_ac_weight())
+        };
+
         let font_weight = font_type
             .font_weights
-            .from(
-                self.weight
-                    .unwrap_or_else(|| maybe_text_style.to_ac_weight()),
-            )
+            .from(weight_identifier)
             .clamp_to_u32() as f32;
 
         let max_lines = self

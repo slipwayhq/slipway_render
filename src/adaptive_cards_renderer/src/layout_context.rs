@@ -129,6 +129,13 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
         self
     }
 
+    /// Creates a new LayoutContext based on the current context but with is_header set to true.
+    #[must_use]
+    pub fn within_header(mut self) -> Self {
+        self.inherited.within_header = true;
+        self
+    }
+
     /// Prints the current context to the console.
     pub fn print_local_context(&self) {
         println!("debug: {}: {:?}", self.path, self.current_origin);
@@ -173,6 +180,7 @@ pub(super) struct InheritedContext {
     pub style: ContainerStyle,
     pub vertical_content_alignment: VerticalAlignment,
     pub horizontal_alignment: HorizontalAlignment,
+    pub within_header: bool,
 }
 
 impl Default for InheritedContext {
@@ -181,6 +189,7 @@ impl Default for InheritedContext {
             style: ContainerStyle::default(),
             vertical_content_alignment: VerticalAlignment::default(),
             horizontal_alignment: HorizontalAlignment::Left,
+            within_header: false,
         }
     }
 }

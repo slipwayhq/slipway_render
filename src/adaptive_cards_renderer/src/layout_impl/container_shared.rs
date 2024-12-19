@@ -52,11 +52,13 @@ pub(super) fn container_layout_override<
     }
 
     // Create the child context.
-    let child_items_context = context
-        .for_child_str(parent.children_collection_name())
-        .with_vertical_content_alignment(parent.vertical_content_alignment())
-        .with_horizontal_content_alignment(parent.horizontal_content_alignment())
-        .with_style(parent.style());
+    let child_items_context = parent.apply_child_items_layout_context(
+        context
+            .for_child_str(parent.children_collection_name())
+            .with_vertical_content_alignment(parent.vertical_content_alignment())
+            .with_horizontal_content_alignment(parent.horizontal_content_alignment())
+            .with_style(parent.style()),
+    );
 
     // Get the children.
     let child_items = parent

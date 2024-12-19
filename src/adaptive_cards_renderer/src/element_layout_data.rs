@@ -40,6 +40,8 @@ pub struct TableLayoutData {
 
     pub show_grid_lines: bool,
 
+    pub is_header: bool,
+
     pub grid_style: ContainerStyle,
 
     pub table_column_definition: Option<TableColumnDefinition>,

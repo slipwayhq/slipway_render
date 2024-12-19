@@ -14,7 +14,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 16,
-          "width": 368,
+          "width": 268,
           "height": 11
         },
         "placement": "Top"
@@ -31,7 +31,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 33,
               "y": 56,
-              "width": 334,
+              "width": 234,
               "height": 11
             },
             "placement": "Top"
@@ -45,7 +45,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 33,
               "y": 79,
-              "width": 334,
+              "width": 234,
               "height": 11
             },
             "placement": "Bottom"
@@ -57,7 +57,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 39,
-          "width": 368,
+          "width": 268,
           "height": 68
         },
         "placement": "WithinVertical"
@@ -74,7 +74,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 16,
               "y": 119,
-              "width": 368,
+              "width": 268,
               "height": 11
             },
             "placement": "Top"
@@ -88,7 +88,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 16,
               "y": 142,
-              "width": 368,
+              "width": 268,
               "height": 11
             },
             "placement": "Bottom"
@@ -99,7 +99,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 119,
-          "width": 368,
+          "width": 268,
           "height": 34
         },
         "placement": "WithinVertical"
@@ -118,7 +118,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
                 "rect": {
                   "x": 16,
                   "y": 165,
-                  "width": 178,
+                  "width": 128,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -133,7 +133,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 16,
               "y": 165,
-              "width": 178,
+              "width": 128,
               "height": 11
             },
             "placement": "Left"
@@ -147,9 +147,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 206,
+                  "x": 156,
                   "y": 165,
-                  "width": 178,
+                  "width": 128,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -162,9 +162,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 206,
+              "x": 156,
               "y": 165,
-              "width": 178,
+              "width": 128,
               "height": 11
             },
             "placement": "Right"
@@ -175,7 +175,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 165,
-          "width": 368,
+          "width": 268,
           "height": 11
         },
         "placement": "WithinVertical"
@@ -194,7 +194,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
                 "rect": {
                   "x": 33,
                   "y": 205,
-                  "width": 161,
+                  "width": 111,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -209,7 +209,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 33,
               "y": 205,
-              "width": 161,
+              "width": 111,
               "height": 11
             },
             "placement": "Left"
@@ -223,9 +223,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 206,
+                  "x": 156,
                   "y": 205,
-                  "width": 161,
+                  "width": 111,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -238,9 +238,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 206,
+              "x": 156,
               "y": 205,
-              "width": 161,
+              "width": 111,
               "height": 11
             },
             "placement": "Right"
@@ -252,7 +252,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 188,
-          "width": 368,
+          "width": 268,
           "height": 45
         },
         "placement": "WithinVertical"
@@ -271,7 +271,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
                 "rect": {
                   "x": 16,
                   "y": 245,
-                  "width": 178,
+                  "width": 128,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -286,7 +286,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
             "rect": {
               "x": 16,
               "y": 245,
-              "width": 178,
+              "width": 128,
               "height": 45
             },
             "placement": "Left"
@@ -300,9 +300,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 223,
+                  "x": 173,
                   "y": 262,
-                  "width": 144,
+                  "width": 94,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -316,9 +316,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 206,
+              "x": 156,
               "y": 245,
-              "width": 178,
+              "width": 128,
               "height": 45
             },
             "placement": "Right"
@@ -329,7 +329,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
         "rect": {
           "x": 16,
           "y": 245,
-          "width": 368,
+          "width": 268,
           "height": 45
         },
         "placement": "Bottom"
@@ -342,7 +342,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/padding.card.json
     "rect": {
       "x": 0,
       "y": 0,
-      "width": 400,
+      "width": 300,
       "height": 350
     }
   }

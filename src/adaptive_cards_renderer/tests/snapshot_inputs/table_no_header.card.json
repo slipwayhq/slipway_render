@@ -1,0 +1,113 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "Table",
+            "firstRowAsHeader": true,
+            "rows": [
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "A"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "B"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "C"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "style": "accent",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "D"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Table",
+            "firstRowAsHeader": false,
+            "rows": [
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "A"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "B"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TableRow",
+                    "cells": [
+                        {
+                            "type": "TableCell",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "C"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableCell",
+                            "style": "accent",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "D"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

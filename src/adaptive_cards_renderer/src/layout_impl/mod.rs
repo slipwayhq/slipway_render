@@ -10,6 +10,7 @@ use crate::{
     element_layout_data::{ElementLayoutData, Placement, TablePart},
     errors::RenderError,
     host_config_utils::{ContainerStyleToConfig, StringToColor},
+    layout_context::LayoutContext,
     layoutable::Layoutable,
     utils::ClampToU32,
     TRANSPARENT,
@@ -80,6 +81,13 @@ where
 
     fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Vertical
+    }
+
+    fn apply_child_items_layout_context<'cfg, 'ctx, 'render>(
+        &self,
+        layout_context: LayoutContext<'cfg, 'ctx, 'render>,
+    ) -> LayoutContext<'cfg, 'ctx, 'render> {
+        layout_context
     }
 
     fn border_thickness(&self, host_config: &HostConfig) -> u32 {
@@ -450,6 +458,22 @@ impl ItemsContainer<TableCell<ElementLayoutData>> for TableRow<ElementLayoutData
 
     fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Horizontal
+    }
+
+    fn apply_child_items_layout_context<'cfg, 'ctx, 'render>(
+        &self,
+        layout_context: LayoutContext<'cfg, 'ctx, 'render>,
+    ) -> LayoutContext<'cfg, 'ctx, 'render> {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+
+        if let Some(table_data) = table_data {
+            if table_data.is_header {
+                return layout_context.within_header();
+            }
+        }
+
+        layout_context
     }
 }
 

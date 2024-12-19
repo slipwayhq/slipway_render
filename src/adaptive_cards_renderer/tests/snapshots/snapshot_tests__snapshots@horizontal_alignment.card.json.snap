@@ -16,9 +16,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 32,
-              "width": 336,
+              "x": 33,
+              "y": 33,
+              "width": 334,
               "height": 10
             },
             "placement": "Top"
@@ -30,9 +30,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 54,
-              "width": 336,
+              "x": 33,
+              "y": 55,
+              "width": 334,
               "height": 10
             },
             "placement": "WithinVertical"
@@ -48,9 +48,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               "type": "Column",
               ".layout": {
                 "rect": {
-                  "x": 32,
-                  "y": 76,
-                  "width": 162,
+                  "x": 33,
+                  "y": 77,
+                  "width": 161,
                   "height": 10
                 },
                 "placement": "Left"
@@ -65,8 +65,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
                   ".layout": {
                     "rect": {
                       "x": 206,
-                      "y": 76,
-                      "width": 162,
+                      "y": 77,
+                      "width": 161,
                       "height": 10
                     },
                     "placement": "SoleVertical"
@@ -80,8 +80,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               ".layout": {
                 "rect": {
                   "x": 206,
-                  "y": 76,
-                  "width": 162,
+                  "y": 77,
+                  "width": 161,
                   "height": 10
                 },
                 "placement": "Right"
@@ -90,9 +90,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           ],
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 76,
-              "width": 336,
+              "x": 33,
+              "y": 77,
+              "width": 334,
               "height": 10
             },
             "placement": "Bottom"
@@ -105,7 +105,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "x": 16,
           "y": 16,
           "width": 368,
-          "height": 86
+          "height": 88
         },
         "placement": "Top"
       }
@@ -119,9 +119,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 130,
-              "width": 336,
+              "x": 33,
+              "y": 133,
+              "width": 334,
               "height": 14
             },
             "placement": "Top"
@@ -133,9 +133,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "wrap": true,
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 156,
-              "width": 336,
+              "x": 33,
+              "y": 159,
+              "width": 334,
               "height": 14
             },
             "placement": "WithinVertical"
@@ -152,9 +152,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
                   "wrap": true,
                   ".layout": {
                     "rect": {
-                      "x": 32,
-                      "y": 182,
-                      "width": 162,
+                      "x": 33,
+                      "y": 185,
+                      "width": 161,
                       "height": 14
                     },
                     "placement": "SoleVertical"
@@ -167,9 +167,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               "type": "Column",
               ".layout": {
                 "rect": {
-                  "x": 32,
-                  "y": 182,
-                  "width": 162,
+                  "x": 33,
+                  "y": 185,
+                  "width": 161,
                   "height": 14
                 },
                 "placement": "Left"
@@ -184,8 +184,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
                   ".layout": {
                     "rect": {
                       "x": 206,
-                      "y": 182,
-                      "width": 162,
+                      "y": 185,
+                      "width": 161,
                       "height": 14
                     },
                     "placement": "SoleVertical"
@@ -199,8 +199,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               ".layout": {
                 "rect": {
                   "x": 206,
-                  "y": 182,
-                  "width": 162,
+                  "y": 185,
+                  "width": 161,
                   "height": 14
                 },
                 "placement": "Right"
@@ -209,9 +209,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           ],
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 182,
-              "width": 336,
+              "x": 33,
+              "y": 185,
+              "width": 334,
               "height": 14
             },
             "placement": "Bottom"
@@ -222,9 +222,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
       ".layout": {
         "rect": {
           "x": 16,
-          "y": 114,
+          "y": 116,
           "width": 368,
-          "height": 98
+          "height": 100
         },
         "placement": "WithinVertical"
       }
@@ -240,9 +240,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               "wrap": true,
               ".layout": {
                 "rect": {
-                  "x": 32,
-                  "y": 240,
-                  "width": 162,
+                  "x": 33,
+                  "y": 245,
+                  "width": 161,
                   "height": 10
                 },
                 "placement": "SoleVertical"
@@ -255,9 +255,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 240,
-              "width": 162,
+              "x": 33,
+              "y": 245,
+              "width": 161,
               "height": 10
             },
             "placement": "Left"
@@ -272,8 +272,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
               ".layout": {
                 "rect": {
                   "x": 206,
-                  "y": 240,
-                  "width": 162,
+                  "y": 245,
+                  "width": 161,
                   "height": 10
                 },
                 "placement": "SoleVertical"
@@ -287,8 +287,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
           ".layout": {
             "rect": {
               "x": 206,
-              "y": 240,
-              "width": 162,
+              "y": 245,
+              "width": 161,
               "height": 10
             },
             "placement": "Right"
@@ -300,9 +300,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/horizontal_alignment.c
       ".layout": {
         "rect": {
           "x": 16,
-          "y": 224,
+          "y": 228,
           "width": 368,
-          "height": 42
+          "height": 44
         },
         "placement": "Bottom"
       }

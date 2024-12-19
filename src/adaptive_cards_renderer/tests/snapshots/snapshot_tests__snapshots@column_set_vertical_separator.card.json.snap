@@ -16,8 +16,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
               "text": "1",
               ".layout": {
                 "rect": {
-                  "x": 32,
-                  "y": 32,
+                  "x": 33,
+                  "y": 33,
                   "width": 6,
                   "height": 10
                 },
@@ -32,8 +32,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
             "rect": {
               "x": 16,
               "y": 16,
-              "width": 38,
-              "height": 42
+              "width": 40,
+              "height": 44
             },
             "placement": "Left"
           }
@@ -45,8 +45,8 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
               "text": "2",
               ".layout": {
                 "rect": {
-                  "x": 82,
-                  "y": 32,
+                  "x": 85,
+                  "y": 33,
                   "width": 10,
                   "height": 10
                 },
@@ -59,10 +59,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 66,
+              "x": 68,
               "y": 16,
-              "width": 42,
-              "height": 42
+              "width": 44,
+              "height": 44
             },
             "placement": "WithinHorizontal"
           }
@@ -74,9 +74,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
               "text": "3",
               ".layout": {
                 "rect": {
-                  "x": 137,
-                  "y": 32,
-                  "width": 231,
+                  "x": 142,
+                  "y": 33,
+                  "width": 225,
                   "height": 10
                 },
                 "placement": "SoleVertical"
@@ -91,10 +91,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
           "type": "Column",
           ".layout": {
             "rect": {
-              "x": 121,
+              "x": 125,
               "y": 16,
-              "width": 263,
-              "height": 42
+              "width": 259,
+              "height": 44
             },
             "placement": "Right"
           }
@@ -105,7 +105,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/column_set_vertical_se
           "x": 16,
           "y": 16,
           "width": 368,
-          "height": 42
+          "height": 44
         },
         "placement": "SoleVertical"
       }

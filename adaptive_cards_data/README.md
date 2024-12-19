@@ -118,6 +118,14 @@ It seems like Table, TableRow, TableColumn should technically have used Vertical
 wasn't an equivalent HorizontalContentAlignment they used HorizontalAlignment and VerticalAlignment for consistency
 between the properties, even though it created an inconsistency with TableCell.
 
+## Table.gridStyle
+
+Defaults to null, rather than the default style, so that it can inherit the style from ancestor containers if not specified.
+
+## hostConfig.separator.line_color
+
+No longer optional. It has a default value anyway.
+
 ## hostConfig.containerStyles.[styleName].borderColor
 
 In the official Adaptive Cards implementation the `borderColor` property of a container style is not used for
@@ -128,6 +136,12 @@ For Slipway, the `borderColor` **is** used for the border color of a container, 
 surprise.
 
 How I color the grid lines will be decided when I implement tables. Perhaps using a separate `gridColor` property, or perhaps using the `borderColor` property.
+
+## hostConfig.containerStyles.[styleName].borderThickness
+## hostConfig.containerStyles.[styleName].tableGridLinesColor
+## hostConfig.containerStyles.[styleName].tableGridLinesThickness
+
+Added.
 
 ## hostConfig.font[Family|Sizes|Weights]
 

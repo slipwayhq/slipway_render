@@ -3170,12 +3170,8 @@ where
         skip_serializing_if = "Table::<TLayoutData>::is_default_value_for_first_row_as_header"
     )]
     pub first_row_as_header: bool,
-    #[serde(
-        rename = "gridStyle",
-        default = "Table::<TLayoutData>::default_value_for_grid_style",
-        skip_serializing_if = "Table::<TLayoutData>::is_default_value_for_grid_style"
-    )]
-    pub grid_style: ContainerStyle,
+    #[serde(rename = "gridStyle", skip_serializing_if = "Option::is_none")]
+    pub grid_style: Option<ContainerStyle>,
     #[serde(rename = "height", skip_serializing_if = "Option::is_none")]
     pub height: Option<BlockElementHeight>,
     #[serde(
@@ -3224,17 +3220,6 @@ where
     }
     fn is_default_value_for_first_row_as_header(value: &bool) -> bool {
         *value == true
-    }
-}
-impl<TLayoutData> Table<TLayoutData>
-where
-    TLayoutData: Default,
-{
-    fn default_value_for_grid_style() -> ContainerStyle {
-        ContainerStyle::Default
-    }
-    fn is_default_value_for_grid_style(value: &ContainerStyle) -> bool {
-        matches!(* value, ContainerStyle::Default)
     }
 }
 impl<TLayoutData> Table<TLayoutData>

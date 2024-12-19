@@ -1,12 +1,18 @@
+use ::image::Rgba;
 use adaptive_cards::{
-    AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HorizontalAlignment,
-    StackableToggleable, Table, TableCell, TableRow, VerticalAlignment,
+    AdaptiveCard, Column, ColumnSet, Container, ContainerStyle, Element, HasLayoutData,
+    HorizontalAlignment, StackableToggleable, Table, TableCell, TableRow, VerticalAlignment,
 };
+use adaptive_cards_host_config::HostConfig;
 use container_shared::PaddingBehavior;
 
 use crate::{
-    element_layout_data::{ElementLayoutData, Placement},
+    element_layout_data::{ElementLayoutData, Placement, TablePart},
+    errors::RenderError,
+    host_config_utils::{ContainerStyleToConfig, StringToColor},
     layoutable::Layoutable,
+    utils::ClampToU32,
+    TRANSPARENT,
 };
 
 mod adaptive_card;
@@ -46,7 +52,7 @@ enum ItemsContainerOrientation {
     Horizontal,
 }
 
-trait ItemsContainer<TItem>
+trait ItemsContainer<TItem>: HasLayoutData<ElementLayoutData>
 where
     TItem: StackableToggleable + Layoutable,
 {
@@ -65,7 +71,7 @@ where
     fn style(&self) -> Option<ContainerStyle>;
 
     fn padding_behavior(&self) -> PaddingBehavior {
-        PaddingBehavior::ForStyle(self.style())
+        PaddingBehavior::Style
     }
 
     fn children_collection_name(&self) -> &'static str {
@@ -74,6 +80,155 @@ where
 
     fn orientation(&self) -> ItemsContainerOrientation {
         ItemsContainerOrientation::Vertical
+    }
+
+    fn border_thickness(&self, host_config: &HostConfig) -> u32 {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+        if let Some(table_data) = table_data {
+            if table_data.part != TablePart::Table {
+                // If we're a row or a cell, we don't want to draw a border.
+                return 0;
+            }
+
+            let style_config = host_config.container_styles.from(table_data.grid_style);
+
+            // If we're the outer table, draw the border the same thickness as the grid lines.
+            if let Some(table_grid_lines_thickness) = style_config.table_grid_lines_thickness {
+                return table_grid_lines_thickness.clamp_to_u32();
+            }
+
+            // Fall back to the separator thickness.
+            return host_config.separator.line_thickness.clamp_to_u32();
+        }
+
+        let maybe_style = self.style();
+        if let Some(style) = maybe_style {
+            let style_config = host_config.container_styles.from(style);
+
+            if let Some(border_thickness) = style_config.border_thickness {
+                if style_config.border_color.is_some() {
+                    return border_thickness.clamp_to_u32();
+                }
+            }
+        }
+
+        0
+    }
+
+    fn border_color(&self, host_config: &HostConfig) -> Result<Rgba<u8>, RenderError> {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+        if let Some(table_data) = table_data {
+            let style_config = host_config.container_styles.from(table_data.grid_style);
+
+            if table_data.part != TablePart::Table {
+                // If we're a row or a cell, we don't want to draw a border.
+                return Ok(TRANSPARENT);
+            }
+
+            // If we're the outer table, draw the border in the same color as the grid lines.
+            if let Some(table_grid_lines_color) = style_config.table_grid_lines_color.as_ref() {
+                let border_color = table_grid_lines_color.to_color()?;
+                return Ok(border_color);
+            }
+
+            // Fall back to the border color.
+            if let Some(border_color_str) = style_config.border_color.as_ref() {
+                let border_color = border_color_str.to_color()?;
+                return Ok(border_color);
+            }
+
+            // Fall back to the separator color.
+            return host_config.separator.line_color.to_color();
+        }
+
+        let maybe_style = self.style();
+        if let Some(style) = maybe_style {
+            let style_config = host_config.container_styles.from(style);
+            return style_config.border_color.to_color();
+        }
+
+        Ok(TRANSPARENT)
+    }
+
+    fn background_color(&self, host_config: &HostConfig) -> Result<Rgba<u8>, RenderError> {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+        if let Some(table_data) = table_data {
+            if table_data.part == TablePart::Table {
+                // The style for the table only colors the grid lines, not the background.
+                return Ok(TRANSPARENT);
+            }
+        }
+
+        let maybe_style = self.style();
+        if let Some(style) = maybe_style {
+            let style_config = host_config.container_styles.from(style);
+
+            if let Some(background_color_str) = style_config.background_color.as_ref() {
+                let background_color = background_color_str.to_color()?;
+                return Ok(background_color);
+            }
+        }
+
+        Ok(TRANSPARENT)
+    }
+
+    fn separator_thickness(&self, host_config: &HostConfig) -> u32 {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+        if let Some(table_data) = table_data {
+            if table_data.part != TablePart::Cell {
+                // For the table and rows, the separators used on children are the grid lines,
+                // so we use the grid line thickness.
+                if !table_data.show_grid_lines {
+                    return 0;
+                }
+
+                let style_config = host_config.container_styles.from(table_data.grid_style);
+
+                if let Some(table_grid_lines_thickness) = style_config.table_grid_lines_thickness {
+                    return table_grid_lines_thickness.clamp_to_u32();
+                }
+
+                // Fall back to the separator thickness.
+                return host_config.separator.line_thickness.clamp_to_u32();
+            }
+        }
+
+        host_config.separator.line_thickness.clamp_to_u32()
+    }
+
+    fn separator_color(&self, host_config: &HostConfig) -> Result<Rgba<u8>, RenderError> {
+        let layout_data = self.layout_data().borrow();
+        let table_data = layout_data.table_data.as_ref();
+        if let Some(table_data) = table_data {
+            if table_data.part != TablePart::Cell {
+                // For the table and rows, the separators used on children are the grid lines,
+                // so we use the grid line color.
+                if !table_data.show_grid_lines {
+                    return Ok(TRANSPARENT);
+                }
+
+                let style_config = host_config.container_styles.from(table_data.grid_style);
+
+                if let Some(table_grid_lines_color) = style_config.table_grid_lines_color.as_ref() {
+                    let border_color = table_grid_lines_color.to_color()?;
+                    return Ok(border_color);
+                }
+
+                // Fall back to the border color.
+                if let Some(border_color_str) = style_config.border_color.as_ref() {
+                    let border_color = border_color_str.to_color()?;
+                    return Ok(border_color);
+                }
+
+                // Or failing that fall back to the separator color.
+            }
+        }
+
+        host_config.separator.line_color.to_color()
     }
 }
 
@@ -107,7 +262,7 @@ impl ItemsContainer<Element<ElementLayoutData>> for AdaptiveCard<ElementLayoutDa
     }
 
     fn padding_behavior(&self) -> PaddingBehavior {
-        PaddingBehavior::Always
+        PaddingBehavior::Default
     }
 
     fn children_collection_name(&self) -> &'static str {
@@ -239,6 +394,7 @@ impl ItemsContainer<TableRow<ElementLayoutData>> for Table<ElementLayoutData> {
     }
 
     fn style(&self) -> Option<ContainerStyle> {
+        // Use TableLayoutData.grid_style for grid styling.
         None
     }
 
@@ -335,6 +491,6 @@ impl ItemsContainer<Element<ElementLayoutData>> for TableCell<ElementLayoutData>
     }
 
     fn padding_behavior(&self) -> PaddingBehavior {
-        PaddingBehavior::AlwaysNarrow
+        PaddingBehavior::Narrow
     }
 }

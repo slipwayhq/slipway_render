@@ -1,0 +1,360 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_inherit_style.card.json
+---
+{
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Table",
+          "columns": [
+            {},
+            {
+              "width": {
+                "Number": 2.0
+              }
+            },
+            {
+              "width": {
+                "String": "50px"
+              }
+            }
+          ],
+          "rows": [
+            {
+              "cells": [
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Narrow",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 42,
+                          "y": 42,
+                          "width": 78,
+                          "height": 10
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 34,
+                      "y": 34,
+                      "width": 94,
+                      "height": 27
+                    },
+                    "placement": "Left"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Wide",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 137,
+                          "y": 42,
+                          "width": 170,
+                          "height": 11
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "style": "accent",
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 129,
+                      "y": 34,
+                      "width": 186,
+                      "height": 27
+                    },
+                    "placement": "WithinHorizontal"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "A",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 324,
+                          "y": 42,
+                          "width": 34,
+                          "height": 10
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 316,
+                      "y": 34,
+                      "width": 50,
+                      "height": 27
+                    },
+                    "placement": "Right"
+                  }
+                }
+              ],
+              "type": "TableRow",
+              ".layout": {
+                "rect": {
+                  "x": 34,
+                  "y": 34,
+                  "width": 332,
+                  "height": 27
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "cells": [
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Narrow 2",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 42,
+                          "y": 70,
+                          "width": 78,
+                          "height": 10
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 34,
+                      "y": 62,
+                      "width": 94,
+                      "height": 45
+                    },
+                    "placement": "Left"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Wide 2",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 137,
+                          "y": 70,
+                          "width": 170,
+                          "height": 11
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "style": "accent",
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 129,
+                      "y": 62,
+                      "width": 186,
+                      "height": 45
+                    },
+                    "placement": "WithinHorizontal"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Fixed 2",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 324,
+                          "y": 70,
+                          "width": 34,
+                          "height": 29
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "style": "accent",
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 316,
+                      "y": 62,
+                      "width": 50,
+                      "height": 45
+                    },
+                    "placement": "Right"
+                  }
+                }
+              ],
+              "type": "TableRow",
+              ".layout": {
+                "rect": {
+                  "x": 34,
+                  "y": 62,
+                  "width": 332,
+                  "height": 45
+                },
+                "placement": "WithinVertical"
+              }
+            },
+            {
+              "cells": [
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Narrow 3",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 42,
+                          "y": 116,
+                          "width": 78,
+                          "height": 10
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 34,
+                      "y": 108,
+                      "width": 94,
+                      "height": 45
+                    },
+                    "placement": "Left"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Wide 3",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 137,
+                          "y": 116,
+                          "width": 170,
+                          "height": 11
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 129,
+                      "y": 108,
+                      "width": 186,
+                      "height": 45
+                    },
+                    "placement": "WithinHorizontal"
+                  }
+                },
+                {
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Fixed 3",
+                      "wrap": true,
+                      ".layout": {
+                        "rect": {
+                          "x": 324,
+                          "y": 116,
+                          "width": 34,
+                          "height": 29
+                        },
+                        "placement": "SoleVertical"
+                      }
+                    }
+                  ],
+                  "type": "TableCell",
+                  ".layout": {
+                    "rect": {
+                      "x": 316,
+                      "y": 108,
+                      "width": 50,
+                      "height": 45
+                    },
+                    "placement": "Right"
+                  }
+                }
+              ],
+              "style": "accent",
+              "type": "TableRow",
+              ".layout": {
+                "rect": {
+                  "x": 34,
+                  "y": 108,
+                  "width": 332,
+                  "height": 45
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          ".layout": {
+            "rect": {
+              "x": 33,
+              "y": 33,
+              "width": 334,
+              "height": 121
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "style": "good",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 16,
+          "width": 368,
+          "height": 155
+        },
+        "placement": "SoleVertical"
+      }
+    }
+  ],
+  "version": "1.6",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 200
+    }
+  }
+}

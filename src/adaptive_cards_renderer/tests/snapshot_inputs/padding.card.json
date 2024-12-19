@@ -68,6 +68,7 @@
         },
         {
             "type": "ColumnSet",
+            "style": "good",
             "columns": [
                 {
                     "type": "Column",
@@ -91,8 +92,7 @@
                         }
                     ]
                 }
-            ],
-            "style": "good"
+            ]
         },
         {
             "type": "ColumnSet",

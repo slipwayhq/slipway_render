@@ -1,8 +1,7 @@
 use adaptive_cards::{
-    SizedLayoutData, StringOrBlockElementWidthOrNumber, StringOrNumber, TableColumnDefinition,
-    WidthOrHeight,
+    ContainerStyle, SizedLayoutData, StringOrBlockElementWidthOrNumber, StringOrNumber,
+    TableColumnDefinition, WidthOrHeight,
 };
-use image::Rgba;
 use taffy::NodeId;
 
 use crate::rect::FinalRect;
@@ -28,12 +27,20 @@ pub struct ElementLayoutData {
     pub table_data: Option<TableLayoutData>,
 }
 
+#[derive(serde::Serialize, Debug, Clone, PartialEq, Eq)]
+pub enum TablePart {
+    Table,
+    Row,
+    Cell,
+}
+
 #[derive(serde::Serialize, Debug, Clone)]
 pub struct TableLayoutData {
-    pub no_border: bool,
+    pub part: TablePart,
 
-    #[serde(skip)]
-    pub grid_lines_color: Rgba<u8>,
+    pub show_grid_lines: bool,
+
+    pub grid_style: ContainerStyle,
 
     pub table_column_definition: Option<TableColumnDefinition>,
 }

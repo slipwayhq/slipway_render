@@ -14,9 +14,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
           "text": "inherit-center",
           ".layout": {
             "rect": {
-              "x": 32,
+              "x": 33,
               "y": 183,
-              "width": 136,
+              "width": 134,
               "height": 11
             },
             "placement": "SoleVertical"
@@ -43,9 +43,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
           "text": "inherit-center",
           ".layout": {
             "rect": {
-              "x": 32,
+              "x": 33,
               "y": 295,
-              "width": 136,
+              "width": 134,
               "height": 11
             },
             "placement": "SoleVertical"
@@ -76,9 +76,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
               "text": "inherit-bottom",
               ".layout": {
                 "rect": {
-                  "x": 48,
-                  "y": 479,
-                  "width": 104,
+                  "x": 50,
+                  "y": 478,
+                  "width": 100,
                   "height": 11
                 },
                 "placement": "SoleVertical"
@@ -88,10 +88,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
           "style": "warning",
           ".layout": {
             "rect": {
-              "x": 32,
-              "y": 378,
-              "width": 136,
-              "height": 128
+              "x": 33,
+              "y": 379,
+              "width": 134,
+              "height": 127
             },
             "placement": "Top"
           }
@@ -105,9 +105,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
               "text": "top",
               ".layout": {
                 "rect": {
-                  "x": 48,
-                  "y": 534,
-                  "width": 104,
+                  "x": 50,
+                  "y": 535,
+                  "width": 100,
                   "height": 12
                 },
                 "placement": "SoleVertical"
@@ -118,10 +118,10 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/vertical_alignment.car
           "verticalContentAlignment": "top",
           ".layout": {
             "rect": {
-              "x": 32,
+              "x": 33,
               "y": 518,
-              "width": 136,
-              "height": 128
+              "width": 134,
+              "height": 127
             },
             "placement": "Bottom"
           }

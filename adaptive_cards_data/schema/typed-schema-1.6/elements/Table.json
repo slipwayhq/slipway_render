@@ -24,8 +24,7 @@
 		},
 		"gridStyle": {
 			"type": "ContainerStyle?",
-			"description": "Defines the style of the grid. This property currently only controls the grid's color.",
-			"default": "default"
+			"description": "Defines the style of the grid. This property currently only controls the grid's color."
 		},
 		"horizontalCellContentAlignment": {
 			"type": "HorizontalAlignment?",

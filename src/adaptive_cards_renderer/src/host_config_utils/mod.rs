@@ -11,7 +11,7 @@ use adaptive_cards::{
     TextBlockStyle,
 };
 
-use crate::errors::RenderError;
+use crate::{errors::RenderError, TRANSPARENT};
 
 pub mod default_host_config;
 
@@ -73,7 +73,7 @@ impl StringToColor for Option<String> {
     fn to_color(&self) -> Result<image::Rgba<u8>, RenderError> {
         match self {
             Some(color) => parse_color_map_error(color),
-            None => Ok(image::Rgba([0, 0, 0, 0])),
+            None => Ok(TRANSPARENT),
         }
     }
 }

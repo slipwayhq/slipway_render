@@ -525,18 +525,23 @@ impl AdaptiveCardConfig {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"backgroundColor\": {"]
-#[doc = "      \"default\": \"#FFFFFFFF\","]
+#[doc = "      \"default\": null,"]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
 #[doc = "      ]"]
 #[doc = "    },"]
 #[doc = "    \"borderColor\": {"]
+#[doc = "      \"description\": \"Color of borders.\","]
 #[doc = "      \"default\": null,"]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
 #[doc = "      ]"]
+#[doc = "    },"]
+#[doc = "    \"borderThickness\": {"]
+#[doc = "      \"description\": \"Thickness of border line.\","]
+#[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"foregroundColors\": {"]
 #[doc = "      \"default\": {"]
@@ -572,11 +577,16 @@ impl AdaptiveCardConfig {
 #[doc = "      \"$ref\": \"#/definitions/ForegroundColorsConfig\""]
 #[doc = "    },"]
 #[doc = "    \"tableGridLinesColor\": {"]
+#[doc = "      \"description\": \"Color of table grid lines. Falls back to the border color, then separator color.\","]
 #[doc = "      \"default\": null,"]
 #[doc = "      \"type\": ["]
 #[doc = "        \"string\","]
 #[doc = "        \"null\""]
 #[doc = "      ]"]
+#[doc = "    },"]
+#[doc = "    \"tableGridLinesThickness\": {"]
+#[doc = "      \"description\": \"Thickness of table grid lines. Falls back to separator thickness.\","]
+#[doc = "      \"type\": \"integer\""]
 #[doc = "    }"]
 #[doc = "  },"]
 #[doc = "  \"additionalProperties\": false"]
@@ -588,26 +598,43 @@ impl AdaptiveCardConfig {
 pub struct ContainerStyleConfig {
     #[serde(
         rename = "backgroundColor",
-        default = "defaults::container_style_config_background_color"
+        default,
+        skip_serializing_if = "Option::is_none"
     )]
     pub background_color: Option<String>,
+    #[doc = "Color of borders."]
     #[serde(
         rename = "borderColor",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub border_color: Option<String>,
+    #[doc = "Thickness of border line."]
+    #[serde(
+        rename = "borderThickness",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub border_thickness: Option<i64>,
     #[serde(
         rename = "foregroundColors",
         default = "defaults::container_style_config_foreground_colors"
     )]
     pub foreground_colors: ForegroundColorsConfig,
+    #[doc = "Color of table grid lines. Falls back to the border color, then separator color."]
     #[serde(
         rename = "tableGridLinesColor",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub table_grid_lines_color: Option<String>,
+    #[doc = "Thickness of table grid lines. Falls back to separator thickness."]
+    #[serde(
+        rename = "tableGridLinesThickness",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub table_grid_lines_thickness: Option<i64>,
 }
 impl From<&ContainerStyleConfig> for ContainerStyleConfig {
     fn from(value: &ContainerStyleConfig) -> Self {
@@ -633,6 +660,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#C7DEF9\","]
 #[doc = "        \"borderColor\": \"#62A8F7\","]
+#[doc = "        \"borderThickness\": 1,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -672,6 +700,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#FFC5B2\","]
 #[doc = "        \"borderColor\": \"#FF764C\","]
+#[doc = "        \"borderThickness\": 1,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -711,6 +740,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#ffffff\","]
 #[doc = "        \"borderColor\": \"#CCCCCC\","]
+#[doc = "        \"borderThickness\": 0,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -750,6 +780,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#fff9f8f7\","]
 #[doc = "        \"borderColor\": \"#666666\","]
+#[doc = "        \"borderThickness\": 1,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -789,6 +820,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#CCFFCC\","]
 #[doc = "        \"borderColor\": \"#69E569\","]
+#[doc = "        \"borderThickness\": 1,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -828,6 +860,7 @@ impl ContainerStyleConfig {
 #[doc = "      \"default\": {"]
 #[doc = "        \"backgroundColor\": \"#FFE2B2\","]
 #[doc = "        \"borderColor\": \"#FFBC51\","]
+#[doc = "        \"borderThickness\": 1,"]
 #[doc = "        \"foregroundColors\": {"]
 #[doc = "          \"accent\": {"]
 #[doc = "            \"default\": \"#6264a7\","]
@@ -2158,6 +2191,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"accent\": {"]
 #[doc = "          \"backgroundColor\": \"#C7DEF9\","]
 #[doc = "          \"borderColor\": \"#62A8F7\","]
+#[doc = "          \"borderThickness\": 1,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -2193,6 +2227,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"attention\": {"]
 #[doc = "          \"backgroundColor\": \"#FFC5B2\","]
 #[doc = "          \"borderColor\": \"#FF764C\","]
+#[doc = "          \"borderThickness\": 1,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -2228,6 +2263,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"default\": {"]
 #[doc = "          \"backgroundColor\": \"#ffffff\","]
 #[doc = "          \"borderColor\": \"#CCCCCC\","]
+#[doc = "          \"borderThickness\": 0,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -2263,6 +2299,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"emphasis\": {"]
 #[doc = "          \"backgroundColor\": \"#fff9f8f7\","]
 #[doc = "          \"borderColor\": \"#666666\","]
+#[doc = "          \"borderThickness\": 1,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -2298,6 +2335,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"good\": {"]
 #[doc = "          \"backgroundColor\": \"#CCFFCC\","]
 #[doc = "          \"borderColor\": \"#69E569\","]
+#[doc = "          \"borderThickness\": 1,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -2333,6 +2371,7 @@ impl ForegroundColorsConfig {
 #[doc = "        \"warning\": {"]
 #[doc = "          \"backgroundColor\": \"#FFE2B2\","]
 #[doc = "          \"borderColor\": \"#FFBC51\","]
+#[doc = "          \"borderThickness\": 1,"]
 #[doc = "          \"foregroundColors\": {"]
 #[doc = "            \"accent\": {"]
 #[doc = "              \"default\": \"#6264a7\","]
@@ -3471,10 +3510,7 @@ impl MediaConfig {
 #[doc = "    \"lineColor\": {"]
 #[doc = "      \"description\": \"Color to use when drawing separator line\","]
 #[doc = "      \"default\": \"#EEEEEE\","]
-#[doc = "      \"type\": ["]
-#[doc = "        \"string\","]
-#[doc = "        \"null\""]
-#[doc = "      ]"]
+#[doc = "      \"type\": \"string\""]
 #[doc = "    },"]
 #[doc = "    \"lineThickness\": {"]
 #[doc = "      \"description\": \"Thickness of separator line\","]
@@ -3494,7 +3530,7 @@ pub struct SeparatorConfig {
         rename = "lineColor",
         default = "defaults::separator_config_line_color"
     )]
-    pub line_color: Option<String>,
+    pub line_color: String,
     #[doc = "Thickness of separator line"]
     #[serde(rename = "lineThickness", default = "defaults::default_u64::<i64, 1>")]
     pub line_thickness: i64,
@@ -4497,16 +4533,20 @@ pub mod builder {
     pub struct ContainerStyleConfig {
         background_color: Result<Option<String>, String>,
         border_color: Result<Option<String>, String>,
+        border_thickness: Result<Option<i64>, String>,
         foreground_colors: Result<super::ForegroundColorsConfig, String>,
         table_grid_lines_color: Result<Option<String>, String>,
+        table_grid_lines_thickness: Result<Option<i64>, String>,
     }
     impl Default for ContainerStyleConfig {
         fn default() -> Self {
             Self {
-                background_color: Ok(super::defaults::container_style_config_background_color()),
+                background_color: Ok(Default::default()),
                 border_color: Ok(Default::default()),
+                border_thickness: Ok(Default::default()),
                 foreground_colors: Ok(super::defaults::container_style_config_foreground_colors()),
                 table_grid_lines_color: Ok(Default::default()),
+                table_grid_lines_thickness: Ok(Default::default()),
             }
         }
     }
@@ -4532,6 +4572,19 @@ pub mod builder {
             self.border_color = value
                 .try_into()
                 .map_err(|e| format!("error converting supplied value for border_color: {}", e));
+            self
+        }
+        pub fn border_thickness<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<i64>>,
+            T::Error: std::fmt::Display,
+        {
+            self.border_thickness = value.try_into().map_err(|e| {
+                format!(
+                    "error converting supplied value for border_thickness: {}",
+                    e
+                )
+            });
             self
         }
         pub fn foreground_colors<T>(mut self, value: T) -> Self
@@ -4560,6 +4613,19 @@ pub mod builder {
             });
             self
         }
+        pub fn table_grid_lines_thickness<T>(mut self, value: T) -> Self
+        where
+            T: std::convert::TryInto<Option<i64>>,
+            T::Error: std::fmt::Display,
+        {
+            self.table_grid_lines_thickness = value.try_into().map_err(|e| {
+                format!(
+                    "error converting supplied value for table_grid_lines_thickness: {}",
+                    e
+                )
+            });
+            self
+        }
     }
     impl std::convert::TryFrom<ContainerStyleConfig> for super::ContainerStyleConfig {
         type Error = super::error::ConversionError;
@@ -4567,8 +4633,10 @@ pub mod builder {
             Ok(Self {
                 background_color: value.background_color?,
                 border_color: value.border_color?,
+                border_thickness: value.border_thickness?,
                 foreground_colors: value.foreground_colors?,
                 table_grid_lines_color: value.table_grid_lines_color?,
+                table_grid_lines_thickness: value.table_grid_lines_thickness?,
             })
         }
     }
@@ -4577,8 +4645,10 @@ pub mod builder {
             Self {
                 background_color: Ok(value.background_color),
                 border_color: Ok(value.border_color),
+                border_thickness: Ok(value.border_thickness),
                 foreground_colors: Ok(value.foreground_colors),
                 table_grid_lines_color: Ok(value.table_grid_lines_color),
+                table_grid_lines_thickness: Ok(value.table_grid_lines_thickness),
             }
         }
     }
@@ -6115,7 +6185,7 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct SeparatorConfig {
-        line_color: Result<Option<String>, String>,
+        line_color: Result<String, String>,
         line_thickness: Result<i64, String>,
     }
     impl Default for SeparatorConfig {
@@ -6129,7 +6199,7 @@ pub mod builder {
     impl SeparatorConfig {
         pub fn line_color<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<Option<String>>,
+            T: std::convert::TryInto<String>,
             T::Error: std::fmt::Display,
         {
             self.line_color = value
@@ -6558,9 +6628,6 @@ pub mod defaults {
     pub(super) fn actions_config_spacing() -> super::ActionsConfigSpacing {
         super::ActionsConfigSpacing::Default
     }
-    pub(super) fn container_style_config_background_color() -> Option<String> {
-        Some("#FFFFFFFF".to_string())
-    }
     pub(super) fn container_style_config_foreground_colors() -> super::ForegroundColorsConfig {
         super::ForegroundColorsConfig {
             accent: super::FontColorConfig {
@@ -6597,6 +6664,7 @@ pub mod defaults {
         super::ContainerStyleConfig {
             background_color: Some("#C7DEF9".to_string()),
             border_color: Some("#62A8F7".to_string()),
+            border_thickness: Some(1_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6628,12 +6696,14 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn container_styles_config_attention() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
             background_color: Some("#FFC5B2".to_string()),
             border_color: Some("#FF764C".to_string()),
+            border_thickness: Some(1_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6665,12 +6735,14 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn container_styles_config_default() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
             background_color: Some("#ffffff".to_string()),
             border_color: Some("#CCCCCC".to_string()),
+            border_thickness: Some(0_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6702,12 +6774,14 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn container_styles_config_emphasis() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
             background_color: Some("#fff9f8f7".to_string()),
             border_color: Some("#666666".to_string()),
+            border_thickness: Some(1_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6739,12 +6813,14 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn container_styles_config_good() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
             background_color: Some("#CCFFCC".to_string()),
             border_color: Some("#69E569".to_string()),
+            border_thickness: Some(1_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6776,12 +6852,14 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn container_styles_config_warning() -> super::ContainerStyleConfig {
         super::ContainerStyleConfig {
             background_color: Some("#FFE2B2".to_string()),
             border_color: Some("#FFBC51".to_string()),
+            border_thickness: Some(1_i64),
             foreground_colors: super::ForegroundColorsConfig {
                 accent: super::FontColorConfig {
                     default: Some("#6264a7".to_string()),
@@ -6813,6 +6891,7 @@ pub mod defaults {
                 },
             },
             table_grid_lines_color: None,
+            table_grid_lines_thickness: Default::default(),
         }
     }
     pub(super) fn error_message_config_size() -> super::ErrorMessageConfigSize {
@@ -6989,6 +7068,7 @@ pub mod defaults {
             accent: super::ContainerStyleConfig {
                 background_color: Some("#C7DEF9".to_string()),
                 border_color: Some("#62A8F7".to_string()),
+                border_thickness: Some(1_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7020,10 +7100,12 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
             attention: super::ContainerStyleConfig {
                 background_color: Some("#FFC5B2".to_string()),
                 border_color: Some("#FF764C".to_string()),
+                border_thickness: Some(1_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7055,10 +7137,12 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
             default: super::ContainerStyleConfig {
                 background_color: Some("#ffffff".to_string()),
                 border_color: Some("#CCCCCC".to_string()),
+                border_thickness: Some(0_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7090,10 +7174,12 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
             emphasis: super::ContainerStyleConfig {
                 background_color: Some("#fff9f8f7".to_string()),
                 border_color: Some("#666666".to_string()),
+                border_thickness: Some(1_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7125,10 +7211,12 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
             good: super::ContainerStyleConfig {
                 background_color: Some("#CCFFCC".to_string()),
                 border_color: Some("#69E569".to_string()),
+                border_thickness: Some(1_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7160,10 +7248,12 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
             warning: super::ContainerStyleConfig {
                 background_color: Some("#FFE2B2".to_string()),
                 border_color: Some("#FFBC51".to_string()),
+                border_thickness: Some(1_i64),
                 foreground_colors: super::ForegroundColorsConfig {
                     accent: super::FontColorConfig {
                         default: Some("#6264a7".to_string()),
@@ -7195,6 +7285,7 @@ pub mod defaults {
                     },
                 },
                 table_grid_lines_color: None,
+                table_grid_lines_thickness: Default::default(),
             },
         }
     }
@@ -7303,7 +7394,7 @@ pub mod defaults {
     }
     pub(super) fn host_config_separator() -> super::SeparatorConfig {
         super::SeparatorConfig {
-            line_color: Some("#EEEEEE".to_string()),
+            line_color: "#EEEEEE".to_string(),
             line_thickness: 1_i64,
         }
     }
@@ -7399,8 +7490,8 @@ pub mod defaults {
             weight: super::InputLabelConfigWeight::Default,
         }
     }
-    pub(super) fn separator_config_line_color() -> Option<String> {
-        Some("#EEEEEE".to_string())
+    pub(super) fn separator_config_line_color() -> String {
+        "#EEEEEE".to_string()
     }
     pub(super) fn show_card_config_action_mode() -> super::ShowCardConfigActionMode {
         super::ShowCardConfigActionMode::Inline

@@ -24,6 +24,7 @@
       "accent": {
         "backgroundColor": "#C7DEF9",
         "borderColor": "#62A8F7",
+        "borderThickness": 1,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -59,6 +60,7 @@
       "attention": {
         "backgroundColor": "#FFC5B2",
         "borderColor": "#FF764C",
+        "borderThickness": 1,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -94,6 +96,7 @@
       "default": {
         "backgroundColor": "#ffffff",
         "borderColor": "#CCCCCC",
+        "borderThickness": 0,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -129,6 +132,7 @@
       "emphasis": {
         "backgroundColor": "#fff9f8f7",
         "borderColor": "#666666",
+        "borderThickness": 1,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -164,6 +168,7 @@
       "good": {
         "backgroundColor": "#CCFFCC",
         "borderColor": "#69E569",
+        "borderThickness": 1,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -199,6 +204,7 @@
       "warning": {
         "backgroundColor": "#FFE2B2",
         "borderColor": "#FFBC51",
+        "borderThickness": 1,
         "foregroundColors": {
           "accent": {
             "default": "#6264a7",
@@ -461,7 +467,7 @@
       "description": "Controls styling of a container",
       "properties": {
         "backgroundColor": {
-          "default": "#FFFFFFFF",
+          "default": null,
           "type": [
             "string",
             "null"
@@ -469,10 +475,15 @@
         },
         "borderColor": {
           "default": null,
+          "description": "Color of borders.",
           "type": [
             "string",
             "null"
           ]
+        },
+        "borderThickness": {
+          "description": "Thickness of border line.",
+          "type": "integer"
         },
         "foregroundColors": {
           "$ref": "#/definitions/ForegroundColorsConfig",
@@ -509,10 +520,15 @@
         },
         "tableGridLinesColor": {
           "default": null,
+          "description": "Color of table grid lines. Falls back to the border color, then separator color.",
           "type": [
             "string",
             "null"
           ]
+        },
+        "tableGridLinesThickness": {
+          "description": "Thickness of table grid lines. Falls back to separator thickness.",
+          "type": "integer"
         }
       },
       "type": "object"
@@ -526,6 +542,7 @@
           "default": {
             "backgroundColor": "#C7DEF9",
             "borderColor": "#62A8F7",
+            "borderThickness": 1,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -565,6 +582,7 @@
           "default": {
             "backgroundColor": "#FFC5B2",
             "borderColor": "#FF764C",
+            "borderThickness": 1,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -604,6 +622,7 @@
           "default": {
             "backgroundColor": "#ffffff",
             "borderColor": "#CCCCCC",
+            "borderThickness": 0,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -643,6 +662,7 @@
           "default": {
             "backgroundColor": "#fff9f8f7",
             "borderColor": "#666666",
+            "borderThickness": 1,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -682,6 +702,7 @@
           "default": {
             "backgroundColor": "#CCFFCC",
             "borderColor": "#69E569",
+            "borderThickness": 1,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -721,6 +742,7 @@
           "default": {
             "backgroundColor": "#FFE2B2",
             "borderColor": "#FFBC51",
+            "borderThickness": 1,
             "foregroundColors": {
               "accent": {
                 "default": "#6264a7",
@@ -1151,6 +1173,7 @@
             "accent": {
               "backgroundColor": "#C7DEF9",
               "borderColor": "#62A8F7",
+              "borderThickness": 1,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1186,6 +1209,7 @@
             "attention": {
               "backgroundColor": "#FFC5B2",
               "borderColor": "#FF764C",
+              "borderThickness": 1,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1221,6 +1245,7 @@
             "default": {
               "backgroundColor": "#ffffff",
               "borderColor": "#CCCCCC",
+              "borderThickness": 0,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1256,6 +1281,7 @@
             "emphasis": {
               "backgroundColor": "#fff9f8f7",
               "borderColor": "#666666",
+              "borderThickness": 1,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1291,6 +1317,7 @@
             "good": {
               "backgroundColor": "#CCFFCC",
               "borderColor": "#69E569",
+              "borderThickness": 1,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1326,6 +1353,7 @@
             "warning": {
               "backgroundColor": "#FFE2B2",
               "borderColor": "#FFBC51",
+              "borderThickness": 1,
               "foregroundColors": {
                 "accent": {
                   "default": "#6264a7",
@@ -1739,10 +1767,7 @@
         "lineColor": {
           "default": "#EEEEEE",
           "description": "Color to use when drawing separator line",
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string"
         },
         "lineThickness": {
           "default": 1,

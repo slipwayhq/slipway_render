@@ -15,9 +15,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
           "text": "1",
           ".layout": {
             "rect": {
-              "x": 16,
-              "y": 16,
-              "width": 118,
+              "x": 17,
+              "y": 17,
+              "width": 116,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -30,7 +30,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
           "x": 0,
           "y": 0,
           "width": 150,
-          "height": 42
+          "height": 44
         },
         "placement": "Top"
       }
@@ -45,9 +45,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
           "text": "2",
           ".layout": {
             "rect": {
-              "x": 16,
-              "y": 70,
-              "width": 118,
+              "x": 17,
+              "y": 73,
+              "width": 116,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -58,9 +58,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
       ".layout": {
         "rect": {
           "x": 0,
-          "y": 54,
+          "y": 56,
           "width": 150,
-          "height": 224
+          "height": 220
         },
         "placement": "WithinVertical"
       }
@@ -74,9 +74,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
           "text": "3",
           ".layout": {
             "rect": {
-              "x": 16,
-              "y": 306,
-              "width": 118,
+              "x": 17,
+              "y": 305,
+              "width": 116,
               "height": 10
             },
             "placement": "SoleVertical"
@@ -87,9 +87,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_ite
       ".layout": {
         "rect": {
           "x": 0,
-          "y": 290,
+          "y": 288,
           "width": 150,
-          "height": 42
+          "height": 44
         },
         "placement": "Bottom"
       }

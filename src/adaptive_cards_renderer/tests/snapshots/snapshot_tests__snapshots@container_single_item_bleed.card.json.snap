@@ -16,9 +16,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_single_item_
           "text": "1",
           ".layout": {
             "rect": {
-              "x": 16,
-              "y": 16,
-              "width": 118,
+              "x": 17,
+              "y": 17,
+              "width": 116,
               "height": 10
             },
             "placement": "SoleVertical"

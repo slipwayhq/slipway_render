@@ -4,28 +4,27 @@ use crate::{
     debug_mode::next_color,
     element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
-    host_config_utils::{StringToColor, ValidSpacing},
+    host_config_utils::ValidSpacing,
+    is_transparent,
     layout_context::LayoutContext,
     layout_impl::measure::NodeContext,
     layout_scratch::LayoutScratch,
     layoutable::Layoutable,
     masked_image::MaskedImage,
     utils::{ClampToU32, TaffyLayoutUtils},
-    ElementLayoutData,
 };
 use adaptive_cards::{
-    BlockElementHeight, BlockElementWidth, ContainerStyle, HasLayoutData, SizedStackableToggleable,
+    BlockElementHeight, BlockElementWidth, ContainerStyle, SizedStackableToggleable,
     StackableToggleable, StringOrBlockElementHeight, StringOrBlockElementWidthOrNumber,
     WidthOrHeight,
 };
 use adaptive_cards_host_config::HostConfig;
-use imageproc::drawing::{draw_hollow_rect_mut, draw_line_segment_mut};
+use imageproc::drawing::{draw_filled_rect_mut, draw_hollow_rect_mut, draw_line_segment_mut};
 use taffy::{prelude::length, Dimension, Display, FlexDirection, Rect, Size, Style, TaffyTree};
 
 use super::{
     utils::{
-        draw_background, get_margins_for_bleed, parse_dimension,
-        vertical_content_alignment_to_justify_content,
+        get_margins_for_bleed, parse_dimension, vertical_content_alignment_to_justify_content,
     },
     ItemsContainer, ItemsContainerOrientation,
 };
@@ -36,18 +35,20 @@ pub(super) fn container_layout_override<
 >(
     parent: &TParent,
     context: &LayoutContext,
-    mut baseline_style: taffy::Style,
+    baseline_style: taffy::Style,
     tree: &mut TaffyTree<NodeContext>,
 ) -> Result<ElementTaffyData, RenderError> {
+    let mut style = baseline_style;
+
     // Parse the min height, if specified.
     if let Some(min_height) = parent.min_height() {
-        baseline_style.min_size.height = parse_dimension(min_height, context)?
+        style.min_size.height = parse_dimension(min_height, context)?
     };
 
     // If the container is set to bleed, we need to add appropriate margins to the baseline style.
     if parent.bleed() {
         let placement = parent.placement(); //parent.layout_data.borrow().placement();
-        baseline_style.margin = get_margins_for_bleed(&placement, context.host_config);
+        style.margin = get_margins_for_bleed(&placement, context.host_config);
     }
 
     // Create the child context.
@@ -71,7 +72,7 @@ pub(super) fn container_layout_override<
     let mut child_node_ids = Vec::new();
 
     // If any of the child items have a separator, we need to know the line thickness we should draw.
-    let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
+    let separator_line_thickness = parent.separator_thickness(context.host_config);
 
     // Used to determine if we're drawing the first or last child item.
     let item_count = child_items.len();
@@ -160,11 +161,7 @@ pub(super) fn container_layout_override<
     }
 
     // Next we build up the container style based on the host config and item properties.
-    apply_container_style_padding(
-        parent.padding_behavior(),
-        context.host_config,
-        &mut baseline_style,
-    );
+    apply_container_style_padding(parent, context.host_config, &mut style);
 
     // Use the vertical content alignment (which was populated by the caller of this function)
     // to determine the flexbox justify content property.
@@ -172,17 +169,17 @@ pub(super) fn container_layout_override<
         child_items_context.inherited.vertical_content_alignment,
     );
 
-    baseline_style.display = Display::Flex;
+    style.display = Display::Flex;
 
-    baseline_style.flex_direction = match parent.orientation() {
+    style.flex_direction = match parent.orientation() {
         ItemsContainerOrientation::Horizontal => FlexDirection::Row,
         ItemsContainerOrientation::Vertical => FlexDirection::Column,
     };
 
-    baseline_style.justify_content = Some(justify_content);
+    style.justify_content = Some(justify_content);
 
     // Finally add ourself to the taffy tree and return the node id other metadata.
-    tree.new_with_children(baseline_style, &child_node_ids)
+    tree.new_with_children(style, &child_node_ids)
         .err_context(context)
         .map(|node_id| ElementTaffyData {
             node_id,
@@ -192,41 +189,46 @@ pub(super) fn container_layout_override<
 
 pub(super) enum PaddingBehavior {
     None,
-    Always,
-    AlwaysNarrow,
-    ForStyle(Option<ContainerStyle>),
+    Narrow,
+    Default,
+    Style,
 }
 
 /// Containers only have padding if they are not the default style (and so have a background color).
-pub(super) fn apply_container_style_padding(
-    padding_behavior: PaddingBehavior,
+fn apply_container_style_padding<
+    TParent: ItemsContainer<TItem>,
+    TItem: StackableToggleable + Layoutable + SizedContainerItem,
+>(
+    parent: &TParent,
     host_config: &HostConfig,
     baseline_style: &mut Style,
 ) {
-    let maybe_padding = match padding_behavior {
-        PaddingBehavior::None => None,
-        PaddingBehavior::Always => Some(host_config.spacing.padding() as f32),
-        PaddingBehavior::AlwaysNarrow => Some(host_config.spacing.small as f32),
-        PaddingBehavior::ForStyle(style) => match style {
-            None => None,
+    let additional_padding = match parent.padding_behavior() {
+        PaddingBehavior::None => 0,
+        PaddingBehavior::Narrow => host_config.spacing.small.clamp_to_u32(),
+        PaddingBehavior::Default => host_config.spacing.padding(),
+        PaddingBehavior::Style => match parent.style() {
+            None => 0,
             Some(style) => {
                 if style == ContainerStyle::Default {
-                    None
+                    0
                 } else {
-                    Some(host_config.spacing.padding() as f32)
+                    host_config.spacing.padding()
                 }
             }
         },
     };
 
-    if let Some(padding) = maybe_padding {
-        baseline_style.padding = Rect {
-            top: length(padding),
-            left: length(padding),
-            right: length(padding),
-            bottom: length(padding),
-        };
-    }
+    let border_thickness = parent.border_thickness(host_config);
+
+    let total_padding = (border_thickness + additional_padding) as f32;
+
+    baseline_style.padding = Rect {
+        top: length(total_padding),
+        left: length(total_padding),
+        right: length(total_padding),
+        bottom: length(total_padding),
+    };
 }
 
 pub(super) trait SizedContainerItem {
@@ -313,7 +315,7 @@ impl<T: SizedStackableToggleable> SizedContainerItem for T {
 
 // The shared container draw logic for AdaptiveCard and Container.
 pub(super) fn container_draw_override<
-    TParent: ItemsContainer<TItem> + HasLayoutData<ElementLayoutData>,
+    TParent: ItemsContainer<TItem>,
     TItem: StackableToggleable + Layoutable,
 >(
     parent: &TParent,
@@ -324,16 +326,7 @@ pub(super) fn container_draw_override<
     scratch: &mut LayoutScratch,
 ) -> Result<(), RenderError> {
     // Draw the container background, if necessary.
-    if let Some(style) = parent.style() {
-        let no_border = parent
-            .layout_data()
-            .borrow()
-            .table_data
-            .as_ref()
-            .map(|table_data| table_data.no_border)
-            .unwrap_or(false);
-        draw_background(style, context, tree, taffy_data, &image, no_border)?;
-    }
+    draw_background(parent, context, tree, taffy_data, &image)?;
 
     // Create the child context.
     let child_items_context = context.for_child_str(parent.children_collection_name());
@@ -359,14 +352,8 @@ pub(super) fn container_draw_override<
     }
 
     // Fetch the separator properties from the host config, in case we need to draw any.
-    let separator_line_thickness = context.host_config.separator.line_thickness.clamp_to_u32();
-    let separator_color = parent
-        .layout_data()
-        .borrow()
-        .table_data
-        .as_ref()
-        .map(|d| d.grid_lines_color)
-        .unwrap_or(context.host_config.separator.line_color.to_color()?);
+    let separator_line_thickness = parent.separator_thickness(context.host_config);
+    let separator_color = parent.separator_color(context.host_config)?;
 
     // Fetch the child item node ids from the layout data, so we can match them
     // to the child items array.
@@ -584,4 +571,46 @@ fn draw_vertical_separator<TItem: StackableToggleable + Layoutable>(
             }
         }
     }
+}
+
+pub fn draw_background<TParent: ItemsContainer<TItem>, TItem: StackableToggleable + Layoutable>(
+    parent: &TParent,
+    context: &LayoutContext,
+    tree: &TaffyTree<NodeContext>,
+    taffy_data: &ElementTaffyData,
+    image: &Rc<RefCell<MaskedImage>>,
+) -> Result<(), RenderError> {
+    // Get our absolute rectangle.
+    let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
+    let rect = node_layout.absolute_rect(context);
+
+    let mut image_mut = image.borrow_mut();
+
+    // If the style has a background color, use it to draw a rectangle over our absolute rect.
+    let background_color = parent.background_color(context.host_config)?;
+    if !is_transparent(background_color) {
+        draw_filled_rect_mut(&mut *image_mut, rect, background_color);
+    }
+
+    // Technically, we shouldn't draw a border here:
+    // https://github.com/microsoft/AdaptiveCards/blob/15418ce93b452dd0858415db40ddba05cd154c73/specs/features/Tables.md?plain=1#L65-L91
+    // The border color property is technically, and unintuitively, supposed to be used
+    // with the "gridStyle" property on a table to color the table grid lines.
+    // We're going to deviate from the official Adaptive Cards behavior here to do the
+    // intuitive thing and use the border color to draw borders.
+    let border_thickness = parent.border_thickness(context.host_config);
+    if border_thickness > 0 {
+        let border_color = parent.border_color(context.host_config)?;
+        if !is_transparent(border_color) {
+            let mut current_rect = rect;
+            for _ in 0..border_thickness {
+                draw_hollow_rect_mut(&mut *image_mut, current_rect, border_color);
+                current_rect =
+                    imageproc::rect::Rect::at(current_rect.left() + 1, current_rect.top() + 1)
+                        .of_size(current_rect.width() - 2, current_rect.height() - 2);
+            }
+        }
+    }
+
+    Ok(())
 }

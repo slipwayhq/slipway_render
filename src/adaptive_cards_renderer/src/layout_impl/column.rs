@@ -19,8 +19,9 @@ impl crate::layoutable::Layoutable for adaptive_cards::Column<ElementLayoutData>
         context: &LayoutContext,
         baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
-        container_layout_override(self, context, baseline_style, tree)
+        container_layout_override(self, context, baseline_style, tree, scratch)
     }
 
     fn draw_override(

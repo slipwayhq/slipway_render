@@ -24,6 +24,7 @@ impl Layoutable for Table<ElementLayoutData> {
         context: &LayoutContext,
         mut baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
         let rows = self.rows.as_deref().unwrap_or(&[]);
         let columns = self.columns.as_deref().unwrap_or(&[]);
@@ -70,7 +71,7 @@ impl Layoutable for Table<ElementLayoutData> {
         }
 
         baseline_style.min_size.width = Dimension::Percent(1.);
-        container_layout_override(self, context, baseline_style, tree)
+        container_layout_override(self, context, baseline_style, tree, scratch)
     }
 
     fn draw_override(
@@ -81,7 +82,6 @@ impl Layoutable for Table<ElementLayoutData> {
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        container_draw_override(self, context, tree, taffy_data, image.clone(), scratch)?;
-        Ok(())
+        container_draw_override(self, context, tree, taffy_data, image, scratch)
     }
 }

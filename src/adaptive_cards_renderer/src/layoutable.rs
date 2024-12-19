@@ -34,10 +34,11 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<NodeId, RenderError> {
         let layout_data = self.layout_data();
 
-        let taffy_data = self.layout_override(context, baseline_style, tree)?;
+        let taffy_data = self.layout_override(context, baseline_style, tree, scratch)?;
         let node_id = taffy_data.node_id;
 
         let mut data_mut = layout_data.borrow_mut();
@@ -54,6 +55,7 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
         context: &LayoutContext,
         _baseline_style: Style,
         _tree: &mut TaffyTree<NodeContext>,
+        _scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
         unimplemented!("layout not implemented for {}", context.path.clone());
     }
@@ -126,8 +128,9 @@ impl<T: Layoutable> Layoutable for Box<T> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<NodeId, RenderError> {
-        self.as_ref().layout(context, baseline_style, tree)
+        self.as_ref().layout(context, baseline_style, tree, scratch)
     }
 
     fn layout_override(
@@ -135,8 +138,10 @@ impl<T: Layoutable> Layoutable for Box<T> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
-        self.as_ref().layout_override(context, baseline_style, tree)
+        self.as_ref()
+            .layout_override(context, baseline_style, tree, scratch)
     }
 
     fn draw(
@@ -168,8 +173,10 @@ impl Layoutable for Element<ElementLayoutData> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<NodeId, RenderError> {
-        self.as_layoutable().layout(context, baseline_style, tree)
+        self.as_layoutable()
+            .layout(context, baseline_style, tree, scratch)
     }
 
     fn draw(

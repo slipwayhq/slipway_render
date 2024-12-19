@@ -22,9 +22,17 @@ pub struct ElementLayoutData {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub placement: Option<Placement>,
 
-    // For cells, we set the table column definition on each cell.
     #[serde(skip)]
     pub table_data: Option<TableLayoutData>,
+
+    #[serde(skip)]
+    pub fact_set_data: Option<FactSetLayoutData>,
+}
+
+#[derive(serde::Serialize, Debug, Clone)]
+pub struct FactSetLayoutData {
+    #[serde(skip)]
+    pub table: Box<adaptive_cards::Table<ElementLayoutData>>,
 }
 
 #[derive(serde::Serialize, Debug, Clone, PartialEq, Eq)]

@@ -41,6 +41,37 @@ pub(crate) struct TextBlockNodeContext {
 }
 
 impl TextBlockNodeContext {
+    /// Measure using the built-in taffy size estimation.
+    pub fn measure_quick(
+        &mut self,
+        known_dimensions: taffy::Size<Option<f32>>,
+        available_space: taffy::Size<taffy::AvailableSpace>,
+        context: &LayoutContext,
+        scratch: &mut LayoutScratch,
+    ) -> taffy::Size<f32> {
+        let width_constraint = known_dimensions.width.or(match available_space.width {
+            AvailableSpace::MinContent => Some(0.0),
+            AvailableSpace::MaxContent => None,
+            AvailableSpace::Definite(width) => Some(width),
+        });
+
+        let (layout_context, font_context, _scale_context) = scratch.for_text_mut();
+
+        let layout = prepare_layout(
+            self,
+            width_constraint,
+            context,
+            layout_context,
+            font_context,
+        );
+
+        let width = layout.width();
+        let height = layout.height();
+
+        taffy::Size { width, height }
+    }
+
+    /// Measure by computing our own pixel bounds.
     pub fn measure(
         &self,
         known_dimensions: taffy::geometry::Size<Option<f32>>,
@@ -127,14 +158,19 @@ impl Layoutable for TextBlock<ElementLayoutData> {
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        _scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
         let container_style = context
             .host_config
             .container_styles
             .from(context.inherited.style);
 
-        // Text Rendering Context
-        let maybe_text_style = context.host_config.text_styles.from(self.style); // Default or Heading
+        // Default or heading
+        let maybe_text_style = if context.inherited.within_header {
+            Some(&context.host_config.text_styles.column_header)
+        } else {
+            context.host_config.text_styles.from(self.style)
+        };
 
         let color_config = container_style
             .foreground_colors
@@ -173,12 +209,9 @@ impl Layoutable for TextBlock<ElementLayoutData> {
             .from(self.size.unwrap_or_else(|| maybe_text_style.to_ac_size()))
             .clamp_to_u32() as f32;
 
-        let weight_identifier = if context.inherited.within_header {
-            adaptive_cards::FontWeight::Bolder
-        } else {
-            self.weight
-                .unwrap_or_else(|| maybe_text_style.to_ac_weight())
-        };
+        let weight_identifier = self
+            .weight
+            .unwrap_or_else(|| maybe_text_style.to_ac_weight());
 
         let font_weight = font_type
             .font_weights

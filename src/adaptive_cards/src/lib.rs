@@ -165,3 +165,92 @@ where
         self.layout_data().borrow().width_or_height()
     }
 }
+
+impl<TLayoutData> Default for TextBlock<TLayoutData>
+where
+    TLayoutData: Default + SizedLayoutData,
+{
+    fn default() -> Self {
+        TextBlock {
+            color: None,
+            fallback: None,
+            font_type: None,
+            height: None,
+            horizontal_alignment: None,
+            id: None,
+            is_subtle: false,
+            is_visible: true,
+            max_lines: None,
+            requires: None,
+            separator: None,
+            size: None,
+            spacing: None,
+            style: TextBlockStyle::Default,
+            text: String::new(),
+            weight: None,
+            wrap: true,
+            type_: None,
+            layout_data: Default::default(),
+        }
+    }
+}
+impl<TLayoutData> Default for Table<TLayoutData>
+where
+    TLayoutData: Default + SizedLayoutData,
+{
+    fn default() -> Self {
+        Table {
+            columns: None,
+            fallback: None,
+            first_row_as_header: true,
+            grid_style: None,
+            height: None,
+            horizontal_cell_content_alignment: None,
+            id: None,
+            is_visible: true,
+            requires: None,
+            rows: None,
+            separator: None,
+            show_grid_lines: true,
+            spacing: None,
+            vertical_cell_content_alignment: None,
+            type_: None,
+            layout_data: Default::default(),
+        }
+    }
+}
+
+impl<TLayoutData> Default for TableRow<TLayoutData>
+where
+    TLayoutData: Default + SizedLayoutData,
+{
+    fn default() -> Self {
+        TableRow {
+            cells: None,
+            horizontal_cell_content_alignment: None,
+            style: None,
+            vertical_cell_content_alignment: None,
+            type_: None,
+            layout_data: Default::default(),
+        }
+    }
+}
+impl<TLayoutData> Default for TableCell<TLayoutData>
+where
+    TLayoutData: Default + SizedLayoutData,
+{
+    fn default() -> Self {
+        TableCell {
+            background_image: None,
+            bleed: None,
+            items: Vec::new(),
+            min_height: None,
+            rtl: None,
+            select_action: None,
+            style: None,
+            vertical_content_alignment: None,
+            type_: None,
+            layout_data: Default::default(),
+        }
+    }
+}

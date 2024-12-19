@@ -86,9 +86,6 @@ pub fn render(
     // Create the Taffy tree, which will be populated in the layout pass.
     let mut tree: TaffyTree<NodeContext> = TaffyTree::new();
 
-    // Layout the root element, which will recursively layout all descendants.
-    let root = target.layout(&context, Default::default(), &mut tree)?;
-
     let swash_scale_context = swash::scale::ScaleContext::new();
     let parley_layout_context = parley::LayoutContext::new();
     let mut parley_font_context = parley::FontContext::new();
@@ -105,6 +102,9 @@ pub fn render(
         parley_font_context,
         swash_scale_context,
     );
+
+    // Layout the root element, which will recursively layout all descendants.
+    let root = target.layout(&context, Default::default(), &mut tree, &mut scratch)?;
 
     // Calculate the final layout of the tree.
     tree.compute_layout_with_measure(

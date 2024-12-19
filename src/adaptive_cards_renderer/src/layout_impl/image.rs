@@ -31,6 +31,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
         context: &LayoutContext,
         baseline_style: Style,
         tree: &mut TaffyTree<NodeContext>,
+        _scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
         // Handled by parent
         // self.is_visible

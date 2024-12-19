@@ -27,9 +27,10 @@ impl crate::layoutable::Layoutable for adaptive_cards::ColumnSet<ElementLayoutDa
         context: &LayoutContext,
         mut baseline_style: taffy::Style,
         tree: &mut TaffyTree<NodeContext>,
+        scratch: &mut LayoutScratch,
     ) -> Result<ElementTaffyData, RenderError> {
         baseline_style.min_size.width = Dimension::Percent(1.);
-        container_layout_override(self, context, baseline_style, tree)
+        container_layout_override(self, context, baseline_style, tree, scratch)
     }
 
     fn draw_override(

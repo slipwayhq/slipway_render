@@ -21,6 +21,7 @@ mod column;
 mod column_set;
 mod container;
 mod container_shared;
+mod fact_set;
 mod image;
 pub(crate) mod measure;
 mod table;
@@ -30,15 +31,16 @@ mod text_block;
 mod utils;
 
 // Unimplemented adaptive card items.
+impl crate::layoutable::Layoutable for adaptive_cards::ImageSet<ElementLayoutData> {}
+impl crate::layoutable::Layoutable for adaptive_cards::RichTextBlock<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::TextRun<ElementLayoutData> {}
+
 impl crate::layoutable::Layoutable for adaptive_cards::ActionSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ActionExecute<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ActionOpenUrl<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ActionShowCard<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ActionSubmit<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::ActionToggleVisibility<ElementLayoutData> {}
-impl crate::layoutable::Layoutable for adaptive_cards::FactSet<ElementLayoutData> {}
-impl crate::layoutable::Layoutable for adaptive_cards::ImageSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputChoiceSet<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputDate<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputNumber<ElementLayoutData> {}
@@ -46,7 +48,6 @@ impl crate::layoutable::Layoutable for adaptive_cards::InputText<ElementLayoutDa
 impl crate::layoutable::Layoutable for adaptive_cards::InputTime<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::InputToggle<ElementLayoutData> {}
 impl crate::layoutable::Layoutable for adaptive_cards::Media<ElementLayoutData> {}
-impl crate::layoutable::Layoutable for adaptive_cards::RichTextBlock<ElementLayoutData> {}
 
 enum ItemsContainerOrientation {
     Vertical,
@@ -94,7 +95,7 @@ where
         let layout_data = self.layout_data().borrow();
         let table_data = layout_data.table_data.as_ref();
         if let Some(table_data) = table_data {
-            if table_data.part != TablePart::Table {
+            if table_data.part != TablePart::Table || !table_data.show_grid_lines {
                 // If we're a row or a cell, we don't want to draw a border.
                 return 0;
             }

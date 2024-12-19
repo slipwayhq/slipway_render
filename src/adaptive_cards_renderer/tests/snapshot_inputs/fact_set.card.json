@@ -1,0 +1,32 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "version": "1.6",
+    "body": [
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "type": "Fact",
+                    "title": "A",
+                    "value": "32.5"
+                },
+                {
+                    "type": "Fact",
+                    "title": "B",
+                    "value": "35562"
+                },
+                {
+                    "type": "Fact",
+                    "title": "Sea Saw",
+                    "value": "Blah"
+                },
+                {
+                    "type": "Fact",
+                    "title": "d",
+                    "value": "-"
+                }               
+            ]
+        }
+    ]
+}

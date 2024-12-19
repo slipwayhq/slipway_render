@@ -37,6 +37,7 @@ pub(super) fn container_layout_override<
     context: &LayoutContext,
     baseline_style: taffy::Style,
     tree: &mut TaffyTree<NodeContext>,
+    scratch: &mut LayoutScratch,
 ) -> Result<ElementTaffyData, RenderError> {
     let mut style = baseline_style;
 
@@ -153,7 +154,7 @@ pub(super) fn container_layout_override<
         child.apply_size_to_style(&mut item_baseline_style, &item_context, sum_of_weighted)?;
 
         // Call `layout` on the child item, which returns its node id in the Taffy tree.
-        let item_node_id = child.layout(&item_context, item_baseline_style, tree)?;
+        let item_node_id = child.layout(&item_context, item_baseline_style, tree, scratch)?;
 
         // Add the node id to the child_item_node_ids array so it can be used in the
         // draw pass to fetch the child item's final position.

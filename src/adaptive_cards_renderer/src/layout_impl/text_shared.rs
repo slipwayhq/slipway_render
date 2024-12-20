@@ -35,6 +35,7 @@ pub(super) trait TextContainer {
     fn weight(&self) -> Option<adaptive_cards::FontWeight>;
     fn wrap(&self) -> bool;
     fn max_lines(&self) -> Option<u32>;
+    fn max_width(&self) -> Option<f32>;
     fn horizontal_alignment(&self) -> Option<adaptive_cards::HorizontalAlignment>;
     fn text(&self) -> &str;
 }
@@ -50,6 +51,7 @@ pub(crate) struct TextBlockNodeContext {
     pub wrap: bool,
     pub offset: RefCell<taffy::Point<i32>>,
     pub horizontal_alignment: HorizontalAlignment,
+    pub max_width: Option<f32>,
 }
 
 impl TextBlockNodeContext {
@@ -100,6 +102,15 @@ impl TextBlockNodeContext {
             AvailableSpace::MaxContent => None,
             AvailableSpace::Definite(width) => Some(width),
         });
+
+        let width_constraint = if let Some(max_width) = self.max_width {
+            match width_constraint {
+                None => Some(max_width),
+                Some(width_constraint) => Some(width_constraint.min(max_width)),
+            }
+        } else {
+            width_constraint
+        };
 
         let (layout_context, font_context, scale_context) = scratch.for_text_mut();
 
@@ -227,6 +238,8 @@ pub(super) fn text_layout_override<TParent: TextContainer>(
 
     let wrap = parent.wrap();
 
+    let max_width = parent.max_width();
+
     // Style
     let mut style = baseline_style;
     let horizontal_alignment =
@@ -239,6 +252,7 @@ pub(super) fn text_layout_override<TParent: TextContainer>(
         font_size,
         font_weight,
         max_lines,
+        max_width,
         wrap,
         offset: RefCell::new(Default::default()),
         horizontal_alignment,
@@ -331,6 +345,8 @@ pub(super) fn text_draw_override(
     let NodeContext::Text(text_context) = node_context; /* else {
                                                             panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
                                                         };*/
+
+    println!("Drawing text: {}", text_context.text);
 
     let offset = text_context.offset.borrow();
     let x_offset = absolute_rect.left() - offset.x;

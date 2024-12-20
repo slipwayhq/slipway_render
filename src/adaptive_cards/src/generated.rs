@@ -1564,26 +1564,13 @@ where
 }
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
-pub struct Fact<TLayoutData>
-where
-    TLayoutData: Default,
-{
+pub struct Fact {
     #[serde(rename = "title")]
     pub title: String,
     #[serde(rename = "value")]
     pub value: String,
     #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    #[serde(rename = ".layout", skip_deserializing)]
-    pub layout_data: core::cell::RefCell<TLayoutData>,
-}
-impl<TLayoutData> crate::HasLayoutData<TLayoutData> for Fact<TLayoutData>
-where
-    TLayoutData: Default,
-{
-    fn layout_data(&self) -> &core::cell::RefCell<TLayoutData> {
-        &self.layout_data
-    }
 }
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 #[serde(deny_unknown_fields)]
@@ -1592,7 +1579,7 @@ where
     TLayoutData: Default,
 {
     #[serde(rename = "facts")]
-    pub facts: Vec<Fact<TLayoutData>>,
+    pub facts: Vec<Fact>,
     #[serde(rename = "fallback", skip_serializing_if = "Option::is_none")]
     pub fallback: Option<ElementOrFallbackOption<TLayoutData>>,
     #[serde(rename = "height", skip_serializing_if = "Option::is_none")]

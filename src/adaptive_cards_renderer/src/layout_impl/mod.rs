@@ -21,7 +21,6 @@ mod column;
 mod column_set;
 mod container;
 mod container_shared;
-mod fact;
 mod fact_set;
 mod image;
 pub(crate) mod measure;

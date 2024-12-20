@@ -5,7 +5,7 @@ use itertools::Itertools;
 use crate::{load::Loaded, typed_schema_types::Class};
 
 const IMAGE_TYPE: &str = "Image";
-const LAYOUTABLE_TYPES: [&str; 8] = [
+const LAYOUTABLE_TYPES: [&str; 7] = [
     "Item",
     "AdaptiveCard",
     // We include this because it is an Action but does not extend Item.
@@ -13,7 +13,6 @@ const LAYOUTABLE_TYPES: [&str; 8] = [
     "TableCell",
     "TableRow",
     "Inline",
-    "Fact",
     // This contains an action, and so requires the TLayoutType generic parameter.
     "Refresh",
 ];

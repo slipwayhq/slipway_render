@@ -76,6 +76,10 @@ impl TextContainer for TextBlock<ElementLayoutData> {
             .map(|m| m.round().clamp(u32::MIN as f64, u32::MAX as f64) as u32)
     }
 
+    fn max_width(&self) -> Option<f32> {
+        None
+    }
+
     fn horizontal_alignment(&self) -> Option<adaptive_cards::HorizontalAlignment> {
         self.horizontal_alignment
     }

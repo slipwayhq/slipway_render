@@ -41,28 +41,30 @@ impl crate::layoutable::Layoutable for adaptive_cards::FactSet<ElementLayoutData
         let mut child_item_node_ids = Vec::new();
 
         for (index, fact) in self.facts.iter().enumerate() {
-            // Create a context for the child item.
             let item_context = child_items_context.for_child(index.to_string());
 
-            let title_result = layout_child_item(
-                &fact.title,
-                title_config,
-                &item_context.for_child_str("title"),
-                Style::default(),
-                tree,
-            )?;
+            {
+                let layout_result = layout_fact_text(
+                    &fact.title,
+                    title_config,
+                    &item_context.for_child_str("title"),
+                    Style::default(),
+                    tree,
+                )?;
 
-            child_item_node_ids.push(title_result.node_id);
+                child_item_node_ids.push(layout_result.node_id);
+            }
+            {
+                let layout_result = layout_fact_text(
+                    &fact.value,
+                    value_config,
+                    &item_context.for_child_str("value"),
+                    Style::default(),
+                    tree,
+                )?;
 
-            let value_result = layout_child_item(
-                &fact.value,
-                value_config,
-                &item_context.for_child_str("value"),
-                Style::default(),
-                tree,
-            )?;
-
-            child_item_node_ids.push(value_result.node_id);
+                child_item_node_ids.push(layout_result.node_id);
+            }
         }
 
         style.display = taffy::Display::Grid;
@@ -78,7 +80,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::FactSet<ElementLayoutData
                 max: MaxTrackSizingFunction::MaxContent,
             }),
             TrackSizingFunction::Single(NonRepeatedTrackSizingFunction {
-                min: MinTrackSizingFunction::Auto,
+                min: MinTrackSizingFunction::Fixed(LengthPercentage::Length(0.)),
                 max: if value_config.max_width == 0 {
                     MaxTrackSizingFunction::Fraction(1.)
                 } else {
@@ -109,70 +111,29 @@ impl crate::layoutable::Layoutable for adaptive_cards::FactSet<ElementLayoutData
         let child_items_context = context.for_child_str("facts");
         for (i, _fact) in self.facts.iter().enumerate() {
             let item_context = child_items_context.for_child(i.to_string());
-            {
-                let title_node_id = child_item_node_ids[2 * i];
-                let title_item_layout = tree.layout(title_node_id).err_context(&item_context)?;
-
-                let title_item_context =
-                    item_context.for_child_str_origin("title", title_item_layout.location);
-
-                let title_absolute_rect = title_item_layout.absolute_rect(&title_item_context);
-                let title_masked_image = MaskedImage::from_mask(image.clone(), title_absolute_rect);
-
-                let title_taffy_data = ElementTaffyData {
-                    node_id: title_node_id,
-                    child_item_node_ids: vec![],
-                };
-
-                println!(
-                    "Drawing fact title {}, id {:?}, at {:?}",
-                    i, title_node_id, title_absolute_rect
-                );
-
-                text_draw_override(
-                    &title_item_context,
-                    tree,
-                    &title_taffy_data,
-                    title_masked_image,
-                    scratch,
-                )?;
-            }
-            {
-                let value_node_id = child_item_node_ids[2 * i + 1];
-                let value_item_layout = tree.layout(value_node_id).err_context(&item_context)?;
-
-                let value_item_context =
-                    item_context.for_child_str_origin("title", value_item_layout.location);
-
-                let value_absolute_rect = value_item_layout.absolute_rect(&value_item_context);
-                println!("Value absolute rect: {:?}", value_absolute_rect);
-                let value_masked_image = MaskedImage::from_mask(image.clone(), value_absolute_rect);
-
-                let value_taffy_data = ElementTaffyData {
-                    node_id: value_node_id,
-                    child_item_node_ids: vec![],
-                };
-
-                println!(
-                    "Drawing fact value {}, id {:?}, at {:?}",
-                    i, value_node_id, value_absolute_rect
-                );
-
-                text_draw_override(
-                    &value_item_context,
-                    tree,
-                    &value_taffy_data,
-                    value_masked_image,
-                    scratch,
-                )?;
-            }
+            draw_fact_text(
+                child_item_node_ids[2 * i],
+                "title",
+                &item_context,
+                tree,
+                &image,
+                scratch,
+            )?;
+            draw_fact_text(
+                child_item_node_ids[2 * i + 1],
+                "value",
+                &item_context,
+                tree,
+                &image,
+                scratch,
+            )?;
         }
 
         Ok(())
     }
 }
 
-fn layout_child_item(
+fn layout_fact_text(
     text: &str,
     fallback_style: &FactSetTextConfig,
     context: &LayoutContext,
@@ -195,6 +156,26 @@ fn layout_child_item(
         baseline_style,
         tree,
     )
+}
+
+fn draw_fact_text(
+    node_id: taffy::NodeId,
+    text_type: &str,
+    item_context: &LayoutContext,
+    tree: &TaffyTree<NodeContext>,
+    image: &Rc<RefCell<MaskedImage>>,
+    scratch: &mut LayoutScratch,
+) -> Result<(), RenderError> {
+    let item_layout = tree.layout(node_id).err_context(item_context)?;
+    let item_context = item_context.for_child_str_origin(text_type, item_layout.location);
+    let absolute_rect = item_layout.absolute_rect(&item_context);
+    let masked_image = MaskedImage::from_mask(image.clone(), absolute_rect);
+    let taffy_data = ElementTaffyData {
+        node_id,
+        child_item_node_ids: vec![],
+    };
+    text_draw_override(&item_context, tree, &taffy_data, masked_image, scratch)?;
+    Ok(())
 }
 
 fn get_text_style_config(input: &FactSetTextConfig) -> TextStyleConfig {

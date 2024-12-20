@@ -33,7 +33,6 @@ impl Layoutable for TableRow<ElementLayoutData> {
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        println!("Row draw_override");
         container_draw_override(self, context, tree, taffy_data, image, scratch)
     }
 }

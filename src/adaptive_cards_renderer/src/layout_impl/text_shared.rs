@@ -112,6 +112,11 @@ impl TextBlockNodeContext {
             width_constraint
         };
 
+        println!(
+            "width_constraint for text '{}': {:?}",
+            self.text, width_constraint
+        );
+
         let (layout_context, font_context, scale_context) = scratch.for_text_mut();
 
         let layout = prepare_layout(
@@ -345,9 +350,6 @@ pub(super) fn text_draw_override(
     let NodeContext::Text(text_context) = node_context; /* else {
                                                             panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
                                                         };*/
-
-    println!("Drawing text: {}", text_context.text);
-
     let offset = text_context.offset.borrow();
     let x_offset = absolute_rect.left() - offset.x;
     let y_offset = absolute_rect.top() - offset.y;

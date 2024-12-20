@@ -6,12 +6,10 @@ impl SlipwayRegion<u32> for Rect {
     fn contains(&self, x: u32, y: u32) -> bool {
         // If we're outside the bounds of an i32 then the point is definitely not in the rect.
         let Ok(x) = i32::try_from(x) else {
-            println!("rect x overflow: {}", x);
             return false;
         };
 
         let Ok(y) = i32::try_from(y) else {
-            println!("rect y overflow: {}", y);
             return false;
         };
 

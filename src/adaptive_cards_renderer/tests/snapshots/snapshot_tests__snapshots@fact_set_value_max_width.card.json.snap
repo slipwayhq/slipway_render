@@ -1,7 +1,7 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
 expression: card
-input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set_value_max_width.card.json
 ---
 {
   "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
@@ -21,7 +21,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
         },
         {
           "title": "Sea Saw",
-          "value": "Blah",
+          "value": "Blah blah foo bar baz bat waldo fred",
           "type": "Fact"
         },
         {
@@ -35,7 +35,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
           "x": 16,
           "y": 16,
           "width": 268,
-          "height": 90
+          "height": 144
         },
         "placement": "SoleVertical"
       }
@@ -48,7 +48,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
       "x": 0,
       "y": 0,
       "width": 300,
-      "height": 150
+      "height": 180
     }
   }
 }

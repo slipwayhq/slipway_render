@@ -1,9 +1,11 @@
 use std::{cell::RefCell, rc::Rc};
 
 use adaptive_cards::{Element, HasLayoutData};
+use imageproc::drawing::draw_hollow_rect_mut;
 use imageproc::rect::Rect;
 use taffy::{NodeId, Style, TaffyTree};
 
+use crate::debug_mode::next_color;
 use crate::element_layout_data::{ElementLayoutData, ElementTaffyData};
 use crate::errors::TaffyErrorToRenderError;
 use crate::layout_context::LayoutContext;
@@ -67,38 +69,84 @@ pub(super) trait Layoutable: HasLayoutData<ElementLayoutData> {
     /// and storing the final absolute rect used for drawing the element in the layout data.
     fn draw(
         &self,
-        context: &LayoutContext,
+        context: LayoutContext,
         tree: &TaffyTree<NodeContext>,
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
     ) -> Result<(), RenderError> {
-        context.print_local_context();
+        // context.print_local_context();
+        let mut results = Vec::new();
 
-        let refcell_layout_data = self.layout_data();
+        {
+            let self_layout_data = self.layout_data().borrow();
 
-        let absolute_rect = {
-            let layout_data = refcell_layout_data.borrow();
-            let taffy_data =
-                layout_data
-                    .taffy_data
-                    .as_ref()
-                    .ok_or(RenderError::TaffyDataNotFound {
-                        path: context.path.clone(),
-                    })?;
+            // If we have virtual elements, draw them instead of the main element.
+            let virtual_elements = {
+                match self_layout_data.virtual_elements.as_deref() {
+                    None => vec![&*self_layout_data],
+                    Some(virtual_elements) => virtual_elements.iter().collect(),
+                }
+            };
 
-            let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
+            for (i, layout_data) in virtual_elements.iter().enumerate() {
+                let absolute_rect =
+                    {
+                        let mut context = context.for_child(i.to_string());
 
-            let (width, height) = image.dimensions();
-            let image_rect = Rect::at(0, 0).of_size(width, height);
-            let absolute_rect = node_layout.absolute_rect(context);
+                        let taffy_data = layout_data.taffy_data.as_ref().ok_or(
+                            RenderError::TaffyDataNotFound {
+                                path: context.path.clone(),
+                            },
+                        )?;
 
-            if image_rect.intersect(absolute_rect).is_some() {
-                self.draw_override(context, tree, taffy_data, image, scratch)?;
+                        let node_layout = tree.layout(taffy_data.node_id).err_context(&context)?;
+                        context.ensure_origin(node_layout.location);
+
+                        let (width, height) = image.dimensions();
+                        let image_rect = Rect::at(0, 0).of_size(width, height);
+                        let absolute_rect = node_layout.absolute_rect(&context);
+
+                        if image_rect.intersect(absolute_rect).is_some() {
+                            // If we should draw debug outlines, do so.
+                            if context.debug_mode.outlines {
+                                let color = next_color();
+                                let mut image_mut = image.borrow_mut();
+
+                                draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
+                            }
+
+                            let masked_image = MaskedImage::from_mask(image.clone(), absolute_rect);
+
+                            self.draw_override(&context, tree, taffy_data, masked_image, scratch)?;
+                        }
+                        absolute_rect
+                    };
+
+                results.push(absolute_rect);
             }
-            absolute_rect
-        };
+        }
 
-        refcell_layout_data.borrow_mut().rect = Some(absolute_rect.into());
+        {
+            let mut self_layout_data = self.layout_data().borrow_mut();
+
+            // If we have virtual elements, draw them instead of the main element.
+            let mut virtual_elements = {
+                match self_layout_data.virtual_elements.as_deref_mut() {
+                    None => vec![&mut *self_layout_data],
+                    Some(virtual_elements) => virtual_elements.iter_mut().collect(),
+                }
+            };
+
+            for (layout_data, result) in virtual_elements.iter_mut().zip(results) {
+                if layout_data.rect.is_some() {
+                    panic!(
+                        "Layout data rect has already been set for: {}",
+                        context.path.clone()
+                    );
+                }
+                layout_data.rect = Some(result.into());
+            }
+        }
 
         Ok(())
     }
@@ -146,7 +194,7 @@ impl<T: Layoutable> Layoutable for Box<T> {
 
     fn draw(
         &self,
-        context: &LayoutContext,
+        context: LayoutContext,
         tree: &TaffyTree<NodeContext>,
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,
@@ -181,7 +229,7 @@ impl Layoutable for Element<ElementLayoutData> {
 
     fn draw(
         &self,
-        context: &LayoutContext,
+        context: LayoutContext,
         tree: &TaffyTree<NodeContext>,
         image: Rc<RefCell<MaskedImage>>,
         scratch: &mut LayoutScratch,

@@ -21,6 +21,7 @@ mod column;
 mod column_set;
 mod container;
 mod container_shared;
+mod fact;
 mod fact_set;
 mod image;
 pub(crate) mod measure;
@@ -28,6 +29,7 @@ mod table;
 mod table_cell;
 mod table_row;
 mod text_block;
+mod text_shared;
 mod utils;
 
 // Unimplemented adaptive card items.

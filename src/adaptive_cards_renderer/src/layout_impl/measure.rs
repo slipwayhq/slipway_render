@@ -2,7 +2,7 @@ use taffy::Size;
 
 use crate::{layout_context::LayoutContext, layout_scratch::LayoutScratch};
 
-use super::text_block::TextBlockNodeContext;
+use super::text_shared::TextBlockNodeContext;
 
 /// The Taffy node context.
 pub(crate) enum NodeContext {

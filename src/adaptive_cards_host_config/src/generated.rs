@@ -1330,27 +1330,12 @@ impl FactSetConfig {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"color\": {"]
-#[doc = "      \"description\": \"Color of font for fact set text\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"dark\","]
-#[doc = "        \"light\","]
-#[doc = "        \"accent\","]
-#[doc = "        \"good\","]
-#[doc = "        \"warning\","]
-#[doc = "        \"attention\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigColor\""]
 #[doc = "    },"]
 #[doc = "    \"fontType\": {"]
-#[doc = "      \"description\": \"Font Type for fact set text\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"monospace\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigFontType\""]
 #[doc = "    },"]
 #[doc = "    \"isSubtle\": {"]
 #[doc = "      \"description\": \"Indicates if fact set text should be subtle\","]
@@ -1363,26 +1348,12 @@ impl FactSetConfig {
 #[doc = "      \"type\": \"integer\""]
 #[doc = "    },"]
 #[doc = "    \"size\": {"]
-#[doc = "      \"description\": \"Size of font for fact set text\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"small\","]
-#[doc = "        \"medium\","]
-#[doc = "        \"large\","]
-#[doc = "        \"extraLarge\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigSize\""]
 #[doc = "    },"]
 #[doc = "    \"weight\": {"]
-#[doc = "      \"description\": \"Weight of font for fact set text\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"lighter\","]
-#[doc = "        \"bolder\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigWeight\""]
 #[doc = "    },"]
 #[doc = "    \"wrap\": {"]
 #[doc = "      \"description\": \"Indicates if fact set text should wrap\","]
@@ -1397,27 +1368,23 @@ impl FactSetConfig {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct FactSetTextConfig {
-    #[doc = "Color of font for fact set text"]
     #[serde(default = "defaults::fact_set_text_config_color")]
-    pub color: FactSetTextConfigColor,
-    #[doc = "Font Type for fact set text"]
+    pub color: TextStyleConfigColor,
     #[serde(
         rename = "fontType",
         default = "defaults::fact_set_text_config_font_type"
     )]
-    pub font_type: FactSetTextConfigFontType,
+    pub font_type: TextStyleConfigFontType,
     #[doc = "Indicates if fact set text should be subtle"]
     #[serde(rename = "isSubtle", default)]
     pub is_subtle: bool,
     #[doc = "Maximum width of fact set text"]
     #[serde(rename = "maxWidth", default)]
     pub max_width: i64,
-    #[doc = "Size of font for fact set text"]
     #[serde(default = "defaults::fact_set_text_config_size")]
-    pub size: FactSetTextConfigSize,
-    #[doc = "Weight of font for fact set text"]
+    pub size: TextStyleConfigSize,
     #[serde(default = "defaults::fact_set_text_config_weight")]
-    pub weight: FactSetTextConfigWeight,
+    pub weight: TextStyleConfigWeight,
     #[doc = "Indicates if fact set text should wrap"]
     #[serde(default = "defaults::default_bool::<true>")]
     pub wrap: bool,
@@ -1430,327 +1397,6 @@ impl From<&FactSetTextConfig> for FactSetTextConfig {
 impl FactSetTextConfig {
     pub fn builder() -> builder::FactSetTextConfig {
         Default::default()
-    }
-}
-#[doc = "Color of font for fact set text"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Color of font for fact set text\","]
-#[doc = "  \"default\": \"default\","]
-#[doc = "  \"type\": \"string\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"default\","]
-#[doc = "    \"dark\","]
-#[doc = "    \"light\","]
-#[doc = "    \"accent\","]
-#[doc = "    \"good\","]
-#[doc = "    \"warning\","]
-#[doc = "    \"attention\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum FactSetTextConfigColor {
-    #[serde(rename = "default")]
-    Default,
-    #[serde(rename = "dark")]
-    Dark,
-    #[serde(rename = "light")]
-    Light,
-    #[serde(rename = "accent")]
-    Accent,
-    #[serde(rename = "good")]
-    Good,
-    #[serde(rename = "warning")]
-    Warning,
-    #[serde(rename = "attention")]
-    Attention,
-}
-impl From<&FactSetTextConfigColor> for FactSetTextConfigColor {
-    fn from(value: &FactSetTextConfigColor) -> Self {
-        value.clone()
-    }
-}
-impl ToString for FactSetTextConfigColor {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Default => "default".to_string(),
-            Self::Dark => "dark".to_string(),
-            Self::Light => "light".to_string(),
-            Self::Accent => "accent".to_string(),
-            Self::Good => "good".to_string(),
-            Self::Warning => "warning".to_string(),
-            Self::Attention => "attention".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for FactSetTextConfigColor {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "default" => Ok(Self::Default),
-            "dark" => Ok(Self::Dark),
-            "light" => Ok(Self::Light),
-            "accent" => Ok(Self::Accent),
-            "good" => Ok(Self::Good),
-            "warning" => Ok(Self::Warning),
-            "attention" => Ok(Self::Attention),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for FactSetTextConfigColor {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for FactSetTextConfigColor {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for FactSetTextConfigColor {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl Default for FactSetTextConfigColor {
-    fn default() -> Self {
-        FactSetTextConfigColor::Default
-    }
-}
-#[doc = "Font Type for fact set text"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Font Type for fact set text\","]
-#[doc = "  \"default\": \"default\","]
-#[doc = "  \"type\": \"string\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"default\","]
-#[doc = "    \"monospace\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum FactSetTextConfigFontType {
-    #[serde(rename = "default")]
-    Default,
-    #[serde(rename = "monospace")]
-    Monospace,
-}
-impl From<&FactSetTextConfigFontType> for FactSetTextConfigFontType {
-    fn from(value: &FactSetTextConfigFontType) -> Self {
-        value.clone()
-    }
-}
-impl ToString for FactSetTextConfigFontType {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Default => "default".to_string(),
-            Self::Monospace => "monospace".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for FactSetTextConfigFontType {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "default" => Ok(Self::Default),
-            "monospace" => Ok(Self::Monospace),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for FactSetTextConfigFontType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for FactSetTextConfigFontType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for FactSetTextConfigFontType {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl Default for FactSetTextConfigFontType {
-    fn default() -> Self {
-        FactSetTextConfigFontType::Default
-    }
-}
-#[doc = "Size of font for fact set text"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Size of font for fact set text\","]
-#[doc = "  \"default\": \"default\","]
-#[doc = "  \"type\": \"string\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"default\","]
-#[doc = "    \"small\","]
-#[doc = "    \"medium\","]
-#[doc = "    \"large\","]
-#[doc = "    \"extraLarge\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum FactSetTextConfigSize {
-    #[serde(rename = "default")]
-    Default,
-    #[serde(rename = "small")]
-    Small,
-    #[serde(rename = "medium")]
-    Medium,
-    #[serde(rename = "large")]
-    Large,
-    #[serde(rename = "extraLarge")]
-    ExtraLarge,
-}
-impl From<&FactSetTextConfigSize> for FactSetTextConfigSize {
-    fn from(value: &FactSetTextConfigSize) -> Self {
-        value.clone()
-    }
-}
-impl ToString for FactSetTextConfigSize {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Default => "default".to_string(),
-            Self::Small => "small".to_string(),
-            Self::Medium => "medium".to_string(),
-            Self::Large => "large".to_string(),
-            Self::ExtraLarge => "extraLarge".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for FactSetTextConfigSize {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "default" => Ok(Self::Default),
-            "small" => Ok(Self::Small),
-            "medium" => Ok(Self::Medium),
-            "large" => Ok(Self::Large),
-            "extraLarge" => Ok(Self::ExtraLarge),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for FactSetTextConfigSize {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for FactSetTextConfigSize {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for FactSetTextConfigSize {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl Default for FactSetTextConfigSize {
-    fn default() -> Self {
-        FactSetTextConfigSize::Default
-    }
-}
-#[doc = "Weight of font for fact set text"]
-#[doc = r""]
-#[doc = r" <details><summary>JSON schema</summary>"]
-#[doc = r""]
-#[doc = r" ```json"]
-#[doc = "{"]
-#[doc = "  \"description\": \"Weight of font for fact set text\","]
-#[doc = "  \"default\": \"default\","]
-#[doc = "  \"type\": \"string\","]
-#[doc = "  \"enum\": ["]
-#[doc = "    \"default\","]
-#[doc = "    \"lighter\","]
-#[doc = "    \"bolder\""]
-#[doc = "  ]"]
-#[doc = "}"]
-#[doc = r" ```"]
-#[doc = r" </details>"]
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum FactSetTextConfigWeight {
-    #[serde(rename = "default")]
-    Default,
-    #[serde(rename = "lighter")]
-    Lighter,
-    #[serde(rename = "bolder")]
-    Bolder,
-}
-impl From<&FactSetTextConfigWeight> for FactSetTextConfigWeight {
-    fn from(value: &FactSetTextConfigWeight) -> Self {
-        value.clone()
-    }
-}
-impl ToString for FactSetTextConfigWeight {
-    fn to_string(&self) -> String {
-        match *self {
-            Self::Default => "default".to_string(),
-            Self::Lighter => "lighter".to_string(),
-            Self::Bolder => "bolder".to_string(),
-        }
-    }
-}
-impl std::str::FromStr for FactSetTextConfigWeight {
-    type Err = self::error::ConversionError;
-    fn from_str(value: &str) -> Result<Self, self::error::ConversionError> {
-        match value {
-            "default" => Ok(Self::Default),
-            "lighter" => Ok(Self::Lighter),
-            "bolder" => Ok(Self::Bolder),
-            _ => Err("invalid value".into()),
-        }
-    }
-}
-impl std::convert::TryFrom<&str> for FactSetTextConfigWeight {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &str) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<&String> for FactSetTextConfigWeight {
-    type Error = self::error::ConversionError;
-    fn try_from(value: &String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl std::convert::TryFrom<String> for FactSetTextConfigWeight {
-    type Error = self::error::ConversionError;
-    fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
-        value.parse()
-    }
-}
-impl Default for FactSetTextConfigWeight {
-    fn default() -> Self {
-        FactSetTextConfigWeight::Default
     }
 }
 #[doc = "FontColorConfig"]
@@ -3868,27 +3514,12 @@ impl TextBlockConfig {
 #[doc = "  \"type\": \"object\","]
 #[doc = "  \"properties\": {"]
 #[doc = "    \"color\": {"]
-#[doc = "      \"description\": \"Default font color for text of this style\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"dark\","]
-#[doc = "        \"light\","]
-#[doc = "        \"accent\","]
-#[doc = "        \"good\","]
-#[doc = "        \"warning\","]
-#[doc = "        \"attention\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigColor\""]
 #[doc = "    },"]
 #[doc = "    \"fontType\": {"]
-#[doc = "      \"description\": \"Default font type for text of this style\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"monospace\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigFontType\""]
 #[doc = "    },"]
 #[doc = "    \"isSubtle\": {"]
 #[doc = "      \"description\": \"Whether text of this style should be subtle by default\","]
@@ -3896,26 +3527,12 @@ impl TextBlockConfig {
 #[doc = "      \"type\": \"boolean\""]
 #[doc = "    },"]
 #[doc = "    \"size\": {"]
-#[doc = "      \"description\": \"Default font size for text of this style\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"small\","]
-#[doc = "        \"medium\","]
-#[doc = "        \"large\","]
-#[doc = "        \"extraLarge\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigSize\""]
 #[doc = "    },"]
 #[doc = "    \"weight\": {"]
-#[doc = "      \"description\": \"Default font weight for text of this style\","]
 #[doc = "      \"default\": \"default\","]
-#[doc = "      \"type\": \"string\","]
-#[doc = "      \"enum\": ["]
-#[doc = "        \"default\","]
-#[doc = "        \"lighter\","]
-#[doc = "        \"bolder\""]
-#[doc = "      ]"]
+#[doc = "      \"$ref\": \"#/definitions/TextStyleConfigWeight\""]
 #[doc = "    }"]
 #[doc = "  },"]
 #[doc = "  \"additionalProperties\": false"]
@@ -3925,19 +3542,15 @@ impl TextBlockConfig {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TextStyleConfig {
-    #[doc = "Default font color for text of this style"]
     #[serde(default = "defaults::text_style_config_color")]
     pub color: TextStyleConfigColor,
-    #[doc = "Default font type for text of this style"]
     #[serde(rename = "fontType", default = "defaults::text_style_config_font_type")]
     pub font_type: TextStyleConfigFontType,
     #[doc = "Whether text of this style should be subtle by default"]
     #[serde(rename = "isSubtle", default)]
     pub is_subtle: bool,
-    #[doc = "Default font size for text of this style"]
     #[serde(default = "defaults::text_style_config_size")]
     pub size: TextStyleConfigSize,
-    #[doc = "Default font weight for text of this style"]
     #[serde(default = "defaults::text_style_config_weight")]
     pub weight: TextStyleConfigWeight,
 }
@@ -4121,7 +3734,6 @@ impl Default for TextStyleConfigFontType {
 #[doc = r" ```json"]
 #[doc = "{"]
 #[doc = "  \"description\": \"Default font size for text of this style\","]
-#[doc = "  \"default\": \"default\","]
 #[doc = "  \"type\": \"string\","]
 #[doc = "  \"enum\": ["]
 #[doc = "    \"default\","]
@@ -4193,11 +3805,6 @@ impl std::convert::TryFrom<String> for TextStyleConfigSize {
         value.parse()
     }
 }
-impl Default for TextStyleConfigSize {
-    fn default() -> Self {
-        TextStyleConfigSize::Default
-    }
-}
 #[doc = "Default font weight for text of this style"]
 #[doc = r""]
 #[doc = r" <details><summary>JSON schema</summary>"]
@@ -4205,7 +3812,6 @@ impl Default for TextStyleConfigSize {
 #[doc = r" ```json"]
 #[doc = "{"]
 #[doc = "  \"description\": \"Default font weight for text of this style\","]
-#[doc = "  \"default\": \"default\","]
 #[doc = "  \"type\": \"string\","]
 #[doc = "  \"enum\": ["]
 #[doc = "    \"default\","]
@@ -4265,11 +3871,6 @@ impl std::convert::TryFrom<String> for TextStyleConfigWeight {
     type Error = self::error::ConversionError;
     fn try_from(value: String) -> Result<Self, self::error::ConversionError> {
         value.parse()
-    }
-}
-impl Default for TextStyleConfigWeight {
-    fn default() -> Self {
-        TextStyleConfigWeight::Default
     }
 }
 #[doc = "Sets default properties for text of a given style"]
@@ -4894,12 +4495,12 @@ pub mod builder {
     }
     #[derive(Clone, Debug)]
     pub struct FactSetTextConfig {
-        color: Result<super::FactSetTextConfigColor, String>,
-        font_type: Result<super::FactSetTextConfigFontType, String>,
+        color: Result<super::TextStyleConfigColor, String>,
+        font_type: Result<super::TextStyleConfigFontType, String>,
         is_subtle: Result<bool, String>,
         max_width: Result<i64, String>,
-        size: Result<super::FactSetTextConfigSize, String>,
-        weight: Result<super::FactSetTextConfigWeight, String>,
+        size: Result<super::TextStyleConfigSize, String>,
+        weight: Result<super::TextStyleConfigWeight, String>,
         wrap: Result<bool, String>,
     }
     impl Default for FactSetTextConfig {
@@ -4918,7 +4519,7 @@ pub mod builder {
     impl FactSetTextConfig {
         pub fn color<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FactSetTextConfigColor>,
+            T: std::convert::TryInto<super::TextStyleConfigColor>,
             T::Error: std::fmt::Display,
         {
             self.color = value
@@ -4928,7 +4529,7 @@ pub mod builder {
         }
         pub fn font_type<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FactSetTextConfigFontType>,
+            T: std::convert::TryInto<super::TextStyleConfigFontType>,
             T::Error: std::fmt::Display,
         {
             self.font_type = value
@@ -4958,7 +4559,7 @@ pub mod builder {
         }
         pub fn size<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FactSetTextConfigSize>,
+            T: std::convert::TryInto<super::TextStyleConfigSize>,
             T::Error: std::fmt::Display,
         {
             self.size = value
@@ -4968,7 +4569,7 @@ pub mod builder {
         }
         pub fn weight<T>(mut self, value: T) -> Self
         where
-            T: std::convert::TryInto<super::FactSetTextConfigWeight>,
+            T: std::convert::TryInto<super::TextStyleConfigWeight>,
             T::Error: std::fmt::Display,
         {
             self.weight = value
@@ -6905,37 +6506,37 @@ pub mod defaults {
     }
     pub(super) fn fact_set_config_title() -> super::FactSetTextConfig {
         super::FactSetTextConfig {
-            color: super::FactSetTextConfigColor::Default,
-            font_type: super::FactSetTextConfigFontType::Default,
+            color: super::TextStyleConfigColor::Default,
+            font_type: super::TextStyleConfigFontType::Default,
             is_subtle: false,
             max_width: 150_i64,
-            size: super::FactSetTextConfigSize::Default,
-            weight: super::FactSetTextConfigWeight::Bolder,
+            size: super::TextStyleConfigSize::Default,
+            weight: super::TextStyleConfigWeight::Bolder,
             wrap: true,
         }
     }
     pub(super) fn fact_set_config_value() -> super::FactSetTextConfig {
         super::FactSetTextConfig {
-            color: super::FactSetTextConfigColor::Default,
-            font_type: super::FactSetTextConfigFontType::Default,
+            color: super::TextStyleConfigColor::Default,
+            font_type: super::TextStyleConfigFontType::Default,
             is_subtle: false,
             max_width: 0_i64,
-            size: super::FactSetTextConfigSize::Default,
-            weight: super::FactSetTextConfigWeight::Default,
+            size: super::TextStyleConfigSize::Default,
+            weight: super::TextStyleConfigWeight::Default,
             wrap: true,
         }
     }
-    pub(super) fn fact_set_text_config_color() -> super::FactSetTextConfigColor {
-        super::FactSetTextConfigColor::Default
+    pub(super) fn fact_set_text_config_color() -> super::TextStyleConfigColor {
+        super::TextStyleConfigColor::Default
     }
-    pub(super) fn fact_set_text_config_font_type() -> super::FactSetTextConfigFontType {
-        super::FactSetTextConfigFontType::Default
+    pub(super) fn fact_set_text_config_font_type() -> super::TextStyleConfigFontType {
+        super::TextStyleConfigFontType::Default
     }
-    pub(super) fn fact_set_text_config_size() -> super::FactSetTextConfigSize {
-        super::FactSetTextConfigSize::Default
+    pub(super) fn fact_set_text_config_size() -> super::TextStyleConfigSize {
+        super::TextStyleConfigSize::Default
     }
-    pub(super) fn fact_set_text_config_weight() -> super::FactSetTextConfigWeight {
-        super::FactSetTextConfigWeight::Default
+    pub(super) fn fact_set_text_config_weight() -> super::TextStyleConfigWeight {
+        super::TextStyleConfigWeight::Default
     }
     pub(super) fn font_color_config_default() -> Option<String> {
         Some("#ff252424".to_string())
@@ -7293,21 +6894,21 @@ pub mod defaults {
         super::FactSetConfig {
             spacing: 16_i64,
             title: super::FactSetTextConfig {
-                color: super::FactSetTextConfigColor::Default,
-                font_type: super::FactSetTextConfigFontType::Default,
+                color: super::TextStyleConfigColor::Default,
+                font_type: super::TextStyleConfigFontType::Default,
                 is_subtle: false,
                 max_width: 150_i64,
-                size: super::FactSetTextConfigSize::Default,
-                weight: super::FactSetTextConfigWeight::Bolder,
+                size: super::TextStyleConfigSize::Default,
+                weight: super::TextStyleConfigWeight::Bolder,
                 wrap: true,
             },
             value: super::FactSetTextConfig {
-                color: super::FactSetTextConfigColor::Default,
-                font_type: super::FactSetTextConfigFontType::Default,
+                color: super::TextStyleConfigColor::Default,
+                font_type: super::TextStyleConfigFontType::Default,
                 is_subtle: false,
                 max_width: 0_i64,
-                size: super::FactSetTextConfigSize::Default,
-                weight: super::FactSetTextConfigWeight::Default,
+                size: super::TextStyleConfigSize::Default,
+                weight: super::TextStyleConfigWeight::Default,
                 wrap: true,
             },
         }

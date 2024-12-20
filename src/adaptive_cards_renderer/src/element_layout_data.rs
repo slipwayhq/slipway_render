@@ -13,6 +13,10 @@ pub struct ElementLayoutData {
     /// The final absolute rect of the element which was used to draw the element.
     pub rect: Option<FinalRect>,
 
+    // If an element has to create virtual elements, it can store them here.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub virtual_elements: Option<Vec<ElementLayoutData>>,
+
     /// The taffy data for the element. This is used to store the node id and child element node ids
     /// for the element during the layout pass, so they can be later referenced during the draw pass.
     #[serde(skip)]
@@ -24,15 +28,6 @@ pub struct ElementLayoutData {
 
     #[serde(skip)]
     pub table_data: Option<TableLayoutData>,
-
-    #[serde(skip)]
-    pub fact_set_data: Option<FactSetLayoutData>,
-}
-
-#[derive(serde::Serialize, Debug, Clone)]
-pub struct FactSetLayoutData {
-    #[serde(skip)]
-    pub table: Box<adaptive_cards::Table<ElementLayoutData>>,
 }
 
 #[derive(serde::Serialize, Debug, Clone, PartialEq, Eq)]

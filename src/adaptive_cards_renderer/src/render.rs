@@ -135,7 +135,7 @@ pub fn render(
     let masked_image = MaskedImage::from_image(image, debug_mode);
 
     // Draw the root element onto the image, which will recursively draw all descendants.
-    target.draw(&context, &tree, masked_image.clone(), &mut scratch)?;
+    target.draw(context, &tree, masked_image.clone(), &mut scratch)?;
 
     // Eject the image from the masked image, returning an owned image.
     let image = masked_image.eject()?;

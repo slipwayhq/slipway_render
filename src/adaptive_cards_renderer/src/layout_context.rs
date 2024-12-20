@@ -27,6 +27,9 @@ pub(super) struct LayoutContext<'cfg, 'ctx, 'render> {
     /// parent element based on the calculated layout position of the child element.
     pub current_origin: Point<f32>,
 
+    /// Stored so we know if the origin has been updated.
+    pub relative_origin: Option<Point<f32>>,
+
     /// The inherited context for the current element, passed down from the parent element.
     pub inherited: InheritedContext,
 
@@ -55,6 +58,7 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
                 previous: None,
             }),
             current_origin: Point { x: 0., y: 0. },
+            relative_origin: Some(Point { x: 0., y: 0. }),
             inherited: InheritedContext::default(),
             font_stack_to_resolved_family_map,
             image_cache,
@@ -72,20 +76,36 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
     /// The `current_origin` of the child element will remain the same.
     #[must_use]
     pub fn for_child(&self, child_name: String) -> Self {
-        self.for_child_origin(child_name, Point { x: 0., y: 0. })
+        self.for_child_origin_inner(child_name, None)
     }
 
     /// Creates a new LayoutContext for a child element with the given name and relative location.
     /// The `current_origin` of the child element will be the sum of the current origin and the relative location.
     #[must_use]
     pub fn for_child_str_origin(&self, child_name: &str, relative_location: Point<f32>) -> Self {
-        self.for_child_origin(child_name.to_string(), relative_location)
+        self.for_child_origin_inner(child_name.to_string(), Some(relative_location))
     }
 
     /// Creates a new LayoutContext for a child element with the given name and relative location.
     /// The `current_origin` of the child element will be the sum of the current origin and the relative location.
     #[must_use]
     pub fn for_child_origin(&self, child_name: String, relative_location: Point<f32>) -> Self {
+        self.for_child_origin_inner(child_name, Some(relative_location))
+    }
+
+    /// Creates a new LayoutContext for a child element with the given name and relative location.
+    /// The `current_origin` of the child element will be the sum of the current origin and the relative location.
+    #[must_use]
+    pub fn for_child_origin_inner(
+        &self,
+        child_name: String,
+        relative_origin: Option<Point<f32>>,
+    ) -> Self {
+        let current_origin = match relative_origin {
+            None => self.current_origin,
+            Some(relative_location) => self.current_origin + relative_location,
+        };
+
         LayoutContext {
             host_config: self.host_config,
             host_context: self.host_context,
@@ -94,10 +114,23 @@ impl<'cfg, 'ctx, 'render> LayoutContext<'cfg, 'ctx, 'render> {
                 current: child_name,
                 previous: Some(self.path.clone()),
             }),
-            current_origin: self.current_origin + relative_location,
+            current_origin,
+            relative_origin,
             inherited: self.inherited,
             font_stack_to_resolved_family_map: self.font_stack_to_resolved_family_map,
             image_cache: self.image_cache,
+        }
+    }
+
+    /// Sets the origin of the current element, ensuring it hasn't changed if it was previously set.
+    pub fn ensure_origin(&mut self, relative_location: Point<f32>) {
+        if let Some(existing_relative_origin) = self.relative_origin {
+            if existing_relative_origin != relative_location {
+                panic!("Attempted to set the origin of a LayoutContext more than once with different values.");
+            }
+        } else {
+            self.current_origin = self.current_origin + relative_location;
+            self.relative_origin = Some(relative_location);
         }
     }
 

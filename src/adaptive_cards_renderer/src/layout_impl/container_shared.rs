@@ -1,7 +1,6 @@
 use std::{cell::RefCell, rc::Rc};
 
 use crate::{
-    debug_mode::next_color,
     element_layout_data::{ElementTaffyData, Placement},
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::ValidSpacing,
@@ -346,14 +345,6 @@ pub(super) fn container_draw_override<
     let node_layout = tree.layout(taffy_data.node_id).err_context(context)?;
     let absolute_rect = node_layout.absolute_rect(context);
 
-    // If we should draw debug outlines, do so.
-    if context.debug_mode.outlines {
-        let color = next_color();
-        let mut image_mut = image.borrow_mut();
-
-        draw_hollow_rect_mut(&mut *image_mut, absolute_rect, color);
-    }
-
     // Fetch the separator properties from the host config, in case we need to draw any.
     let separator_line_thickness = parent.separator_thickness(context.host_config);
     let separator_color = parent.separator_color(context.host_config)?;
@@ -417,41 +408,14 @@ pub(super) fn container_draw_override<
         // Calculate the intersection of the item's rectangle with the container's rectangle.
         let maybe_intersection = absolute_rect.intersect(item_rect);
 
-        // If there is no overlap we can technically skip drawing the item
-        // unless we're in the debug mode which specifies transparent masks, in
-        // which case we just create a dummy 1 pixel sized intersection so the item
-        // is still drawn but completely masked out.
-        let maybe_intersection = match maybe_intersection {
-            Some(intersection) => Some(intersection),
-            None => {
-                if context.debug_mode.transparent_masks {
-                    Some(imageproc::rect::Rect::at(0, 0).of_size(1, 1))
-                } else {
-                    None
-                }
-            }
-        };
-
-        let Some(intersection) = maybe_intersection else {
+        if maybe_intersection.is_none() && !context.debug_mode.transparent_masks {
             // If there is no overlap, we can skip drawing the item.
-            // We already account for the `transparent_masks` debug mode above.
+            // Unless we're in the debug mode which specifies transparent masks.
             continue;
         };
 
-        // If we're in the debug mode which specifies we should draw outlines, draw an outline
-        // for the child item.
-        if context.debug_mode.outlines {
-            let color = next_color();
-            let mut image_mut = image.borrow_mut();
-
-            draw_hollow_rect_mut(&mut *image_mut, item_rect, color);
-        }
-
-        // Create the masked child image.
-        let child_image = MaskedImage::from_mask(image.clone(), intersection);
-
         // Call `draw` on the child item.
-        child.draw(&item_context, tree, child_image, scratch)?;
+        child.draw(item_context, tree, Rc::clone(&image), scratch)?;
     }
     Ok(())
 }

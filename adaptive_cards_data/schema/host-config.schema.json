@@ -650,48 +650,19 @@
 			"additionalProperties": false,
 			"properties": {
 				"size": {
-					"type": "string",
-					"description": "Size of font for fact set text",
-					"enum": [
-						"default",
-						"small",
-						"medium",
-						"large",
-						"extraLarge"
-					],
+					"$ref": "#/definitions/TextStyleConfigSize",
 					"default": "default"
 				},
 				"weight": {
-					"type": "string",
-					"description": "Weight of font for fact set text",
-					"enum": [
-						"default",
-						"lighter",
-						"bolder"
-					],
+					"$ref": "#/definitions/TextStyleConfigWeight",
 					"default": "default"
 				},
 				"color": {
-					"type": "string",
-					"description": "Color of font for fact set text",
-					"enum": [
-						"default",
-						"dark",
-						"light",
-						"accent",
-						"good",
-						"warning",
-						"attention"
-					],
+					"$ref": "#/definitions/TextStyleConfigColor",
 					"default": "default"
 				},
 				"fontType": {
-					"type": "string",
-					"description": "Font Type for fact set text",
-					"enum": [
-						"default",
-						"monospace"
-					],
+					"$ref": "#/definitions/TextStyleConfigFontType",
 					"default": "default"
 				},
 				"isSubtle": {
@@ -711,54 +682,68 @@
 				}
 			}
 		},
+		"TextStyleConfigSize": {
+			"type": "string",
+			"description": "Default font size for text of this style",
+			"enum": [
+				"default",
+				"small",
+				"medium",
+				"large",
+				"extraLarge"
+			]
+		},
+		"TextStyleConfigWeight": {
+			"type": "string",
+			"description": "Default font weight for text of this style",
+			"enum": [
+				"default",
+				"lighter",
+				"bolder"
+			]
+		},
+		"TextStyleConfigColor": {
+			"type": "string",
+			"description": "Default font color for text of this style",
+			"enum": [
+				"default",
+				"dark",
+				"light",
+				"accent",
+				"good",
+				"warning",
+				"attention"
+			],
+			"default": "default"
+		},
+		"TextStyleConfigFontType": {
+			"type": "string",
+			"description": "Default font type for text of this style",
+			"enum": [
+				"default",
+				"monospace"
+			],
+			"default": "default"
+		},
 		"TextStyleConfig": {
 			"type": "object",
 			"description": "Sets default properties for text of a given style",
 			"additionalProperties": false,
 			"properties": {
 				"size": {
-					"type": "string",
-					"description": "Default font size for text of this style",
-					"enum": [
-						"default",
-						"small",
-						"medium",
-						"large",
-						"extraLarge"
-					],
+					"$ref": "#/definitions/TextStyleConfigSize",
 					"default": "default"
 				},
 				"weight": {
-					"type": "string",
-					"description": "Default font weight for text of this style",
-					"enum": [
-						"default",
-						"lighter",
-						"bolder"
-					],
+					"$ref": "#/definitions/TextStyleConfigWeight",
 					"default": "default"
 				},
 				"color": {
-					"type": "string",
-					"description": "Default font color for text of this style",
-					"enum": [
-						"default",
-						"dark",
-						"light",
-						"accent",
-						"good",
-						"warning",
-						"attention"
-					],
+					"$ref": "#/definitions/TextStyleConfigColor",
 					"default": "default"
 				},
 				"fontType": {
-					"type": "string",
-					"description": "Default font type for text of this style",
-					"enum": [
-						"default",
-						"monospace"
-					],
+					"$ref": "#/definitions/TextStyleConfigFontType",
 					"default": "default"
 				},
 				"isSubtle": {

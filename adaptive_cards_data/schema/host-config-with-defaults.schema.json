@@ -864,27 +864,12 @@
       "description": "Parameters controlling the display of text in a fact set",
       "properties": {
         "color": {
-          "default": "default",
-          "description": "Color of font for fact set text",
-          "enum": [
-            "default",
-            "dark",
-            "light",
-            "accent",
-            "good",
-            "warning",
-            "attention"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigColor",
+          "default": "default"
         },
         "fontType": {
-          "default": "default",
-          "description": "Font Type for fact set text",
-          "enum": [
-            "default",
-            "monospace"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigFontType",
+          "default": "default"
         },
         "isSubtle": {
           "default": false,
@@ -897,26 +882,12 @@
           "type": "integer"
         },
         "size": {
-          "default": "default",
-          "description": "Size of font for fact set text",
-          "enum": [
-            "default",
-            "small",
-            "medium",
-            "large",
-            "extraLarge"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigSize",
+          "default": "default"
         },
         "weight": {
-          "default": "default",
-          "description": "Weight of font for fact set text",
-          "enum": [
-            "default",
-            "lighter",
-            "bolder"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigWeight",
+          "default": "default"
         },
         "wrap": {
           "default": true,
@@ -1860,27 +1831,12 @@
       "description": "Sets default properties for text of a given style",
       "properties": {
         "color": {
-          "default": "default",
-          "description": "Default font color for text of this style",
-          "enum": [
-            "default",
-            "dark",
-            "light",
-            "accent",
-            "good",
-            "warning",
-            "attention"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigColor",
+          "default": "default"
         },
         "fontType": {
-          "default": "default",
-          "description": "Default font type for text of this style",
-          "enum": [
-            "default",
-            "monospace"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigFontType",
+          "default": "default"
         },
         "isSubtle": {
           "default": false,
@@ -1888,29 +1844,58 @@
           "type": "boolean"
         },
         "size": {
-          "default": "default",
-          "description": "Default font size for text of this style",
-          "enum": [
-            "default",
-            "small",
-            "medium",
-            "large",
-            "extraLarge"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigSize",
+          "default": "default"
         },
         "weight": {
-          "default": "default",
-          "description": "Default font weight for text of this style",
-          "enum": [
-            "default",
-            "lighter",
-            "bolder"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/TextStyleConfigWeight",
+          "default": "default"
         }
       },
       "type": "object"
+    },
+    "TextStyleConfigColor": {
+      "default": "default",
+      "description": "Default font color for text of this style",
+      "enum": [
+        "default",
+        "dark",
+        "light",
+        "accent",
+        "good",
+        "warning",
+        "attention"
+      ],
+      "type": "string"
+    },
+    "TextStyleConfigFontType": {
+      "default": "default",
+      "description": "Default font type for text of this style",
+      "enum": [
+        "default",
+        "monospace"
+      ],
+      "type": "string"
+    },
+    "TextStyleConfigSize": {
+      "description": "Default font size for text of this style",
+      "enum": [
+        "default",
+        "small",
+        "medium",
+        "large",
+        "extraLarge"
+      ],
+      "type": "string"
+    },
+    "TextStyleConfigWeight": {
+      "description": "Default font weight for text of this style",
+      "enum": [
+        "default",
+        "lighter",
+        "bolder"
+      ],
+      "type": "string"
     },
     "TextStylesConfig": {
       "additionalProperties": false,

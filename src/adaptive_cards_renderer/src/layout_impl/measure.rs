@@ -2,11 +2,12 @@ use taffy::Size;
 
 use crate::{layout_context::LayoutContext, layout_scratch::LayoutScratch};
 
-use super::text_shared::TextBlockNodeContext;
+use super::{image::ImageNodeContext, text_shared::TextBlockNodeContext};
 
 /// The Taffy node context.
 pub(crate) enum NodeContext {
     Text(TextBlockNodeContext),
+    Image(ImageNodeContext),
 }
 
 /// The Taffy measure function for measuring Adaptive Card elements.
@@ -31,6 +32,7 @@ pub(crate) fn measure(
             NodeContext::Text(text_context) => {
                 text_context.measure(known_dimensions, available_space, context, scratch)
             }
+            NodeContext::Image(image_context) => image_context.measure(known_dimensions),
         },
     }
 }

@@ -42,6 +42,46 @@ impl HostContext for SlipwayHostContext {
 
         Ok(canvas_result_to_image(&canvas_result.canvas))
     }
+
+    fn load_image_from_url(
+        &self,
+        url: &str,
+    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
+        // If the URL is of the form `component://handle/path`...
+        let image_bytes = if let Some((handle, path)) =
+            url.strip_prefix("component://").and_then(|rest| {
+                let mut parts = rest.splitn(2, '/');
+                Some((parts.next()?, parts.next()?))
+            }) {
+            bindings::callout::get_bin(handle, path).map_err(|e| {
+                adaptive_cards_renderer::host_context::ComponentError { message: e.message }
+            })?
+        } else {
+            let image_result = bindings::http::request_bin(url, None).map_err(|e| {
+                adaptive_cards_renderer::host_context::ComponentError { message: e.message }
+            })?;
+
+            image_result.body
+        };
+
+        let image = image::load_from_memory(&image_bytes)
+            .map_err(|e| adaptive_cards_renderer::host_context::ComponentError {
+                message: format!("Failed to load image from callout: {}", e),
+            })?
+            .to_rgba8();
+
+        bindings::log::warn(&format!(
+            "Loaded image from URL: {} ({}x{})",
+            url,
+            image.width(),
+            image.height()
+        ));
+        Ok(image)
+    }
+
+    fn warn(&self, message: &str) {
+        bindings::log::warn(message);
+    }
 }
 
 struct Component;

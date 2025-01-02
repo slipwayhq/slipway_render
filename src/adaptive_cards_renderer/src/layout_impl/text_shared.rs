@@ -127,6 +127,9 @@ impl TextBlockNodeContext {
             font_context,
         );
 
+        let estimated_width = layout.width();
+        let estimated_height = layout.height();
+
         // Compute our own pixel bounds.
         // https://github.com/linebender/parley/issues/165
         let mut bounds: Option<taffy::Rect<i32>> = None;
@@ -166,12 +169,20 @@ impl TextBlockNodeContext {
             },
         };
 
-        let result = match bounds {
+        let calculated_size = match bounds {
             None => Default::default(),
             Some(bounds) => Size {
                 width: (bounds.right - bounds.left + 1) as f32,
                 height: (bounds.bottom - bounds.top + 1) as f32,
             },
+        };
+
+        // We still use the estimated width and height, because otherwise vertically adjacent text
+        // blocks do not have the expected spacing between them, due to the calculated height being
+        // tight against the rendered text.
+        let result = Size {
+            width: estimated_width.max(calculated_size.width),
+            height: estimated_height.max(calculated_size.height),
         };
 
         *self.offset.borrow_mut() = offset;
@@ -347,9 +358,10 @@ pub(super) fn text_draw_override(
     let absolute_rect = node_layout.absolute_rect(context);
 
     let node_context = tree.get_node_context(taffy_data.node_id).unwrap();
-    let NodeContext::Text(text_context) = node_context; /* else {
-                                                            panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
-                                                        };*/
+    let NodeContext::Text(text_context) = node_context else {
+        panic!("Expected TextBlockNodeContext in TextBlock draw_override.");
+    };
+
     let offset = text_context.offset.borrow();
     let x_offset = absolute_rect.left() - offset.x;
     let y_offset = absolute_rect.top() - offset.y;

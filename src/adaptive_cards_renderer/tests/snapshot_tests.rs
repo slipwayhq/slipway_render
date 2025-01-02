@@ -95,4 +95,15 @@ impl HostContext for MockHostContext {
     ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
         unimplemented!()
     }
+
+    fn load_image_from_url(
+        &self,
+        _url: &str,
+    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
+        unimplemented!()
+    }
+
+    fn warn(&self, message: &str) {
+        println!("Warning: {}", message);
+    }
 }

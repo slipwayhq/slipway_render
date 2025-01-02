@@ -1,13 +1,13 @@
 use std::{cell::RefCell, rc::Rc};
 
-use adaptive_cards::{ImageSize, ImageStyle};
+use adaptive_cards::{BlockElementHeight, ImageSize, ImageStyle, StringOrBlockElementHeight};
 use image::{imageops::FilterType, RgbaImage};
 use imageproc::{
     drawing::{draw_filled_rect_mut, Canvas},
     point::Point,
     rect::Rect,
 };
-use taffy::{Dimension, Style, TaffyTree};
+use taffy::{Dimension, Size, Style, TaffyTree};
 
 use crate::{
     element_layout_data::ElementTaffyData,
@@ -24,6 +24,53 @@ use super::{
     measure::NodeContext,
     utils::{apply_horizontal_alignment, parse_dimension},
 };
+
+#[derive(Debug)]
+pub(crate) struct ImageNodeContext {
+    pub width: f32,
+    pub height: f32,
+}
+
+impl ImageNodeContext {
+    // https://github.com/DioxusLabs/taffy/blob/b5a5f80013a83a27c3be778ea4cf37db5bf40764/examples/common/image.rs
+    pub(crate) fn measure(
+        &self,
+        known_dimensions: taffy::geometry::Size<Option<f32>>,
+    ) -> Size<f32> {
+        match (known_dimensions.width, known_dimensions.height) {
+            (Some(width), Some(height)) => Size { width, height },
+            (Some(width), None) => Size {
+                width,
+                height: (width / self.width) * self.height,
+            },
+            (None, Some(height)) => Size {
+                width: (height / self.height) * self.width,
+                height,
+            },
+            (None, None) => Size {
+                width: self.width,
+                height: self.height,
+            },
+        }
+    }
+}
+
+enum ImageSource {
+    Callout,
+    Url,
+}
+
+impl ImageSource {
+    fn from_image(image: &adaptive_cards::Image<ElementLayoutData>) -> Option<Self> {
+        if image.callout.is_some() {
+            Some(Self::Callout)
+        } else if image.url.is_some() {
+            Some(Self::Url)
+        } else {
+            None
+        }
+    }
+}
 
 impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> {
     fn layout_override(
@@ -48,9 +95,13 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
             match size {
                 adaptive_cards::ImageSize::Auto => {
                     // Image will scale down to fit if needed, but will not scale up to fill the area.
+                    style.max_size.width = Dimension::Percent(100.);
+                    style.max_size.height = Dimension::Percent(100.);
                 }
                 adaptive_cards::ImageSize::Stretch => {
                     // Image with both scale down and up to fit as needed.
+                    style.size.width = Dimension::Percent(100.);
+                    style.max_size.height = Dimension::Percent(100.);
                 }
                 adaptive_cards::ImageSize::Small => {
                     style.size.width =
@@ -67,9 +118,47 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
             }
         }
 
-        tree.new_leaf(style)
-            .err_context(context)
-            .map(ElementTaffyData::from)
+        let image_source = ImageSource::from_image(self);
+        match image_source {
+            None => tree
+                .new_leaf(style)
+                .err_context(context)
+                .map(ElementTaffyData::from),
+            Some(ImageSource::Callout) => {
+                if let StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto) =
+                    self.height
+                {
+                    Err(RenderError::Other {
+                        path: context.path.clone(),
+                        message: [
+                            "Image height is set to Auto, but a callout is present. ",
+                            "This will result in a zero height image.",
+                        ]
+                        .concat(),
+                    })
+                } else {
+                    tree.new_leaf(style)
+                        .err_context(context)
+                        .map(ElementTaffyData::from)
+                }
+            }
+            Some(ImageSource::Url) => {
+                let maybe_source_image = load_source_image(self, context, None)?;
+                let Some(source_image) = maybe_source_image else {
+                    panic!("URL should always return source image");
+                };
+
+                let image_context = ImageNodeContext {
+                    width: source_image.width() as f32,
+                    height: source_image.height() as f32,
+                };
+
+                let node_context = NodeContext::Image(image_context);
+                tree.new_leaf_with_context(style, node_context)
+                    .err_context(context)
+                    .map(ElementTaffyData::from)
+            }
+        }
     }
 
     fn draw_override(
@@ -85,42 +174,9 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
 
         let size = self.size.unwrap_or(ImageSize::Auto);
 
-        let mut source_image: RgbaImage = if let Some(callout) = self.callout.as_ref() {
-            // let mut request_image_rect = node_layout.absolute_rect(context);
-            // match size {
-            //     ImageSize::Auto => {
-            //         // Image will scale down to fit if needed, but will not scale up to fill the area.
-            //     }
-            //     ImageSize::Stretch => {
-            //         // Image with both scale down and up to fit as needed.
-            //     }
-            //     ImageSize::Small => {
-            //         request_image_rect.width = context.host_config.image_sizes.small;
-            //     }
-            //     ImageSize::Medium => {
-            //         request_image_rect.width = context.host_config.image_sizes.medium;
-            //     }
-            //     ImageSize::Large => {
-            //         request_image_rect.width = context.host_config.image_sizes.large;
-            //     }
-            // }
+        let maybe_source_image = load_source_image(self, context, Some(absolute_rect))?;
 
-            let mut input = callout.input.clone();
-            input["width"] =
-                serde_json::Value::Number(serde_json::Number::from(absolute_rect.width()));
-            input["height"] =
-                serde_json::Value::Number(serde_json::Number::from(absolute_rect.height()));
-
-            context
-                .host_context
-                .run_callout(&callout.handle, &input)
-                .map_err(|e| RenderError::Other {
-                    path: context.path.clone(),
-                    message: e.message,
-                })?
-        } else if let Some(url) = self.url.as_ref() {
-            unimplemented!("Image URL rendering is not yet implemented: {}", url);
-        } else {
+        let Some(mut source_image) = maybe_source_image else {
             return Ok(());
         };
 
@@ -209,6 +265,46 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
 
         Ok(())
     }
+}
+
+fn load_source_image(
+    image: &adaptive_cards::Image<ElementLayoutData>,
+    context: &LayoutContext<'_, '_, '_>,
+    absolute_rect: Option<Rect>,
+) -> Result<Option<RgbaImage>, RenderError> {
+    let source_image: Option<RgbaImage> = if let Some(callout) = image.callout.as_ref() {
+        let Some(absolute_rect) = absolute_rect else {
+            panic!("absolute_rect is required when callout is present");
+        };
+
+        let mut input = callout.input.clone();
+        input["width"] = serde_json::Value::Number(serde_json::Number::from(absolute_rect.width()));
+        input["height"] =
+            serde_json::Value::Number(serde_json::Number::from(absolute_rect.height()));
+
+        Some(
+            context
+                .host_context
+                .run_callout(&callout.handle, &input)
+                .map_err(|e| RenderError::Other {
+                    path: context.path.clone(),
+                    message: e.message,
+                })?,
+        )
+    } else if let Some(url) = image.url.as_ref() {
+        Some(
+            context
+                .host_context
+                .load_image_from_url(url)
+                .map_err(|e| RenderError::Other {
+                    path: context.path.clone(),
+                    message: e.message,
+                })?,
+        )
+    } else {
+        None
+    };
+    Ok(source_image)
 }
 
 fn copy_image(source: &RgbaImage, target: &mut MaskedImage, position: Point<i32>) {

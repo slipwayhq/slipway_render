@@ -13,7 +13,10 @@ const CARD_EXTENSION: &str = ".card.json";
 
 #[test]
 fn snapshots() {
-    let search_path = format!("snapshot_inputs/*{}", CARD_EXTENSION);
+    // Get test name from SNAPSHOT_TEST_NAME environment variable.
+    let search_path = std::env::var("SNAPSHOT_TEST_NAME")
+        .map(|name| format!("snapshot_inputs/{}{}", name, CARD_EXTENSION))
+        .unwrap_or_else(|_| format!("snapshot_inputs/*{}", CARD_EXTENSION));
 
     insta::with_settings!({}, {
         insta::glob!(&search_path, |path| {
@@ -72,6 +75,8 @@ struct SnapshotTestSpec {
 // For our tests we're always going to use Roboto, so the results are consistent across platforms.
 const ROBOTO_TTF: &[u8] = include_bytes!("../../../fonts/Roboto.ttf");
 const ROBOTO_MONO_TTF: &[u8] = include_bytes!("../../../fonts/RobotoMono.ttf");
+const AIRPLANE_PNG: &[u8] =
+    include_bytes!("../../../src/adaptive_cards_renderer/tests/assets/airplane.png");
 struct MockHostContext {}
 impl HostContext for MockHostContext {
     fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
@@ -98,9 +103,16 @@ impl HostContext for MockHostContext {
 
     fn load_image_from_url(
         &self,
-        _url: &str,
+        url: &str,
     ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
-        unimplemented!()
+        match url {
+            "https://adaptivecards.io/content/airplane.png" => {
+                Ok(image::load_from_memory(AIRPLANE_PNG).unwrap().to_rgba8())
+            }
+            _ => Err(adaptive_cards_renderer::host_context::ComponentError {
+                message: format!("Image not found: {}", url),
+            }),
+        }
     }
 
     fn warn(&self, message: &str) {

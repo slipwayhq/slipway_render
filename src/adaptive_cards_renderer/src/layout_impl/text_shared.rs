@@ -5,7 +5,7 @@ use adaptive_cards_host_config::TextStyleConfig;
 use image::Rgba;
 use imageproc::{drawing::Canvas, integral_image::ArrayData};
 use parley::{
-    Alignment, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem, StyleProperty,
+    Alignment, FontFamily, FontWeight, Glyph, GlyphRun, Layout, PositionedLayoutItem, StyleProperty,
 };
 use swash::{
     scale::{image::Content, Render, ScaleContext, Scaler, Source, StrikeWith},
@@ -103,14 +103,7 @@ impl TextBlockNodeContext {
             AvailableSpace::Definite(width) => Some(width),
         });
 
-        let width_constraint = if let Some(max_width) = self.max_width {
-            match width_constraint {
-                None => Some(max_width),
-                Some(width_constraint) => Some(width_constraint.min(max_width)),
-            }
-        } else {
-            width_constraint
-        };
+        let width_constraint = get_width_constraint(self, width_constraint);
 
         println!(
             "width_constraint for text '{}': {:?}",
@@ -127,8 +120,9 @@ impl TextBlockNodeContext {
             font_context,
         );
 
-        let estimated_width = layout.width();
-        let estimated_height = layout.height();
+        // let estimated_width = layout.width();
+        // let estimated_height = layout.height();
+        let visual_metrics = Self::compute_visual_metrics(&layout);
 
         // Compute our own pixel bounds.
         // https://github.com/linebender/parley/issues/165
@@ -161,11 +155,19 @@ impl TextBlockNodeContext {
 
         render_layout(self, &mut apply_pixel, layout, scale_context);
 
+        // let offset = match bounds {
+        //     None => taffy::Point { x: 0, y: 0 },
+        //     Some(bounds) => taffy::Point {
+        //         x: bounds.left.min(0), // We don't want to offset centered or right-aligned text back to the left.
+        //         y: bounds.top - visual_metrics.y_offset as i32,
+        //     },
+        // };
+
         let offset = match bounds {
             None => taffy::Point { x: 0, y: 0 },
             Some(bounds) => taffy::Point {
-                x: bounds.left.min(0), // We don't want to offset centered or right-aligned text back to the left.
-                y: bounds.top,
+                x: 0, // We don't want to offset centered or right-aligned text back to the left.
+                y: 0 - visual_metrics.y_offset as i32,
             },
         };
 
@@ -177,18 +179,81 @@ impl TextBlockNodeContext {
             },
         };
 
-        // We still use the estimated width and height, because otherwise vertically adjacent text
-        // blocks do not have the expected spacing between them, due to the calculated height being
-        // tight against the rendered text.
+        // // We still use the estimated width and height, because otherwise vertically adjacent text
+        // // blocks do not have the expected spacing between them, due to the calculated height being
+        // // tight against the rendered text.
+        // let result = Size {
+        //     width: estimated_width.max(calculated_size.width),
+        //     height: estimated_height.max(calculated_size.height),
+        // };
+
         let result = Size {
-            width: estimated_width.max(calculated_size.width),
-            height: estimated_height.max(calculated_size.height),
+            width: calculated_size.width,
+            height: visual_metrics.height,
         };
 
         *self.offset.borrow_mut() = offset;
 
         result
     }
+
+    fn compute_visual_metrics(layout: &Layout<[u8; 4]>) -> VisualMetrics {
+        let mut lines = layout.lines();
+
+        let Some(first_line) = lines.next() else {
+            return VisualMetrics {
+                height: 0.0,
+                y_offset: 0.0,
+            };
+        };
+
+        let last_line = lines.last().unwrap_or(first_line);
+
+        let first_line_metrics = first_line.metrics();
+        let last_line_metrics = last_line.metrics();
+
+        // println!("First line: {first_line_metrics:?}");
+        // println!("Last line: {last_line_metrics:?}");
+        // println!("Line count: {}", layout.lines().count());
+
+        // for (i, line) in layout.lines().enumerate() {
+        //     println!("Line {}: {:?}", i, line.metrics());
+        //     for item in line.items() {
+        //         match item {
+        //             PositionedLayoutItem::GlyphRun(r) => {
+        //                 println!("    Glyph run:");
+        //                 for glyph in r.glyphs() {
+        //                     println!("        Glyph ID: {:?}", glyph.id);
+        //                 }
+        //             }
+        //             PositionedLayoutItem::InlineBox(_) => {
+        //                 println!("    Inline box");
+        //             }
+        //         }
+        //     }
+        // }
+
+        // Get the ascent of the first line
+        let first_line_ascent = first_line_metrics.baseline - first_line_metrics.ascent;
+
+        // Calculate baseline of the last line
+        let last_line_baseline = last_line_metrics.baseline;
+
+        let padding = first_line_metrics.descent;
+
+        // Visual height is from the first ascent to the last baseline
+        let height = (last_line_baseline - first_line_ascent) + padding;
+
+        VisualMetrics {
+            height,
+            y_offset: padding / 2.0,
+        }
+    }
+}
+
+struct VisualMetrics {
+    height: f32,
+    y_offset: f32,
 }
 
 pub(super) fn text_layout_override<TParent: TextContainer>(
@@ -328,25 +393,6 @@ fn prepare_layout(
     layout
 }
 
-fn render_layout(
-    text_context: &TextBlockNodeContext,
-    apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
-    layout: parley::Layout<[u8; 4]>,
-    scale_context: &mut swash::scale::ScaleContext,
-) {
-    let max_lines = text_context.max_lines.unwrap_or(u32::MAX) as usize;
-
-    // Iterate over laid out lines
-    for line in layout.lines().take(max_lines) {
-        // Iterate over GlyphRun's within each line
-        for item in line.items() {
-            if let PositionedLayoutItem::GlyphRun(glyph_run) = item {
-                render_glyph_run(apply_pixel, scale_context, &glyph_run);
-            }
-        }
-    }
-}
-
 pub(super) fn text_draw_override(
     context: &LayoutContext,
     tree: &TaffyTree<NodeContext>,
@@ -369,6 +415,7 @@ pub(super) fn text_draw_override(
     let (layout_context, font_context, scale_context) = scratch.for_text_mut();
 
     let width_constraint = Some(absolute_rect.width() as f32);
+    let width_constraint = get_width_constraint(text_context, width_constraint);
 
     let layout = prepare_layout(
         text_context,
@@ -393,6 +440,39 @@ pub(super) fn text_draw_override(
     render_layout(text_context, &mut apply_pixel, layout, scale_context);
 
     Ok(())
+}
+
+fn get_width_constraint(
+    text_context: &TextBlockNodeContext,
+    width_constraint: Option<f32>,
+) -> Option<f32> {
+    if let Some(max_width) = text_context.max_width {
+        match width_constraint {
+            None => Some(max_width),
+            Some(width_constraint) => Some(width_constraint.min(max_width)),
+        }
+    } else {
+        width_constraint
+    }
+}
+
+fn render_layout(
+    text_context: &TextBlockNodeContext,
+    apply_pixel: &mut impl FnMut(i32, i32, &Rgba<u8>),
+    layout: parley::Layout<[u8; 4]>,
+    scale_context: &mut swash::scale::ScaleContext,
+) {
+    let max_lines = text_context.max_lines.unwrap_or(u32::MAX) as usize;
+
+    // Iterate over laid out lines
+    for line in layout.lines().take(max_lines) {
+        // Iterate over GlyphRun's within each line
+        for item in line.items() {
+            if let PositionedLayoutItem::GlyphRun(glyph_run) = item {
+                render_glyph_run(apply_pixel, scale_context, &glyph_run);
+            }
+        }
+    }
 }
 
 fn render_glyph_run(

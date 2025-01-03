@@ -232,6 +232,7 @@
                             "type": "Image",
                             "url": "https://adaptivecards.io/content/airplane.png",
                             "altText": "Airplane",
+                            "spacing": "none",
                             "size": "small"
                         }
                     ]
@@ -242,7 +243,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "San Fransisco Airport",
+                            "text": "San Francisco Airport",
                             "isSubtle": true,
                             "horizontalAlignment": "right",
                             "wrap": true

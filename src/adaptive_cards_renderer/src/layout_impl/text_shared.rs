@@ -55,37 +55,6 @@ pub(crate) struct TextBlockNodeContext {
 }
 
 impl TextBlockNodeContext {
-    /// Measure using the built-in taffy size estimation.
-    pub fn measure_quick(
-        &mut self,
-        known_dimensions: taffy::Size<Option<f32>>,
-        available_space: taffy::Size<taffy::AvailableSpace>,
-        context: &LayoutContext,
-        scratch: &mut LayoutScratch,
-    ) -> taffy::Size<f32> {
-        let width_constraint = known_dimensions.width.or(match available_space.width {
-            AvailableSpace::MinContent => Some(0.0),
-            AvailableSpace::MaxContent => None,
-            AvailableSpace::Definite(width) => Some(width),
-        });
-
-        let (layout_context, font_context, _scale_context) = scratch.for_text_mut();
-
-        let layout = prepare_layout(
-            self,
-            width_constraint,
-            context,
-            layout_context,
-            font_context,
-        );
-
-        let width = layout.width();
-        let height = layout.height();
-
-        taffy::Size { width, height }
-    }
-
-    /// Measure by computing our own pixel bounds.
     pub fn measure(
         &self,
         known_dimensions: taffy::geometry::Size<Option<f32>>,
@@ -105,12 +74,7 @@ impl TextBlockNodeContext {
 
         let width_constraint = get_width_constraint(self, width_constraint);
 
-        println!(
-            "width_constraint for text '{}': {:?}",
-            self.text, width_constraint
-        );
-
-        let (layout_context, font_context, scale_context) = scratch.for_text_mut();
+        let (layout_context, font_context, _scale_context) = scratch.for_text_mut();
 
         let layout = prepare_layout(
             self,
@@ -120,134 +84,14 @@ impl TextBlockNodeContext {
             font_context,
         );
 
-        // let estimated_width = layout.width();
-        // let estimated_height = layout.height();
-        let visual_metrics = Self::compute_visual_metrics(&layout);
-
-        // Compute our own pixel bounds.
-        // https://github.com/linebender/parley/issues/165
-        let mut bounds: Option<taffy::Rect<i32>> = None;
-
-        let mut apply_pixel = |x: i32, y: i32, _pixel: &Rgba<u8>| match bounds.as_mut() {
-            None => {
-                bounds = Some(taffy::Rect::<i32> {
-                    left: x,
-                    right: x,
-                    top: y,
-                    bottom: y,
-                });
-            }
-            Some(bounds) => {
-                if x < bounds.left {
-                    bounds.left = x;
-                }
-                if x > bounds.right {
-                    bounds.right = x;
-                }
-                if y < bounds.top {
-                    bounds.top = y;
-                }
-                if y > bounds.bottom {
-                    bounds.bottom = y;
-                }
-            }
-        };
-
-        render_layout(self, &mut apply_pixel, layout, scale_context);
-
-        // let offset = match bounds {
-        //     None => taffy::Point { x: 0, y: 0 },
-        //     Some(bounds) => taffy::Point {
-        //         x: bounds.left.min(0), // We don't want to offset centered or right-aligned text back to the left.
-        //         y: bounds.top - visual_metrics.y_offset as i32,
-        //     },
-        // };
-
-        let offset = match bounds {
-            None => taffy::Point { x: 0, y: 0 },
-            Some(bounds) => taffy::Point {
-                x: 0, // We don't want to offset centered or right-aligned text back to the left.
-                y: 0 - visual_metrics.y_offset as i32,
-            },
-        };
-
-        let calculated_size = match bounds {
-            None => Default::default(),
-            Some(bounds) => Size {
-                width: (bounds.right - bounds.left + 1) as f32,
-                height: (bounds.bottom - bounds.top + 1) as f32,
-            },
-        };
-
-        // // We still use the estimated width and height, because otherwise vertically adjacent text
-        // // blocks do not have the expected spacing between them, due to the calculated height being
-        // // tight against the rendered text.
-        // let result = Size {
-        //     width: estimated_width.max(calculated_size.width),
-        //     height: estimated_height.max(calculated_size.height),
-        // };
-
         let result = Size {
-            width: calculated_size.width,
-            height: visual_metrics.height,
+            width: layout.width(),
+            height: layout.height(),
         };
 
-        *self.offset.borrow_mut() = offset;
+        *self.offset.borrow_mut() = taffy::Point { x: 0, y: 0 };
 
         result
-    }
-
-    fn compute_visual_metrics(layout: &Layout<[u8; 4]>) -> VisualMetrics {
-        let mut lines = layout.lines();
-
-        let Some(first_line) = lines.next() else {
-            return VisualMetrics {
-                height: 0.0,
-                y_offset: 0.0,
-            };
-        };
-
-        let last_line = lines.last().unwrap_or(first_line);
-
-        let first_line_metrics = first_line.metrics();
-        let last_line_metrics = last_line.metrics();
-
-        // println!("First line: {first_line_metrics:?}");
-        // println!("Last line: {last_line_metrics:?}");
-        // println!("Line count: {}", layout.lines().count());
-
-        // for (i, line) in layout.lines().enumerate() {
-        //     println!("Line {}: {:?}", i, line.metrics());
-        //     for item in line.items() {
-        //         match item {
-        //             PositionedLayoutItem::GlyphRun(r) => {
-        //                 println!("    Glyph run:");
-        //                 for glyph in r.glyphs() {
-        //                     println!("        Glyph ID: {:?}", glyph.id);
-        //                 }
-        //             }
-        //             PositionedLayoutItem::InlineBox(_) => {
-        //                 println!("    Inline box");
-        //             }
-        //         }
-        //     }
-        // }
-
-        // Get the ascent of the first line
-        let first_line_ascent = first_line_metrics.baseline - first_line_metrics.ascent;
-
-        // Calculate baseline of the last line
-        let last_line_baseline = last_line_metrics.baseline;
-
-        let padding = first_line_metrics.descent;
-
-        // Visual height is from the first ascent to the last baseline
-        let height = (last_line_baseline - first_line_ascent) + padding;
-
-        VisualMetrics {
-            height,
-            y_offset: padding / 2.0,
-        }
     }
 }
 
@@ -526,7 +370,9 @@ fn render_glyph(
 ) {
     // Compute the fractional offset
     // You'll likely want to quantize this in a real renderer
-    let offset = Vector::new(glyph_x.fract().round(), glyph_y.fract().round());
+    let offset = Vector::new(glyph_x.fract(), glyph_y.fract());
+    // let offset = Vector::new(0.0, 0.0);
+    // let offset = Vector::new(glyph_x.fract().round(), glyph_y.fract().round());
 
     // Render the glyph using swash
     let rendered_glyph = Render::new(

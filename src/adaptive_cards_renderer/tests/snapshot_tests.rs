@@ -18,6 +18,13 @@ fn snapshots() {
         .map(|name| format!("snapshot_inputs/{}{}", name, CARD_EXTENSION))
         .unwrap_or_else(|_| format!("snapshot_inputs/*{}", CARD_EXTENSION));
 
+    let debug_mode = match std::env::var("SNAPSHOT_DEBUG_MODE").as_deref() {
+        Ok("full") => DebugMode::full(),
+        Ok("outlines") => DebugMode::with_outlines(),
+        Ok("transparent_masks") => DebugMode::with_transparent_masks(),
+        _ => DebugMode::none(),
+    };
+
     insta::with_settings!({}, {
         insta::glob!(&search_path, |path| {
             let path_string = path.to_string_lossy();
@@ -34,7 +41,7 @@ fn snapshots() {
                 &MockHostContext {},
                 spec.width,
                 spec.height,
-                DebugMode::none(),
+                debug_mode,
             )
             .unwrap();
 

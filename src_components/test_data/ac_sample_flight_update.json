@@ -102,7 +102,7 @@
                     },
                     {
                       "type": "TextBlock",
-                      "text": "${underName.name}",
+                      "text": "Sarah Hum",
                       "spacing": "small",
                       "wrap": true
                     },
@@ -175,7 +175,7 @@
                     },
                     {
                       "type": "TextBlock",
-                      "text": "${reservationFor.flightNumber}",
+                      "text": "KL605",
                       "spacing": "small",
                       "wrap": true
                     }
@@ -195,7 +195,7 @@
                     },
                     {
                       "type": "TextBlock",
-                      "text": "{{TIME(${string(reservationFor.departureTime)})}}",
+                      "text": "10:20",
                       "color": "attention",
                       "weight": "bolder",
                       "horizontalAlignment": "center",
@@ -218,7 +218,7 @@
                     },
                     {
                       "type": "TextBlock",
-                      "text": "{{TIME(${string(reservationFor.arrivalTime)})}}",
+                      "text": "04:20",
                       "color": "attention",
                       "horizontalAlignment": "right",
                       "weight": "bolder",
@@ -240,13 +240,13 @@
                   "items": [
                     {
                       "type": "TextBlock",
-                      "text": "${reservationFor.departureAirport.name}",
+                      "text": "Amsterdam Airport",
                       "isSubtle": true,
                       "wrap": true
                     },
                     {
                       "type": "TextBlock",
-                      "text": "${reservationFor.departureAirport.iataCode}",
+                      "text": "AMS",
                       "size": "extraLarge",
                       "color": "accent",
                       "spacing": "none",
@@ -267,6 +267,7 @@
                       "type": "Image",
                       "url": "https://adaptivecards.io/content/airplane.png",
                       "altText": "Airplane",
+                      "spacing": "none",
                       "size": "small"
                     }
                   ]
@@ -277,14 +278,14 @@
                   "items": [
                     {
                       "type": "TextBlock",
-                      "text": "${reservationFor.arrivalAirport.name}",
+                      "text": "San Francisco Airport",
                       "isSubtle": true,
                       "horizontalAlignment": "right",
                       "wrap": true
                     },
                     {
                       "type": "TextBlock",
-                      "text": "${reservationFor.arrivalAirport.iataCode}",
+                      "text": "SFO",
                       "horizontalAlignment": "right",
                       "size": "extraLarge",
                       "color": "accent",

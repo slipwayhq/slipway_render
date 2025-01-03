@@ -10,6 +10,9 @@ test *FLAGS: build
 test-snapshot name *FLAGS: build-src
   cd src && SNAPSHOT_TEST_NAME={{name}} cargo nextest run snapshots {{FLAGS}}
 
+debug-snapshot name *FLAGS: build-src
+  cd src && SNAPSHOT_TEST_NAME={{name}} SNAPSHOT_DEBUG_MODE=full cargo nextest run snapshots {{FLAGS}}
+
 clean: clean-src clean-components (clean-artifacts "")
 
 build-src configuration="debug":

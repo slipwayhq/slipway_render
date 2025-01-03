@@ -1,0 +1,25 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "version": "1.5",
+  "verticalContentAlignment": "center",
+  "body": [
+    {
+        "type": "Container",
+        "style": "accent",
+        "items": [
+            {
+                "type": "TextBlock",
+                "wrap": true,
+                "text": "The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog."
+            }        
+        ]
+    },
+    {
+        "type": "Container",
+        "style": "accent",
+        "height": "stretch",
+        "items": []
+    }
+  ]
+}

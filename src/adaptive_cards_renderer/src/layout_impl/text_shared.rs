@@ -5,7 +5,7 @@ use adaptive_cards_host_config::TextStyleConfig;
 use image::Rgba;
 use imageproc::{drawing::Canvas, integral_image::ArrayData};
 use parley::{
-    Alignment, FontFamily, FontWeight, Glyph, GlyphRun, Layout, PositionedLayoutItem, StyleProperty,
+    Alignment, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem, StyleProperty,
 };
 use swash::{
     scale::{image::Content, Render, ScaleContext, Scaler, Source, StrikeWith},

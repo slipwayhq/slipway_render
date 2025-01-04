@@ -14,10 +14,6 @@ impl ImageNodeContext {
         known_dimensions: Size<Option<f32>>,
         available_space: Size<AvailableSpace>,
     ) -> Size<f32> {
-        println!("context: {:?}", self);
-        println!("known_dimensions: {:?}", known_dimensions);
-        println!("available_space: {:?}", available_space);
-
         match self.max_width {
             Some(max_width) => self.measure_auto(max_width, known_dimensions),
             None => self.measure_stretch(known_dimensions, available_space),

@@ -1,16 +1,23 @@
 use taffy::{NodeId, PrintTree};
 
+use crate::host_context::HostContext;
+
 /// Based on the built-in Taffy print_tree function, but prepends `debug: ` to each line, so that when output from a
 /// Slipway component it will only display if debug logging is enabled.
 /// Prints a debug representation of the computed layout for a tree of nodes, starting with the passed root node.
-pub fn print_tree(tree: &impl PrintTree, root: NodeId) {
-    const PREFIX: &str = "debug: ";
-    println!("{PREFIX}TREE");
+pub fn print_tree(tree: &impl PrintTree, root: NodeId, host_context: &dyn HostContext) {
+    host_context.debug("TREE");
 
-    print_node(tree, root, false, String::new());
+    print_node(tree, root, false, String::new(), host_context);
 
     /// Recursive function that prints each node in the tree
-    fn print_node(tree: &impl PrintTree, node_id: NodeId, has_sibling: bool, lines_string: String) {
+    fn print_node(
+        tree: &impl PrintTree,
+        node_id: NodeId,
+        has_sibling: bool,
+        lines_string: String,
+        host_context: &dyn HostContext,
+    ) {
         let layout = &tree.get_final_layout(node_id);
         let display = tree.get_debug_label(node_id);
         let num_children = tree.child_count(node_id);
@@ -20,8 +27,9 @@ pub fn print_tree(tree: &impl PrintTree, root: NodeId) {
         } else {
             "└── "
         };
-        println!(
-                "{PREFIX}{lines}{fork} {display} [x: {x:<4} y: {y:<4} w: {width:<4} h: {height:<4} content_w: {content_width:<4} content_h: {content_height:<4} border: l:{bl} r:{br} t:{bt} b:{bb}, padding: l:{pl} r:{pr} t:{pt} b:{pb}] ({key:?})",
+        host_context.debug(
+            &format!(
+                "{lines}{fork} {display} [x: {x:<4} y: {y:<4} w: {width:<4} h: {height:<4} content_w: {content_width:<4} content_h: {content_height:<4} border: l:{bl} r:{br} t:{bt} b:{bb}, padding: l:{pl} r:{pr} t:{pt} b:{pb}] ({key:?})",
                 lines = lines_string,
                 fork = fork_string,
                 display = display,
@@ -40,14 +48,14 @@ pub fn print_tree(tree: &impl PrintTree, root: NodeId) {
                 pt = layout.padding.top,
                 pb = layout.padding.bottom,
                 key = node_id,
-            );
+        ));
         let bar = if has_sibling { "│   " } else { "    " };
         let new_string = lines_string + bar;
 
         // Recurse into children
         for (index, child) in tree.child_ids(node_id).enumerate() {
             let has_sibling = index < num_children - 1;
-            print_node(tree, child, has_sibling, new_string.clone());
+            print_node(tree, child, has_sibling, new_string.clone(), host_context);
         }
     }
 }

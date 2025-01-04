@@ -126,7 +126,7 @@ pub fn render(
     .err_context(&context)?;
 
     // Print the tree (will only be displayed if the user enables the appropriate logging level).
-    super::print_tree::print_tree(&tree, root);
+    super::print_tree::print_tree(&tree, root, host_context);
 
     // Create the image to draw onto.
     let image = Rc::new(RefCell::new(RgbaImage::new(width, height)));

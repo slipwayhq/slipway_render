@@ -1,108 +1,122 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_horizontal_separator.card.json
 ---
 {
-  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-  "body": [
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "1",
-          ".layout": {
-            "rect": {
-              "x": 33,
-              "y": 33,
-              "width": 84,
-              "height": 18
-            },
-            "placement": "SoleVertical"
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "1",
+            ".layout": {
+              "rect": {
+                "x": 33,
+                "y": 33,
+                "width": 84,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
           }
+        ],
+        "separator": true,
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 16,
+            "width": 118,
+            "height": 52
+          },
+          "placement": "Top"
         }
-      ],
-      "separator": true,
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 16,
-          "width": 118,
-          "height": 52
-        },
-        "placement": "Top"
+      },
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "2",
+            ".layout": {
+              "rect": {
+                "x": 33,
+                "y": 97,
+                "width": 84,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
+          }
+        ],
+        "separator": false,
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 80,
+            "width": 118,
+            "height": 52
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "Container",
+        "height": "stretch",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "3",
+            ".layout": {
+              "rect": {
+                "x": 33,
+                "y": 162,
+                "width": 84,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
+          }
+        ],
+        "separator": true,
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 145,
+            "width": 118,
+            "height": 89
+          },
+          "placement": "Bottom"
+        }
       }
-    },
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "2",
-          ".layout": {
-            "rect": {
-              "x": 33,
-              "y": 97,
-              "width": 84,
-              "height": 18
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "separator": false,
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 80,
-          "width": 118,
-          "height": 52
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "Container",
-      "height": "stretch",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "3",
-          ".layout": {
-            "rect": {
-              "x": 33,
-              "y": 162,
-              "width": 84,
-              "height": 18
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "separator": true,
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 145,
-          "width": 118,
-          "height": 89
-        },
-        "placement": "Bottom"
+    ],
+    "version": "1.5",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 150,
+        "height": 250
       }
     }
-  ],
-  "version": "1.5",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 150,
-      "height": 250
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 150  h: 250  content_w: 134  content_h: 234  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967305))",
+    "    ├──  FLEX COL [x: 16   y: 16   w: 118  h: 52   content_w: 101  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967298))",
+    "    │   └──  LEAF [x: 17   y: 17   w: 84   h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "    ├──  LEAF [x: 16   y: 68   w: 118  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "    ├──  FLEX COL [x: 16   y: 80   w: 118  h: 52   content_w: 101  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967301))",
+    "    │   └──  LEAF [x: 17   y: 17   w: 84   h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
+    "    ├──  LEAF [x: 16   y: 132  w: 118  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
+    "    └──  FLEX COL [x: 16   y: 145  w: 118  h: 89   content_w: 101  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967304))",
+    "        └──  LEAF [x: 17   y: 17   w: 84   h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))"
+  ]
 }

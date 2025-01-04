@@ -1,347 +1,375 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.card.json
 ---
 {
-  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-  "body": [
-    {
-      "type": "Table",
-      "columns": [
-        {},
-        {
-          "width": {
-            "Number": 2.0
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "Table",
+        "columns": [
+          {},
+          {
+            "width": {
+              "Number": 2.0
+            }
+          },
+          {
+            "width": {
+              "String": "50px"
+            }
           }
-        },
-        {
-          "width": {
-            "String": "50px"
+        ],
+        "gridStyle": "accent",
+        "rows": [
+          {
+            "cells": [
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Narrow",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 24,
+                        "y": 24,
+                        "width": 91,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 16,
+                    "width": 107,
+                    "height": 34
+                  },
+                  "placement": "Left"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Wide",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 131,
+                        "y": 24,
+                        "width": 195,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "style": "accent",
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 123,
+                    "y": 16,
+                    "width": 211,
+                    "height": 34
+                  },
+                  "placement": "WithinHorizontal"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "A",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 342,
+                        "y": 24,
+                        "width": 34,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 334,
+                    "y": 16,
+                    "width": 50,
+                    "height": 34
+                  },
+                  "placement": "Right"
+                }
+              }
+            ],
+            "type": "TableRow",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 16,
+                "width": 368,
+                "height": 34
+              },
+              "placement": "Top"
+            }
+          },
+          {
+            "cells": [
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Narrow 2",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 24,
+                        "y": 58,
+                        "width": 91,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 50,
+                    "width": 107,
+                    "height": 52
+                  },
+                  "placement": "Left"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Wide 2",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 131,
+                        "y": 58,
+                        "width": 195,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "style": "accent",
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 123,
+                    "y": 50,
+                    "width": 211,
+                    "height": 52
+                  },
+                  "placement": "WithinHorizontal"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Fixed 2",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 342,
+                        "y": 58,
+                        "width": 34,
+                        "height": 36
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "style": "accent",
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 334,
+                    "y": 50,
+                    "width": 50,
+                    "height": 52
+                  },
+                  "placement": "Right"
+                }
+              }
+            ],
+            "type": "TableRow",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 50,
+                "width": 368,
+                "height": 52
+              },
+              "placement": "WithinVertical"
+            }
+          },
+          {
+            "cells": [
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Narrow 3",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 24,
+                        "y": 110,
+                        "width": 91,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 102,
+                    "width": 107,
+                    "height": 52
+                  },
+                  "placement": "Left"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Wide 3",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 131,
+                        "y": 110,
+                        "width": 195,
+                        "height": 18
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 123,
+                    "y": 102,
+                    "width": 211,
+                    "height": 52
+                  },
+                  "placement": "WithinHorizontal"
+                }
+              },
+              {
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Fixed 3",
+                    "wrap": true,
+                    ".layout": {
+                      "rect": {
+                        "x": 342,
+                        "y": 110,
+                        "width": 34,
+                        "height": 36
+                      },
+                      "placement": "SoleVertical"
+                    }
+                  }
+                ],
+                "type": "TableCell",
+                ".layout": {
+                  "rect": {
+                    "x": 334,
+                    "y": 102,
+                    "width": 50,
+                    "height": 52
+                  },
+                  "placement": "Right"
+                }
+              }
+            ],
+            "style": "accent",
+            "type": "TableRow",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 102,
+                "width": 368,
+                "height": 52
+              },
+              "placement": "Bottom"
+            }
           }
+        ],
+        "showGridLines": false,
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 16,
+            "width": 368,
+            "height": 138
+          },
+          "placement": "SoleVertical"
         }
-      ],
-      "gridStyle": "accent",
-      "rows": [
-        {
-          "cells": [
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Narrow",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 24,
-                      "y": 24,
-                      "width": 91,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 16,
-                  "width": 107,
-                  "height": 34
-                },
-                "placement": "Left"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Wide",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 131,
-                      "y": 24,
-                      "width": 195,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "style": "accent",
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 123,
-                  "y": 16,
-                  "width": 211,
-                  "height": 34
-                },
-                "placement": "WithinHorizontal"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "A",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 342,
-                      "y": 24,
-                      "width": 34,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 334,
-                  "y": 16,
-                  "width": 50,
-                  "height": 34
-                },
-                "placement": "Right"
-              }
-            }
-          ],
-          "type": "TableRow",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 16,
-              "width": 368,
-              "height": 34
-            },
-            "placement": "Top"
-          }
-        },
-        {
-          "cells": [
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Narrow 2",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 24,
-                      "y": 58,
-                      "width": 91,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 50,
-                  "width": 107,
-                  "height": 52
-                },
-                "placement": "Left"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Wide 2",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 131,
-                      "y": 58,
-                      "width": 195,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "style": "accent",
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 123,
-                  "y": 50,
-                  "width": 211,
-                  "height": 52
-                },
-                "placement": "WithinHorizontal"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Fixed 2",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 342,
-                      "y": 58,
-                      "width": 34,
-                      "height": 36
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "style": "accent",
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 334,
-                  "y": 50,
-                  "width": 50,
-                  "height": 52
-                },
-                "placement": "Right"
-              }
-            }
-          ],
-          "type": "TableRow",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 50,
-              "width": 368,
-              "height": 52
-            },
-            "placement": "WithinVertical"
-          }
-        },
-        {
-          "cells": [
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Narrow 3",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 24,
-                      "y": 110,
-                      "width": 91,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 102,
-                  "width": 107,
-                  "height": 52
-                },
-                "placement": "Left"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Wide 3",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 131,
-                      "y": 110,
-                      "width": 195,
-                      "height": 18
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 123,
-                  "y": 102,
-                  "width": 211,
-                  "height": 52
-                },
-                "placement": "WithinHorizontal"
-              }
-            },
-            {
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Fixed 3",
-                  "wrap": true,
-                  ".layout": {
-                    "rect": {
-                      "x": 342,
-                      "y": 110,
-                      "width": 34,
-                      "height": 36
-                    },
-                    "placement": "SoleVertical"
-                  }
-                }
-              ],
-              "type": "TableCell",
-              ".layout": {
-                "rect": {
-                  "x": 334,
-                  "y": 102,
-                  "width": 50,
-                  "height": 52
-                },
-                "placement": "Right"
-              }
-            }
-          ],
-          "style": "accent",
-          "type": "TableRow",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 102,
-              "width": 368,
-              "height": 52
-            },
-            "placement": "Bottom"
-          }
-        }
-      ],
-      "showGridLines": false,
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 16,
-          "width": 368,
-          "height": 138
-        },
-        "placement": "SoleVertical"
+      }
+    ],
+    "version": "1.6",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 400,
+        "height": 200
       }
     }
-  ],
-  "version": "1.6",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 400,
-      "height": 200
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 400  h: 200  content_w: 384  content_h: 154  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967319))",
+    "    └──  FLEX COL [x: 16   y: 16   w: 368  h: 138  content_w: 368  content_h: 138  border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967318))",
+    "        ├──  FLEX ROW [x: 0    y: 0    w: 368  h: 34   content_w: 368  content_h: 34   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))",
+    "        │   ├──  FLEX COL [x: 0    y: 0    w: 107  h: 34   content_w: 99   content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967298))",
+    "        │   │   └──  LEAF [x: 8    y: 8    w: 91   h: 18   content_w: 46   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "        │   ├──  FLEX COL [x: 107  y: 0    w: 211  h: 34   content_w: 203  content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967300))",
+    "        │   │   └──  LEAF [x: 8    y: 8    w: 195  h: 18   content_w: 31   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "        │   └──  FLEX COL [x: 318  y: 0    w: 50   h: 34   content_w: 42   content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967302))",
+    "        │       └──  LEAF [x: 8    y: 8    w: 34   h: 18   content_w: 9    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
+    "        ├──  FLEX ROW [x: 0    y: 34   w: 368  h: 52   content_w: 368  content_h: 52   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967310))",
+    "        │   ├──  FLEX COL [x: 0    y: 0    w: 107  h: 52   content_w: 99   content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967305))",
+    "        │   │   └──  LEAF [x: 8    y: 8    w: 91   h: 18   content_w: 57   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967304))",
+    "        │   ├──  FLEX COL [x: 107  y: 0    w: 211  h: 52   content_w: 203  content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967307))",
+    "        │   │   └──  LEAF [x: 8    y: 8    w: 195  h: 18   content_w: 42   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967306))",
+    "        │   └──  FLEX COL [x: 318  y: 0    w: 50   h: 52   content_w: 45   content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967309))",
+    "        │       └──  LEAF [x: 8    y: 8    w: 34   h: 36   content_w: 37   content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967308))",
+    "        └──  FLEX ROW [x: 0    y: 86   w: 368  h: 52   content_w: 368  content_h: 52   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967317))",
+    "            ├──  FLEX COL [x: 0    y: 0    w: 107  h: 52   content_w: 99   content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967312))",
+    "            │   └──  LEAF [x: 8    y: 8    w: 91   h: 18   content_w: 57   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967311))",
+    "            ├──  FLEX COL [x: 107  y: 0    w: 211  h: 52   content_w: 203  content_h: 26   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967314))",
+    "            │   └──  LEAF [x: 8    y: 8    w: 195  h: 18   content_w: 42   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967313))",
+    "            └──  FLEX COL [x: 318  y: 0    w: 50   h: 52   content_w: 45   content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:8 r:8 t:8 b:8] (NodeId(4294967316))",
+    "                └──  LEAF [x: 8    y: 8    w: 34   h: 36   content_w: 37   content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967315))"
+  ]
 }

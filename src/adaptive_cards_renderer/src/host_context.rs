@@ -19,4 +19,5 @@ pub trait HostContext {
     ) -> Result<RgbaImage, ComponentError>;
     fn load_image_from_url(&self, url: &str) -> Result<RgbaImage, ComponentError>;
     fn warn(&self, message: &str);
+    fn debug(&self, message: &str);
 }

@@ -1,11 +1,12 @@
-use std::path::Path;
+use std::{cell::RefCell, path::Path};
 
+use adaptive_cards::AdaptiveCard;
 use adaptive_cards_host_config::HostConfig;
 use adaptive_cards_renderer::{
     default_host_config,
     host_context::{HostContext, ResolvedFont},
     render::render_from_str,
-    DebugMode,
+    DebugMode, ElementLayoutData,
 };
 use image::RgbaImage;
 
@@ -35,10 +36,14 @@ fn snapshots() {
             println!("Running snapshot test for {}", card_prefix);
 
             let json_data = std::fs::read_to_string(path).unwrap();
+
+            let mock_host_context = MockHostContext {
+                debug_lines: RefCell::new(Vec::new()),
+            };
             let (image, card) = render_from_str(
                 &json_data,
                 &spec.host_config.unwrap_or_else(default_host_config),
-                &MockHostContext {},
+                &mock_host_context,
                 spec.width,
                 spec.height,
                 debug_mode,
@@ -47,7 +52,12 @@ fn snapshots() {
 
             write_image_for(card_prefix, &image);
 
-            insta::assert_json_snapshot!(card);
+            let snapshot = Snapshot {
+                card,
+                debug_lines: mock_host_context.debug_lines.into_inner(),
+            };
+
+            insta::assert_json_snapshot!(snapshot);
         });
     });
 }
@@ -72,6 +82,12 @@ fn load_spec_file_for(card_prefix: &str) -> SnapshotTestSpec {
     }
 }
 
+#[derive(Debug, serde::Serialize)]
+struct Snapshot {
+    card: AdaptiveCard<ElementLayoutData>,
+    debug_lines: Vec<String>,
+}
+
 #[derive(Debug, serde::Deserialize)]
 struct SnapshotTestSpec {
     width: u32,
@@ -84,7 +100,9 @@ const ROBOTO_TTF: &[u8] = include_bytes!("../../../fonts/Roboto.ttf");
 const ROBOTO_MONO_TTF: &[u8] = include_bytes!("../../../fonts/RobotoMono.ttf");
 const AIRPLANE_PNG: &[u8] =
     include_bytes!("../../../src/adaptive_cards_renderer/tests/assets/airplane.png");
-struct MockHostContext {}
+struct MockHostContext {
+    debug_lines: RefCell<Vec<String>>,
+}
 impl HostContext for MockHostContext {
     fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
         if family.to_lowercase().contains("mono") {
@@ -124,5 +142,10 @@ impl HostContext for MockHostContext {
 
     fn warn(&self, message: &str) {
         println!("Warning: {}", message);
+    }
+
+    fn debug(&self, message: &str) {
+        println!("Debug: {}", message);
+        self.debug_lines.borrow_mut().push(message.to_string());
     }
 }

@@ -1,108 +1,122 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_multiple_item_bleed.card.json
 ---
 {
-  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-  "body": [
-    {
-      "type": "Container",
-      "bleed": true,
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "1",
-          ".layout": {
-            "rect": {
-              "x": 17,
-              "y": 17,
-              "width": 116,
-              "height": 18
-            },
-            "placement": "SoleVertical"
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "Container",
+        "bleed": true,
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "1",
+            ".layout": {
+              "rect": {
+                "x": 17,
+                "y": 17,
+                "width": 116,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
           }
+        ],
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 150,
+            "height": 52
+          },
+          "placement": "Top"
         }
-      ],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 0,
-          "y": 0,
-          "width": 150,
-          "height": 52
-        },
-        "placement": "Top"
+      },
+      {
+        "type": "Container",
+        "bleed": true,
+        "height": "stretch",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "2",
+            ".layout": {
+              "rect": {
+                "x": 17,
+                "y": 81,
+                "width": 116,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
+          }
+        ],
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 0,
+            "y": 64,
+            "width": 150,
+            "height": 204
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "Container",
+        "bleed": true,
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "3",
+            ".layout": {
+              "rect": {
+                "x": 17,
+                "y": 297,
+                "width": 116,
+                "height": 18
+              },
+              "placement": "SoleVertical"
+            }
+          }
+        ],
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 0,
+            "y": 280,
+            "width": 150,
+            "height": 52
+          },
+          "placement": "Bottom"
+        }
       }
-    },
-    {
-      "type": "Container",
-      "bleed": true,
-      "height": "stretch",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "2",
-          ".layout": {
-            "rect": {
-              "x": 17,
-              "y": 81,
-              "width": 116,
-              "height": 18
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 0,
-          "y": 64,
-          "width": 150,
-          "height": 204
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "Container",
-      "bleed": true,
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "3",
-          ".layout": {
-            "rect": {
-              "x": 17,
-              "y": 297,
-              "width": 116,
-              "height": 18
-            },
-            "placement": "SoleVertical"
-          }
-        }
-      ],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 0,
-          "y": 280,
-          "width": 150,
-          "height": 52
-        },
-        "placement": "Bottom"
+    ],
+    "version": "1.5",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 150,
+        "height": 300
       }
     }
-  ],
-  "version": "1.5",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 150,
-      "height": 300
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 150  h: 300  content_w: 150  content_h: 332  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967305))",
+    "    ├──  FLEX COL [x: 0    y: 0    w: 150  h: 52   content_w: 133  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967298))",
+    "    │   └──  LEAF [x: 17   y: 17   w: 116  h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "    ├──  LEAF [x: 16   y: 52   w: 118  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "    ├──  FLEX COL [x: 0    y: 64   w: 150  h: 204  content_w: 133  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967301))",
+    "    │   └──  LEAF [x: 17   y: 17   w: 116  h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
+    "    ├──  LEAF [x: 16   y: 268  w: 118  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
+    "    └──  FLEX COL [x: 0    y: 280  w: 150  h: 52   content_w: 133  content_h: 35   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967304))",
+    "        └──  LEAF [x: 17   y: 17   w: 116  h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))"
+  ]
 }

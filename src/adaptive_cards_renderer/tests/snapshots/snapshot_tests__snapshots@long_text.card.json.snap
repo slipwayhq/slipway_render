@@ -1,65 +1,75 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/long_text.card.json
 ---
 {
-  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-  "body": [
-    {
-      "type": "Container",
-      "items": [
-        {
-          "type": "TextBlock",
-          "text": "The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.",
-          "wrap": true,
-          ".layout": {
-            "rect": {
-              "x": 33,
-              "y": 33,
-              "width": 134,
-              "height": 216
-            },
-            "placement": "SoleVertical"
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.",
+            "wrap": true,
+            ".layout": {
+              "rect": {
+                "x": 33,
+                "y": 33,
+                "width": 134,
+                "height": 216
+              },
+              "placement": "SoleVertical"
+            }
           }
+        ],
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 16,
+            "width": 168,
+            "height": 250
+          },
+          "placement": "Top"
         }
-      ],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 16,
-          "width": 168,
-          "height": 250
-        },
-        "placement": "Top"
+      },
+      {
+        "type": "Container",
+        "height": "stretch",
+        "items": [],
+        "style": "accent",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 278,
+            "width": 168,
+            "height": 106
+          },
+          "placement": "Bottom"
+        }
       }
-    },
-    {
-      "type": "Container",
-      "height": "stretch",
-      "items": [],
-      "style": "accent",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 278,
-          "width": 168,
-          "height": 106
-        },
-        "placement": "Bottom"
+    ],
+    "version": "1.5",
+    "verticalContentAlignment": "center",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 400
       }
     }
-  ],
-  "version": "1.5",
-  "verticalContentAlignment": "center",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 200,
-      "height": 400
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 200  h: 400  content_w: 184  content_h: 384  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967301))",
+    "    ├──  FLEX COL [x: 16   y: 16   w: 168  h: 250  content_w: 154  content_h: 233  border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967298))",
+    "    │   └──  LEAF [x: 17   y: 17   w: 134  h: 216  content_w: 137  content_h: 216  border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "    ├──  LEAF [x: 16   y: 266  w: 168  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "    └──  LEAF [x: 16   y: 278  w: 168  h: 106  content_w: 34   content_h: 34   border: l:0 r:0 t:0 b:0, padding: l:17 r:17 t:17 b:17] (NodeId(4294967300))"
+  ]
 }

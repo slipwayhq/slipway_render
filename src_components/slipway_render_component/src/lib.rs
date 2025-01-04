@@ -82,6 +82,10 @@ impl HostContext for SlipwayHostContext {
     fn warn(&self, message: &str) {
         bindings::log::warn(message);
     }
+
+    fn debug(&self, message: &str) {
+        bindings::log::debug(message);
+    }
 }
 
 struct Component;

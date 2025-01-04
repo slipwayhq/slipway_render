@@ -1,54 +1,69 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set_value_max_width.card.json
 ---
 {
-  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
-  "body": [
-    {
-      "type": "FactSet",
-      "facts": [
-        {
-          "title": "A",
-          "value": "32.5",
-          "type": "Fact"
-        },
-        {
-          "title": "B",
-          "value": "35562",
-          "type": "Fact"
-        },
-        {
-          "title": "Sea Saw",
-          "value": "Blah blah foo bar baz bat waldo fred",
-          "type": "Fact"
-        },
-        {
-          "title": "d",
-          "value": "-",
-          "type": "Fact"
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "FactSet",
+        "facts": [
+          {
+            "title": "A",
+            "value": "32.5",
+            "type": "Fact"
+          },
+          {
+            "title": "B",
+            "value": "35562",
+            "type": "Fact"
+          },
+          {
+            "title": "Sea Saw",
+            "value": "Blah blah foo bar baz bat waldo fred",
+            "type": "Fact"
+          },
+          {
+            "title": "d",
+            "value": "-",
+            "type": "Fact"
+          }
+        ],
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 16,
+            "width": 268,
+            "height": 174
+          },
+          "placement": "SoleVertical"
         }
-      ],
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 16,
-          "width": 268,
-          "height": 174
-        },
-        "placement": "SoleVertical"
+      }
+    ],
+    "version": "1.6",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 250
       }
     }
-  ],
-  "version": "1.6",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 300,
-      "height": 250
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 300  h: 250  content_w: 284  content_h: 190  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967306))",
+    "    └──  GRID [x: 16   y: 16   w: 268  h: 174  content_w: 189  content_h: 174  border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967305))",
+    "        ├──  LEAF [x: 0    y: 0    w: 53   h: 18   content_w: 9    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "        ├──  LEAF [x: 69   y: 0    w: 120  h: 18   content_w: 28   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967298))",
+    "        ├──  LEAF [x: 0    y: 34   w: 53   h: 18   content_w: 9    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "        ├──  LEAF [x: 69   y: 34   w: 120  h: 18   content_w: 40   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
+    "        ├──  LEAF [x: 0    y: 68   w: 53   h: 72   content_w: 53   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
+    "        ├──  LEAF [x: 69   y: 68   w: 120  h: 72   content_w: 66   content_h: 72   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
+    "        ├──  LEAF [x: 0    y: 156  w: 53   h: 18   content_w: 8    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))",
+    "        └──  LEAF [x: 69   y: 156  w: 120  h: 18   content_w: 4    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967304))"
+  ]
 }

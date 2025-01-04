@@ -1,640 +1,703 @@
 ---
 source: adaptive_cards_renderer/tests/snapshot_tests.rs
-expression: card
+expression: snapshot
 input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.json
 ---
 {
-  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-  "body": [
-    {
-      "type": "TextBlock",
-      "style": "heading",
-      "text": "Your Flight Update",
-      "wrap": true,
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 16,
-          "width": 368,
-          "height": 23
-        },
-        "placement": "Top"
-      }
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
-        {
-          "items": [
-            {
-              "type": "Image",
-              "altText": "Airplane",
-              "size": "small",
-              "url": "https://adaptivecards.io/content/airplane.png",
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 51,
-                  "width": 32,
-                  "height": 32
-                },
-                "placement": "SoleVertical"
-              }
-            }
-          ],
-          "width": {
-            "BlockElementWidth": "auto"
+  "card": {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "body": [
+      {
+        "type": "TextBlock",
+        "style": "heading",
+        "text": "Your Flight Update",
+        "wrap": true,
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 16,
+            "width": 368,
+            "height": 23
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 51,
-              "width": 32,
-              "height": 41
-            },
-            "placement": "Left"
-          }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "isSubtle": true,
-              "text": "Flight Status",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 60,
-                  "y": 51,
-                  "width": 324,
-                  "height": 18
-                },
-                "placement": "Top"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "color": "attention",
-              "horizontalAlignment": "right",
-              "size": "large",
-              "spacing": "none",
-              "text": "DELAYED",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 60,
-                  "y": 69,
-                  "width": 324,
-                  "height": 23
-                },
-                "placement": "Bottom"
-              }
-            }
-          ],
-          "width": {
-            "BlockElementWidth": "stretch"
-          },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 60,
-              "y": 51,
-              "width": 324,
-              "height": 41
-            },
-            "placement": "Right"
-          }
+          "placement": "Top"
         }
-      ],
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 51,
-          "width": 368,
-          "height": 41
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "isSubtle": true,
-              "text": "Passengers",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 109,
-                  "width": 328,
-                  "height": 18
-                },
-                "placement": "Top"
+      },
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "items": [
+              {
+                "type": "Image",
+                "altText": "Airplane",
+                "size": "small",
+                "url": "https://adaptivecards.io/content/airplane.png",
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 51,
+                    "width": 32,
+                    "height": 32
+                  },
+                  "placement": "SoleVertical"
+                }
               }
+            ],
+            "width": {
+              "BlockElementWidth": "auto"
             },
-            {
-              "type": "TextBlock",
-              "spacing": "small",
-              "text": "Sarah Hum",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 135,
-                  "width": 328,
-                  "height": 18
-                },
-                "placement": "WithinVertical"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "spacing": "small",
-              "text": "Jeremy Goldberg",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 161,
-                  "width": 328,
-                  "height": 18
-                },
-                "placement": "WithinVertical"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "spacing": "small",
-              "text": "Evan Litvak",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 187,
-                  "width": 328,
-                  "height": 18
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 51,
+                "width": 32,
+                "height": 41
+              },
+              "placement": "Left"
             }
-          ],
-          "width": {
-            "BlockElementWidth": "stretch"
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 109,
-              "width": 328,
-              "height": 96
-            },
-            "placement": "Left"
-          }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "isSubtle": true,
-              "text": "Seat",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 356,
-                  "y": 109,
-                  "width": 28,
-                  "height": 18
-                },
-                "placement": "Top"
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "isSubtle": true,
+                "text": "Flight Status",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 60,
+                    "y": 51,
+                    "width": 324,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "color": "attention",
+                "horizontalAlignment": "right",
+                "size": "large",
+                "spacing": "none",
+                "text": "DELAYED",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 60,
+                    "y": 69,
+                    "width": 324,
+                    "height": 23
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "BlockElementWidth": "stretch"
             },
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "spacing": "small",
-              "text": "14A",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 356,
-                  "y": 135,
-                  "width": 28,
-                  "height": 18
-                },
-                "placement": "WithinVertical"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "spacing": "small",
-              "text": "14B",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 356,
-                  "y": 161,
-                  "width": 28,
-                  "height": 18
-                },
-                "placement": "WithinVertical"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "spacing": "small",
-              "text": "14C",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 356,
-                  "y": 187,
-                  "width": 28,
-                  "height": 18
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 60,
+                "y": 51,
+                "width": 324,
+                "height": 41
+              },
+              "placement": "Right"
             }
-          ],
-          "width": {
-            "BlockElementWidth": "auto"
-          },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 356,
-              "y": 109,
-              "width": 28,
-              "height": 96
-            },
-            "placement": "Right"
           }
+        ],
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 51,
+            "width": 368,
+            "height": 41
+          },
+          "placement": "WithinVertical"
         }
-      ],
-      "separator": true,
-      "spacing": "medium",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 109,
-          "width": 368,
-          "height": 96
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "isSubtle": true,
-              "text": "Flight",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 222,
-                  "width": 115,
-                  "height": 18
-                },
-                "placement": "Top"
+      },
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "isSubtle": true,
+                "text": "Passengers",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 109,
+                    "width": 328,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "spacing": "small",
+                "text": "Sarah Hum",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 135,
+                    "width": 328,
+                    "height": 18
+                  },
+                  "placement": "WithinVertical"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "spacing": "small",
+                "text": "Jeremy Goldberg",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 161,
+                    "width": 328,
+                    "height": 18
+                  },
+                  "placement": "WithinVertical"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "spacing": "small",
+                "text": "Evan Litvak",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 187,
+                    "width": 328,
+                    "height": 18
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "BlockElementWidth": "stretch"
             },
-            {
-              "type": "TextBlock",
-              "spacing": "small",
-              "text": "KL605",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 248,
-                  "width": 115,
-                  "height": 18
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 109,
+                "width": 328,
+                "height": 96
+              },
+              "placement": "Left"
             }
-          ],
-          "width": {
-            "Number": 1.0
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 222,
-              "width": 115,
-              "height": 44
-            },
-            "placement": "Left"
-          }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "center",
-              "isSubtle": true,
-              "text": "Departs",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 142,
-                  "y": 222,
-                  "width": 116,
-                  "height": 18
-                },
-                "placement": "Top"
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "isSubtle": true,
+                "text": "Seat",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 356,
+                    "y": 109,
+                    "width": 28,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "spacing": "small",
+                "text": "14A",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 356,
+                    "y": 135,
+                    "width": 28,
+                    "height": 18
+                  },
+                  "placement": "WithinVertical"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "spacing": "small",
+                "text": "14B",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 356,
+                    "y": 161,
+                    "width": 28,
+                    "height": 18
+                  },
+                  "placement": "WithinVertical"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "spacing": "small",
+                "text": "14C",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 356,
+                    "y": 187,
+                    "width": 28,
+                    "height": 18
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "BlockElementWidth": "auto"
             },
-            {
-              "type": "TextBlock",
-              "color": "attention",
-              "horizontalAlignment": "center",
-              "spacing": "small",
-              "text": "10:20",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 142,
-                  "y": 248,
-                  "width": 116,
-                  "height": 18
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 356,
+                "y": 109,
+                "width": 28,
+                "height": 96
+              },
+              "placement": "Right"
             }
-          ],
-          "width": {
-            "Number": 1.0
-          },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 142,
-              "y": 222,
-              "width": 116,
-              "height": 44
-            },
-            "placement": "WithinHorizontal"
           }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "isSubtle": true,
-              "text": "Arrives",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 269,
-                  "y": 222,
-                  "width": 115,
-                  "height": 18
-                },
-                "placement": "Top"
-              }
-            },
-            {
-              "type": "TextBlock",
-              "color": "attention",
-              "horizontalAlignment": "right",
-              "spacing": "small",
-              "text": "04:20",
-              "weight": "bolder",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 269,
-                  "y": 248,
-                  "width": 115,
-                  "height": 18
-                },
-                "placement": "Bottom"
-              }
-            }
-          ],
-          "width": {
-            "Number": 1.0
+        ],
+        "separator": true,
+        "spacing": "medium",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 109,
+            "width": 368,
+            "height": 96
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 269,
-              "y": 222,
-              "width": 115,
-              "height": 44
-            },
-            "placement": "Right"
-          }
+          "placement": "WithinVertical"
         }
-      ],
-      "separator": true,
-      "spacing": "medium",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 222,
-          "width": 368,
-          "height": 44
-        },
-        "placement": "WithinVertical"
-      }
-    },
-    {
-      "type": "ColumnSet",
-      "columns": [
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "isSubtle": true,
-              "text": "Amsterdam Airport",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 283,
-                  "width": 158,
-                  "height": 18
-                },
-                "placement": "Top"
+      },
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "isSubtle": true,
+                "text": "Flight",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 222,
+                    "width": 115,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "spacing": "small",
+                "text": "KL605",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 248,
+                    "width": 115,
+                    "height": 18
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "Number": 1.0
             },
-            {
-              "type": "TextBlock",
-              "color": "accent",
-              "size": "extraLarge",
-              "spacing": "none",
-              "text": "AMS",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 16,
-                  "y": 301,
-                  "width": 158,
-                  "height": 31
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 222,
+                "width": 115,
+                "height": 44
+              },
+              "placement": "Left"
             }
-          ],
-          "width": {
-            "Number": 1.0
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 16,
-              "y": 283,
-              "width": 158,
-              "height": 50
-            },
-            "placement": "Left"
-          }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "text": " ",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 184,
-                  "y": 283,
-                  "width": 32,
-                  "height": 18
-                },
-                "placement": "Top"
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "center",
+                "isSubtle": true,
+                "text": "Departs",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 142,
+                    "y": 222,
+                    "width": 116,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "color": "attention",
+                "horizontalAlignment": "center",
+                "spacing": "small",
+                "text": "10:20",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 142,
+                    "y": 248,
+                    "width": 116,
+                    "height": 18
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "Number": 1.0
             },
-            {
-              "type": "Image",
-              "altText": "Airplane",
-              "size": "small",
-              "spacing": "none",
-              "url": "https://adaptivecards.io/content/airplane.png",
-              ".layout": {
-                "rect": {
-                  "x": 184,
-                  "y": 301,
-                  "width": 32,
-                  "height": 32
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 142,
+                "y": 222,
+                "width": 116,
+                "height": 44
+              },
+              "placement": "WithinHorizontal"
             }
-          ],
-          "width": {
-            "BlockElementWidth": "auto"
           },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 184,
-              "y": 283,
-              "width": 32,
-              "height": 50
-            },
-            "placement": "WithinHorizontal"
-          }
-        },
-        {
-          "items": [
-            {
-              "type": "TextBlock",
-              "horizontalAlignment": "right",
-              "isSubtle": true,
-              "text": "San Francisco Airport",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 226,
-                  "y": 283,
-                  "width": 158,
-                  "height": 18
-                },
-                "placement": "Top"
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "isSubtle": true,
+                "text": "Arrives",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 269,
+                    "y": 222,
+                    "width": 115,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "color": "attention",
+                "horizontalAlignment": "right",
+                "spacing": "small",
+                "text": "04:20",
+                "weight": "bolder",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 269,
+                    "y": 248,
+                    "width": 115,
+                    "height": 18
+                  },
+                  "placement": "Bottom"
+                }
               }
+            ],
+            "width": {
+              "Number": 1.0
             },
-            {
-              "type": "TextBlock",
-              "color": "accent",
-              "horizontalAlignment": "right",
-              "size": "extraLarge",
-              "spacing": "none",
-              "text": "SFO",
-              "wrap": true,
-              ".layout": {
-                "rect": {
-                  "x": 226,
-                  "y": 301,
-                  "width": 158,
-                  "height": 31
-                },
-                "placement": "Bottom"
-              }
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 269,
+                "y": 222,
+                "width": 115,
+                "height": 44
+              },
+              "placement": "Right"
             }
-          ],
-          "width": {
-            "Number": 1.0
-          },
-          "type": "Column",
-          ".layout": {
-            "rect": {
-              "x": 226,
-              "y": 283,
-              "width": 158,
-              "height": 50
-            },
-            "placement": "Right"
           }
+        ],
+        "separator": true,
+        "spacing": "medium",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 222,
+            "width": 368,
+            "height": 44
+          },
+          "placement": "WithinVertical"
         }
-      ],
-      "separator": true,
-      "spacing": "medium",
-      ".layout": {
-        "rect": {
-          "x": 16,
-          "y": 283,
-          "width": 368,
-          "height": 50
-        },
-        "placement": "Bottom"
+      },
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "isSubtle": true,
+                "text": "Amsterdam Airport",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 283,
+                    "width": 158,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "color": "accent",
+                "size": "extraLarge",
+                "spacing": "none",
+                "text": "AMS",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 16,
+                    "y": 301,
+                    "width": 158,
+                    "height": 31
+                  },
+                  "placement": "Bottom"
+                }
+              }
+            ],
+            "width": {
+              "Number": 1.0
+            },
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 16,
+                "y": 283,
+                "width": 158,
+                "height": 50
+              },
+              "placement": "Left"
+            }
+          },
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "text": " ",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 184,
+                    "y": 283,
+                    "width": 32,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "Image",
+                "altText": "Airplane",
+                "size": "small",
+                "spacing": "none",
+                "url": "https://adaptivecards.io/content/airplane.png",
+                ".layout": {
+                  "rect": {
+                    "x": 184,
+                    "y": 301,
+                    "width": 32,
+                    "height": 32
+                  },
+                  "placement": "Bottom"
+                }
+              }
+            ],
+            "width": {
+              "BlockElementWidth": "auto"
+            },
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 184,
+                "y": 283,
+                "width": 32,
+                "height": 50
+              },
+              "placement": "WithinHorizontal"
+            }
+          },
+          {
+            "items": [
+              {
+                "type": "TextBlock",
+                "horizontalAlignment": "right",
+                "isSubtle": true,
+                "text": "San Francisco Airport",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 226,
+                    "y": 283,
+                    "width": 158,
+                    "height": 18
+                  },
+                  "placement": "Top"
+                }
+              },
+              {
+                "type": "TextBlock",
+                "color": "accent",
+                "horizontalAlignment": "right",
+                "size": "extraLarge",
+                "spacing": "none",
+                "text": "SFO",
+                "wrap": true,
+                ".layout": {
+                  "rect": {
+                    "x": 226,
+                    "y": 301,
+                    "width": 158,
+                    "height": 31
+                  },
+                  "placement": "Bottom"
+                }
+              }
+            ],
+            "width": {
+              "Number": 1.0
+            },
+            "type": "Column",
+            ".layout": {
+              "rect": {
+                "x": 226,
+                "y": 283,
+                "width": 158,
+                "height": 50
+              },
+              "placement": "Right"
+            }
+          }
+        ],
+        "separator": true,
+        "spacing": "medium",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 283,
+            "width": 368,
+            "height": 50
+          },
+          "placement": "Bottom"
+        }
+      }
+    ],
+    "speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
+    "version": "1.6",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 400,
+        "height": 600
       }
     }
-  ],
-  "speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
-  "version": "1.6",
-  "type": "AdaptiveCard",
-  ".layout": {
-    "rect": {
-      "x": 0,
-      "y": 0,
-      "width": 400,
-      "height": 600
-    }
-  }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 400  h: 600  content_w: 384  content_h: 333  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967354))",
+    "    ├──  LEAF [x: 16   y: 16   w: 368  h: 23   content_w: 149  content_h: 23   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "    ├──  LEAF [x: 16   y: 39   w: 368  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967298))",
+    "    ├──  FLEX ROW [x: 16   y: 51   w: 368  h: 41   content_w: 368  content_h: 41   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967305))",
+    "    │   ├──  FLEX COL [x: 0    y: 0    w: 32   h: 41   content_w: 32   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
+    "    │   │   └──  LEAF [x: 0    y: 0    w: 32   h: 32   content_w: 32   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "    │   ├──  LEAF [x: 32   y: 0    w: 12   h: 41   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
+    "    │   └──  FLEX COL [x: 44   y: 0    w: 324  h: 41   content_w: 324  content_h: 41   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967304))",
+    "    │       ├──  LEAF [x: 0    y: 0    w: 324  h: 18   content_w: 78   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
+    "    │       └──  LEAF [x: 0    y: 18   w: 324  h: 23   content_w: 76   content_h: 23   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))",
+    "    ├──  LEAF [x: 16   y: 92   w: 368  h: 17   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967306))",
+    "    ├──  FLEX ROW [x: 16   y: 109  w: 368  h: 96   content_w: 368  content_h: 96   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967324))",
+    "    │   ├──  FLEX COL [x: 0    y: 0    w: 328  h: 96   content_w: 328  content_h: 96   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967314))",
+    "    │   │   ├──  LEAF [x: 0    y: 0    w: 328  h: 18   content_w: 74   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967307))",
+    "    │   │   ├──  LEAF [x: 0    y: 18   w: 328  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967308))",
+    "    │   │   ├──  LEAF [x: 0    y: 26   w: 328  h: 18   content_w: 69   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967309))",
+    "    │   │   ├──  LEAF [x: 0    y: 44   w: 328  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967310))",
+    "    │   │   ├──  LEAF [x: 0    y: 52   w: 328  h: 18   content_w: 106  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967311))",
+    "    │   │   ├──  LEAF [x: 0    y: 70   w: 328  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967312))",
+    "    │   │   └──  LEAF [x: 0    y: 78   w: 328  h: 18   content_w: 70   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967313))",
+    "    │   ├──  LEAF [x: 328  y: 0    w: 12   h: 96   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967315))",
+    "    │   └──  FLEX COL [x: 340  y: 0    w: 28   h: 96   content_w: 28   content_h: 96   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967323))",
+    "    │       ├──  LEAF [x: 0    y: 0    w: 28   h: 18   content_w: 28   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967316))",
+    "    │       ├──  LEAF [x: 0    y: 18   w: 28   h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967317))",
+    "    │       ├──  LEAF [x: 0    y: 26   w: 28   h: 18   content_w: 25   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967318))",
+    "    │       ├──  LEAF [x: 0    y: 44   w: 28   h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967319))",
+    "    │       ├──  LEAF [x: 0    y: 52   w: 28   h: 18   content_w: 24   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967320))",
+    "    │       ├──  LEAF [x: 0    y: 70   w: 28   h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967321))",
+    "    │       └──  LEAF [x: 0    y: 78   w: 28   h: 18   content_w: 25   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967322))",
+    "    ├──  LEAF [x: 16   y: 205  w: 368  h: 17   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967325))",
+    "    ├──  FLEX ROW [x: 16   y: 222  w: 368  h: 44   content_w: 368  content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967340))",
+    "    │   ├──  FLEX COL [x: 0    y: 0    w: 115  h: 44   content_w: 115  content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967329))",
+    "    │   │   ├──  LEAF [x: 0    y: 0    w: 115  h: 18   content_w: 35   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967326))",
+    "    │   │   ├──  LEAF [x: 0    y: 18   w: 115  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967327))",
+    "    │   │   └──  LEAF [x: 0    y: 26   w: 115  h: 18   content_w: 40   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967328))",
+    "    │   ├──  LEAF [x: 115  y: 0    w: 11   h: 44   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967330))",
+    "    │   ├──  FLEX COL [x: 126  y: 0    w: 116  h: 44   content_w: 116  content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967334))",
+    "    │   │   ├──  LEAF [x: 0    y: 0    w: 116  h: 18   content_w: 50   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967331))",
+    "    │   │   ├──  LEAF [x: 0    y: 18   w: 116  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967332))",
+    "    │   │   └──  LEAF [x: 0    y: 26   w: 116  h: 18   content_w: 36   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967333))",
+    "    │   ├──  LEAF [x: 242  y: 0    w: 11   h: 44   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967335))",
+    "    │   └──  FLEX COL [x: 253  y: 0    w: 115  h: 44   content_w: 115  content_h: 44   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967339))",
+    "    │       ├──  LEAF [x: 0    y: 0    w: 115  h: 18   content_w: 45   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967336))",
+    "    │       ├──  LEAF [x: 0    y: 18   w: 115  h: 8    content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967337))",
+    "    │       └──  LEAF [x: 0    y: 26   w: 115  h: 18   content_w: 36   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967338))",
+    "    ├──  LEAF [x: 16   y: 266  w: 368  h: 17   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967341))",
+    "    └──  FLEX ROW [x: 16   y: 283  w: 368  h: 50   content_w: 368  content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967353))",
+    "        ├──  FLEX COL [x: 0    y: 0    w: 158  h: 50   content_w: 158  content_h: 49   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967344))",
+    "        │   ├──  LEAF [x: 0    y: 0    w: 158  h: 18   content_w: 119  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967342))",
+    "        │   └──  LEAF [x: 0    y: 18   w: 158  h: 31   content_w: 51   content_h: 31   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967343))",
+    "        ├──  LEAF [x: 158  y: 0    w: 10   h: 50   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967345))",
+    "        ├──  FLEX COL [x: 168  y: 0    w: 32   h: 50   content_w: 32   content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967348))",
+    "        │   ├──  LEAF [x: 0    y: 0    w: 32   h: 18   content_w: 0    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967346))",
+    "        │   └──  LEAF [x: 0    y: 18   w: 32   h: 32   content_w: 32   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967347))",
+    "        ├──  LEAF [x: 200  y: 0    w: 10   h: 50   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967349))",
+    "        └──  FLEX COL [x: 210  y: 0    w: 158  h: 50   content_w: 158  content_h: 49   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967352))",
+    "            ├──  LEAF [x: 0    y: 0    w: 158  h: 18   content_w: 134  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967350))",
+    "            └──  LEAF [x: 0    y: 18   w: 158  h: 31   content_w: 44   content_h: 31   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967351))"
+  ]
 }

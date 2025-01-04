@@ -36,7 +36,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                       "x": 24,
                       "y": 24,
                       "width": 91,
-                      "height": 10
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -48,7 +48,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   "x": 16,
                   "y": 16,
                   "width": 107,
-                  "height": 27
+                  "height": 34
                 },
                 "placement": "Left"
               }
@@ -64,7 +64,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                       "x": 131,
                       "y": 24,
                       "width": 195,
-                      "height": 11
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -77,7 +77,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   "x": 123,
                   "y": 16,
                   "width": 211,
-                  "height": 27
+                  "height": 34
                 },
                 "placement": "WithinHorizontal"
               }
@@ -93,7 +93,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                       "x": 342,
                       "y": 24,
                       "width": 34,
-                      "height": 10
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -105,7 +105,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   "x": 334,
                   "y": 16,
                   "width": 50,
-                  "height": 27
+                  "height": 34
                 },
                 "placement": "Right"
               }
@@ -117,7 +117,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               "x": 16,
               "y": 16,
               "width": 368,
-              "height": 27
+              "height": 34
             },
             "placement": "Top"
           }
@@ -133,9 +133,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 24,
-                      "y": 51,
+                      "y": 58,
                       "width": 91,
-                      "height": 10
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -145,9 +145,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 16,
-                  "y": 43,
+                  "y": 50,
                   "width": 107,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "Left"
               }
@@ -161,9 +161,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 131,
-                      "y": 51,
+                      "y": 58,
                       "width": 195,
-                      "height": 11
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -174,9 +174,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 123,
-                  "y": 43,
+                  "y": 50,
                   "width": 211,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "WithinHorizontal"
               }
@@ -190,9 +190,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 342,
-                      "y": 51,
+                      "y": 58,
                       "width": 34,
-                      "height": 29
+                      "height": 36
                     },
                     "placement": "SoleVertical"
                   }
@@ -203,9 +203,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 334,
-                  "y": 43,
+                  "y": 50,
                   "width": 50,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "Right"
               }
@@ -215,9 +215,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
           ".layout": {
             "rect": {
               "x": 16,
-              "y": 43,
+              "y": 50,
               "width": 368,
-              "height": 45
+              "height": 52
             },
             "placement": "WithinVertical"
           }
@@ -233,9 +233,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 24,
-                      "y": 96,
+                      "y": 110,
                       "width": 91,
-                      "height": 10
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -245,9 +245,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 16,
-                  "y": 88,
+                  "y": 102,
                   "width": 107,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "Left"
               }
@@ -261,9 +261,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 131,
-                      "y": 96,
+                      "y": 110,
                       "width": 195,
-                      "height": 11
+                      "height": 18
                     },
                     "placement": "SoleVertical"
                   }
@@ -273,9 +273,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 123,
-                  "y": 88,
+                  "y": 102,
                   "width": 211,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "WithinHorizontal"
               }
@@ -289,9 +289,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
                   ".layout": {
                     "rect": {
                       "x": 342,
-                      "y": 96,
+                      "y": 110,
                       "width": 34,
-                      "height": 29
+                      "height": 36
                     },
                     "placement": "SoleVertical"
                   }
@@ -301,9 +301,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
               ".layout": {
                 "rect": {
                   "x": 334,
-                  "y": 88,
+                  "y": 102,
                   "width": 50,
-                  "height": 45
+                  "height": 52
                 },
                 "placement": "Right"
               }
@@ -314,9 +314,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
           ".layout": {
             "rect": {
               "x": 16,
-              "y": 88,
+              "y": 102,
               "width": 368,
-              "height": 45
+              "height": 52
             },
             "placement": "Bottom"
           }
@@ -328,7 +328,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/table_no_grid_lines.ca
           "x": 16,
           "y": 16,
           "width": 368,
-          "height": 117
+          "height": 138
         },
         "placement": "SoleVertical"
       }

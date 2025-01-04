@@ -1,0 +1,640 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.json
+---
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "TextBlock",
+      "style": "heading",
+      "text": "Your Flight Update",
+      "wrap": true,
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 16,
+          "width": 368,
+          "height": 23
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "Image",
+              "altText": "Airplane",
+              "size": "small",
+              "url": "https://adaptivecards.io/content/airplane.png",
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 51,
+                  "width": 32,
+                  "height": 32
+                },
+                "placement": "SoleVertical"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "auto"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 16,
+              "y": 51,
+              "width": 32,
+              "height": 41
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "isSubtle": true,
+              "text": "Flight Status",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 60,
+                  "y": 51,
+                  "width": 324,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "color": "attention",
+              "horizontalAlignment": "right",
+              "size": "large",
+              "spacing": "none",
+              "text": "DELAYED",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 60,
+                  "y": 69,
+                  "width": 324,
+                  "height": 23
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 60,
+              "y": 51,
+              "width": 324,
+              "height": 41
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 51,
+          "width": 368,
+          "height": 41
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "isSubtle": true,
+              "text": "Passengers",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 109,
+                  "width": 328,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "small",
+              "text": "Sarah Hum",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 135,
+                  "width": 328,
+                  "height": 18
+                },
+                "placement": "WithinVertical"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "small",
+              "text": "Jeremy Goldberg",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 161,
+                  "width": 328,
+                  "height": 18
+                },
+                "placement": "WithinVertical"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "small",
+              "text": "Evan Litvak",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 187,
+                  "width": 328,
+                  "height": 18
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "stretch"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 16,
+              "y": 109,
+              "width": 328,
+              "height": 96
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "isSubtle": true,
+              "text": "Seat",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 356,
+                  "y": 109,
+                  "width": 28,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "spacing": "small",
+              "text": "14A",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 356,
+                  "y": 135,
+                  "width": 28,
+                  "height": 18
+                },
+                "placement": "WithinVertical"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "spacing": "small",
+              "text": "14B",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 356,
+                  "y": 161,
+                  "width": 28,
+                  "height": 18
+                },
+                "placement": "WithinVertical"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "spacing": "small",
+              "text": "14C",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 356,
+                  "y": 187,
+                  "width": 28,
+                  "height": 18
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "auto"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 356,
+              "y": 109,
+              "width": 28,
+              "height": 96
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      "separator": true,
+      "spacing": "medium",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 109,
+          "width": 368,
+          "height": 96
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "isSubtle": true,
+              "text": "Flight",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 222,
+                  "width": 115,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "small",
+              "text": "KL605",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 248,
+                  "width": 115,
+                  "height": 18
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "Number": 1.0
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 16,
+              "y": 222,
+              "width": 115,
+              "height": 44
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "center",
+              "isSubtle": true,
+              "text": "Departs",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 142,
+                  "y": 222,
+                  "width": 116,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "color": "attention",
+              "horizontalAlignment": "center",
+              "spacing": "small",
+              "text": "10:20",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 142,
+                  "y": 248,
+                  "width": 116,
+                  "height": 18
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "Number": 1.0
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 142,
+              "y": 222,
+              "width": 116,
+              "height": 44
+            },
+            "placement": "WithinHorizontal"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "isSubtle": true,
+              "text": "Arrives",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 269,
+                  "y": 222,
+                  "width": 115,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "color": "attention",
+              "horizontalAlignment": "right",
+              "spacing": "small",
+              "text": "04:20",
+              "weight": "bolder",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 269,
+                  "y": 248,
+                  "width": 115,
+                  "height": 18
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "Number": 1.0
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 269,
+              "y": 222,
+              "width": 115,
+              "height": 44
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      "separator": true,
+      "spacing": "medium",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 222,
+          "width": 368,
+          "height": 44
+        },
+        "placement": "WithinVertical"
+      }
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "isSubtle": true,
+              "text": "Amsterdam Airport",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 283,
+                  "width": 158,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "color": "accent",
+              "size": "extraLarge",
+              "spacing": "none",
+              "text": "AMS",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 16,
+                  "y": 301,
+                  "width": 158,
+                  "height": 31
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "Number": 1.0
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 16,
+              "y": 283,
+              "width": 158,
+              "height": 50
+            },
+            "placement": "Left"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": " ",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 184,
+                  "y": 283,
+                  "width": 32,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "Image",
+              "altText": "Airplane",
+              "size": "small",
+              "spacing": "none",
+              "url": "https://adaptivecards.io/content/airplane.png",
+              ".layout": {
+                "rect": {
+                  "x": 184,
+                  "y": 301,
+                  "width": 32,
+                  "height": 32
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "BlockElementWidth": "auto"
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 184,
+              "y": 283,
+              "width": 32,
+              "height": 50
+            },
+            "placement": "WithinHorizontal"
+          }
+        },
+        {
+          "items": [
+            {
+              "type": "TextBlock",
+              "horizontalAlignment": "right",
+              "isSubtle": true,
+              "text": "San Francisco Airport",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 226,
+                  "y": 283,
+                  "width": 158,
+                  "height": 18
+                },
+                "placement": "Top"
+              }
+            },
+            {
+              "type": "TextBlock",
+              "color": "accent",
+              "horizontalAlignment": "right",
+              "size": "extraLarge",
+              "spacing": "none",
+              "text": "SFO",
+              "wrap": true,
+              ".layout": {
+                "rect": {
+                  "x": 226,
+                  "y": 301,
+                  "width": 158,
+                  "height": 31
+                },
+                "placement": "Bottom"
+              }
+            }
+          ],
+          "width": {
+            "Number": 1.0
+          },
+          "type": "Column",
+          ".layout": {
+            "rect": {
+              "x": 226,
+              "y": 283,
+              "width": 158,
+              "height": 50
+            },
+            "placement": "Right"
+          }
+        }
+      ],
+      "separator": true,
+      "spacing": "medium",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 283,
+          "width": 368,
+          "height": 50
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "speak": "<s>Flight KL0605 to San Fransisco has been delayed.</s><s>It will not leave until 10:10 AM.</s>",
+  "version": "1.6",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 600
+    }
+  }
+}

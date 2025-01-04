@@ -19,7 +19,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_single_item_
               "x": 17,
               "y": 17,
               "width": 116,
-              "height": 10
+              "height": 18
             },
             "placement": "SoleVertical"
           }

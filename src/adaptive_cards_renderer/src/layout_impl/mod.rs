@@ -23,6 +23,7 @@ mod container;
 mod container_shared;
 mod fact_set;
 mod image;
+mod image_node_context;
 pub(crate) mod measure;
 mod table;
 mod table_cell;

@@ -154,6 +154,9 @@ trait BlendingPutPixel {
 
 impl BlendingPutPixel for RgbaImage {
     fn blend_pixel(&mut self, x: u32, y: u32, pixel: Rgba<u8>) {
+        if x >= self.width() || y >= self.height() {
+            return;
+        }
         let current_pixel = self.get_pixel_mut(x, y);
         current_pixel.blend(&pixel);
     }

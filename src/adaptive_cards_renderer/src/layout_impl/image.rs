@@ -7,7 +7,7 @@ use imageproc::{
     point::Point,
     rect::Rect,
 };
-use taffy::{Dimension, Size, Style, TaffyTree};
+use taffy::{Dimension, Style, TaffyTree};
 
 use crate::{
     element_layout_data::ElementTaffyData,
@@ -21,39 +21,10 @@ use crate::{
 };
 
 use super::{
+    image_node_context::ImageNodeContext,
     measure::NodeContext,
     utils::{apply_horizontal_alignment, parse_dimension},
 };
-
-#[derive(Debug)]
-pub(crate) struct ImageNodeContext {
-    pub width: f32,
-    pub height: f32,
-}
-
-impl ImageNodeContext {
-    // https://github.com/DioxusLabs/taffy/blob/b5a5f80013a83a27c3be778ea4cf37db5bf40764/examples/common/image.rs
-    pub(crate) fn measure(
-        &self,
-        known_dimensions: taffy::geometry::Size<Option<f32>>,
-    ) -> Size<f32> {
-        match (known_dimensions.width, known_dimensions.height) {
-            (Some(width), Some(height)) => Size { width, height },
-            (Some(width), None) => Size {
-                width,
-                height: (width / self.width) * self.height,
-            },
-            (None, Some(height)) => Size {
-                width: (height / self.height) * self.width,
-                height,
-            },
-            (None, None) => Size {
-                width: self.width,
-                height: self.height,
-            },
-        }
-    }
-}
 
 enum ImageSource {
     Callout,
@@ -89,9 +60,11 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
         let mut style = Style { ..baseline_style };
         apply_horizontal_alignment(self.horizontal_alignment, &mut style, context);
 
+        let size = self.size.unwrap_or(ImageSize::Auto);
+
         if let Some(width) = self.width.as_ref() {
             style.size.width = parse_dimension(width, context)?;
-        } else if let Some(size) = self.size {
+        } else {
             match size {
                 adaptive_cards::ImageSize::Auto => {
                     // Image will scale down to fit if needed, but will not scale up to fill the area.
@@ -100,7 +73,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
                 }
                 adaptive_cards::ImageSize::Stretch => {
                     // Image with both scale down and up to fit as needed.
-                    style.size.width = Dimension::Percent(100.);
+                    style.max_size.width = Dimension::Percent(100.);
                     style.max_size.height = Dimension::Percent(100.);
                 }
                 adaptive_cards::ImageSize::Small => {
@@ -148,9 +121,31 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
                     panic!("URL should always return source image");
                 };
 
+                let source_width = source_image.width() as f32;
+                let source_height = source_image.height() as f32;
+
+                let max_width = if self.width.as_ref().is_some() {
+                    None
+                } else {
+                    match size {
+                        adaptive_cards::ImageSize::Auto => Some(source_width),
+                        adaptive_cards::ImageSize::Stretch => None,
+                        adaptive_cards::ImageSize::Small => {
+                            Some(context.host_config.image_sizes.small as f32)
+                        }
+                        adaptive_cards::ImageSize::Medium => {
+                            Some(context.host_config.image_sizes.medium as f32)
+                        }
+                        adaptive_cards::ImageSize::Large => {
+                            Some(context.host_config.image_sizes.large as f32)
+                        }
+                    }
+                };
+
                 let image_context = ImageNodeContext {
-                    width: source_image.width() as f32,
-                    height: source_image.height() as f32,
+                    source_width,
+                    source_height,
+                    max_width,
                 };
 
                 let node_context = NodeContext::Image(image_context);

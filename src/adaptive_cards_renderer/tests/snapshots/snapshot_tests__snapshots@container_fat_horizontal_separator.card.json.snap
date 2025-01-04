@@ -17,7 +17,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
               "x": 33,
               "y": 33,
               "width": 84,
-              "height": 10
+              "height": 18
             },
             "placement": "SoleVertical"
           }
@@ -30,7 +30,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
           "x": 16,
           "y": 16,
           "width": 118,
-          "height": 44
+          "height": 52
         },
         "placement": "Top"
       }
@@ -44,9 +44,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
           ".layout": {
             "rect": {
               "x": 33,
-              "y": 89,
+              "y": 97,
               "width": 84,
-              "height": 10
+              "height": 18
             },
             "placement": "SoleVertical"
           }
@@ -57,9 +57,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
       ".layout": {
         "rect": {
           "x": 16,
-          "y": 72,
+          "y": 80,
           "width": 118,
-          "height": 44
+          "height": 52
         },
         "placement": "WithinVertical"
       }
@@ -74,9 +74,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
           ".layout": {
             "rect": {
               "x": 33,
-              "y": 150,
+              "y": 166,
               "width": 84,
-              "height": 10
+              "height": 18
             },
             "placement": "SoleVertical"
           }
@@ -87,9 +87,9 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
       ".layout": {
         "rect": {
           "x": 16,
-          "y": 133,
+          "y": 149,
           "width": 118,
-          "height": 51
+          "height": 85
         },
         "placement": "Bottom"
       }
@@ -102,7 +102,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/container_fat_horizont
       "x": 0,
       "y": 0,
       "width": 150,
-      "height": 200
+      "height": 250
     }
   }
 }

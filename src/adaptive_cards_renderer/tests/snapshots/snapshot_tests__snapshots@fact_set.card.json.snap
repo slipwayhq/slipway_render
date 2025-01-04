@@ -35,7 +35,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
           "x": 16,
           "y": 16,
           "width": 268,
-          "height": 90
+          "height": 120
         },
         "placement": "SoleVertical"
       }
@@ -48,7 +48,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/fact_set.card.json
       "x": 0,
       "y": 0,
       "width": 300,
-      "height": 150
+      "height": 200
     }
   }
 }

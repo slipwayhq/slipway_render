@@ -1,0 +1,139 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "version": "1.5",
+    "verticalContentAlignment": "center",
+    "horizontalAlignment": "center",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "height": "stretch",
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "small"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "medium"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "medium"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "large"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "large"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "width": "60px",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "auto"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "auto"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "auto"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "auto"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "width": "150px",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "stretch"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "stretch"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "width": "300px",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "stretch"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "size": "stretch"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "20px"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/airplane.png",
+                            "width": "20px"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

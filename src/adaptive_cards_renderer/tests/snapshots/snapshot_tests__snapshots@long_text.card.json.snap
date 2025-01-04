@@ -1,0 +1,65 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: card
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/long_text.card.json
+---
+{
+  "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.",
+          "wrap": true,
+          ".layout": {
+            "rect": {
+              "x": 33,
+              "y": 33,
+              "width": 134,
+              "height": 216
+            },
+            "placement": "SoleVertical"
+          }
+        }
+      ],
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 16,
+          "width": 168,
+          "height": 250
+        },
+        "placement": "Top"
+      }
+    },
+    {
+      "type": "Container",
+      "height": "stretch",
+      "items": [],
+      "style": "accent",
+      ".layout": {
+        "rect": {
+          "x": 16,
+          "y": 278,
+          "width": 168,
+          "height": 106
+        },
+        "placement": "Bottom"
+      }
+    }
+  ],
+  "version": "1.5",
+  "verticalContentAlignment": "center",
+  "type": "AdaptiveCard",
+  ".layout": {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 200,
+      "height": 400
+    }
+  }
+}

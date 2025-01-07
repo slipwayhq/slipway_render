@@ -220,14 +220,15 @@ fn prepare_layout(
     let mut layout = builder.build(text);
 
     // Run line-breaking and alignment on the Layout
-    let width_constraint = if text_context.wrap {
+    println!("width_constraint {:?} for text {}", width_constraint, text);
+    let max_advance = if text_context.wrap {
         width_constraint
     } else {
-        None
+        Some(f32::MAX)
     };
-    layout.break_all_lines(width_constraint);
+    layout.break_all_lines(max_advance);
     layout.align(
-        width_constraint,
+        width_constraint, // We always need the width constraint to align the text.
         match text_context.horizontal_alignment {
             HorizontalAlignment::Center => Alignment::Middle,
             HorizontalAlignment::Right => Alignment::End,

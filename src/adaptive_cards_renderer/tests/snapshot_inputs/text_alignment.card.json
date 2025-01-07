@@ -1,0 +1,65 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "version": "1.6",
+    "verticalContentAlignment": "center",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap off, left aligned.",
+            "horizontalAlignment": "left",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is off, text is left aligned and should be clipped on the left.",
+            "horizontalAlignment": "left",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is on, text is left aligned and should not be clipped.",
+            "horizontalAlignment": "left",
+            "wrap": true,
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap off, right aligned.",
+            "horizontalAlignment": "right",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is off, text is right aligned and should be clipped on the left.",
+            "horizontalAlignment": "right",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is on, text is right aligned and should not be clipped.",
+            "horizontalAlignment": "right",
+            "wrap": true,
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap off, centered.",
+            "horizontalAlignment": "center",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is off, text is centered and should be clipped on both sides.",
+            "horizontalAlignment": "center",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Wordwrap is on, text is centered aligned and should not be clipped.",
+            "wrap": true,
+            "horizontalAlignment": "center",
+            "separator": true
+        }
+    ]
+}

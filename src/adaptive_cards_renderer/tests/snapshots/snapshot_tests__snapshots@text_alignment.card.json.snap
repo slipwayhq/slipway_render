@@ -1,0 +1,182 @@
+---
+source: adaptive_cards_renderer/tests/snapshot_tests.rs
+expression: snapshot
+input_file: adaptive_cards_renderer/tests/snapshot_inputs/text_alignment.card.json
+---
+{
+  "card": {
+    "$schema": "../../../../adaptive_cards_data/schema/adaptive-card.schema.json",
+    "body": [
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "left",
+        "separator": true,
+        "text": "Wordwrap off, left aligned.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 90,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "Top"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "left",
+        "separator": true,
+        "text": "Wordwrap is off, text is left aligned and should be clipped on the left.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 121,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "left",
+        "separator": true,
+        "text": "Wordwrap is on, text is left aligned and should not be clipped.",
+        "wrap": true,
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 152,
+            "width": 268,
+            "height": 36
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "right",
+        "separator": true,
+        "text": "Wordwrap off, right aligned.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 201,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "right",
+        "separator": true,
+        "text": "Wordwrap is off, text is right aligned and should be clipped on the left.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 232,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "right",
+        "separator": true,
+        "text": "Wordwrap is on, text is right aligned and should not be clipped.",
+        "wrap": true,
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 263,
+            "width": 268,
+            "height": 36
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "center",
+        "separator": true,
+        "text": "Wordwrap off, centered.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 312,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "center",
+        "separator": true,
+        "text": "Wordwrap is off, text is centered and should be clipped on both sides.",
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 343,
+            "width": 268,
+            "height": 18
+          },
+          "placement": "WithinVertical"
+        }
+      },
+      {
+        "type": "TextBlock",
+        "horizontalAlignment": "center",
+        "separator": true,
+        "text": "Wordwrap is on, text is centered aligned and should not be clipped.",
+        "wrap": true,
+        ".layout": {
+          "rect": {
+            "x": 16,
+            "y": 374,
+            "width": 268,
+            "height": 36
+          },
+          "placement": "Bottom"
+        }
+      }
+    ],
+    "version": "1.6",
+    "verticalContentAlignment": "center",
+    "type": "AdaptiveCard",
+    ".layout": {
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 500
+      }
+    }
+  },
+  "debug_lines": [
+    "TREE",
+    "└──  FLEX COL [x: 0    y: 0    w: 300  h: 500  content_w: 448  content_h: 410  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967314))",
+    "    ├──  LEAF [x: 16   y: 90   w: 268  h: 18   content_w: 163  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
+    "    ├──  LEAF [x: 16   y: 108  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967298))",
+    "    ├──  LEAF [x: 16   y: 121  w: 268  h: 18   content_w: 424  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
+    "    ├──  LEAF [x: 16   y: 139  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
+    "    ├──  LEAF [x: 16   y: 152  w: 268  h: 36   content_w: 243  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
+    "    ├──  LEAF [x: 16   y: 188  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
+    "    ├──  LEAF [x: 16   y: 201  w: 268  h: 18   content_w: 171  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))",
+    "    ├──  LEAF [x: 16   y: 219  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967304))",
+    "    ├──  LEAF [x: 16   y: 232  w: 268  h: 18   content_w: 432  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967305))",
+    "    ├──  LEAF [x: 16   y: 250  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967306))",
+    "    ├──  LEAF [x: 16   y: 263  w: 268  h: 36   content_w: 251  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967307))",
+    "    ├──  LEAF [x: 16   y: 299  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967308))",
+    "    ├──  LEAF [x: 16   y: 312  w: 268  h: 18   content_w: 149  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967309))",
+    "    ├──  LEAF [x: 16   y: 330  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967310))",
+    "    ├──  LEAF [x: 16   y: 343  w: 268  h: 18   content_w: 431  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967311))",
+    "    ├──  LEAF [x: 16   y: 361  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967312))",
+    "    └──  LEAF [x: 16   y: 374  w: 268  h: 36   content_w: 250  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967313))"
+  ]
+}

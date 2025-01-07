@@ -145,7 +145,6 @@ impl HostContext for MockHostContext {
     }
 
     fn debug(&self, message: &str) {
-        println!("Debug: {}", message);
         self.debug_lines.borrow_mut().push(message.to_string());
     }
 }

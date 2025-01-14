@@ -15,76 +15,102 @@ use bindings::{ComponentError, Guest};
 struct SlipwayHostContext;
 impl HostContext for SlipwayHostContext {
     fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
-        bindings::font::try_resolve(family).map(|resolved_font| ResolvedFont {
+        bindings::slipway_host::try_resolve_font(family).map(|resolved_font| ResolvedFont {
             family: resolved_font.family,
             data: resolved_font.data,
         })
     }
 
-    fn run_callout(
-        &self,
-        handle: &str,
-        input: &serde_json::Value,
-    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
-        let result = bindings::callout::run(
-            handle,
-            &serde_json::to_string(input).expect("Callout input should serialize."),
-        )
-        .map_err(|e| adaptive_cards_renderer::host_context::ComponentError {
-            message: e.message,
-        })?;
-
-        let canvas_result: CanvasResultContainer = serde_json::from_str(&result).map_err(|e| {
-            adaptive_cards_renderer::host_context::ComponentError {
-                message: format!("Failed to parse canvas from callout result\n{}", e),
-            }
-        })?;
-
-        Ok(canvas_result_to_image(&canvas_result.canvas))
-    }
-
     fn load_image_from_url(
         &self,
         url: &str,
+        body: Option<&serde_json::Value>,
     ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
-        // If the URL is of the form `component://handle/path`...
-        let image_bytes = if let Some((handle, path)) =
-            url.strip_prefix("component://").and_then(|rest| {
-                let mut parts = rest.splitn(2, '/');
-                Some((parts.next()?, parts.next()?))
-            }) {
-            bindings::callout::get_bin(handle, path).map_err(|e| {
-                adaptive_cards_renderer::host_context::ComponentError { message: e.message }
-            })?
-        } else {
-            let image_result = bindings::http::request_bin(url, None).map_err(|e| {
-                adaptive_cards_renderer::host_context::ComponentError { message: e.message }
-            })?;
-
-            image_result.body
+        let options = match body {
+            Some(body) => {
+                let bytes = serde_json::to_vec(body).expect("Request body should serialize.");
+                Some(bindings::slipway_host::RequestOptions {
+                    method: None,
+                    body: Some(bytes),
+                    headers: None,
+                    timeout_ms: None,
+                })
+            }
+            None => None,
         };
 
-        let image = image::load_from_memory(&image_bytes)
-            .map_err(|e| adaptive_cards_renderer::host_context::ComponentError {
-                message: format!("Failed to load image from callout: {}", e),
-            })?
-            .to_rgba8();
+        let image_result =
+            bindings::slipway_host::fetch_bin(url, options.as_ref()).map_err(|e| {
+                adaptive_cards_renderer::host_context::ComponentError {
+                    message: e.message,
+                    inner: e.inner,
+                }
+            })?;
 
-        bindings::log::warn(&format!(
+        let image = if image_result.headers.iter().any(|(k, v)| {
+            k.eq_ignore_ascii_case("content-type") && v.eq_ignore_ascii_case("application/json")
+        }) {
+            let json: serde_json::Value =
+                serde_json::from_slice(&image_result.body).map_err(|e| {
+                    adaptive_cards_renderer::host_context::ComponentError {
+                        message: format!(
+                            "Failed to parse image JSON from URL result body: {}",
+                            url
+                        ),
+                        inner: vec![format!("{}", e)],
+                    }
+                })?;
+
+            let json_object = json.as_object().ok_or_else(|| {
+                adaptive_cards_renderer::host_context::ComponentError {
+                    message: format!("Image JSON from URL result body is not an object: {}", url),
+                    inner: vec![format!("Found: {:#?}", json)],
+                }
+            })?;
+
+            if !json_object.contains_key("canvas") {
+                return Err(adaptive_cards_renderer::host_context::ComponentError {
+                    message: format!("Image JSON from URL result body is not a canvas: {}", url),
+                    inner: vec![format!("Found: {:#?}", json_object)],
+                });
+            }
+
+            let canvas_result: CanvasResultContainer =
+                serde_json::from_value(json).map_err(|e| {
+                    adaptive_cards_renderer::host_context::ComponentError {
+                        message: "Failed to parse canvas from callout result.".to_string(),
+                        inner: vec![format!("{}", e)],
+                    }
+                })?;
+
+            Ok(canvas_result_to_image(&canvas_result.canvas))
+        } else {
+            let image = image::load_from_memory(&image_result.body).map_err(|e| {
+                adaptive_cards_renderer::host_context::ComponentError {
+                    message: format!("Failed to parse image bytes from URL: {}", url),
+                    inner: vec![format!("{}", e)],
+                }
+            })?;
+
+            Ok(image.to_rgba8())
+        }?;
+
+        bindings::slipway_host::log_warn(&format!(
             "Loaded image from URL: {} ({}x{})",
             url,
             image.width(),
             image.height()
         ));
+
         Ok(image)
     }
 
-    fn warn(&self, message: &str) {
-        bindings::log::warn(message);
+    fn log_warn(&self, message: &str) {
+        bindings::slipway_host::log_warn(message);
     }
 
-    fn debug(&self, message: &str) {
-        bindings::log::debug(message);
+    fn log_debug(&self, message: &str) {
+        bindings::slipway_host::log_debug(message);
     }
 }
 

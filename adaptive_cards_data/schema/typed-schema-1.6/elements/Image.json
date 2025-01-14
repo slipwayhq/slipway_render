@@ -5,10 +5,13 @@
 	"properties": {
 		"url": {
 			"type": "uri-reference",
-			"description": "The URL to the image. Supports data URI in version 1.2+"
+			"description": "The URL to the image. Supports data URI in version 1.2+",
+			"required": true
 		},
-		"callout": {
-			"type": "Callout"
+		"body": {
+			"type": "Value",
+			"description": "The body for the URL request.",
+			"required": false
 		},
 		"altText": {
 			"type": "string",

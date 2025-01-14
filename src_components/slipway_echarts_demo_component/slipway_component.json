@@ -37,7 +37,7 @@
         "height": "$$.input.height",
         "chart": {
           "textStyle": {
-            "fontFamily": "Made Up Font, Hack Nerd Font, sans-serif",
+            "fontFamily": "sans-serif",
             "fontSize": 14,
             "fontWeight": "normal"
           },

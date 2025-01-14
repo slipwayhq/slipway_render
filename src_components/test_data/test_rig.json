@@ -69,10 +69,7 @@
                 {
                   "type": "Image",
                   "height": "stretch",
-                  "callout": {
-                    "handle": "echarts_demo",
-                    "input": {}
-                  }
+                  "url": "component://echarts_demo?width=$width&height=$height"
                 }
               ]
             }

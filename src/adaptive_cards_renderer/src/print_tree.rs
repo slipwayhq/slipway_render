@@ -6,7 +6,7 @@ use crate::host_context::HostContext;
 /// Slipway component it will only display if debug logging is enabled.
 /// Prints a debug representation of the computed layout for a tree of nodes, starting with the passed root node.
 pub fn print_tree(tree: &impl PrintTree, root: NodeId, host_context: &dyn HostContext) {
-    host_context.debug("TREE");
+    host_context.log_debug("TREE");
 
     print_node(tree, root, false, String::new(), host_context);
 
@@ -27,7 +27,7 @@ pub fn print_tree(tree: &impl PrintTree, root: NodeId, host_context: &dyn HostCo
         } else {
             "└── "
         };
-        host_context.debug(
+        host_context.log_debug(
             &format!(
                 "{lines}{fork} {display} [x: {x:<4} y: {y:<4} w: {width:<4} h: {height:<4} content_w: {content_width:<4} content_h: {content_height:<4} border: l:{bl} r:{br} t:{bt} b:{bb}, padding: l:{pl} r:{pr} t:{pt} b:{pb}] ({key:?})",
                 lines = lines_string,

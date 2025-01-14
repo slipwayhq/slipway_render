@@ -4,7 +4,7 @@ use adaptive_cards::AdaptiveCard;
 use adaptive_cards_host_config::HostConfig;
 use adaptive_cards_renderer::{
     default_host_config,
-    host_context::{HostContext, ResolvedFont},
+    host_context::{ComponentError, HostContext, ResolvedFont},
     render::render_from_str,
     DebugMode, ElementLayoutData,
 };
@@ -118,33 +118,24 @@ impl HostContext for MockHostContext {
         }
     }
 
-    fn run_callout(
-        &self,
-        _handle: &str,
-        _input: &serde_json::Value,
-    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
-        unimplemented!()
-    }
-
     fn load_image_from_url(
         &self,
         url: &str,
-    ) -> Result<RgbaImage, adaptive_cards_renderer::host_context::ComponentError> {
+        _body: Option<&serde_json::Value>,
+    ) -> Result<RgbaImage, ComponentError> {
         match url {
             "https://adaptivecards.io/content/airplane.png" => {
                 Ok(image::load_from_memory(AIRPLANE_PNG).unwrap().to_rgba8())
             }
-            _ => Err(adaptive_cards_renderer::host_context::ComponentError {
-                message: format!("Image not found: {}", url),
-            }),
+            _ => panic!("Image not found: {}", url),
         }
     }
 
-    fn warn(&self, message: &str) {
+    fn log_warn(&self, message: &str) {
         println!("Warning: {}", message);
     }
 
-    fn debug(&self, message: &str) {
+    fn log_debug(&self, message: &str) {
         self.debug_lines.borrow_mut().push(message.to_string());
     }
 }

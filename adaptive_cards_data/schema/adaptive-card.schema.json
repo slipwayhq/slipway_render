@@ -815,18 +815,8 @@
           "format": "uri-reference",
           "description": "The URL to the image. Supports data URI in version 1.2+"
         },
-        "callout": {
-          "type": "object",
-          "properties": {
-            "handle": {
-              "type": "string"
-            },
-            "input": {}
-          },
-          "required": [
-            "handle",
-            "input"
-          ]
+        "body": {
+          "description": "The body for the URL request."
         },
         "altText": {
           "type": "string",
@@ -928,6 +918,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "url"
       ]
     },
     "ImageSet": {

@@ -22,6 +22,7 @@ impl Guest for Component {
                 "Failed to create pixmap with dimensions {}x{}",
                 input.width, input.height
             ),
+            inner: vec![],
         })?;
 
         let options = usvg::Options {
@@ -33,6 +34,7 @@ impl Guest for Component {
             usvg::Tree::from_data(input.svg.as_bytes(), &options).map_err(|error| {
                 ComponentError {
                     message: error.to_string(),
+                    inner: vec![],
                 }
             })?;
 
@@ -41,6 +43,7 @@ impl Guest for Component {
         let img = RgbaImage::from_vec(input.width, input.height, pixels.take()).ok_or(
             ComponentError {
                 message: "Could not create ImageBuffer from bytes".to_string(),
+                inner: vec![],
             },
         )?;
 
@@ -117,13 +120,13 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
             let id = fontdb.query(&query);
 
             if id.is_none() {
-                bindings::log::debug(&format!(
+                bindings::slipway_host::log_debug(&format!(
                     "No match for \"{}\" font-family. Requesting from host.",
                     family_str,
                 ));
-                let maybe_resolved_font = bindings::font::try_resolve(family_str);
+                let maybe_resolved_font = bindings::slipway_host::try_resolve_font(family_str);
                 if let Some(resolved_font) = maybe_resolved_font {
-                    bindings::log::debug(&format!(
+                    bindings::slipway_host::log_debug(&format!(
                         "Host resolved as \"{}\".",
                         resolved_font.family
                     ));
@@ -147,7 +150,7 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
                         fontdb::Family::Name(_) => {}
                     }
                 } else {
-                    bindings::log::warn(&format!(
+                    bindings::slipway_host::log_warn(&format!(
                         "No host match for \"{}\" font-family.",
                         family_str,
                     ));
@@ -183,7 +186,7 @@ pub fn slipway_font_selector() -> usvg::FontSelectionFn<'static> {
         let id = fontdb.query(&query);
 
         if id.is_none() {
-            bindings::log::warn(&format!(
+            bindings::slipway_host::log_warn(&format!(
                 "No match for \"{}\" font-family.",
                 font.families()
                     .iter()

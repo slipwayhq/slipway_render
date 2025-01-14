@@ -26,19 +26,17 @@ use super::{
     utils::{apply_horizontal_alignment, parse_dimension},
 };
 
-enum ImageSource {
-    Callout,
-    Url,
+enum SourceImageSize {
+    Fixed,
+    Dynamic,
 }
 
-impl ImageSource {
-    fn from_image(image: &adaptive_cards::Image<ElementLayoutData>) -> Option<Self> {
-        if image.callout.is_some() {
-            Some(Self::Callout)
-        } else if image.url.is_some() {
-            Some(Self::Url)
+impl SourceImageSize {
+    fn from_image(image: &adaptive_cards::Image<ElementLayoutData>) -> Self {
+        if image.url.contains("$width") || image.url.contains("$height") {
+            Self::Dynamic
         } else {
-            None
+            Self::Fixed
         }
     }
 }
@@ -91,35 +89,24 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
             }
         }
 
-        let image_source = ImageSource::from_image(self);
-        match image_source {
-            None => tree
-                .new_leaf(style)
-                .err_context(context)
-                .map(ElementTaffyData::from),
-            Some(ImageSource::Callout) => {
+        let source_image_size = SourceImageSize::from_image(self);
+        match source_image_size {
+            SourceImageSize::Dynamic => {
                 if let StringOrBlockElementHeight::BlockElementHeight(BlockElementHeight::Auto) =
                     self.height
                 {
-                    Err(RenderError::Other {
-                        path: context.path.clone(),
-                        message: [
-                            "Image height is set to Auto, but a callout is present. ",
-                            "This will result in a zero height image.",
-                        ]
-                        .concat(),
-                    })
-                } else {
-                    tree.new_leaf(style)
-                        .err_context(context)
-                        .map(ElementTaffyData::from)
+                    context.host_context.log_warn(&format!(
+                        "Image height is set to Auto, but a dynamically sized image is present. This will likely result in a zero height image. Path: {}",
+                        context.path
+                    ));
                 }
+
+                tree.new_leaf(style)
+                    .err_context(context)
+                    .map(ElementTaffyData::from)
             }
-            Some(ImageSource::Url) => {
-                let maybe_source_image = load_source_image(self, context, None)?;
-                let Some(source_image) = maybe_source_image else {
-                    panic!("URL should always return source image");
-                };
+            SourceImageSize::Fixed => {
+                let source_image = load_source_image(self, context, None);
 
                 let source_width = source_image.width() as f32;
                 let source_height = source_image.height() as f32;
@@ -169,11 +156,7 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
 
         let size = self.size.unwrap_or(ImageSize::Auto);
 
-        let maybe_source_image = load_source_image(self, context, Some(absolute_rect))?;
-
-        let Some(mut source_image) = maybe_source_image else {
-            return Ok(());
-        };
+        let mut source_image = load_source_image(self, context, Some(absolute_rect));
 
         let (source_image_width, source_image_height) = source_image.dimensions();
         match size {
@@ -262,44 +245,57 @@ impl crate::layoutable::Layoutable for adaptive_cards::Image<ElementLayoutData> 
     }
 }
 
+fn load_error_image() -> RgbaImage {
+    const SIZE: u32 = 10;
+    let mut image = RgbaImage::from_pixel(SIZE, SIZE, image::Rgba([255, 255, 255, 255]));
+    for i in 0..SIZE {
+        image.put_pixel(i, i, image::Rgba([0, 0, 0, 255]));
+        image.put_pixel(i, SIZE - 1 - i, image::Rgba([0, 0, 0, 255]));
+    }
+    image
+}
+
 fn load_source_image(
     image: &adaptive_cards::Image<ElementLayoutData>,
     context: &LayoutContext<'_, '_, '_>,
     absolute_rect: Option<Rect>,
-) -> Result<Option<RgbaImage>, RenderError> {
-    let source_image: Option<RgbaImage> = if let Some(callout) = image.callout.as_ref() {
-        let Some(absolute_rect) = absolute_rect else {
-            panic!("absolute_rect is required when callout is present");
-        };
+) -> RgbaImage {
+    let source_image_size = SourceImageSize::from_image(image);
 
-        let mut input = callout.input.clone();
-        input["width"] = serde_json::Value::Number(serde_json::Number::from(absolute_rect.width()));
-        input["height"] =
-            serde_json::Value::Number(serde_json::Number::from(absolute_rect.height()));
+    let url = match source_image_size {
+        SourceImageSize::Dynamic => {
+            let Some(absolute_rect) = absolute_rect else {
+                panic!("absolute_rect is required when a dynamically sized image is present");
+            };
 
-        Some(
-            context
-                .host_context
-                .run_callout(&callout.handle, &input)
-                .map_err(|e| RenderError::Other {
-                    path: context.path.clone(),
-                    message: e.message,
-                })?,
-        )
-    } else if let Some(url) = image.url.as_ref() {
-        Some(
-            context
-                .host_context
-                .load_image_from_url(url)
-                .map_err(|e| RenderError::Other {
-                    path: context.path.clone(),
-                    message: e.message,
-                })?,
-        )
-    } else {
-        None
+            let mut url = image.url.clone();
+            url = url.replace("$width", &absolute_rect.width().to_string());
+            url = url.replace("$height", &absolute_rect.height().to_string());
+            url
+        }
+        SourceImageSize::Fixed => image.url.clone(),
     };
-    Ok(source_image)
+
+    let maybe_image = context
+        .host_context
+        .load_image_from_url(&url, image.body.as_ref());
+
+    match maybe_image {
+        Err(e) => {
+            context
+                .host_context
+                .log_warn(&format!("Failed to load image from URL: {}", url));
+
+            context.host_context.log_warn(&format!(" {}", e.message));
+
+            for inner in e.inner {
+                context.host_context.log_warn(&format!(" {}", inner));
+            }
+
+            load_error_image()
+        }
+        Ok(image) => image,
+    }
 }
 
 fn copy_image(source: &RgbaImage, target: &mut MaskedImage, position: Point<i32>) {

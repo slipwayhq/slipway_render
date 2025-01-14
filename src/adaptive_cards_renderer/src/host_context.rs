@@ -8,16 +8,16 @@ pub struct ResolvedFont {
 
 pub struct ComponentError {
     pub message: String,
+    pub inner: Vec<String>,
 }
 
 pub trait HostContext {
     fn try_resolve_font(&self, font_stack: &str) -> Option<ResolvedFont>;
-    fn run_callout(
+    fn load_image_from_url(
         &self,
-        handle: &str,
-        input: &serde_json::Value,
+        url: &str,
+        body: Option<&serde_json::Value>,
     ) -> Result<RgbaImage, ComponentError>;
-    fn load_image_from_url(&self, url: &str) -> Result<RgbaImage, ComponentError>;
-    fn warn(&self, message: &str);
-    fn debug(&self, message: &str);
+    fn log_warn(&self, message: &str);
+    fn log_debug(&self, message: &str);
 }

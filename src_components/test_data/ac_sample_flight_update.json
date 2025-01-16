@@ -9,13 +9,13 @@
   },
   "rigging": {
     "theme": {
-      "component": "file:artifacts/slipway.theme.0.0.1.tar",
+      "component": "slipway.theme.0.0.1",
       "input": {
         "name": "color_light"
       }
     },
     "modify_theme": {
-      "component": "file:artifacts/slipway.modify.0.0.1.tar",
+      "component": "slipway.modify.0.0.1",
       "input": {
         "data": "$$.theme.hostConfig",
         "instructions": [
@@ -28,9 +28,9 @@
       }
     },
     "render": {
-      "component": "file:artifacts/slipway.render.0.0.1.tar",
+      "component": "slipway.render.0.0.1",
       "callouts": {
-        "echarts_demo": "file:artifacts/slipway.echarts_demo.0.0.1.tar"
+        "echarts_demo": "slipway.echarts_demo.0.0.1"
       },
       "input": {
         "card": {

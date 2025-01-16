@@ -9,7 +9,7 @@
   },
   "rigging": {
     "echarts": {
-      "component": "file:artifacts/slipway.echarts.0.0.1.tar",
+      "component": "slipway.echarts.0.0.1",
       "input": {
         "width": "$.constants.width",
         "height": "$.constants.height",

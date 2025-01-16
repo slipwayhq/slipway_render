@@ -35,7 +35,7 @@
   },
   "rigging": {
     "echarts": {
-      "component": "file:artifacts/slipway.echarts_svg.0.0.1.tar",
+      "component": "slipway.echarts_svg.0.0.1",
       "input": {
         "width": "$$.input.width",
         "height": "$$.input.height",
@@ -44,7 +44,7 @@
       }
     },
     "output": {
-      "component": "file:artifacts/slipway.svg.0.0.1.tar",
+      "component": "slipway.svg.0.0.1",
       "input": {
         "width": "$$.input.width",
         "height": "$$.input.height",

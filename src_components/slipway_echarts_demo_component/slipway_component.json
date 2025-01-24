@@ -32,6 +32,11 @@
   "rigging": {
     "output": {
       "component": "slipway.echarts.0.0.1",
+      "allow": [
+        { "permission": "font" },
+        { "permission": "registry_component", "publisher": "slipway", "name": "echarts_svg" },
+        { "permission": "registry_component", "publisher": "slipway", "name": "svg" }
+      ],
       "input": {
         "width": "$$.input.width",
         "height": "$$.input.height",

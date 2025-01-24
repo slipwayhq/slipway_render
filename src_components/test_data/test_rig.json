@@ -32,6 +32,10 @@
       "callouts": {
         "echarts_demo": "slipway.echarts_demo.0.0.1"
       },
+      "allow": [
+        { "permission": "font" },
+        { "permission": "registry_component" }
+      ],
       "input": {
         "card": {
           "type": "AdaptiveCard",

@@ -220,7 +220,6 @@ fn prepare_layout(
     let mut layout = builder.build(text);
 
     // Run line-breaking and alignment on the Layout
-    println!("width_constraint {:?} for text {}", width_constraint, text);
     let max_advance = if text_context.wrap {
         width_constraint
     } else {

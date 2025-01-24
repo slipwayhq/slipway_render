@@ -3,7 +3,6 @@ use adaptive_cards_renderer::{
     host_context::{HostContext, ResolvedFont},
     ElementLayoutData,
 };
-use base64::prelude::*;
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
 
@@ -142,7 +141,7 @@ impl Guest for Component {
             canvas: CanvasResult {
                 width: output_image.width(),
                 height: output_image.height(),
-                data: BASE64_STANDARD.encode(output_image.to_vec()),
+                data: bindings::slipway_host::encode_bin(output_image.into_vec().as_slice()),
             },
         };
 
@@ -163,8 +162,7 @@ fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {
 fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
     if let Some(rect) = canvas.rect {
         let mut output_image = if let Some(data) = &canvas.data {
-            let rgba_bytes = BASE64_STANDARD
-                .decode(data)
+            let rgba_bytes = bindings::slipway_host::decode_bin(data)
                 .expect("canvas data should be valid base64");
             let image: RgbaImage = ImageBuffer::from_raw(canvas.width, canvas.height, rgba_bytes)
                 .expect("canvas data should be valid image data");
@@ -186,8 +184,7 @@ fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
 }
 
 fn canvas_result_to_image(canvas: &CanvasResult) -> RgbaImage {
-    let rgba_bytes = BASE64_STANDARD
-        .decode(&canvas.data)
+    let rgba_bytes = bindings::slipway_host::decode_bin(&canvas.data)
         .expect("canvas data should be valid base64");
     let image: RgbaImage = ImageBuffer::from_raw(canvas.width, canvas.height, rgba_bytes)
         .expect("canvas data should be valid image data");

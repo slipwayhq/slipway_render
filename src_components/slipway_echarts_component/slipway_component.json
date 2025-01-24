@@ -45,6 +45,9 @@
     },
     "output": {
       "component": "slipway.svg.0.0.1",
+      "allow": [
+        { "permission": "font", "type": "any" }
+      ],
       "input": {
         "width": "$$.input.width",
         "height": "$$.input.height",

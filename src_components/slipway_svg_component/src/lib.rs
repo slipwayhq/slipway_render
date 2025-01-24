@@ -1,4 +1,3 @@
-use base64::prelude::*;
 use std::sync::Arc;
 
 use image::RgbaImage;
@@ -51,7 +50,7 @@ impl Guest for Component {
             canvas: CanvasResult {
                 width: img.width(),
                 height: img.height(),
-                data: BASE64_STANDARD.encode(img.to_vec()),
+                data: bindings::slipway_host::encode_bin(img.into_vec().as_slice()),
             },
         };
 

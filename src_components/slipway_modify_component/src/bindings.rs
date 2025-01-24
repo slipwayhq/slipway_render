@@ -95,7 +95,7 @@ pub trait Guest {
     fn run(input: _rt::String) -> Result<_rt::String, ComponentError>;
 }
 #[doc(hidden)]
-macro_rules! __export_world_slipway_component_cabi {
+macro_rules! __export_world_slipway_cabi {
     ($ty:ident with_types_in $($path_to_types:tt)*) => {
         const _ : () = { #[export_name = "run"] unsafe extern "C" fn export_run(arg0 : *
         mut u8, arg1 : usize,) -> * mut u8 { $($path_to_types)*:: _export_run_cabi::<$ty
@@ -105,7 +105,7 @@ macro_rules! __export_world_slipway_component_cabi {
     };
 }
 #[doc(hidden)]
-pub(crate) use __export_world_slipway_component_cabi;
+pub(crate) use __export_world_slipway_cabi;
 #[repr(align(4))]
 struct _RetArea([::core::mem::MaybeUninit<u8>; 20]);
 static mut _RET_AREA: _RetArea = _RetArea([::core::mem::MaybeUninit::uninit(); 20]);
@@ -187,14 +187,14 @@ pub mod slipway_host {
     }
     #[derive(Clone)]
     pub struct BinResponse {
-        pub status: u16,
+        pub status_code: u16,
         pub headers: _rt::Vec<Header>,
         pub body: _rt::Vec<u8>,
     }
     impl ::core::fmt::Debug for BinResponse {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             f.debug_struct("BinResponse")
-                .field("status", &self.status)
+                .field("status-code", &self.status_code)
                 .field("headers", &self.headers)
                 .field("body", &self.body)
                 .finish()
@@ -202,14 +202,14 @@ pub mod slipway_host {
     }
     #[derive(Clone)]
     pub struct TextResponse {
-        pub status: u16,
+        pub status_code: u16,
         pub headers: _rt::Vec<Header>,
         pub body: _rt::String,
     }
     impl ::core::fmt::Debug for TextResponse {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             f.debug_struct("TextResponse")
-                .field("status", &self.status)
+                .field("status-code", &self.status_code)
                 .field("headers", &self.headers)
                 .field("body", &self.body)
                 .finish()
@@ -604,7 +604,7 @@ pub mod slipway_host {
                         let l26 = *ptr13.add(20).cast::<usize>();
                         let len27 = l26;
                         BinResponse {
-                            status: l15 as u16,
+                            status_code: l15 as u16,
                             headers: result24,
                             body: _rt::Vec::from_raw_parts(l25.cast(), len27, len27),
                         }
@@ -680,7 +680,7 @@ pub mod slipway_host {
                                         let l49 = *ptr13.add(40).cast::<usize>();
                                         let len50 = l49;
                                         BinResponse {
-                                            status: l38 as u16,
+                                            status_code: l38 as u16,
                                             headers: result47,
                                             body: _rt::Vec::from_raw_parts(l48.cast(), len50, len50),
                                         }
@@ -927,7 +927,7 @@ pub mod slipway_host {
                         let len27 = l26;
                         let bytes27 = _rt::Vec::from_raw_parts(l25.cast(), len27, len27);
                         TextResponse {
-                            status: l15 as u16,
+                            status_code: l15 as u16,
                             headers: result24,
                             body: _rt::string_lift(bytes27),
                         }
@@ -1003,7 +1003,7 @@ pub mod slipway_host {
                                         let l49 = *ptr13.add(40).cast::<usize>();
                                         let len50 = l49;
                                         BinResponse {
-                                            status: l38 as u16,
+                                            status_code: l38 as u16,
                                             headers: result47,
                                             body: _rt::Vec::from_raw_parts(l48.cast(), len50, len50),
                                         }
@@ -1241,6 +1241,142 @@ pub mod slipway_host {
             }
         }
     }
+    #[allow(unused_unsafe, clippy::all)]
+    pub fn env(key: &str) -> Option<_rt::String> {
+        unsafe {
+            #[repr(align(4))]
+            struct RetArea([::core::mem::MaybeUninit<u8>; 12]);
+            let mut ret_area = RetArea([::core::mem::MaybeUninit::uninit(); 12]);
+            let vec0 = key;
+            let ptr0 = vec0.as_ptr().cast::<u8>();
+            let len0 = vec0.len();
+            let ptr1 = ret_area.0.as_mut_ptr().cast::<u8>();
+            #[cfg(target_arch = "wasm32")]
+            #[link(wasm_import_module = "slipway-host")]
+            extern "C" {
+                #[link_name = "env"]
+                fn wit_import(_: *mut u8, _: usize, _: *mut u8);
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            fn wit_import(_: *mut u8, _: usize, _: *mut u8) {
+                unreachable!()
+            }
+            wit_import(ptr0.cast_mut(), len0, ptr1);
+            let l2 = i32::from(*ptr1.add(0).cast::<u8>());
+            match l2 {
+                0 => None,
+                1 => {
+                    let e = {
+                        let l3 = *ptr1.add(4).cast::<*mut u8>();
+                        let l4 = *ptr1.add(8).cast::<usize>();
+                        let len5 = l4;
+                        let bytes5 = _rt::Vec::from_raw_parts(l3.cast(), len5, len5);
+                        _rt::string_lift(bytes5)
+                    };
+                    Some(e)
+                }
+                _ => _rt::invalid_enum_discriminant(),
+            }
+        }
+    }
+    #[allow(unused_unsafe, clippy::all)]
+    pub fn encode_bin(bin: &[u8]) -> _rt::String {
+        unsafe {
+            #[repr(align(4))]
+            struct RetArea([::core::mem::MaybeUninit<u8>; 8]);
+            let mut ret_area = RetArea([::core::mem::MaybeUninit::uninit(); 8]);
+            let vec0 = bin;
+            let ptr0 = vec0.as_ptr().cast::<u8>();
+            let len0 = vec0.len();
+            let ptr1 = ret_area.0.as_mut_ptr().cast::<u8>();
+            #[cfg(target_arch = "wasm32")]
+            #[link(wasm_import_module = "slipway-host")]
+            extern "C" {
+                #[link_name = "encode-bin"]
+                fn wit_import(_: *mut u8, _: usize, _: *mut u8);
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            fn wit_import(_: *mut u8, _: usize, _: *mut u8) {
+                unreachable!()
+            }
+            wit_import(ptr0.cast_mut(), len0, ptr1);
+            let l2 = *ptr1.add(0).cast::<*mut u8>();
+            let l3 = *ptr1.add(4).cast::<usize>();
+            let len4 = l3;
+            let bytes4 = _rt::Vec::from_raw_parts(l2.cast(), len4, len4);
+            _rt::string_lift(bytes4)
+        }
+    }
+    #[allow(unused_unsafe, clippy::all)]
+    pub fn decode_bin(text: &str) -> Result<_rt::Vec<u8>, ComponentError> {
+        unsafe {
+            #[repr(align(4))]
+            struct RetArea([::core::mem::MaybeUninit<u8>; 20]);
+            let mut ret_area = RetArea([::core::mem::MaybeUninit::uninit(); 20]);
+            let vec0 = text;
+            let ptr0 = vec0.as_ptr().cast::<u8>();
+            let len0 = vec0.len();
+            let ptr1 = ret_area.0.as_mut_ptr().cast::<u8>();
+            #[cfg(target_arch = "wasm32")]
+            #[link(wasm_import_module = "slipway-host")]
+            extern "C" {
+                #[link_name = "decode-bin"]
+                fn wit_import(_: *mut u8, _: usize, _: *mut u8);
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            fn wit_import(_: *mut u8, _: usize, _: *mut u8) {
+                unreachable!()
+            }
+            wit_import(ptr0.cast_mut(), len0, ptr1);
+            let l2 = i32::from(*ptr1.add(0).cast::<u8>());
+            match l2 {
+                0 => {
+                    let e = {
+                        let l3 = *ptr1.add(4).cast::<*mut u8>();
+                        let l4 = *ptr1.add(8).cast::<usize>();
+                        let len5 = l4;
+                        _rt::Vec::from_raw_parts(l3.cast(), len5, len5)
+                    };
+                    Ok(e)
+                }
+                1 => {
+                    let e = {
+                        let l6 = *ptr1.add(4).cast::<*mut u8>();
+                        let l7 = *ptr1.add(8).cast::<usize>();
+                        let len8 = l7;
+                        let bytes8 = _rt::Vec::from_raw_parts(l6.cast(), len8, len8);
+                        let l9 = *ptr1.add(12).cast::<*mut u8>();
+                        let l10 = *ptr1.add(16).cast::<usize>();
+                        let base14 = l9;
+                        let len14 = l10;
+                        let mut result14 = _rt::Vec::with_capacity(len14);
+                        for i in 0..len14 {
+                            let base = base14.add(i * 8);
+                            let e14 = {
+                                let l11 = *base.add(0).cast::<*mut u8>();
+                                let l12 = *base.add(4).cast::<usize>();
+                                let len13 = l12;
+                                let bytes13 = _rt::Vec::from_raw_parts(
+                                    l11.cast(),
+                                    len13,
+                                    len13,
+                                );
+                                _rt::string_lift(bytes13)
+                            };
+                            result14.push(e14);
+                        }
+                        _rt::cabi_dealloc(base14, len14 * 8, 4);
+                        super::slipway::component::types::ComponentError {
+                            message: _rt::string_lift(bytes8),
+                            inner: result14,
+                        }
+                    };
+                    Err(e)
+                }
+                _ => _rt::invalid_enum_discriminant(),
+            }
+        }
+    }
 }
 mod _rt {
     pub use alloc_crate::string::String;
@@ -1350,43 +1486,45 @@ mod _rt {
 /// ```
 #[allow(unused_macros)]
 #[doc(hidden)]
-macro_rules! __export_slipway_component_impl {
+macro_rules! __export_slipway_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
     ($ty:ident with_types_in $($path_to_types_root:tt)*) => {
-        $($path_to_types_root)*:: __export_world_slipway_component_cabi!($ty
-        with_types_in $($path_to_types_root)*);
+        $($path_to_types_root)*:: __export_world_slipway_cabi!($ty with_types_in
+        $($path_to_types_root)*);
     };
 }
 #[doc(inline)]
-pub(crate) use __export_slipway_component_impl as export;
+pub(crate) use __export_slipway_impl as export;
 #[cfg(target_arch = "wasm32")]
-#[link_section = "component-type:wit-bindgen:0.35.0:slipway:component@0.1.0:slipway-component:encoded world"]
+#[link_section = "component-type:wit-bindgen:0.35.0:slipway:component@0.1.0:slipway:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 964] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xbc\x06\x01A\x02\x01\
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 1023] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\x81\x07\x01A\x02\x01\
 A\x09\x01B\x03\x01ps\x01r\x02\x07messages\x05inner\0\x04\0\x0fcomponent-error\x03\
 \0\x01\x03\0\x1dslipway:component/types@0.1.0\x05\0\x02\x03\0\0\x0fcomponent-err\
-or\x03\0\x0fcomponent-error\x03\0\x01\x01B.\x02\x03\x02\x01\x01\x04\0\x0fcompone\
+or\x03\0\x0fcomponent-error\x03\0\x01\x01B4\x02\x03\x02\x01\x01\x04\0\x0fcompone\
 nt-error\x03\0\0\x01p}\x01r\x02\x06familys\x04data\x02\x04\0\x0dresolved-font\x03\
 \0\x03\x01o\x02ss\x04\0\x06header\x03\0\x05\x01ks\x01k\x02\x01p\x06\x01k\x09\x01\
 ky\x01r\x04\x06method\x07\x04body\x08\x07headers\x0a\x0atimeout-ms\x0b\x04\0\x0f\
-request-options\x03\0\x0c\x01r\x03\x06status{\x07headers\x09\x04body\x02\x04\0\x0c\
-bin-response\x03\0\x0e\x01r\x03\x06status{\x07headers\x09\x04bodys\x04\0\x0dtext\
--response\x03\0\x10\x01ps\x01k\x0f\x01r\x03\x07messages\x05inner\x12\x08response\
-\x13\x04\0\x0drequest-error\x03\0\x14\x01k\x04\x01@\x01\x0afont-stacks\0\x16\x04\
-\0\x10try-resolve-font\x01\x17\x01@\x01\x07messages\x01\0\x04\0\x09log-trace\x01\
-\x18\x04\0\x09log-debug\x01\x18\x04\0\x08log-info\x01\x18\x04\0\x08log-warn\x01\x18\
-\x04\0\x09log-error\x01\x18\x01k\x0d\x01j\x01\x0f\x01\x15\x01@\x02\x03urls\x07op\
-tions\x19\0\x1a\x04\0\x09fetch-bin\x01\x1b\x01j\x01\x11\x01\x15\x01@\x02\x03urls\
-\x07options\x19\0\x1c\x04\0\x0afetch-text\x01\x1d\x01j\x01s\x01\x01\x01@\x02\x06\
-handles\x05inputs\0\x1e\x04\0\x03run\x01\x1f\x01j\x01\x02\x01\x01\x01@\x02\x06ha\
-ndles\x04paths\0\x20\x04\0\x08load-bin\x01!\x01@\x02\x06handles\x04paths\0\x1e\x04\
-\0\x09load-text\x01\"\x03\0\x0cslipway-host\x05\x03\x01j\x01s\x01\x02\x01@\x01\x05\
-inputs\0\x04\x04\0\x03run\x01\x05\x04\0)slipway:component/slipway-component@0.1.\
-0\x04\0\x0b\x17\x01\0\x11slipway-component\x03\0\0\0G\x09producers\x01\x0cproces\
-sed-by\x02\x0dwit-component\x070.220.0\x10wit-bindgen-rust\x060.35.0";
+request-options\x03\0\x0c\x01r\x03\x0bstatus-code{\x07headers\x09\x04body\x02\x04\
+\0\x0cbin-response\x03\0\x0e\x01r\x03\x0bstatus-code{\x07headers\x09\x04bodys\x04\
+\0\x0dtext-response\x03\0\x10\x01ps\x01k\x0f\x01r\x03\x07messages\x05inner\x12\x08\
+response\x13\x04\0\x0drequest-error\x03\0\x14\x01k\x04\x01@\x01\x0afont-stacks\0\
+\x16\x04\0\x10try-resolve-font\x01\x17\x01@\x01\x07messages\x01\0\x04\0\x09log-t\
+race\x01\x18\x04\0\x09log-debug\x01\x18\x04\0\x08log-info\x01\x18\x04\0\x08log-w\
+arn\x01\x18\x04\0\x09log-error\x01\x18\x01k\x0d\x01j\x01\x0f\x01\x15\x01@\x02\x03\
+urls\x07options\x19\0\x1a\x04\0\x09fetch-bin\x01\x1b\x01j\x01\x11\x01\x15\x01@\x02\
+\x03urls\x07options\x19\0\x1c\x04\0\x0afetch-text\x01\x1d\x01j\x01s\x01\x01\x01@\
+\x02\x06handles\x05inputs\0\x1e\x04\0\x03run\x01\x1f\x01j\x01\x02\x01\x01\x01@\x02\
+\x06handles\x04paths\0\x20\x04\0\x08load-bin\x01!\x01@\x02\x06handles\x04paths\0\
+\x1e\x04\0\x09load-text\x01\"\x01@\x01\x03keys\0\x07\x04\0\x03env\x01#\x01@\x01\x03\
+bin\x02\0s\x04\0\x0aencode-bin\x01$\x01@\x01\x04texts\0\x20\x04\0\x0adecode-bin\x01\
+%\x03\0\x0cslipway-host\x05\x03\x01j\x01s\x01\x02\x01@\x01\x05inputs\0\x04\x04\0\
+\x03run\x01\x05\x04\0\x1fslipway:component/slipway@0.1.0\x04\0\x0b\x0d\x01\0\x07\
+slipway\x03\0\0\0G\x09producers\x01\x0cprocessed-by\x02\x0dwit-component\x070.22\
+0.0\x10wit-bindgen-rust\x060.35.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {

@@ -12,7 +12,6 @@ serde = { version = "1.0.180", features = ["derive"] }
 adaptive_cards_host_config = { path = "../../src/adaptive_cards_host_config" }
 adaptive_cards = { path = "../../src/adaptive_cards" }
 adaptive_cards_renderer = { path = "../../src/adaptive_cards_renderer" }
-base64 = "0.22.1"
 
 [lib]
 crate-type = ["cdylib"]

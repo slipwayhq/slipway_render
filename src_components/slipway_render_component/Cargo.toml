@@ -5,7 +5,7 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-wit-bindgen-rt = { version = "0.35.0", features = ["bitflags"] }
+wit-bindgen = { version = "0.38" }
 image = "0.25.2"
 serde_json = "1.0.104"
 serde = { version = "1.0.180", features = ["derive"] }
@@ -15,8 +15,3 @@ adaptive_cards_renderer = { path = "../../src/adaptive_cards_renderer" }
 
 [lib]
 crate-type = ["cdylib"]
-
-[package.metadata.component]
-package = "component:slipway-render-component"
-
-[package.metadata.component.dependencies]

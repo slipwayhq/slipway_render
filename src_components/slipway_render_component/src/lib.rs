@@ -6,15 +6,53 @@ use adaptive_cards_renderer::{
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};
 
-#[allow(warnings)]
-mod bindings;
+wit_bindgen::generate!({
+    world: "slipway",
+});
 
-use bindings::{ComponentError, Guest};
+struct Component;
+
+export!(Component);
+
+impl Guest for Component {
+    fn run(input: String) -> Result<String, ComponentError> {
+        let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
+
+        let (width, height) = get_render_image_size(&input.canvas);
+
+        let image = adaptive_cards_renderer::render::render(
+            &input.card,
+            &input.host_config.unwrap_or_else(|| {
+                HostConfig::builder()
+                    .try_into()
+                    .expect("Default host config should be valid")
+            }),
+            &SlipwayHostContext {},
+            width,
+            height,
+            adaptive_cards_renderer::DebugMode::none(),
+        )
+        .expect("should render image");
+
+        let output_image = get_output_image(&input.canvas, image);
+
+        let output = Output {
+            canvas: CanvasResult {
+                width: output_image.width(),
+                height: output_image.height(),
+                data: slipway_host::encode_bin(output_image.into_vec().as_slice()),
+            },
+        };
+
+        Ok(serde_json::to_string(&output).expect("should serialize output to JSON"))
+    }
+}
 
 struct SlipwayHostContext;
+
 impl HostContext for SlipwayHostContext {
     fn try_resolve_font(&self, family: &str) -> Option<ResolvedFont> {
-        bindings::slipway_host::try_resolve_font(family).map(|resolved_font| ResolvedFont {
+        slipway_host::font(family).map(|resolved_font| ResolvedFont {
             family: resolved_font.family,
             data: resolved_font.data,
         })
@@ -28,7 +66,7 @@ impl HostContext for SlipwayHostContext {
         let options = match body {
             Some(body) => {
                 let bytes = serde_json::to_vec(body).expect("Request body should serialize.");
-                Some(bindings::slipway_host::RequestOptions {
+                Some(slipway_host::RequestOptions {
                     method: None,
                     body: Some(bytes),
                     headers: None,
@@ -38,13 +76,12 @@ impl HostContext for SlipwayHostContext {
             None => None,
         };
 
-        let image_result =
-            bindings::slipway_host::fetch_bin(url, options.as_ref()).map_err(|e| {
-                adaptive_cards_renderer::host_context::ComponentError {
-                    message: e.message,
-                    inner: e.inner,
-                }
-            })?;
+        let image_result = slipway_host::fetch_bin(url, options.as_ref()).map_err(|e| {
+            adaptive_cards_renderer::host_context::ComponentError {
+                message: e.message,
+                inner: e.inner,
+            }
+        })?;
 
         let image = if image_result.headers.iter().any(|(k, v)| {
             k.eq_ignore_ascii_case("content-type") && v.eq_ignore_ascii_case("application/json")
@@ -94,7 +131,7 @@ impl HostContext for SlipwayHostContext {
             Ok(image.to_rgba8())
         }?;
 
-        bindings::slipway_host::log_warn(&format!(
+        slipway_host::log_warn(&format!(
             "Loaded image from URL: {} ({}x{})",
             url,
             image.width(),
@@ -105,51 +142,13 @@ impl HostContext for SlipwayHostContext {
     }
 
     fn log_warn(&self, message: &str) {
-        bindings::slipway_host::log_warn(message);
+        slipway_host::log_warn(message);
     }
 
     fn log_debug(&self, message: &str) {
-        bindings::slipway_host::log_debug(message);
+        slipway_host::log_debug(message);
     }
 }
-
-struct Component;
-
-impl Guest for Component {
-    fn run(input: String) -> Result<String, ComponentError> {
-        let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
-
-        let (width, height) = get_render_image_size(&input.canvas);
-
-        let image = adaptive_cards_renderer::render::render(
-            &input.card,
-            &input.host_config.unwrap_or_else(|| {
-                HostConfig::builder()
-                    .try_into()
-                    .expect("Default host config should be valid")
-            }),
-            &SlipwayHostContext {},
-            width,
-            height,
-            adaptive_cards_renderer::DebugMode::none(),
-        )
-        .expect("should render image");
-
-        let output_image = get_output_image(&input.canvas, image);
-
-        let output = Output {
-            canvas: CanvasResult {
-                width: output_image.width(),
-                height: output_image.height(),
-                data: bindings::slipway_host::encode_bin(output_image.into_vec().as_slice()),
-            },
-        };
-
-        Ok(serde_json::to_string(&output).expect("should serialize output to JSON"))
-    }
-}
-
-bindings::export!(Component with_types_in bindings);
 
 fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {
     if let Some(rect) = canvas.rect {
@@ -162,8 +161,8 @@ fn get_render_image_size(canvas: &Canvas) -> (u32, u32) {
 fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
     if let Some(rect) = canvas.rect {
         let mut output_image = if let Some(data) = &canvas.data {
-            let rgba_bytes = bindings::slipway_host::decode_bin(data)
-                .expect("canvas data should be valid base64");
+            let rgba_bytes =
+                slipway_host::decode_bin(data).expect("canvas data should be valid base64");
             let image: RgbaImage = ImageBuffer::from_raw(canvas.width, canvas.height, rgba_bytes)
                 .expect("canvas data should be valid image data");
             image
@@ -184,8 +183,8 @@ fn get_output_image(canvas: &Canvas, input_image: RgbaImage) -> RgbaImage {
 }
 
 fn canvas_result_to_image(canvas: &CanvasResult) -> RgbaImage {
-    let rgba_bytes = bindings::slipway_host::decode_bin(&canvas.data)
-        .expect("canvas data should be valid base64");
+    let rgba_bytes =
+        slipway_host::decode_bin(&canvas.data).expect("canvas data should be valid base64");
     let image: RgbaImage = ImageBuffer::from_raw(canvas.width, canvas.height, rgba_bytes)
         .expect("canvas data should be valid image data");
     image

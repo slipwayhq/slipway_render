@@ -1,5 +1,5 @@
 {
-  "publisher": "slipway",
+  "publisher": "slipwayhq",
   "name": "echarts_demo",
   "description": "A decent looking echarts chart.",
   "version": "0.0.1",
@@ -31,11 +31,11 @@
   },
   "rigging": {
     "output": {
-      "component": "slipway.echarts.0.0.1",
+      "component": "slipwayhq.echarts.0.0.1",
       "allow": [
         { "permission": "font" },
-        { "permission": "registry_component", "publisher": "slipway", "name": "echarts_svg" },
-        { "permission": "registry_component", "publisher": "slipway", "name": "svg" }
+        { "permission": "registry_component", "publisher": "slipwayhq", "name": "echarts_svg" },
+        { "permission": "registry_component", "publisher": "slipwayhq", "name": "svg" }
       ],
       "input": {
         "width": "$$.input.width",

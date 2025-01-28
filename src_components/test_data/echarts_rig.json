@@ -1,5 +1,5 @@
 {
-  "publisher": "slipway",
+  "publisher": "slipwayhq",
   "name": "echarts_rig",
   "version": "0.0.1",
   "description": "A slipway rig which renders a chart.",
@@ -9,7 +9,7 @@
   },
   "rigging": {
     "echarts": {
-      "component": "slipway.echarts.0.0.1",
+      "component": "slipwayhq.echarts.0.0.1",
       "input": {
         "width": "$.constants.width",
         "height": "$.constants.height",

@@ -1,5 +1,5 @@
 {
-  "publisher": "slipway",
+  "publisher": "slipwayhq",
   "name": "test_rig",
   "version": "0.0.1",
   "description": "A slipway rig which renders some UI",
@@ -9,13 +9,13 @@
   },
   "rigging": {
     "theme": {
-      "component": "slipway.theme.0.0.1",
+      "component": "slipwayhq.theme.0.0.1",
       "input": {
         "name": "color_light"
       }
     },
     "modify_theme": {
-      "component": "slipway.modify.0.0.1",
+      "component": "slipwayhq.modify.0.0.1",
       "input": {
         "data": "$$.theme.hostConfig",
         "instructions": [
@@ -28,9 +28,9 @@
       }
     },
     "render": {
-      "component": "slipway.render.0.0.1",
+      "component": "slipwayhq.render.0.0.1",
       "callouts": {
-        "echarts_demo": "slipway.echarts_demo.0.0.1"
+        "echarts_demo": "slipwayhq.echarts_demo.0.0.1"
       },
       "input": {
         "card": {

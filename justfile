@@ -1,3 +1,5 @@
+publisher := "slipwayhq"
+
 default:
   just --list
   
@@ -44,20 +46,20 @@ clean-artifacts configuration:
   rm -rf artifacts
 
 copy-render-component-additional-files configuration:
-  cp adaptive_cards_data/schema/adaptive-card.schema.json artifacts/slipway.render/adaptive-card.schema.json
-  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/slipway.render/host-config-with-defaults.schema.json
+  cp adaptive_cards_data/schema/adaptive-card.schema.json artifacts/{{publisher}}.render/adaptive-card.schema.json
+  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/{{publisher}}.render/host-config-with-defaults.schema.json
 
 copy-all-component-files configuration name:
-  mkdir -p artifacts/slipway.{{name}}
-  cp src_components/slipway_{{name}}_component/* artifacts/slipway.{{name}}
+  mkdir -p artifacts/{{publisher}}.{{name}}
+  cp src_components/slipway_{{name}}_component/* artifacts/{{publisher}}.{{name}}
 
 copy-component-files configuration name:
-  mkdir -p artifacts/slipway.{{name}}
-  cp src_components/target/wasm32-wasip2/{{configuration}}/slipway_{{name}}_component.wasm artifacts/slipway.{{name}}/slipway_component.wasm
-  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/slipway.{{name}}/slipway_component.json
+  mkdir -p artifacts/{{publisher}}.{{name}}
+  cp src_components/target/wasm32-wasip2/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{publisher}}.{{name}}/slipway_component.wasm
+  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/{{publisher}}.{{name}}/slipway_component.json
 
 tar-component-files configuration name:
-  slipway package artifacts/slipway.{{name}}
+  slipway package artifacts/{{publisher}}.{{name}}
 
 download-fonts:
   ./download_fonts.sh

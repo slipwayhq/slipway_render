@@ -1,4 +1,3 @@
-use jsonschema::{Draft, JSONSchema};
 use serde_json::Value;
 use std::{
     fs::File,
@@ -29,7 +28,7 @@ fn it_should_parse_samples() {
     assert!(fail_count > 0, "Expected at least one failure to parse.",);
 }
 
-fn load_adaptive_cards_schema() -> JSONSchema {
+fn load_adaptive_cards_schema() -> jsonschema::Validator {
     // Read the JSON Schema file
     let mut schema_file =
         File::open("../../adaptive_cards_data/schema/adaptive-card.schema.json").unwrap();
@@ -38,10 +37,7 @@ fn load_adaptive_cards_schema() -> JSONSchema {
     let schema: Value = serde_json::from_str(&schema_data).unwrap();
 
     // Compile the schema
-    JSONSchema::options()
-        .with_draft(Draft::Draft6)
-        .compile(&schema)
-        .expect("A valid schema")
+    jsonschema::draft6::new(&schema).expect("A valid schema")
 }
 
 fn get_folders_except(sample_dir_root: &Path, except: &[&str]) -> Vec<PathBuf> {
@@ -63,7 +59,7 @@ fn get_folders_except(sample_dir_root: &Path, except: &[&str]) -> Vec<PathBuf> {
 
 fn parse_samples_in_folder(
     sample_dir: &Path,
-    compiled_schema: &JSONSchema,
+    compiled_schema: &jsonschema::Validator,
     fail_count: &mut usize,
 ) {
     for json_file in load_json_files(sample_dir) {

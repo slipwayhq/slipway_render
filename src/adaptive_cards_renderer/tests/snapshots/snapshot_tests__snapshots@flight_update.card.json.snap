@@ -495,7 +495,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.jso
                     "x": 16,
                     "y": 301,
                     "width": 158,
-                    "height": 31
+                    "height": 32
                   },
                   "placement": "Bottom"
                 }
@@ -593,7 +593,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.jso
                     "x": 226,
                     "y": 301,
                     "width": 158,
-                    "height": 31
+                    "height": 32
                   },
                   "placement": "Bottom"
                 }
@@ -641,7 +641,7 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.jso
   },
   "debug_lines": [
     "TREE",
-    "└──  FLEX COL [x: 0    y: 0    w: 400  h: 600  content_w: 384  content_h: 333  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967354))",
+    "└──  FLEX COL [x: 0    y: 0    w: 400  h: 600  content_w: 400  content_h: 349  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967354))",
     "    ├──  LEAF [x: 16   y: 16   w: 368  h: 23   content_w: 149  content_h: 23   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
     "    ├──  LEAF [x: 16   y: 39   w: 368  h: 12   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967298))",
     "    ├──  FLEX ROW [x: 16   y: 51   w: 368  h: 41   content_w: 368  content_h: 41   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967305))",
@@ -688,16 +688,16 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/flight_update.card.jso
     "    │       └──  LEAF [x: 0    y: 26   w: 115  h: 18   content_w: 36   content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967338))",
     "    ├──  LEAF [x: 16   y: 266  w: 368  h: 17   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967341))",
     "    └──  FLEX ROW [x: 16   y: 283  w: 368  h: 50   content_w: 368  content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967353))",
-    "        ├──  FLEX COL [x: 0    y: 0    w: 158  h: 50   content_w: 158  content_h: 49   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967344))",
+    "        ├──  FLEX COL [x: 0    y: 0    w: 158  h: 50   content_w: 158  content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967344))",
     "        │   ├──  LEAF [x: 0    y: 0    w: 158  h: 18   content_w: 119  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967342))",
-    "        │   └──  LEAF [x: 0    y: 18   w: 158  h: 31   content_w: 51   content_h: 31   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967343))",
+    "        │   └──  LEAF [x: 0    y: 18   w: 158  h: 32   content_w: 51   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967343))",
     "        ├──  LEAF [x: 158  y: 0    w: 10   h: 50   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967345))",
     "        ├──  FLEX COL [x: 168  y: 0    w: 32   h: 50   content_w: 32   content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967348))",
     "        │   ├──  LEAF [x: 0    y: 0    w: 32   h: 18   content_w: 0    content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967346))",
     "        │   └──  LEAF [x: 0    y: 18   w: 32   h: 32   content_w: 32   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967347))",
     "        ├──  LEAF [x: 200  y: 0    w: 10   h: 50   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967349))",
-    "        └──  FLEX COL [x: 210  y: 0    w: 158  h: 50   content_w: 158  content_h: 49   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967352))",
+    "        └──  FLEX COL [x: 210  y: 0    w: 158  h: 50   content_w: 158  content_h: 50   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967352))",
     "            ├──  LEAF [x: 0    y: 0    w: 158  h: 18   content_w: 134  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967350))",
-    "            └──  LEAF [x: 0    y: 18   w: 158  h: 31   content_w: 44   content_h: 31   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967351))"
+    "            └──  LEAF [x: 0    y: 18   w: 158  h: 32   content_w: 44   content_h: 32   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967351))"
   ]
 }

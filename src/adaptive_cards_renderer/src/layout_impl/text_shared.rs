@@ -5,12 +5,13 @@ use adaptive_cards_host_config::TextStyleConfig;
 use image::Rgba;
 use imageproc::{drawing::Canvas, integral_image::ArrayData};
 use parley::{
-    Alignment, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem, StyleProperty,
+    Alignment, AlignmentOptions, FontFamily, FontWeight, Glyph, GlyphRun, PositionedLayoutItem,
+    StyleProperty,
 };
 use swash::{
-    scale::{image::Content, Render, ScaleContext, Scaler, Source, StrikeWith},
-    zeno::{Format, Vector},
     FontRef,
+    scale::{Render, ScaleContext, Scaler, Source, StrikeWith, image::Content},
+    zeno::{Format, Vector},
 };
 use taffy::{AvailableSpace, Size, Style, TaffyTree};
 
@@ -232,6 +233,9 @@ fn prepare_layout(
             HorizontalAlignment::Center => Alignment::Middle,
             HorizontalAlignment::Right => Alignment::End,
             HorizontalAlignment::Left => Alignment::Start,
+        },
+        AlignmentOptions {
+            align_when_overflowing: true,
         },
     );
     layout

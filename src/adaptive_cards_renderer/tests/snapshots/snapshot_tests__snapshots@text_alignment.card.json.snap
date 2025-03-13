@@ -160,23 +160,23 @@ input_file: adaptive_cards_renderer/tests/snapshot_inputs/text_alignment.card.js
   },
   "debug_lines": [
     "TREE",
-    "└──  FLEX COL [x: 0    y: 0    w: 300  h: 500  content_w: 448  content_h: 410  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967314))",
+    "└──  FLEX COL [x: 0    y: 0    w: 300  h: 500  content_w: 464  content_h: 426  border: l:0 r:0 t:0 b:0, padding: l:16 r:16 t:16 b:16] (NodeId(4294967314))",
     "    ├──  LEAF [x: 16   y: 90   w: 268  h: 18   content_w: 163  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967297))",
     "    ├──  LEAF [x: 16   y: 108  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967298))",
     "    ├──  LEAF [x: 16   y: 121  w: 268  h: 18   content_w: 424  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967299))",
     "    ├──  LEAF [x: 16   y: 139  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967300))",
-    "    ├──  LEAF [x: 16   y: 152  w: 268  h: 36   content_w: 243  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
+    "    ├──  LEAF [x: 16   y: 152  w: 268  h: 36   content_w: 240  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967301))",
     "    ├──  LEAF [x: 16   y: 188  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967302))",
     "    ├──  LEAF [x: 16   y: 201  w: 268  h: 18   content_w: 171  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967303))",
     "    ├──  LEAF [x: 16   y: 219  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967304))",
     "    ├──  LEAF [x: 16   y: 232  w: 268  h: 18   content_w: 432  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967305))",
     "    ├──  LEAF [x: 16   y: 250  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967306))",
-    "    ├──  LEAF [x: 16   y: 263  w: 268  h: 36   content_w: 251  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967307))",
+    "    ├──  LEAF [x: 16   y: 263  w: 268  h: 36   content_w: 248  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967307))",
     "    ├──  LEAF [x: 16   y: 299  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967308))",
     "    ├──  LEAF [x: 16   y: 312  w: 268  h: 18   content_w: 149  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967309))",
     "    ├──  LEAF [x: 16   y: 330  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967310))",
     "    ├──  LEAF [x: 16   y: 343  w: 268  h: 18   content_w: 431  content_h: 18   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967311))",
     "    ├──  LEAF [x: 16   y: 361  w: 268  h: 13   content_w: 0    content_h: 0    border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967312))",
-    "    └──  LEAF [x: 16   y: 374  w: 268  h: 36   content_w: 250  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967313))"
+    "    └──  LEAF [x: 16   y: 374  w: 268  h: 36   content_w: 247  content_h: 36   border: l:0 r:0 t:0 b:0, padding: l:0 r:0 t:0 b:0] (NodeId(4294967313))"
   ]
 }

@@ -1,6 +1,7 @@
 /target
 /temp
 /artifacts
+/components
 /fonts
 
 .DS_Store

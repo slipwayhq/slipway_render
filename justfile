@@ -15,7 +15,7 @@ test-snapshot name *FLAGS: build-src
 debug-snapshot name *FLAGS: build-src
   cd src && SNAPSHOT_TEST_NAME={{name}} SNAPSHOT_DEBUG_MODE=full cargo nextest run snapshots {{FLAGS}}
 
-clean: clean-src clean-components (clean-artifacts "")
+clean: clean-src clean-components (clean-component-artifacts "")
 
 build-src configuration="debug":
   cd src && cargo build {{ if configuration == "release" { "--release" } else { "" } }}
@@ -31,7 +31,7 @@ clean-components:
   cd src_components && cargo clean
 
 assemble-components configuration: \
-  (clean-artifacts configuration) \
+  (clean-component-artifacts configuration) \
   (copy-component-files configuration "render") \
   (copy-render-component-additional-files configuration) \
   (tar-component-files configuration "render") \
@@ -41,25 +41,25 @@ assemble-simple-component configuration name: \
   (copy-all-component-files configuration name) \
   (tar-component-files configuration name) \
 
-clean-artifacts configuration:
-  mkdir -p artifacts
-  rm -rf artifacts
+clean-component-artifacts configuration:
+  mkdir -p components
+  rm -rf components
 
 copy-render-component-additional-files configuration:
-  cp adaptive_cards_data/schema/adaptive-card.schema.json artifacts/{{publisher}}.render/adaptive-card.schema.json
-  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json artifacts/{{publisher}}.render/host-config-with-defaults.schema.json
+  cp adaptive_cards_data/schema/adaptive-card.schema.json components/{{publisher}}.render/adaptive-card.schema.json
+  cp adaptive_cards_data/schema/host-config-with-defaults.schema.json components/{{publisher}}.render/host-config-with-defaults.schema.json
 
 copy-all-component-files configuration name:
-  mkdir -p artifacts/{{publisher}}.{{name}}
-  cp src_components/slipway_{{name}}_component/* artifacts/{{publisher}}.{{name}}
+  mkdir -p components/{{publisher}}.{{name}}
+  cp src_components/slipway_{{name}}_component/* components/{{publisher}}.{{name}}
 
 copy-component-files configuration name:
-  mkdir -p artifacts/{{publisher}}.{{name}}
-  cp src_components/target/wasm32-wasip2/{{configuration}}/slipway_{{name}}_component.wasm artifacts/{{publisher}}.{{name}}/slipway_component.wasm
-  cp src_components/slipway_{{name}}_component/slipway_component.json artifacts/{{publisher}}.{{name}}/slipway_component.json
+  mkdir -p components/{{publisher}}.{{name}}
+  cp src_components/target/wasm32-wasip2/{{configuration}}/slipway_{{name}}_component.wasm components/{{publisher}}.{{name}}/run.wasm
+  cp src_components/slipway_{{name}}_component/slipway_component.json components/{{publisher}}.{{name}}/slipway_component.json
 
 tar-component-files configuration name:
-  slipway package artifacts/{{publisher}}.{{name}}
+  slipway package components/{{publisher}}.{{name}}
 
 download-fonts:
   ./download_fonts.sh

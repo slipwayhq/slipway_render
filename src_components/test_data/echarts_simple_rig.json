@@ -1,7 +1,4 @@
 {
-  "publisher": "slipwayhq",
-  "name": "echarts_rig",
-  "version": "0.0.1",
   "description": "A slipway rig which renders a chart.",
   "constants": {
     "width": 1000,

@@ -5,28 +5,28 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-adaptive_cards = { path = "../adaptive_cards" }
-adaptive_cards_host_config = { path = "../adaptive_cards_host_config" }
-csscolorparser = "0.7.0"
-image.workspace = true
-imageproc = "0.25.0"
+adaptive_cards = { workspace = true }
+adaptive_cards_host_config = { workspace = true }
+adaptive_cards_types_generator = { workspace = true }
+populate_schema_defaults = { workspace = true }
+image = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-taffy = "0.5.2"
-thiserror = "1.0.63"
-parley = { version = "0.2.0", default-features = false, features = [
+csscolorparser = { workspace = true }
+imageproc = { workspace = true }
+taffy = { workspace = true }
+thiserror = { workspace = true }
+parley = { workspace = true, default-features = false, features = [
     "libm",
     "std",
 ] }
-skrifa = { version = "0.22.3" }
-peniko = { version = "0.2.0" }
-swash = { version = "0.1.19", default-features = true }
+skrifa = { workspace = true }
+peniko = { workspace = true }
+swash = { workspace = true, default-features = true }
 
 [build-dependencies]
-adaptive_cards_types_generator = { path = "../adaptive_cards_types_generator" }
-populate_schema_defaults = { path = "../populate_schema_defaults" }
 
 [dev-dependencies]
-walkdir = "2.5.0"
+walkdir = { workspace = true }
 jsonschema = { workspace = true }
 insta = { workspace = true, features = ["json", "glob"] }

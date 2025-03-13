@@ -1,7 +1,7 @@
 use adaptive_cards_host_config::HostConfig;
 use adaptive_cards_renderer::{
-    host_context::{HostContext, ResolvedFont},
     ElementLayoutData,
+    host_context::{HostContext, ResolvedFont},
 };
 use image::{ImageBuffer, RgbaImage};
 use serde::{Deserialize, Serialize};

@@ -59,10 +59,10 @@ fn apply_defaults(obj: &mut Map<String, Value>, defs: &Value) {
 
     // Recursively apply defaults to nested objects
     for (_key, value) in obj.iter_mut() {
-        if let Value::Object(ref mut map) = value {
+        if let Value::Object(map) = value {
             apply_defaults(map, defs);
         }
-        if let Value::Array(ref mut arr) = value {
+        if let Value::Array(arr) = value {
             recurse_on_array(arr, defs);
         }
     }
@@ -129,10 +129,10 @@ fn create_default_obj_from_properties(
 
 fn recurse_on_array(arr: &mut [Value], defs: &Value) {
     for item in arr {
-        if let Value::Object(ref mut map) = item {
+        if let Value::Object(map) = item {
             apply_defaults(map, defs);
         }
-        if let Value::Array(ref mut arr) = item {
+        if let Value::Array(arr) = item {
             recurse_on_array(arr, defs);
         }
     }

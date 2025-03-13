@@ -8,4 +8,4 @@ authors.workspace = true
 serde = { workspace = true, features = ["derive"] }
 
 [build-dependencies]
-populate_schema_defaults = { path = "../populate_schema_defaults" }
+populate_schema_defaults = { workspace = true }

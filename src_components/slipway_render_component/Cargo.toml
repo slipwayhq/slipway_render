@@ -5,13 +5,13 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-wit-bindgen = { version = "0.38" }
-image = "0.25.2"
-serde_json = "1.0.104"
-serde = { version = "1.0.180", features = ["derive"] }
-adaptive_cards_host_config = { path = "../../src/adaptive_cards_host_config" }
-adaptive_cards = { path = "../../src/adaptive_cards" }
-adaptive_cards_renderer = { path = "../../src/adaptive_cards_renderer" }
+wit-bindgen = { version = "0.41" }
+image = { workspace = true }
+serde_json = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+adaptive_cards_host_config = { workspace = true }
+adaptive_cards = { workspace = true }
+adaptive_cards_renderer = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]

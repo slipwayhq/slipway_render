@@ -8,8 +8,8 @@
     "echarts": {
       "component": "slipwayhq.echarts.0.0.1",
       "allow": [
-        { "permission": "font" },
-        { "permission": "registry_component" }
+        { "permission": "fonts" },
+        { "permission": "registry_components" }
       ],
       "input": {
         "width": "$.constants.width",

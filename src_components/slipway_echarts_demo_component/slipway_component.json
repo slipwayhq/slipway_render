@@ -33,9 +33,9 @@
     "output": {
       "component": "slipwayhq.echarts.0.0.1",
       "allow": [
-        { "permission": "font" },
-        { "permission": "registry_component", "publisher": "slipwayhq", "name": "echarts_svg" },
-        { "permission": "registry_component", "publisher": "slipwayhq", "name": "svg" }
+        { "permission": "fonts" },
+        { "permission": "registry_components", "publisher": "slipwayhq", "name": "echarts_svg" },
+        { "permission": "registry_components", "publisher": "slipwayhq", "name": "svg" }
       ],
       "input": {
         "width": "$$.input.width",

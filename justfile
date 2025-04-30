@@ -6,6 +6,7 @@ default:
 build configuration="debug": download-fonts (build-src configuration) wit (build-components configuration)
 build-ci: && (build-src "release") (build-components "release")
   cargo install cargo-typify
+  rustup target add wasm32-wasip2
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}

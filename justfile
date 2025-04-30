@@ -4,7 +4,8 @@ default:
   just --list
   
 build configuration="debug": download-fonts (build-src configuration) wit (build-components configuration)
-build-ci: (build-src "release") (build-components "release")
+build-ci: && (build-src "release") (build-components "release")
+  cargo install cargo-typify
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}

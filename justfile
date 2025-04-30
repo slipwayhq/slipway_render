@@ -3,7 +3,8 @@ publisher := "slipwayhq"
 default:
   just --list
   
-build configuration="debug": download-fonts (build-src configuration) (build-components configuration)
+build configuration="debug": download-fonts (build-src configuration) wit (build-components configuration)
+build-ci: (build-src "release") (build-components "release")
 
 test *FLAGS: build
   cd src && cargo nextest run {{FLAGS}}
@@ -21,8 +22,10 @@ build-src configuration="debug":
   cd src && cargo build {{ if configuration == "release" { "--release" } else { "" } }}
 
 build-components configuration="debug": && (assemble-components configuration)
-  slipway wit > src_components/slipway_render_component/wit/slipway.wit
   cd src_components && cargo build --target wasm32-wasip2 {{ if configuration == "release" { "--release" } else { "" } }}
+
+wit:
+  slipway wit > src_components/slipway_render_component/wit/slipway.wit
 
 clean-src:
   cd src && cargo clean
@@ -59,7 +62,7 @@ copy-component-files configuration name:
   cp src_components/slipway_{{name}}_component/slipway_component.json components/{{publisher}}.{{name}}/slipway_component.json
 
 tar-component-files configuration name:
-  slipway package components/{{publisher}}.{{name}}
+  docker run --rm -v "$(pwd)/components":/workspace -w /workspace slipwayhq/slipway:latest slipway package {{publisher}}.{{name}}
 
 download-fonts:
   ./download_fonts.sh

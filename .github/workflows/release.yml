@@ -43,7 +43,7 @@ jobs:
 
       - name: Patch version field in JSON
         run: |
-          jq --arg v "$VERSION" '.version = $v' src/slipway_component.json > tmp && mv tmp src/slipway_component.json
+          jq --arg v "$VERSION" '.version = $v' src_components/slipway_render_component/slipway_component.json > tmp && mv tmp src_components/slipway_render_component/slipway_component.json
 
       - name: Build release tarball
         run: just build-ci

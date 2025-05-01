@@ -56,6 +56,6 @@ jobs:
           name: "Release ${{ env.VERSION }}"
           draft: false
           prerelease: ${{ needs.prerelease.outputs.value }}
-          files: "components/*.tar"
+          files: "components/slipwayhq.render.*.tar"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

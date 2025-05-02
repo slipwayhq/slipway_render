@@ -24,7 +24,7 @@
           },
           "data": {
             "type": "string",
-            "description": "Base64 encoded vector of RGBA unsigned bytes. If omitted a new image will be created. At least one of `canvas` or `size` should be specified."
+            "description": "Base64 encoded vector of RGBA unsigned bytes. If omitted a new image will be created."
           },
           "rect": {
             "type": "object",

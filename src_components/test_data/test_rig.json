@@ -1,36 +1,18 @@
 {
-  "description": "A slipway rig which renders some UI",
+  "description": "A slipway rig which renders some text and a chart.",
   "constants": {
     "width": 800,
     "height": 600
   },
   "rigging": {
-    "theme": {
-      "component": "slipwayhq.theme.0.0.1",
-      "input": {
-        "name": "color_light"
-      }
-    },
-    "modify_theme": {
-      "component": "slipwayhq.modify.0.0.1",
-      "input": {
-        "data": "$$.theme.hostConfig",
-        "instructions": [
-          {
-            "type": "set",
-            "path": "fontTypes.monospace.fontFamily",
-            "value": "Departure Mono"
-          }
-        ]
-      }
-    },
     "render": {
-      "component": "slipwayhq.render.0.0.1",
+      "component": "slipwayhq.render.0.5.0",
       "callouts": {
-        "echarts_demo": {
-          "component": "slipwayhq.echarts_demo.0.0.1",
+        "echarts": {
+          "component": "slipwayhq.echarts.0.5.1",
           "allow": [
-            { "permission": "fonts" }
+            { "permission": "fonts" },
+            { "permission": "registry_components" }
           ]
         }
       },
@@ -39,6 +21,10 @@
         { "permission": "registry_components" }
       ],
       "input": {
+        "canvas": {
+          "width": "$.constants.width",
+          "height": "$.constants.height"
+        },
         "card": {
           "type": "AdaptiveCard",
           "version": "1.5",
@@ -62,7 +48,7 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "2"
+                  "text": "Hello, World"
                 }
               ]
             },
@@ -75,16 +61,47 @@
                 {
                   "type": "Image",
                   "height": "stretch",
-                  "url": "component://echarts_demo?width=$width&height=$height"
+                  "url": "component://echarts?width=$width&height=$height",
+                  "body": {
+                    "theme": {
+                      "backgroundColor": "#FFF"
+                    },
+                    "chart": {
+                      "xAxis": {
+                        "type": "category",
+                        "data": [
+                          "Mon",
+                          "Tue",
+                          "Wed",
+                          "Thu",
+                          "Fri",
+                          "Sat",
+                          "Sun"
+                        ]
+                      },
+                      "yAxis": {
+                        "type": "value"
+                      },
+                      "series": [
+                        {
+                          "data": [
+                            150,
+                            230,
+                            224,
+                            218,
+                            135,
+                            147,
+                            260
+                          ],
+                          "type": "line"
+                        }
+                      ]
+                    }
+                  }
                 }
               ]
             }
           ]
-        },
-        "hostConfig": "$$.modify_theme.data",
-        "canvas": {
-          "width": "$.constants.width",
-          "height": "$.constants.height"
         }
       }
     }

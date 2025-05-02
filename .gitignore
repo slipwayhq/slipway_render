@@ -7,6 +7,7 @@
 .DS_Store
 
 *.png
+!docs/**/*.png
 *.new
 
 /adaptive_cards_data/schema/typed-schema.schema.rs

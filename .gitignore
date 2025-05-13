@@ -8,6 +8,7 @@
 
 *.png
 !docs/**/*.png
+!src/**/*.png
 *.new
 
 /adaptive_cards_data/schema/typed-schema.schema.rs

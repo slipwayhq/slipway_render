@@ -10,7 +10,7 @@
       "card": {
         "$ref": "adaptive-card.schema.json#"
       },
-      "hostConfig": {
+      "host_config": {
         "$ref": "host-config-with-defaults.schema.json#"
       },
       "canvas": {

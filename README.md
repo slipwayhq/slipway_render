@@ -223,7 +223,7 @@ If omitted, the full image will be used.
 
 ## Optional Inputs
 
-### `hostConfig`
+### `host_config`
 
 The Adaptive Cards [Host Config](https://learn.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) 
 definition which defines device specific rendering properties (font sizes, colors, etc.).

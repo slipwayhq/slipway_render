@@ -84,7 +84,7 @@ Keep in mind this Rig has not been designed to look pretty, but the output shoul
   },
   "rigging": {
     "render": {
-      "component": "slipwayhq.render.0.5.0",
+      "component": "slipwayhq.render.0.6.0",
       "callouts": {
         "echarts": {
           "component": "slipwayhq.echarts.0.5.1",
@@ -251,7 +251,7 @@ If the Adaptive Cards definition contains images which need to be loaded from th
 
 Test the component by running the following command and pasting in the input when prompted:
 ```
-slipway run-component "slipwayhq.render.0.5.0" --allow-fonts --allow-http
+slipway run-component "slipwayhq.render.0.6.0" --allow-fonts --allow-http
 ```
 
 Input:

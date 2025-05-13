@@ -69,6 +69,6 @@ tar-component-files configuration name:
 download-fonts:
   ./download_fonts.sh
 
-release version:
+release version: test
   git tag -a "{{version}}" -m "Release {{version}}"
   git push origin "{{version}}"

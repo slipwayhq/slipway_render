@@ -32,7 +32,10 @@ impl Guest for Component {
             height,
             adaptive_cards_renderer::DebugMode::none(),
         )
-        .expect("should render image");
+        .map_err(|e| ComponentError {
+            message: "Failed to render image".to_string(),
+            inner: vec![format!("{}", e)],
+        })?;
 
         let output_image = get_output_image(&input.canvas, image);
 

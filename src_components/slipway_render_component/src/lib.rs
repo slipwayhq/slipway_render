@@ -141,7 +141,13 @@ impl HostContext for SlipwayHostContext {
                 }
             })?;
 
-            Ok(image.to_rgba8())
+            // Images loaded from the internet are typically in straight alpha format,
+            // so convert to premultiplied alpha for internal compositing.
+            let straight_alpha_image = image.to_rgba8();
+            let premultiplied_image =
+                adaptive_cards_renderer::image_to_premultiplied_alpha(straight_alpha_image);
+
+            Ok(premultiplied_image)
         }?;
 
         slipway_host::log_warn(&format!(

@@ -3,10 +3,9 @@ use std::{cell::RefCell, path::Path};
 use adaptive_cards::AdaptiveCard;
 use adaptive_cards_host_config::HostConfig;
 use adaptive_cards_renderer::{
-    default_host_config,
+    DebugMode, ElementLayoutData, default_host_config,
     host_context::{ComponentError, HostContext, ResolvedFont},
     render::render_from_str,
-    DebugMode, ElementLayoutData,
 };
 use image::RgbaImage;
 
@@ -125,7 +124,9 @@ impl HostContext for MockHostContext {
     ) -> Result<RgbaImage, ComponentError> {
         match url {
             "https://adaptivecards.io/content/airplane.png" => {
-                Ok(image::load_from_memory(AIRPLANE_PNG).unwrap().to_rgba8())
+                Ok(adaptive_cards_renderer::image_to_premultiplied_alpha(
+                    image::load_from_memory(AIRPLANE_PNG).unwrap().to_rgba8(),
+                ))
             }
             _ => panic!("Image not found: {}", url),
         }

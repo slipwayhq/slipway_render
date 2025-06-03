@@ -11,7 +11,7 @@ use adaptive_cards::{
     TextBlockStyle,
 };
 
-use crate::{errors::RenderError, TRANSPARENT};
+use crate::{TRANSPARENT, errors::RenderError, premultiplied_alpha::pixel_to_premultiplied_alpha};
 
 pub mod default_host_config;
 
@@ -46,11 +46,7 @@ impl ValidSpacing for SpacingsConfig {
 }
 
 fn valid_spacing(spacing: i64) -> u32 {
-    if spacing < 0 {
-        0
-    } else {
-        spacing as u32
-    }
+    if spacing < 0 { 0 } else { spacing as u32 }
 }
 
 pub(super) trait StringToColor {
@@ -96,7 +92,7 @@ fn parse_color(input: &str) -> Result<image::Rgba<u8>, ParseColorError> {
         }
     }
 
-    csscolorparser::parse(input).map(|c| image::Rgba(c.to_rgba8()))
+    csscolorparser::parse(input).map(|c| pixel_to_premultiplied_alpha(image::Rgba(c.to_rgba8())))
 }
 
 fn parse_color_map_error(input: &str) -> Result<image::Rgba<u8>, RenderError> {

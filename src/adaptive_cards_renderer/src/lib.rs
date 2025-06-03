@@ -11,6 +11,7 @@ mod layout_impl;
 mod layout_scratch;
 mod layoutable;
 mod masked_image;
+mod premultiplied_alpha;
 mod print_tree;
 mod rect;
 pub mod render;
@@ -20,6 +21,7 @@ pub use debug_mode::DebugMode;
 pub use element_layout_data::ElementLayoutData;
 pub use host_config_utils::default_host_config::default_host_config;
 use image::Rgba;
+pub use premultiplied_alpha::image_to_premultiplied_alpha;
 
 // Bring in the `impl_as_trait!` macro.
 extern crate adaptive_cards;

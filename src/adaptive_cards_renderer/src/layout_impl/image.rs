@@ -1,15 +1,16 @@
 use std::{cell::RefCell, rc::Rc};
 
 use adaptive_cards::{BlockElementHeight, ImageSize, ImageStyle, StringOrBlockElementHeight};
-use image::{imageops::FilterType, RgbaImage};
+use image::{RgbaImage, imageops::FilterType};
 use imageproc::{
-    drawing::{draw_filled_rect_mut, Canvas},
+    drawing::{Canvas, draw_filled_rect_mut},
     point::Point,
     rect::Rect,
 };
 use taffy::{Dimension, Style, TaffyTree};
 
 use crate::{
+    ElementLayoutData,
     element_layout_data::ElementTaffyData,
     errors::{RenderError, TaffyErrorToRenderError},
     host_config_utils::StringToColor,
@@ -17,7 +18,6 @@ use crate::{
     layout_scratch::LayoutScratch,
     masked_image::MaskedImage,
     utils::{ClampToI32, ClampToU32, TaffyLayoutUtils},
-    ElementLayoutData,
 };
 
 use super::{

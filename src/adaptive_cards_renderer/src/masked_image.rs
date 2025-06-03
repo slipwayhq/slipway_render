@@ -1,10 +1,10 @@
 use std::{cell::RefCell, rc::Rc};
 
 use crate::{
-    errors::RenderError, layout_context::LayoutContext, rect::SlipwayRegion,
-    utils::extract_from_rc_refcell, DebugMode,
+    DebugMode, errors::RenderError, layout_context::LayoutContext,
+    premultiplied_alpha::blend_premultiplied, rect::SlipwayRegion, utils::extract_from_rc_refcell,
 };
-use image::{Pixel, Rgba, RgbaImage};
+use image::{Rgba, RgbaImage};
 use imageproc::{drawing::Canvas, rect::Rect};
 
 /// An enum of either a masked image, or RgbaImage and metadata.
@@ -158,7 +158,7 @@ impl BlendingPutPixel for RgbaImage {
             return;
         }
         let current_pixel = self.get_pixel_mut(x, y);
-        current_pixel.blend(&pixel);
+        blend_premultiplied(current_pixel, pixel);
     }
 }
 

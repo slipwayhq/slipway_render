@@ -408,8 +408,14 @@ fn render_glyph(
                     let x = glyph_x + pixel_x as i32;
                     let y = glyph_y + pixel_y as i32;
                     let alpha = rendered_glyph.data[i];
-                    let color = Rgba([color[0], color[1], color[2], alpha]);
-                    apply_pixel(x, y, &color);
+                    let alpha_float = alpha as f32 / 255.0;
+                    let premultiplied_alpha_color = Rgba([
+                        (color[0] as f32 * alpha_float).round() as u8,
+                        (color[1] as f32 * alpha_float).round() as u8,
+                        (color[2] as f32 * alpha_float).round() as u8,
+                        alpha,
+                    ]);
+                    apply_pixel(x, y, &premultiplied_alpha_color);
                     i += 1;
                 }
             }
@@ -421,7 +427,8 @@ fn render_glyph(
                 for (pixel_x, pixel) in row.chunks_exact(4).enumerate() {
                     let x = glyph_x + pixel_x as i32;
                     let y = glyph_y + pixel_y as i32;
-                    let color = Rgba(pixel.try_into().expect("Not RGBA"));
+                    // Color should already be premultiplied alpha.
+                    let color = Rgba(pixel.try_into().expect("should be RGBA"));
                     apply_pixel(x, y, &color);
                 }
             }

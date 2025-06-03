@@ -253,7 +253,7 @@ If the Adaptive Cards definition contains images which need to be loaded from th
 
 Test the component by running the following command and pasting in the input when prompted:
 ```
-slipway run-component "slipwayhq.render.0.6.1" --allow-fonts --allow-http
+slipway run-component "slipwayhq.render.0.7.0" --allow-fonts --allow-http
 ```
 
 Input:

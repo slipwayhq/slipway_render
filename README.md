@@ -12,7 +12,7 @@ One of the most powerful features of this Component is its ability to call out t
 When this Component calls out to other rendering Components it provides the exact width and height that Component
 needs to render to such that the result can be perfectly inserted into the resulting canvas.
 
-This makes the `slipwayhq.render` Component excellent for general layout of text, while calling out to 
+This makes the `slipwayhq.render` Component excellent for general layout of text, while calling out to
 other Components (such as [slipwayhq.echarts](https://github.com/slipwayhq/slipway_echarts)) for more complex
 graphics.
 
@@ -225,10 +225,12 @@ If omitted, the full image will be used.
 
 ### `host_config`
 
-The Adaptive Cards [Host Config](https://learn.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) 
+The Adaptive Cards [Host Config](https://learn.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config)
 definition which defines device specific rendering properties (font sizes, colors, etc.).
 
-There are some minor deviations from the default Adaptive Cards 
+### `debug`
+
+Boolean. If true, bounding boxes will be drawn around each element in the Adaptive Card.
 
 ## Suggested Permissions
 

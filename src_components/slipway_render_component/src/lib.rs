@@ -18,10 +18,16 @@ impl Guest for Component {
     fn run(input: String) -> Result<String, ComponentError> {
         let input: Input = serde_json::from_str(&input).expect("should parse JSON from stdin");
 
+        let card: adaptive_cards::AdaptiveCard<ElementLayoutData> =
+            serde_path_to_error::deserialize(input.card).map_err(|e| ComponentError {
+                message: "Failed to parse Adaptive Card JSON".to_string(),
+                inner: vec![format!("{e}")],
+            })?;
+
         let (width, height) = get_render_image_size(&input.canvas);
 
         let image = adaptive_cards_renderer::render::render(
-            &input.card,
+            &card,
             &input.host_config.unwrap_or_else(|| {
                 HostConfig::builder()
                     .try_into()
@@ -30,7 +36,11 @@ impl Guest for Component {
             &SlipwayHostContext {},
             width,
             height,
-            adaptive_cards_renderer::DebugMode::none(),
+            if input.debug {
+                adaptive_cards_renderer::DebugMode::with_outlines()
+            } else {
+                adaptive_cards_renderer::DebugMode::none()
+            },
         )
         .map_err(|e| ComponentError {
             message: "Failed to render image".to_string(),
@@ -195,12 +205,15 @@ fn canvas_result_to_image(canvas: &CanvasResult) -> RgbaImage {
 
 #[derive(Deserialize)]
 struct Input {
-    card: adaptive_cards::AdaptiveCard<ElementLayoutData>,
+    card: serde_json::Value,
 
     #[serde(alias = "hostConfig")]
     host_config: Option<HostConfig>,
 
     canvas: Canvas,
+
+    #[serde(default)]
+    debug: bool,
 }
 
 #[derive(Deserialize, Clone, Debug)]

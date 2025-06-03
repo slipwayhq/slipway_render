@@ -7,9 +7,7 @@
     "$schema": "http://json-schema.org/draft-06/schema#",
     "type": "object",
     "properties": {
-      "card": {
-        "$ref": "adaptive-card.schema.json#"
-      },
+      "card": {},
       "host_config": {
         "$ref": "host-config-with-defaults.schema.json#"
       },
@@ -49,6 +47,11 @@
         },
         "required": ["width", "height"],
         "additionalProperties": false
+      },
+      "debug": {
+        "type": "boolean",
+        "default": false,
+        "description": "If true, the card will be rendered with bounding boxes."
       }
     },
     "required": ["card", "canvas"],

@@ -12,6 +12,7 @@ serde = { workspace = true, features = ["derive"] }
 adaptive_cards_host_config = { workspace = true }
 adaptive_cards = { workspace = true }
 adaptive_cards_renderer = { workspace = true }
+serde_path_to_error = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]

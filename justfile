@@ -2,7 +2,7 @@ publisher := "slipwayhq"
 
 default:
   just --list
-  
+
 build configuration="release": download-fonts (build-src configuration) wit (build-components configuration)
 build-ci: && (build-src "release") (build-components "release")
   cargo install cargo-typify
@@ -51,7 +51,6 @@ clean-component-artifacts configuration:
   rm -rf components
 
 copy-render-component-additional-files configuration:
-  cp adaptive_cards_data/schema/adaptive-card.schema.json components/{{publisher}}.render/adaptive-card.schema.json
   cp adaptive_cards_data/schema/host-config-with-defaults.schema.json components/{{publisher}}.render/host-config-with-defaults.schema.json
 
 copy-all-component-files configuration name:

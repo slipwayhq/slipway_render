@@ -11,6 +11,7 @@ build-ci: && (build-src "release") (build-components "release")
 test *FLAGS: (build "release")
   cd src && cargo nextest run --release {{FLAGS}}
   cd src_components && cargo nextest run --release {{FLAGS}}
+  ./optimize_pngs.sh
 
 test-snapshot name *FLAGS: build-src
   cd src && SNAPSHOT_TEST_NAME={{name}} cargo nextest run snapshots {{FLAGS}}

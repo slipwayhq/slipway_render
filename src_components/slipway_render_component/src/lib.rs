@@ -150,7 +150,7 @@ impl HostContext for SlipwayHostContext {
             Ok(premultiplied_image)
         }?;
 
-        slipway_host::log_warn(&format!(
+        slipway_host::log_info(&format!(
             "Loaded image from URL: {} ({}x{})",
             url,
             image.width(),
